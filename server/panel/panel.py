@@ -144,7 +144,7 @@ YON = SR.Yonetici(YOL.LOGS, log)
 KAY = Kayitlar(CFG, python=SR.python_exe())
 ARK = Arkadas(CFG, KAY, YON, log, SURUM)                        # Arkadaşlarınla Oyna: Host ve Join (arkadas.py)
 COK = Coklu(CFG, KAY, YON, lambda: ARK.anahtar, YOL.LOGS, log)  # çoklu istemci: öteki kayıtlarla ek istemciler (coklu.py)
-KAY.in_use = lambda slot: (YON.running() and YON.slot == slot) or ARK.kullanimda(slot) or COK.kullanimda(slot) or KL.bot_kullaniyor(KAY.dir(slot))
+KAY.in_use = lambda slot: (YON.running() and YON.slot == slot) or ARK.kullanimda(slot) or COK.kullanimda(slot) or KL.bot_slot(YOL.KAYITLAR, slot)
 UYAR = Uyarlayici(ROOT, SR.python_exe(), log, SR.NO_WINDOW)    # yeni istemciye protokol uyarlaması (protokol.py)
 UPD = Guncelleyici(ROOT, YOL.SAVE, log)                          # GitHub'dan güncelleme (guncelleme.py)
 MOT = CAL.motor()                                                # macOS: panelin kurduğu Wine + DXMT (wine_motoru.py)
@@ -637,6 +637,8 @@ def open_extra(b):
         raise Hata(_('Önce OYNA ile oyunu (ya da yalnız sunucuyu) başlat: ek istemciler aynı sunucuya bağlanır.'))
     if ARK.kullanimda(slot):
         raise Hata(_('Bu kayıt arkadaşının sunucusunda kullanılıyor.'))
+    if KL.bot_slot(YOL.KAYITLAR, slot):
+        raise Hata(_('Bu kayıt OrbitBot tarafından kullanılıyor: önce botu durdur ya da başka bir kayıt seç.'))
     if not (YON.coklu or YON.arkadas):
         if YON.client_alive() or COK.canli():
             raise Hata(_('Sunucu tek oyunculu açıldı: ek istemci için oyunu kapatıp yeniden OYNA\'ya bas.'))
@@ -684,6 +686,8 @@ def launch(sadece_sunucu=False, arkadas=False):
             raise Hata(_('Önce Kayıtlar sayfasından bir kayıt oluşturun.'))
         if COK.kullanimda(slot):
             raise Hata(_('Etkin kayıt bir ek istemcide açık: önce o istemciyi kapat ya da başka bir kaydı etkin yap.'))
+        if KL.bot_slot(YOL.KAYITLAR, slot):
+            raise Hata(_('Bu kayıt OrbitBot tarafından kullanılıyor: önce botu durdur ya da başka bir kayıt seç.'))
         folder = client_folder()
         if not sadece_sunucu:
             c = IST.check(folder)
@@ -773,6 +777,8 @@ def join_friend(b):
     slot = str(b.get('kayit') or '') or KAY.active()
     if not slot or not KAY.exists(slot):
         raise Hata(_('Önce Kayıtlar sayfasından bir kayıt oluşturun.'))
+    if KL.bot_slot(YOL.KAYITLAR, slot):
+        raise Hata(_('Bu kayıt OrbitBot tarafından kullanılıyor: önce botu durdur ya da başka bir kayıt seç.'))
     folder = client_folder()
     c = IST.check(folder)
     if not c['gecerli']:

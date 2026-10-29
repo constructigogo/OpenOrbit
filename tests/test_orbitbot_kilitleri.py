@@ -45,6 +45,13 @@ class BotKilidiTesti(unittest.TestCase):
             f.write('bozuk{')
         self.assertFalse(kilitler.bot_kullaniyor(d))
 
+    def test_bot_slot_checks_by_id_and_is_total(self):
+        _yaz(os.path.join(self.kayitlar, 'a'), kilitler.BOT_KILIDI, {'pid': os.getpid(), 'since': 1})
+        self.assertTrue(kilitler.bot_slot(self.kayitlar, 'a'))
+        self.assertFalse(kilitler.bot_slot(self.kayitlar, 'b'))
+        for kotu in ('', None, '../a', 'A', 'a/b', 'x' * 41, 5):
+            self.assertFalse(kilitler.bot_slot(self.kayitlar, kotu))
+
     def test_panel_locks_written_and_removed(self):
         for s in ('a', 'b'):
             os.makedirs(os.path.join(self.kayitlar, s))

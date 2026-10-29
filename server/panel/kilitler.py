@@ -1,7 +1,7 @@
 """Panel ile OrbitBot'un ortak kayıt kilitleri: her kayıt klasöründe panel.lock (panelin kullandığı kayıt) ve orbitbot.lock (botun).
 Kilit JSON'dur: pid, since (epoch sn) ve bilgi alanları; yalnız okunabiliyorsa ve pid'i yaşıyorsa geçerlidir (çöken sürecin kilidi sayılmaz).
 Sunucuya ya da istemciye giden hiçbir şeye dokunmaz."""
-import json, os, threading, time
+import json, os, re, threading, time
 
 PANEL_KILIDI = 'panel.lock'
 BOT_KILIDI = 'orbitbot.lock'
@@ -45,6 +45,13 @@ def bot_kullaniyor(slot_dir):
     """Kayıt klasöründe canlı bir orbitbot.lock var mı."""
     veri = _oku(os.path.join(slot_dir, BOT_KILIDI))
     return bool(veri) and pid_yasiyor(veri.get('pid'))
+
+
+def bot_slot(kayitlar_dir, slot):
+    """Kayıt kimliğiyle bot_kullaniyor: geçersiz kimlik için False (KAY.in_use hiç hata vermesin)."""
+    if not slot or not isinstance(slot, str) or not re.fullmatch(r'[a-z0-9_]{1,40}', slot):
+        return False
+    return bot_kullaniyor(os.path.join(kayitlar_dir, slot))
 
 
 def _yaz(yol, veri):
