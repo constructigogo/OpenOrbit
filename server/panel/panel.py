@@ -52,6 +52,7 @@ from coklu import Coklu, CokluHatasi  # noqa: E402
 import dunyalar as DW          # noqa: E402
 import botlar as BT            # noqa: E402  (Botlar sayfası: bot paketleri)
 import llm_kurulum as LLMK     # noqa: E402  (Gelişmiş bot kipinin dil modeli)
+import kilitler as KL         # noqa: E402
 
 SURUM = '1.0'
 DISCORD = 'https://discord.com/invite/openorbit'   # topluluk sunucusu (Panel sayfası, README); kalıcı davet
@@ -143,7 +144,7 @@ YON = SR.Yonetici(YOL.LOGS, log)
 KAY = Kayitlar(CFG, python=SR.python_exe())
 ARK = Arkadas(CFG, KAY, YON, log, SURUM)                        # Arkadaşlarınla Oyna: Host ve Join (arkadas.py)
 COK = Coklu(CFG, KAY, YON, lambda: ARK.anahtar, YOL.LOGS, log)  # çoklu istemci: öteki kayıtlarla ek istemciler (coklu.py)
-KAY.in_use = lambda slot: (YON.running() and YON.slot == slot) or ARK.kullanimda(slot) or COK.kullanimda(slot)
+KAY.in_use = lambda slot: (YON.running() and YON.slot == slot) or ARK.kullanimda(slot) or COK.kullanimda(slot) or KL.bot_kullaniyor(KAY.dir(slot))
 UYAR = Uyarlayici(ROOT, SR.python_exe(), log, SR.NO_WINDOW)    # yeni istemciye protokol uyarlaması (protokol.py)
 UPD = Guncelleyici(ROOT, YOL.SAVE, log)                          # GitHub'dan güncelleme (guncelleme.py)
 MOT = CAL.motor()                                                # macOS: panelin kurduğu Wine + DXMT (wine_motoru.py)
@@ -881,6 +882,7 @@ def shutdown():
         if w and w.poll() is None:                    # panelin açtığı uygulama penceresi de kapansın
             w.terminate()
     finally:
+        KL.kaldir(YOL.KAYITLAR)
         os._exit(0)
 
 
@@ -1924,6 +1926,7 @@ def main():
     if not CFG.get('aktif_kayit') and KAY.slots():
         CFG.update({'aktif_kayit': KAY.slots()[0]})
     threading.Thread(target=ticker, daemon=True).start()
+    KL.baslat(YOL.KAYITLAR, YON, ARK, COK, log)       # OrbitBot ile ortak kayıt kilitleri (kilitler.py)
     if '--pencere-yok' not in sys.argv:
         proc = open_window('http://127.0.0.1:%d/' % PORT)
         if proc:
