@@ -1525,6 +1525,8 @@ def h_post(path, b):
         slot = YON.slot or KAY.active()
         if not slot:
             raise Hata(_('Kayıt yok.'))
+        if KL.bot_slot(YOL.KAYITLAR, slot):
+            raise Hata(_('Bu kayıt OrbitBot tarafından kullanılıyor: önce botu durdur ya da başka bir kayıt seç.'))
         if COK.canli():
             raise Hata(_('Ek istemciler açıkken sunucu yeniden başlatılamaz: önce onları kapatın.'))
         ark_env = ARK.host_ortam() if YON.running() and YON.arkadas else None       # kip korunur (Host, çoklu istemci)
