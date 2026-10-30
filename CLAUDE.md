@@ -89,15 +89,14 @@ subprocess and writes its output to `server/logs/<name>_konsol.log`.
 - **The game client protocol is fixed by client 1.1.116.** `protocol.CLIENT_HASH` and the extracted specs must match the
   client. Don't hand-edit `protocol_read.json` without regenerating or reviewing it against `tools/il2cpp`.
 
-## This fork: `orbitbot-locks` and OrbitBot
+## This fork and OrbitBot
 
 Remotes: `origin` = constructigogo/OpenOrbit (the fork), `upstream` = kaanumay/OpenOrbit.
-- `orbitbot-locks` is checked out. It is upstream `main` plus 3 commits: `server/panel/kilitler.py`, the hooks in
+- The fork's `main` is upstream `main` plus the OrbitBot lock commits: `server/panel/kilitler.py`, the hooks in
   `panel.py`, 7 `arayuz/*.json` strings, and `tests/`.
-- Upstream updates arrive by **rebasing `orbitbot-locks` onto `upstream/main`**; the panel's auto-updater skips this
-  branch. Keep the fork diff small, since `panel.py` is the conflict hotspot.
-- `orbitbot-locks-pre-sync-20261030` is a pre-rebase backup.
-- Local `main` and `origin/main` are stale and don't track upstream.
+- `main` is published, so upstream updates arrive by **merging**, not rebasing: `git fetch upstream`,
+  `git merge upstream/main`, `git push origin main`. The panel's git updater fetches `origin main` (the fork) and only
+  fast-forwards, so it never pulls upstream directly. Keep the fork diff small, since `panel.py` is the conflict hotspot.
 
 The sibling project `../OrbitBot` (headless bot, a separate repo) depends on these. Don't change them blindly:
 - **Imports** (`OrbitBot/orbitbot/openorbit.py` puts `server/` on `sys.path`). Keep both modules import-safe, with no
