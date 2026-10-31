@@ -31,7 +31,7 @@ def _adaylar(bot):
     yuva = K.donat(e, kp)
     out = []
 
-    def dene(loot, sahip=0):
+    def dene(loot, sahip=0, dolgu=None, zorla=False):
         f = K.fiyat(loot, sahip)
         if not f or f[1] <= 0:
             return
@@ -42,12 +42,18 @@ def _adaylar(bot):
             grup = 'lazer' if loot in K.ESYA['lazerler'] else 'kalkan' if loot in K.ESYA['kalkan_jeneratorleri'] else \
                 'hiz' if loot in K.ESYA['hiz_jeneratorleri'] else 'dron'
             y[grup][loot] = y[grup].get(loot, 0) + 1
+        if dolgu:                                        # dronun boş yuvaları sonra alınacak lazerle dolar
+            y['lazer'][dolgu[0]] = y['lazer'].get(dolgu[0], 0) + dolgu[1]
         yd = K.degerler(y, kp)
         artis = yd['guc'] - taban + 0.02 * (yd['hiz'] - td['hiz']) * (0.5 + bot.o('risk'))    # hız güçte yok: kaçmaya, avlanmaya yarar
         if loot.startswith('ship_'):                     # zevk: sevdiği gemi ailesine yakınlık (herkes aynı gemiye yakınsamasın)
             artis *= 1.35 if KS.zevk(bot.k['kisilik']) in loot else 0.9
-        if artis > 1e-6:
-            out.append((artis, f[0], f[1], loot))
+        if dolgu:                                        # verim lazerlerin parasıyla birlikte (dronun fiyatına düşen pay)
+            lf = K.fiyat(dolgu[0])
+            ceq = lambda c: c[1] * (KUR if c[0] == 'U' else 1)
+            artis *= ceq(f) / (ceq(f) + dolgu[1] * ceq(lf))
+        if artis > 1e-6 or zorla:                       # zorla: klan emri (daha iyi olmasa da istenen gemi/eşya)
+            out.append((max(artis, 1e-3), f[0], f[1], loot))
 
     # lazer: yuva boşsa ya da en zayıfından iyiyse; fiyat/hasar sırasıyla ilk birkaç
     lz = K.lazerler()
@@ -58,15 +64,24 @@ def _adaylar(bot):
         dene(loot)
     for loot in K.hizlar():
         dene(loot)
+    # dron yalnız lazer yuvası açar: yedek lazer yoksa artışı 0 sayılıyor, Flax hiç alınmıyordu (oyuncu bildirimi 2026-10-31);
+    # boş yuvası eldeki en iyi (satın alınabilen) lazerle dolmuş sayılır
+    yedek = sum(e.get('lazer', {}).values()) - len(yuva['lazer'])
+    en_iyi = max((l for l in e.get('lazer', {}) if l in lz), key=lz.get, default=None)
     for loot, d in K.ESYA['dronlar'].items():
         n = e.get('dron', {}).get(loot, 0)
         if sum(e.get('dron', {}).values()) < K.ESYA['dron_azami'] and K.fiyat(loot, n):
-            dene(loot, n)
+            eksik = max(0, d.get('yuva', 1) - yedek)
+            dene(loot, n, (en_iyi, eksik) if en_iyi and eksik else None)
     simdiki = K.ESYA['gemiler'].get(e['gemi'], {})
     for loot, g in K.gemiler().items():
         if loot != e['gemi'] and g['hp'] + 20000 * (g['laser'] + g['generators']) > simdiki.get('hp', 0) + 20000 * (
                 simdiki.get('laser', 0) + simdiki.get('generators', 0)):
             dene(loot)
+    istenen = bot.k.get('birikim')
+    if istenen and not any(c[3] == istenen for c in out) and (istenen.startswith('ship_') or any(
+            istenen in K.ESYA[g] for g in ('lazerler', 'kalkan_jeneratorleri', 'hiz_jeneratorleri', 'dronlar'))):
+        dene(istenen, e.get('dron', {}).get(istenen, 0), zorla=True)
     from .. import ekstra as EK
     out += EK.adaylar(bot)                               # CPU'lar ve onarım robotları (faydası güç payı olarak)
     from .. import teknoloji as TK
@@ -102,6 +117,9 @@ def aday(bot):
     ceq = lambda c: c[2] * (KUR if c[1] == 'U' else 1)
     verim = lambda c: c[0] / max(1.0, ceq(c)) * 1e5
     t = bot.o('tutumluluk')
+    hedefi = next((c for c in tum if c[3] == bot.k.get('birikim')), None)
+    if hedefi is not None:                       # kendi seçtiği biriktirme hedefi (ajanın biriktir aracı): yalnız onu alır
+        return (hedefi if para[hedefi[1]] >= hedefi[2] else None), hedefi
     yetisir = [c for c in tum if para[c[1]] >= c[2] * (1 + 0.3 * t)]        # tutumlu bot biraz yedek bırakır
     g = gelir(bot)
     ufuk = 1.0 + 1.5 * t
@@ -145,6 +163,8 @@ class Alisveris(Hedef):
             bot.olay('alim', esya=loot, fiyat=fiyat, para=para)
             if loot.startswith('ship_'):
                 bot.olay('yeni_gemi', esya=loot)
+            if bot.k.get('birikim') == loot:
+                bot.k['birikim'] = None                  # biriktirdiği şeye kavuştu (ajanın biriktir aracı)
         bot.plan['bitti'] = True
 
     def bitti(self, bot, b):

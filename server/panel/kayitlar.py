@@ -298,9 +298,10 @@ class Kayitlar:
         return out
 
     def create(self, ad, pilot, firma, kredi=None, uridyum=None, seviye=None, onur=None, lazer=None, roket=None, ilerlemeli=False,
-               ayar_kaynagi=None):
+               ayar_kaynagi=None, kampanya=False):
         """Yeni kayıt (profil_araci.py yeni). Başlangıç değerleri isteğe bağlı (boş: tohumdaki): kredi, uridyum, seviye (1-50),
-        onur, LCB-10 lazer cephanesi ve R-310 roketi adedi; sınırlara kırpılır. ilerlemeli: Season Pass ilk sezondan sırayla."""
+        onur, LCB-10 lazer cephanesi ve R-310 roketi adedi; sınırlara kırpılır. ilerlemeli: Season Pass ilk sezondan sırayla. kampanya: başlangıç
+        kampanyası ("Level N" görevleri, gorev.KAMPANYA_SN boyunca)."""
         ad, pilot = (ad or '').strip(), (pilot or '').strip()
         if not re.fullmatch(r'[\w\-\.\[\]\(\) ]{3,20}', pilot, re.UNICODE):
             raise KayitHatasi(_('Pilot adı 3-20 karakter olmalı (harf, rakam, boşluk, - _ . [ ] ( ) ).'))
@@ -325,6 +326,8 @@ class Kayitlar:
                     args += ['--%s=%d' % (key, min(hi, max(lo, v)))]
             if ilerlemeli:
                 args += ['--ilerlemeli=1']
+            if kampanya:
+                args += ['--kampanya=1']
             try:
                 self.run_tool(*args)
             except Exception:

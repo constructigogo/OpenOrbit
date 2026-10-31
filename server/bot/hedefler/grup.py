@@ -65,6 +65,14 @@ class Grup(Hedef):
             return False
         if w.attacking and w.target in w.npcs and w.npcs[w.target].bot is None:
             g.hedef = w.target
+        from .. import govde as G
+        if g.hedef is None and G.kapi_dunyasi(w):        # kapı dolgusu: kahramana en yakın uzaylıya (dalgayı birlikte temizler)
+            hx, hy = w.hero_pos(now)
+            yakin = [(math.hypot(hx - p[0], hy - p[1]), u) for u, m in list(w.npcs.items())
+                     if m.bot is None and m.alive for p in (m.mover.pos(now),)]
+            yakin = [x for x in yakin if x[0] < 2200]
+            if yakin:
+                g.hedef = min(yakin)[1]
         hx, hy = w.hero_pos(now)
         nx, ny = g.mover.pos(now)
         if g.hedef is None and math.hypot(hx - nx, hy - ny) > 700:

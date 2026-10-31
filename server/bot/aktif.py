@@ -171,6 +171,8 @@ def emp(w, n, now):
     SL.harca(b, EMP, 1)
     bekle(n, 'emp', now, c['bekleme_sn'])
     _yayin(w, [legacy('0|n|EMP|%d' % n.id)], n.id)
+    if w.attacking:
+        w.laser_stop()                     # istemcinin lazeri ve kırmızı hedef vurgusu da kalksın
     w.target, w.attacking = None, False
     w.send([('ShipDeselectionCommand', {})])
     for m in w.npcs.values():
@@ -188,6 +190,10 @@ def gizlen(w, n, now):
     n.gizli = True
     _yayin(w, [legacy('0|n|INV|%d|1' % n.id)], n.id)
     if w.target == n.id:
+        # oyuncu ona saldırıyorsa saldırı da biter: yalnız seçim kalkınca istemci ateşe (hasarsız) sürüyor, kırmızı hedef işareti
+        # gemide kalıyordu (oyuncu bildirimi 2026-10-30); AttackAbortLaserCommand ve vurgunun kaldırılması laser_stop'ta
+        if w.attacking:
+            w.laser_stop()
         w.target, w.attacking = None, False
         w.send([('ShipDeselectionCommand', {})])
     n.bot.ist('gizlendi')

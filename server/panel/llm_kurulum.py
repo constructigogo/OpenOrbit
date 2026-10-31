@@ -260,6 +260,34 @@ class LlmKurulum:
         threading.Thread(target=self._test, daemon=True).start()
         return self.state()
 
+    def test_uzak(self):
+        """Seçili uzak sağlayıcının testi (bot/llm_saglayici.test): kısa bir soru, Türkçe yanıt."""
+        from bot import llm_saglayici as SG
+        c = SG.secili()
+        if SG.SAGLAYICILAR[c['kimlik']]['anahtar'] and not c['anahtar']:
+            raise IndirmeHatasi(_('Önce API anahtarını gir.'))
+        if not c['model']:
+            raise IndirmeHatasi(_('Önce bir model seç.'))
+        with self.lock:
+            if self.t.get('durum') == 'calisiyor':
+                return self.state()
+            self.t = {'durum': 'calisiyor', 'bas': time.time(), 'saglayici': c['kimlik']}
+        threading.Thread(target=self._test_uzak, args=(c['kimlik'],), daemon=True).start()
+        return self.state()
+
+    def _test_uzak(self, kimlik):
+        from bot import llm_saglayici as SG
+        try:
+            r = SG.test(self.log)
+            with self.lock:
+                self.t = dict(r, durum='ok' if r['ok'] else 'hata', saglayici=kimlik,
+                              hata=None if r['ok'] else _('Model beklenen yanıtı vermedi.'))
+            self.log('dil modeli sağlayıcı testi: %s' % r)
+        except Exception as e:
+            with self.lock:
+                self.t = {'durum': 'hata', 'hata': str(e), 'saglayici': kimlik}
+            self.log('dil modeli sağlayıcı testi başarısız: %r' % e)
+
     def _test(self):
         from bot import llm_sunucu as LS
         try:

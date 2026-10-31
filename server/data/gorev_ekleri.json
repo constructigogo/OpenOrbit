@@ -27834,7 +27834,7 @@
   },
   "502001": {
    "ad": "Level 1",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 1,
    "turler": [
     2
@@ -27843,6 +27843,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",
@@ -27907,7 +27908,7 @@
   },
   "502002": {
    "ad": "Level 5",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 2,
    "turler": [
     2
@@ -27916,6 +27917,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",
@@ -27992,7 +27994,7 @@
   },
   "502003": {
    "ad": "Level 10",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 3,
    "turler": [
     2
@@ -28001,6 +28003,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",
@@ -28081,7 +28084,7 @@
   },
   "502004": {
    "ad": "Level 15",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 4,
    "turler": [
     2
@@ -28090,6 +28093,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",
@@ -28170,7 +28174,7 @@
   },
   "502005": {
    "ad": "Level 20",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 5,
    "turler": [
     2
@@ -28179,6 +28183,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",
@@ -28267,7 +28272,7 @@
   },
   "502006": {
    "ad": "Level 25",
-   "seviye": 5,
+   "seviye": 1,
    "oncelik": 6,
    "turler": [
     2
@@ -28276,6 +28281,7 @@
    "portre": "",
    "onceki": [],
    "kaynak": "istemci metni",
+   "kampanya": true,
    "pvp": false,
    "kok": {
     "_": "QuestCaseModule",

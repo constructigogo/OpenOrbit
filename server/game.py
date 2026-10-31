@@ -961,10 +961,12 @@ class Session:
         (ShipCreateCommand, unvan, dronlar, gemi modülleri)."""
         p = self.profil
         pl, g = p.d['pilot'], p.d['gemi']
+        import yonetici_modu as YM
+        yon = YM.acik(p)                     # yönetici: rozet ve yönetici gemisi öteki oyunculara da
         create = ('ShipCreateCommand', dict(
-            userId=p.user_id, typeId=g.get('typeId', 'ship_liberator'), expansionStage=p.d.get('uzanti_asamasi', 1),
+            userId=p.user_id, typeId=(yon and YM.gemi(p)) or g.get('typeId', 'ship_liberator'), expansionStage=p.d.get('uzanti_asamasi', 1),
             clanTag=pl.get('clanTag', ''), userName=pl.get('userName', ''), x=x, y=y, factionId=pl.get('factionId', 0),
-            clanId=pl.get('clanId', 0), dailyRank=pl.get('dailyRank', 0), warnBox=False, clanDiplomacy=dunya.mod('ClanRelationModule', type=0),
+            clanId=pl.get('clanId', 0), dailyRank=YM.ROZET if yon else pl.get('dailyRank', 0), warnBox=False, clanDiplomacy=dunya.mod('ClanRelationModule', type=0),
             galaxyGatesDone=KAPI.rings(p), useSystemFont=pl.get('useSystemFont', True), npc=False, cloaked=False,
             motherShipId=0, positionIndex=0, designSet='', modifier=[], minimapStrategyModule=dunya.mod('MinimapStrategyModule', minimapStrategy=0),
             specialNpcType=''))

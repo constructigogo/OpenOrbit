@@ -9703,6 +9703,12 @@
   ],
   "ship": [
    {
+    "lootId": "ship_liberator",
+    "kredi": 40000,
+    "sablon": "ship_piranha",
+    "_not": "oyuncu isteği 2026-10-30: kayıttaki mağazada yok; botlar da alır (bot/katalog.fiyatlar)"
+   },
+   {
     "lootId": "ship_disruptor",
     "uridyum": 250000,
     "sablon": "ship_v-lightning",

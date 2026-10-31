@@ -13,7 +13,9 @@ import harita as H
 from . import araclar as AR
 from . import katalog as K
 
-NIYETLER = ('grup', 'yardim', 'klan', 'arkadas', 'takip', 'duello', 'gorev', 'ozel')
+NIYETLER = ('grup', 'yardim', 'klan', 'arkadas', 'takip', 'duello', 'gorev', 'ozel', 'kapi')
+KAPI_SEVIYE = (8, 12)                                    # kapı dolgusuna gelen en düşük seviye: ABG gibi kapılar; Hades, LoW, QZ
+_ZOR_KAPI = re.compile(r'\b(hades|low|legends? of war|qz|quarantine|kronos|kuiper|lambda|kappa|zeta)\b', re.I)
 DUELLO_HARITA = 16                                       # 4-4: herkesin girebildiği PvP haritası (buluşma yeri önerisi)
 _NEREDE = re.compile(r"\b(where (are|r) (you|u)|where u at|wya|nerdesin|neredesin)\b", re.I)
 _KLANIMA = re.compile(r"\b(join (my|our|us)|my clan|our clan|klan[ıi]ma|klan[ıi]m[ıi]za|bizim klan|benim klan)\b", re.I)
@@ -74,6 +76,8 @@ def karar(y, b, niyet, ad, kim, harita, metin, now, posta=False):
         return k
     if niyet == 'duello':
         return _duello(y, b, ad, kim, harita, now)
+    if niyet == 'kapi':
+        return _kapi(y, b, ad, kim, now, metin)
     if niyet == 'ozel':
         return _ozel(y, b, ad, kim, now)
     if niyet == 'takip':
@@ -113,6 +117,27 @@ def _grup(y, b, ad, kim, now, posta=False):
                                     'him to send you an invite (inv me) and you will join.', ('inv_me', {}))
     return _sonuc('grup', True, 'You decided to ACCEPT: you are sending him a group invite right now. Say yes in your own words '
                                 '(he should accept your invite).', ('davet_attim', {}), ('grup_davet', {'ad': ad}))
+
+
+# ------------------------------------------------------------------------------------------------------------ kapı dolgusu
+def _kapi(y, b, ad, kim, now, metin=''):
+    """"Need fillers for Hades": seviyesi yeten, isteyen bot "inv me" der ve söz verir (davet onun: gruba alınca kapıya
+    seninle girer, govde.kapi_tick). Kapıda değilken grup kurulur; oyuncu kapıya girince gruptaki botlar da gelir."""
+    if not (y.izin('kapi_dolgu') and y.izin('grup')):
+        return _sonuc('kapi', False, 'You decided NOT to join (busy). Say no in your own words.', ('cevap_hayir', {}))
+    if b.seviye < KAPI_SEVIYE[bool(_ZOR_KAPI.search(metin or ''))]:
+        return _sonuc('kapi', False, 'Your ship is too weak for that gate: say so in your own words.', ('gelemem', {}))
+    if b.hedef is not None and b.hedef.ad in ('kapi', 'mod', 'duello'):
+        return _sonuc('kapi', False, 'You are busy in your own gate/event now: say so.', ('cevap_hayir', {}))
+    fac = int(kim.get('factionId') or 0)
+    p = 0.3 + 0.35 * b.o('sosyallik') + 0.35 * b.o('hirs') + 0.6 * b.hafiza.iliski(ad, now) - 0.3 * b.ruh['yorgunluk']
+    if fac and fac != b.firma:
+        p -= 0.6
+    if b.r.random() >= p:
+        return _sonuc('kapi', False, 'You decided NOT to join his gate. Say it in your own words.', ('cevap_hayir', {}))
+    soz_ver(b, 'grup', ad, now, sure=1200)                # davet edince kabul eder
+    return _sonuc('kapi', True, 'You ACCEPT to fill his gate: tell him to invite you (inv me), you will jump in with him.',
+                  ('inv_me', {}))
 
 
 # ------------------------------------------------------------------------------------------------------------ özel mesaj

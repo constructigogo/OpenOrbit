@@ -768,7 +768,7 @@ function pilotForm({ start = true } = {}) {
   // başlangıç değerleri (isteğe bağlı; boş: şablondaki): kredi, uridyum, seviye (EP'si seviyenin eşiği), onur, cephane
   const num = (min, max) => h('input', { class: 'input', type: 'number', min, max, step: 1, placeholder: T('şablondaki') });
   const kredi = num(0), uri = num(0), seviye = num(1, 50), onur = num(0), lazer = num(0), roket = num(0);
-  const ilerlemeli = h('input', { type: 'checkbox' });
+  const ilerlemeli = h('input', { type: 'checkbox' }), kampanya = h('input', { type: 'checkbox' });
   const cards = FIRMS.map(([id, k, n, c, m]) => {
     const el = h('div', { class: 'radio-card' + (id === st.firma ? ' on' : ''), style: { '--c': c }, onclick: () => {
       st.firma = id; el.parentNode.querySelectorAll('.radio-card').forEach(x => x.classList.remove('on')); el.classList.add('on');
@@ -781,10 +781,12 @@ function pilotForm({ start = true } = {}) {
       field(T('Başlangıç seviyesi (1-50, isteğe bağlı)'), seviye), field(T('Başlangıç onuru (isteğe bağlı)'), onur),
       field(T('LCB-10 lazer cephanesi (isteğe bağlı)'), lazer), field(T('R-310 roketi (isteğe bağlı)'), roket)) : null,
     h('label', { class: 'row small', title: T('Season Pass ilk sezondan (Mobius) başlar; her sezon bitince bir sonraki açılır, en yeniye dek. Sonradan eklenen sezonlar da sırası gelince açılır. Kapalıysa hep en yeni sezon.') },
-      h('span', { class: 'switch' }, ilerlemeli, h('span')), T('Sezonları ilk sezondan sırayla aç'))];
+      h('span', { class: 'switch' }, ilerlemeli, h('span')), T('Sezonları ilk sezondan sırayla aç')),
+    h('label', { class: 'row small', title: T('Yeni sunucu açılışındaki "Level 1", "Level 5" … "Level 25" görevleri: seviyene ulaştıkça yüksek ödüller (gemiler, ekipman, uridyum, Premium). Kaydın açılışından itibaren 30 gün görev listesinde durur. Kapalıysa bu görevler hiç görünmez.') },
+      h('span', { class: 'switch' }, kampanya, h('span')), T('Başlangıç kampanyası'))];
   const v = x => start ? x.value : '';
   return { el, pilot, values: () => ({ ad: ad.value.trim() || pilot.value.trim(), pilot: pilot.value.trim(), firma: st.firma,
-    kredi: v(kredi), uridyum: v(uri), seviye: v(seviye), onur: v(onur), lazer: v(lazer), roket: v(roket), ilerlemeli: ilerlemeli.checked }) };
+    kredi: v(kredi), uridyum: v(uri), seviye: v(seviye), onur: v(onur), lazer: v(lazer), roket: v(roket), ilerlemeli: ilerlemeli.checked, kampanya: kampanya.checked }) };
 }
 
 function newSaveModal() {
@@ -1688,6 +1690,55 @@ function updCard() {
   return card;
 }
 
+// ---- Discord Rich Presence (discord_rp.py, /api/discord_rp): Discord profilinde oyunun anlık hâli; oyuncu neyin görüneceğini seçer
+const RP_ALANLAR = [['rp_pilot', N('Pilot adı'), N('Oyundaki adın (varsayılan kapalı).')], ['rp_klan', N('Klan etiketi'), N('Adın önünde [ETİKET].')],
+  ['rp_gemi', N('Gemi'), N('Etkin geminin adı.')], ['rp_seviye', N('Seviye'), N('Pilotun seviyesi.')],
+  ['rp_harita', N('Harita'), N('Harita adı ve bölgenin görseli.')], ['rp_durum', N('Ne yaptığın'), N('Savaştaki hedef, kapı dalgası, güvenli bölge.')],
+  ['rp_firma', N('Firma'), N('Firmanın amblemi (küçük görsel).')], ['rp_sure', N('Oturum süresi'), N('Oyuna girdiğinden beri geçen süre.')],
+  ['rp_grup', N('Grup'), N('Arkadaşlarınla Oyna: sunucundaki oyuncu sayısı.')], ['rp_butonlar', N('Düğmeler'), N("Discord sunucusu ve GitHub bağlantısı (başkaları görür).")],
+  ['rp_panelde', N('Oyun kapalıyken'), N('Yalnız panel açıkken de "Panelde" görünür.')]];
+const RP_DURUM = { bagli: [N("Discord'a bağlı"), 'ok'], discord_yok: [N('Discord açık değil'), 'warn'], hata: [N('Hata'), 'err'], kapali: [N('Kapalı'), ''] };
+function rpCard() {
+  const head = h('span', { class: 'rp-durum' });
+  const body = h('div', { class: 'rp-govde' });
+  const card = h('div', { class: 'card' }, h('h2', null, icon('users'), 'Discord Rich Presence', head),
+    h('p', { class: 'desc' }, T('Discord profilinde OpenOrbit oynadığın ve oyunda ne yaptığın görünür. Discord masaüstü uygulaması açık olmalı; neyin görüneceğini aşağıdan seç.')), body);
+  let sig = '', bas = null;
+  const yerel = k => 'gorsel/discord/' + k + '.webp';     // Discord'daki varlığın adı (OP-018)
+  const sure = () => { const s = Math.max(0, Math.floor(Date.now() / 1000 - bas)), p = n => String(n).padStart(2, '0');
+    return T('{0} geçti', (s >= 3600 ? p(Math.floor(s / 3600)) + ':' : '') + p(Math.floor(s % 3600 / 60)) + ':' + p(s % 60)); };
+  const save = vals => act(() => api('/api/panel_ayarlari', { degerler: vals })).then(x => x && load());
+  const draw = r => {
+    const s = JSON.stringify(r); if (s === sig) return; sig = s;
+    const a = r.ayarlar, e = r.etkinlik, on = a.discord_rp, [dt, dc] = RP_DURUM[r.durum] || RP_DURUM.kapali;
+    head.replaceChildren(badge(T(dt), dc));
+    const sw = (k, dis) => h('label', { class: 'switch' }, h('input', { type: 'checkbox', checked: a[k], disabled: dis, onchange: ev => save({ [k]: ev.target.checked }) }), h('span'));
+    bas = e && e.timestamps ? e.timestamps.start : null;
+    const g = e && e.assets || {};
+    const onizleme = h('div', { class: 'rp-kart' + (on && e ? '' : ' bos') }, h('div', { class: 'rp-ust' }, T('Oynuyor')),
+      on && e ? h('div', { class: 'rp-ic' },
+        h('div', { class: 'rp-gorsel' }, g.large_image ? h('img', { class: 'rp-buyuk', src: yerel(g.large_image), alt: '', title: g.large_text || '' }) : null,
+          g.small_image ? h('img', { class: 'rp-kucuk', src: yerel(g.small_image), alt: '', title: g.small_text || '' }) : null),
+        h('div', { class: 'rp-metin' }, h('b', null, 'OpenOrbit'), h('div', null, e.details),
+          h('div', null, e.state, e.party ? ` (${T('{0} / {1}', e.party.size[0], e.party.size[1])})` : ''),
+          bas ? h('div', { class: 'rp-sure' }, sure()) : null)) : h('div', { class: 'small muted' }, on ? T('Şu an profilinde bir şey görünmüyor.') : T('Rich Presence kapalı.')),
+      on && e && e.buttons ? h('div', { class: 'rp-dugmeler' }, e.buttons.map(b => h('span', null, b.label))) : null);
+    body.replaceChildren(h('div', { class: 'grid g2', style: { alignItems: 'start' } },
+      h('div', { class: 'stack rp-ayar', style: { gap: '4px' } },
+        h('div', { class: 'set-row' }, h('div', null, h('div', { class: 'name' }, T('Rich Presence')),
+          h('div', { class: 'help' }, r.durum === 'discord_yok' ? T('Discord açılınca kendiliğinden bağlanır.') : r.durum === 'hata' ? r.hata : T('Kapatınca profilinden hemen kalkar.'))),
+          h('div', { class: 'ctl' }, sw('discord_rp'))),
+        h('div', { class: 'rp-alanlar' + (on ? '' : ' kapali') }, RP_ALANLAR.map(([k, ad, yardim]) => h('div', { class: 'set-row sub' },
+          h('div', null, h('div', { class: 'name' }, T(ad)), h('div', { class: 'help' }, T(yardim))), h('div', { class: 'ctl' }, sw(k, !on)))))),
+      h('div', { class: 'stack', style: { gap: '8px' } }, h('div', { class: 'small muted' }, T('Profilinde böyle görünür:')), onizleme)));
+  };
+  const load = () => api('/api/discord_rp').then(draw).catch(() => {});
+  load();
+  S.timers.push(setInterval(() => { if (card.isConnected) load(); }, 3000));
+  S.timers.push(setInterval(() => { const x = card.querySelector('.rp-sure'); if (x && bas) x.textContent = sure(); }, 1000));
+  return card;
+}
+
 async function renderPanel() {
   const r = await act(() => api('/api/hakkinda')); if (!r || S.page !== 'panel') return;
   const pathRow = (label, p, ne) => h('div', { class: 'set-row' }, h('div', null, h('div', { class: 'name' }, label), h('div', { class: 'help mono' }, p)),
@@ -1708,6 +1759,7 @@ async function renderPanel() {
       h('div', { class: 'row wrap' },
         btn(T("Discord'a katıl"), () => act(() => api('/api/discord', {}), T('Davet bağlantısı tarayıcıda açıldı.')), 'primary', 'users'),
         h('span', { class: 'small muted mono' }, r.discord))),
+    rpCard(),
     updCard(),
     h('div', { class: 'grid g2' },
       h('div', { class: 'card' }, h('h2', null, icon('star'), T('Masaüstü kısayolu')),

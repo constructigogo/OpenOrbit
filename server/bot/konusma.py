@@ -46,7 +46,7 @@ def uslupla(metin, u, r=random, d='tr'):
     if tablo and r.random() < oran:
         metin = metin.translate(tablo)             # çoğu oyuncu aksanlı harf yazmaz (Türkçe karakter, umlaut ...)
     if r.random() < u.get('kucuk_harf', 0.6):
-        metin = metin.lower()
+        metin = metin.lower().replace('i̇', 'i')     # "İ".lower() noktalı i'ye (i + birleşen nokta) dönüyordu
     elif metin and r.random() < 0.5:
         metin = metin[0].upper() + metin[1:]
     if r.random() < u.get('buyuk_harf', 0.05) * 0.25:      # BAĞIRAN satır çok nadir (kullanıcı bildirimi 2026-10-29)
@@ -65,7 +65,10 @@ def uslupla(metin, u, r=random, d='tr'):
 
 # ------------------------------------------------------------------------------------------------------------ niyet
 _SELAM = re.compile(r'\b(selam|slm|sa|merhaba|mrb|hi|hello|hey|yo|selamun|naber|nbr)\b', re.I)
-_YARDIM = re.compile(r'(yard[ıi]m|help|destek|gel(in|sene)?\b|kurtar|sald[ıi]r[ıi]yor|vuruyor|attack)', re.I)
+# çıplak "gel/gelsene" yardım değil ("niye eic'e katılmıyorsun gelsene": takılma; önce botlar 2-1'e savaşa koşuyordu, oyuncu
+# bildirimi 2026-10-30); haritayla "2-1e gelsene" takip (_GEL)
+_YARDIM = re.compile(r'(yard[ıi]m|help|destek|imdat|kurtar|sald[ıi]r[ıi]yor|vuruyor|attack)', re.I)
+_GEL = re.compile(r'\bgel(in|sene|senize|ir ?misin|ebilir ?misin)?\b', re.I)
 _GRUP = re.compile(r'\b(grup|group|party|parti|team|tak[ıi]m|together|team up|duo|join me|birlikte|beraber)\b', re.I)
 _KLAN = re.compile(r'\b(clan|clans|klan|klana|klanin|klanım|klanim|guild|recruit\w*)\b', re.I)
 _ARKADAS = re.compile(r'\b(add me|add u|adding (you|u)|friend ?req\w*|be friends|friend me|ekle beni|arkada[sş] ?ol\w*|arkada[sş]l[ıi]k)\b',
@@ -74,16 +77,22 @@ _TAKIP = re.compile(r"\b(come (to|here|over|with)|follow me|where (are|r) (you|u
                     r"gel (buraya|yan[ıi]ma)|beni takip)\b", re.I)
 _DUELLO = re.compile(r'\b(duel|duels|duello|1v1|1 v 1|1vs1|fight me|pvp me|come fight|who wants to fight|kapışalım|kapisalim|'
                      r'kapış|dövüşelim|dovusalim|vs at)\b', re.I)
+_KAPI = re.compile(r"\b(lf\d?m?|looking for|need|needs|fill\w*|join|who|anyone|inv\w*|come|lazım|lazim|gelen|kim|var m[ıi])\b.*"
+                   r"\b(hades|(?-i:LoW|LOW)|legends? of war|qz|quarantine|gates?|kap[ıi]\w*|zeta|kappa|lambda|kuiper|kronos|delta|epsilon)\b|"
+                   r"\b(hades|(?-i:LoW|LOW)|qz|kap[ıi]\w*)\s+(i[çc]in|fill\w*|lf\w*)\b", re.I)
 _GOREV = re.compile(r'\b(quest|quests|mission|missions|g[öo]rev\w*)\b', re.I)
 # yardım isteğinde düşman oyuncu işareti: yoksa ve görevden söz ediliyorsa görev yardımıdır (gruplanma), PvP yardımı değil
 _PVP = re.compile(r'\b(attack\w*|camp\w*|enem\w*|gank\w*|kill(ing|s)? me|hunting me|pvp|player|players|mmo|eic|vru|'
                   r'sald[ıi]r\w*|vuruyor|kurtar|d[üu][şs]man)\b', re.I)
 _OZEL = re.compile(r'\b(pm me|dm me|msg me|message me|whisper me|private message|private msg|send me (a )?(pm|dm|msg|message)|'
                    r'pm at|[öo]zelden yaz|[öo]zel mesaj|fısılda|fisilda)\b', re.I)
-_HAKARET = re.compile(r'\b(noob|nub|ez|aptal|salak|loser|trash|çöp|cop|bot)\b', re.I)
-_SORU = re.compile(r'\?\s*$|\b(ne|nas[ıi]l|neden|nerede|hangi|kim|what|how|why|where|which|who|when)\b', re.I)
+_HAKARET = re.compile(r'\b(noob|nub|ez|ezik|aptal|salak|gerizekal[ıi]|beceriksiz|loser|trash|çöp|cop|bot)\b', re.I)
+# Türkçe soru sözcükleri ekleriyle ("hangisi", "nerde", "kaçıncı") ve soru eki ("değer mi", "var mı"); önce "en iyi lazer hangisi"
+# soru sayılmıyordu (sohbet denemesi 2026-10-30)
+_SORU = re.compile(r'\?\s*$|\b(ne|neden|niye|nas[ıi]l\w*|nere\w*|nerde\w*|hangi\w*|kim(ler)?|ka[çc](ta|[ıi]nc[ıi]|ar)?|what|how|why|where|which|who|when)\b|'
+                   r'\b(m[ıiuü])(s[ıiuü]n(.z)?|y[ıiuü]m|y[ıiuü]z|d[ıiuü]r)?\b', re.I)
 _TESEKKUR = re.compile(r'\b(sa[gğ]ol|te[sş]ekk|t[sş]k|eyv|thanks|thx|ty)\b', re.I)
-HARITA = re.compile(r'\b([1-5])\s*[-xX/]\s*([1-8]|bl)\b')
+HARITA = re.compile(r'\b([1-5])\s*[-xX/]\s*([1-8]|bl)(?![\d])', re.I)     # Türkçe ek de olur: "2-1e", "2-3'te", "1-4de"
 
 
 def _dil_ifadesi(ad):
@@ -105,12 +114,14 @@ def niyet(metin):
     None; ve geçen harita adı. İsteklerin (grup, klan, arkadaşlık, takip) kararını etkilesim.py verir."""
     m = HARITA.search(metin)
     harita = ('%s-%s' % (m.group(1), m.group(2).upper() if m.group(2).isalpha() else m.group(2))) if m else None
-    if _var(_TAKIP, 'takip', metin):
-        return 'takip', harita                       # "come to 2-3" yardım değil ("gel" yardım kalıbında da var)
+    if _var(_TAKIP, 'takip', metin) or (harita and _GEL.search(metin) and not _var(_YARDIM, 'yardim', metin)):
+        return 'takip', harita                       # "come to 2-3", "2-1e gelsene": yardım değil
     if _var(_OZEL, 'ozel', metin):
         return 'ozel', harita                        # "bana özelden yaz": yanıt fısıltıyla
     if _var(_DUELLO, 'duello', metin):
         return 'duello', harita
+    if _KAPI.search(metin):
+        return 'kapi', harita                        # "need fillers for hades", "lf low", "kapı için adam lazım": kapı dolgusu
     if _var(_YARDIM, 'yardim', metin) and _var(_GOREV, 'gorev', metin) and not _var(_PVP, 'pvp', metin):
         return 'gorev', harita                       # "help me with a quest": grup (grubun öldürdüğü herkesin görevine sayılır)
     for ad, rx in (('yardim', _YARDIM), ('grup', _GRUP), ('klan', _KLAN), ('arkadas', _ARKADAS), ('hakaret', _HAKARET), ('tesekkur', _TESEKKUR), ('selam', _SELAM),

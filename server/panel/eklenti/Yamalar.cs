@@ -25,6 +25,7 @@ public class Eklenti : BasePlugin
         Uygula("rütbe penceresi", () => RutbePenceresi.Uygula(h));
         Uygula("mağaza tutarı", () => MagazaTutari.Uygula(h));
         Uygula("otomatik pilot kaçışı", () => OtopilotKacisi.Uygula(h));
+        Uygula("sohbet moderatörü rengi", () => ModeratorRengi.Uygula(h));
         Uygula("görev metinleri", () => GorevMetinleri.Uygula(h));
         Uygula("görsel dökümü", () =>
         {
@@ -221,5 +222,31 @@ static class OtopilotKacisi
         if (menzil >= 0f)
             __instance.attackRange = menzil;
         menzil = -1f;
+    }
+}
+
+// Sohbet moderatörü rengi (kullanıcı isteği 2026-10-31): sunucunun moderatör botları sohbette "mod" rolüyle ve [CM] etiketiyle yazar
+// (server/bot/moderasyon.py). İstemcinin UIChatSystem.BuildMessageText'i rengi role göre seçer: admin #FF0000 (etiketi gizler, kanal
+// yerine "Yönetici" yazar), system gri, chatter firma rengi, öteki roller (mod dahil) #FFFFFF. R1: "mod" rolündeki göndericinin
+// satırı RENK ile çizilir; etiket ve kanal adı olduğu gibi kalır ("[Global] [CM] Ad").
+static class ModeratorRengi
+{
+    const string ROL = "mod", RENK = "#FFC83D", BEYAZ = "<color=#FFFFFF>";
+
+    internal static void Uygula(Harmony h)
+    {
+        MethodBase hedef = AccessTools.Method(typeof(UIChatSystem), nameof(UIChatSystem.BuildMessageText));
+        Eklenti.Bul(hedef);
+        h.Patch(hedef, postfix: new HarmonyMethod(typeof(ModeratorRengi), nameof(Son)));
+    }
+
+    static void Son(ChatMessageVo message, ref string __result)
+    {
+        var u = message?.User;
+        if (u == null || u.Usertype != ROL || __result == null)
+            return;
+        int i = __result.IndexOf(BEYAZ, StringComparison.Ordinal);
+        if (i >= 0)
+            __result = __result.Substring(0, i) + "<color=" + RENK + ">" + __result.Substring(i + BEYAZ.Length);
     }
 }

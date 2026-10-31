@@ -382,3 +382,6 @@ body.ke-mesgul .ke-ana { opacity: .75; transition: opacity .2s .15s; pointer-eve
   .ke-katalog { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
   .ke-kat-liste { grid-auto-flow: column; overflow-x: auto; }
 }
+/* İstatistik sekmesi (keIstatistik) */
+.ke-istat { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 24px; margin-bottom: 10px; }
+.ke-istat .row { gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--line, rgba(255,255,255,.06)); }

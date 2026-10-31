@@ -816,5 +816,29 @@
   "hasar_carpani": 1.0
  },
  "kurulunca_deflector_dk": 1440,
- "_forum_127469": "Resmî Türk forumu 127469 (KSİ SSS): acil tamir 20 dakika x 7.500 dp/s; yeni kurulan istasyonda deflektör açık ve 1440 dakika yüklü (kurulunca_kapali_dk artık kullanılmıyor)"
+ "_forum_127469": "Resmî Türk forumu 127469 (KSİ SSS): acil tamir 20 dakika x 7.500 dp/s; yeni kurulan istasyonda deflektör açık ve 1440 dakika yüklü (kurulunca_kapali_dk artık kullanılmıyor)",
+ "bot_klan": {
+  "_uyarlama": "Bot klanlarının istasyonu (bot/klan_us.py): modüller klan kasasından krediyle alınır (oyunda Assembly'de kaynakla üretilir; fiyatlar uyarlama: tam takım yaklaşık 10 M, kurulmuş istasyonun seviye yükseltmesi fiyat x seviye_carpani x yeni seviye, L15'e dek modül başına ~30 M: tam seviye istasyon nadir). Yıkılan modülün onarımı fiyatın onarim_orani'ı; yükseltme klan başına yukseltme_sn'de bir; kurma süresi kurma_dk aralığında (oyuncunun 5-60 dakikası içinde); saldırıda savunma çağrısı savunma_sn'de bir.",
+  "fiyat": {
+   "module_hulm-1": 1600000,
+   "module_defm-1": 1400000,
+   "module_repm-1": 1000000,
+   "module_ltm-lr": 800000,
+   "module_ltm-mr": 800000,
+   "module_ltm-hr": 800000,
+   "module_ram-la": 900000,
+   "module_ram-ma": 900000,
+   "module_honm-1": 1100000,
+   "module_xpm-1": 1100000,
+   "module_dmgm-1": 1100000
+  },
+  "seviye_carpani": 0.35,
+  "onarim_orani": 0.4,
+  "yukseltme_sn": 3600,
+  "kurma_dk": [
+   5,
+   30
+  ],
+  "savunma_sn": 1800
+ }
 }

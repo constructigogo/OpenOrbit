@@ -439,6 +439,22 @@ def siralama(kim=None):
     return sorted(lst, key=lambda kp: (-kp[1], kp[0]['id']))
 
 
+
+AYRILMIS_ETIKETLER = ('cm',)          # sohbet moderatörlerinin etiketi [CM] (bot/moderasyon.py): hiçbir klan alamaz
+
+
+def ayrilmis(tag):
+    """Ayrılmış etiket mi: büyük/küçük harf ve süslü benzerleri dahil ("Cm", "ϹΜ", "ᴄᴍ")."""
+    import unicodedata
+    from bot.ad_uslup import sade
+    t = ''.join(c for c in unicodedata.normalize('NFKC', str(tag)) if c.isalnum()).lower()
+    return t in AYRILMIS_ETIKETLER or sade(tag) in AYRILMIS_ETIKETLER or _benzer(t) in AYRILMIS_ETIKETLER
+
+
+def _benzer(t):
+    """Latin harfe benzeyen Yunan/Kiril harfleri (Ϲ Μ С М ...)."""
+    return t.translate(str.maketrans({'ϲ': 'c', 'σ': 'c', 'ς': 'c', 'с': 'c', 'ᴄ': 'c', 'μ': 'm', 'м': 'm', 'ᴍ': 'm'}))
+
 class Klan:
     def __init__(self, profil, log=print):
         self.p, self.log = profil, log
@@ -686,7 +702,7 @@ class Klan:
 
     @staticmethod
     def valid_tag(tag):
-        return 1 <= len(tag) <= 4 and all(c.isalnum() or c in '-_.!?*+' for c in tag)
+        return 1 <= len(tag) <= 4 and all(c.isalnum() or c in '-_.!?*+' for c in tag) and not ayrilmis(tag)
 
     @staticmethod
     def taken(name, tag, skip=None):
@@ -1351,7 +1367,12 @@ class Klan:
             if form == 3 and sum(d['tur'] == 3 and d['kimden'] == k['id'] for d in k['diplomasi']) >= AZAMI_SAVAS:
                 return fail('err_diplo_default')
             if form == 3 and k['kasa'] < SAVAS_BEDELI:
-                return fail('err_clan_no_money')
+                # bedel klan kasasından (istemcinin metni de "klanının yeterince kredisi yok"); oyuncu kendi kredisini sanıyordu
+                # (oyuncu bildirimi 2026-10-30): kasadaki ve gereken tutar ileti ardında
+                from magaza import stack_ek
+                return [('ClanNewDiplomacyCommand', {'errorMsg': stack_ek('err_clan_no_money', ' ({:,} / {:,} Credits)'.format(
+                                                                          int(k['kasa']), SAVAS_BEDELI)),
+                                                     'success': False, 'clanDiploReqInfoCommand': None})]
             did = _no()
             if form == 3:                                   # savaş hemen: bedel kasadan, 10 gün
                 k['kasa'] -= SAVAS_BEDELI

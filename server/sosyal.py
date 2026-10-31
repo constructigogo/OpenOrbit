@@ -98,8 +98,10 @@ class Sosyal:
 
     # -------------------------------------------------------- sohbet
     def chat_user(self):
+        import yonetici_modu as YM
         pl = self.p.d['pilot']
-        return {'userId': pl.get('userName', ''), 'id': str(self.p.user_id), 'globalId': str(self.p.user_id), 'role': 'chatter',
+        return {'userId': pl.get('userName', ''), 'id': str(self.p.user_id), 'globalId': str(self.p.user_id),
+                'role': YM.sohbet_rolu(self.p),                      # yönetici modu: "admin" (istemcinin yönetici rengi)
                 'clanTag': pl.get('clanTag', ''), 'factionId': str(pl.get('factionId', 0)), 'instanceId': '1'}
 
     def rooms(self):

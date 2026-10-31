@@ -244,6 +244,7 @@ class Sohbet:
         self.iz = None                    # canlı test izi: iz(yön, tür, yük) (game.py --kontrol bağlar)
         self.bot_kanca = None             # (yol, mesaj, gönderen) -> None: botlar oda mesajlarını okur (bot/toplum.kaydol)
         self.bot_fisilti = None           # (alıcının adı, mesaj, gönderen) -> alıcı bot muydu
+        self.engel_kanca = None           # (gönderen, oda yolu, dil) -> bildirim ya da None: susturulan oyuncu (bot/moderasyon.py)
         self.odalar = {}                  # özel oda adı ('private_<ad>') -> {'kurucu': kimlik, 'uyeler': set, 'davetli': set}
         self.rapor_yolu = RAPOR_YOLU
 
@@ -451,6 +452,12 @@ class Sohbet:
         if len(c.gecmis) > SEL_SINIRI:
             self.log('sohbet: sel, atıldı %s: %s' % (c.user.get('userId'), msg[:60]))
             return
+        if self.engel_kanca is not None:
+            bildirim = self.engel_kanca(dict(c.user), path, c.dil)
+            if bildirim:
+                self.log('sohbet: susturulu, atıldı %s: %s' % (c.user.get('userId'), msg[:60]))
+                self.duyuru(bildirim, path.split('/')[2], kim=c.user.get('id'))
+                return
         self.log('sohbet: %s: %s' % (path, msg))
         self.broadcast(path, msg, c.ep, c.user)
         if self.bot_kanca is not None:

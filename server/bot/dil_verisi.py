@@ -8,6 +8,10 @@ Bir dil dosyası:
              {lider} {kim} {esya}.
   kisaltma   [[sözcük, kısaltma]] (botun üslubu), ascii {harf: yerine} ve ascii_oran (oyuncuların aksan düşürmesi)
   niyet      niyet -> sözcükler: oyuncunun o dildeki mesajının niyeti (konusma.niyet; tr/en'inkiler konusma'daki ifadelerde)
+  tepki      kutlama, veda, donus, yoklama -> ifadeler ve oyun -> oyun sözcükleri: Gelişmiş kipte mesajın türü (llm.mesaj_turu;
+             en'inkiler llm.TURLER)
+  zararli    kendine zarar, ölüm dileği, ağır hakaret ifadeleri (düzenli ifade olabilir): model satırı bunlardan biriyse susar
+             (llm.zararli; en'inkiler llm._ZARARLI). Aksansız yazılmış biçimleri de tutar (karşılaştırma aksanları düşürür).
 """
 import json, os
 

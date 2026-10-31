@@ -50,6 +50,9 @@ class BotGemi(DN.NPC):
         self.niyet_t = 0.0                      # PvP başlatma kararının son anı
         self.dogus = now or time.time()
         self.next_think = self.dogus + random.uniform(0.3, 1.5)
+        self.kalkis = random.triangular(1.5, 18, 4)     # doğunca yola hemen çıkmaz: herkes aynı anda tek sıra kalkmasın
+        self.rota = None                        # (hedef, [ara noktalar]): uzun yolda eğri rota (_rota)
+        self.yanas = {}                         # portal -> yanaşma noktası (portalın çevresinde, bota özgü)
         self.next_shot = 0.0
         d = bot.deger()
         self.d = {}
@@ -82,7 +85,8 @@ def gorunum(w, n):
     T.profil(b)
     pl = b.profil.d['pilot']
     return ('ShipCreateCommand', dict(
-        userId=n.id, typeId=GR.tip(b), expansionStage=n.d['genisleme'], clanTag=pl.get('clanTag', ''), userName=b.ad, x=int(x), y=int(y),
+        userId=n.id, typeId=GR.tip(b), expansionStage=n.d['genisleme'], userName=b.ad, x=int(x), y=int(y),
+        clanTag='CM' if b.__dict__.get('moderator') else pl.get('clanTag', ''),        # sohbet moderatörü (bot/moderasyon.py)
         factionId=b.firma, clanId=int(pl.get('clanId') or 0), dailyRank=pl.get('dailyRank', 1), warnBox=False,
         clanDiplomacy=DN.mod('ClanRelationModule', type=iliski(w, b)), galaxyGatesDone=GR.halkalar(b), useSystemFont=False, npc=False,
         cloaked=False, motherShipId=0, positionIndex=0, designSet='', modifier=[],
@@ -113,10 +117,11 @@ def tick(w, now):
         m = int(w.map_id)
     except ValueError:
         return
-    if m not in K.HARITALAR or getattr(w, 'kapi', None) is not None and getattr(w.kapi, 'key', None):
-        return
+    if kapi_dunyasi(w):
+        return kapi_tick(w, now, y)
     with y.lock:
-        istenen = {b.uid: b for b in y.haritada.get(m, ()) if b.cevrimici and b.olu_bitis <= now}
+        istenen = {b.uid: b for b in y.haritada.get(m, ()) if b.cevrimici and b.olu_bitis <= now
+                   and now - b.__dict__.get('kapida', 0) > 5}           # oyuncuyla kapıdaki bot başka haritada görünmez
     var = {uid: n for uid, n in w.npcs.items() if n.bot is not None}
     msgs = []
     for uid, n in var.items():
@@ -151,12 +156,61 @@ def tick(w, now):
         w.send(msgs)
 
 
+def kapi_dunyasi(w):
+    """Kapı ya da örnek harita (Galaksi Kapısı, Hades, LoW, QZ, etkinlik kapıları): olağan harita değil."""
+    try:
+        m = int(w.map_id)
+    except ValueError:
+        return True
+    return m not in K.HARITALAR or getattr(w, 'kapi', None) is not None and bool(getattr(w.kapi, 'key', None)) \
+        or getattr(w, 'low', None) is not None
+
+
+def kapi_tick(w, now, y):
+    """Kapı dolgusu (oyuncu isteği 2026-10-31): kahramanın grubundaki botlar kapıya onunla girer (kapının yanında doğar), grubun
+    hedefini (Grup) izleyip uzaylılara ateş eder; kendi kapısında ya da modunda olan, ölü ya da çevrimdışı bot gelmez. İzin
+    'kapi_dolgu'; kapalıysa kapıda bot yok (eskisi gibi)."""
+    import grup as GR
+    istenen = {}
+    if y.izin('kapi_dolgu') and not w.hero_dead:
+        g = GR.grubu(w.hid)
+        with y.lock:
+            for b in y.botlar:
+                if (g is not None and b.uid in g.uyeler and b.cevrimici and b.olu_bitis <= now
+                        and (b.hedef is None or b.hedef.ad not in ('kapi', 'mod', 'duello'))):
+                    istenen[b.uid] = b
+    msgs = []
+    for uid, n in [(u, n) for u, n in w.npcs.items() if n.bot is not None]:
+        if uid not in istenen:
+            msgs += kaldir(w, n)
+    hx, hy = w.hero_pos(now)
+    for uid, b in istenen.items():
+        b.kapida = now
+        if b.hedef is None or b.hedef.ad != 'grup':
+            from . import beyin as BN
+            BN.zorla(b, 'grup', pay=2.0, sure=3600, now=now)
+        if b.govde is not None and (not b.govde.alive or w.npcs.get(b.govde.id) is not b.govde):
+            b.govde = None
+        if uid in w.npcs or b.govde is not None:
+            continue
+        a = random.uniform(0, 2 * math.pi)
+        x, yy = int(hx + math.cos(a) * random.uniform(150, 400)), int(hy + math.sin(a) * random.uniform(150, 400))
+        x, yy = max(300, min(w.map_w - 300, x)), max(300, min(w.map_h - 300, yy))
+        n = BotGemi(b, x, yy, now)
+        w.npcs[n.id] = n
+        b.govde = n
+        b.olay('kapiya_girdi', kapi=str(getattr(getattr(w, 'kapi', None), 'key', '') or w.map_id))
+    if msgs:
+        w.send(msgs)
+
+
 def dogus_yeri(w, b):
     gelis = getattr(b, 'gelis', None)
     b.gelis = None
     if gelis is not None:
         gx, gy = H.arrival(gelis, int(w.map_id), b.firma)
-        return int(gx + random.uniform(-150, 150)), int(gy + random.uniform(-150, 150))
+        a, r = random.uniform(0, 2 * math.pi), random.uniform(80, 280)      # portalın çevresinde dağınık (üst üste değil)
+        return int(gx + math.cos(a) * r), int(gy + math.sin(a) * r)
     x, y = b.k.get('x') or 0, b.k.get('y') or 0
     if 300 < x < w.map_w - 300 and 300 < y < w.map_h - 300:
         return int(x), int(y)
@@ -228,6 +282,41 @@ def _git(w, n, x, y, now, esik=80):
     w.send([('MoveCommand', dict(userId=n.id, x=int(x), y=int(y), timeToTarget=ms))])
 
 
+def _ara_noktalar(w, n, sx, sy, x, y):
+    """Uzun yolun ara noktaları: rotaya dik, hafif bir yay (sinüs) üstünde; yönü ve genişliği bota ve yolculuğa göre tohumlu (her
+    botun yolu başka, aynı yolculukta değişmez). Kısa yol doğrudan."""
+    d = math.hypot(x - sx, y - sy)
+    k = 0 if d < 1500 else 1 if d < 3500 else 2 if d < 7000 else 3
+    if not k:
+        return []
+    r = random.Random('%s|%d|%d|%d' % (n.bot.ad, int(n.dogus), int(x) // 50, int(y) // 50))
+    ux, uy = (x - sx) / d, (y - sy) / d
+    genislik = r.choice((-1, 1)) * d * r.uniform(0.05, 0.17)
+    out = []
+    for i in range(1, k + 1):
+        t = i / (k + 1.0) + r.uniform(-0.04, 0.04)
+        s = genislik * math.sin(math.pi * t) + d * r.uniform(-0.025, 0.025)
+        out.append((max(250, min(w.map_w - 250, sx + ux * d * t - uy * s)), max(250, min(w.map_h - 250, sy + uy * d * t + ux * s))))
+    return out
+
+
+def _rota(w, n, x, y, now, esik=150):
+    """Uzun yolculuk (portal, istasyon, devriye): düz çizgi yerine ara noktalı hafif bir yay; ara noktaya varmadan sıradakine döner
+    (durup kalkmaz). Oyuncu bildirimi 2026-10-31: haritaya girince botlar tek sıra, dümdüz ve aynı yoldan portala uçuyordu."""
+    nx, ny = n.mover.pos(now)
+    r = n.rota
+    if r is None or math.hypot(r[0][0] - x, r[0][1] - y) > esik:
+        r = n.rota = ((x, y), _ara_noktalar(w, n, nx, ny, x, y))
+    ara = r[1]
+    erken = max(250, n.speed() * 1.6)                     # bir düşünme aralığında alınan yol: köşede beklemesin
+    kalan = math.hypot(x - nx, y - ny)
+    while ara and (math.hypot(ara[0][0] - nx, ara[0][1] - ny) < erken
+                   or math.hypot(x - ara[0][0], y - ara[0][1]) > kalan):     # geride kaldı (araya savaş girdi): geri dönmez
+        ara.pop(0)
+    hx, hy = ara[0] if ara else (x, y)
+    _git(w, n, hx, hy, now, esik=60)
+
+
 def _dur(w, n, now):
     if n.mover.t1 > now:
         x, y = n.mover.pos(now)
@@ -261,7 +350,9 @@ def saldiri_hatasi(w, n, now=None):
     hx, hy = w.hero_pos(now)
     nx, ny = n.mover.pos(now)
     if _barista(w, hx, hy) or _barista(w, nx, ny):
-        return [legacy('0|A|STM|msg_grp_attack_impossible')]
+        # güvenli bölge: "Saldırıya-Korumalı-Bölge" (istemcinin peacearea'sı; "Grup üyelerine saldırılamaz" yazıyordu, oyuncu
+        # bildirimi 2026-10-30)
+        return [legacy('0|A|STM|peacearea')]
     pl = w.p.d['pilot']
     klan = int(pl.get('clanId') or 0)
     if klan and klan == int(T.profil(b).d['pilot'].get('clanId') or 0):
@@ -397,7 +488,13 @@ def npc_oldur(w, m, n, now):
     except Exception:
         pass
     w.send(msgs)
-    npc_odulu(n.bot, m)
+    # grup (grup.py): bot kahramanla gruptaysa ödül haritadaki kahramanla ve gruptaki botlarla paylaşılır, kahramanın görevine sayılır
+    pay = [w] if w.grup_uyesi(n.id) and w.running and not w.hero_dead and not w.jumping else []
+    botlar = [n.bot] + ([o for o in grup_botlari(w) if o is not n.bot] if pay else [])
+    for b in botlar:
+        npc_odulu(b, m, len(pay) + len(botlar))
+    for h in pay:
+        h.npc_reward(m, x, y, len(pay) + len(botlar), own=False)
     kargo_birak(w, m, n.id, x, y)
     if patron_mu(m):
         n.bot.olay('patron_oldurdum', ad=m.d.get('ad', ''))
@@ -511,7 +608,7 @@ def ates(w, n, now):
         _yayin(w, [run], n.id, hedef)
         bot_hasar(w, m, dmg, n.id, now, katil_bot=n.bot)
         return
-    npc_vur(w, n, m, dmg, now, 1, [run])
+    npc_vur(w, n, m, dmg, now, 1, [run], ammo=cep)
 
 
 def salvo(w, n, hedef, m, o, now):
@@ -555,24 +652,53 @@ def salvo(w, n, hedef, m, o, now):
                     if x.bot is not None:
                         bot_hasar(w, x, dmg, n.id, t2, katil_bot=b)
                     else:
-                        npc_vur(w, n, x, dmg, t2, 0)
+                        npc_vur(w, n, x, dmg, t2, 0, ammo=fr)
             w.later(DN.SAVAS['roket_ucus_sn'], vur)
         w.later(i * 0.5, at)
     b.ist('salvo')
 
 
-def npc_vur(w, n, m, dmg, now, atype, once=(), kalkan=False):
+def oyuncu_yakin(w, m, now, menzil=1500):
+    """Oyuncu uzaylının yakınında mı: bot vuruşunun tetiklediği oyuncuya yönelik etkiler (EMP, ters kontrol) yalnız o zaman."""
+    if w.hero_dead or w.jumping:
+        return False
+    hx, hy = w.hero_pos(now)
+    mx, my = m.mover.pos(now)
+    return math.hypot(hx - mx, hy - my) <= menzil
+
+
+def npc_vur(w, n, m, dmg, now, atype, once=(), kalkan=False, ammo=None):
     """Botun lazeri (atype 1) ya da roketi (0) uzaylıya: kalkan emer, gövde; ölürse npc_oldur, yoksa uzaylı bota döner.
-    kalkan: yalnız kalkana (Chain Impulse)."""
+    kalkan: yalnız kalkana (Chain Impulse). Uzaylının mekanikleri oyuncunun vuruşundaki gibi (dunya.hit_npc): yardımcıları yaşarken
+    dokunulmazlık, yalnız belirli cephane, hasar azaltma, gizli komandonun görünmesi, vurulunca çağırma (yardımcılar botun çevresinde
+    doğar, bota saldırır), can tabanı, can eşiğinde çağırma ve kaybolma (uzayli.on_hit; oyuncuya yönelik EMP ve ters kontrol yalnız
+    oyuncu yakınsa). Önceden bot vuruşu bunları atlıyordu: Cubikon bota Protegit çağırmıyordu (kullanıcı bildirimi 2026-10-30)."""
     if not m.alive:
         return
-    if (m.invulnerable and m.invulnerable()) or m.etki.invulnerable(now):
+    only = m.d.get('sadece_cephane')
+    if (m.invulnerable and m.invulnerable()) or m.etki.invulnerable(now) or w.guarded(m) or (only and ammo not in only):
         dmg = 0
+    red = getattr(m, 'hasar_azaltma', None)
+    if red:
+        dmg = int(dmg * max(0.0, 1 - red()))
+    if getattr(m, 'gizli', False):                       # gizli komando vurulunca görünür (sizma.py)
+        m.gizli = False
+        w.send([legacy('0|n|INV|%d|0' % m.id)])
+    w.alien.attacked(m, n.id, now)
+    w.npc_summon(m, now, vuran=n)
     absorb = 1.0 if kalkan else m.d.get('kalkan_emme', DN.SAVAS['npc_kalkan_emme'])
     to_shield = min(int(m.shield), int(round(dmg * absorb)))
     m.shield -= to_shield
     m.hp = max(0, m.hp - (dmg - to_shield))
+    floor = getattr(m, 'can_tabani', 0)                  # Guardian 1 HP'de "düşer" (evreler)
+    if floor and m.hp < floor:
+        m.hp = floor
+        if getattr(m, 'tabanda', None):
+            m.tabanda(m)
     m.last_hit = now
+    w.alien.on_hit(m, dmg, n.id, now, oyuncuya=oyuncu_yakin(w, m, now))
+    if not m.alive or m.id not in w.npcs:                 # kayboldu ya da kalktı (uzayli.on_hit)
+        return
     DN.etiketle(m, ('h', w.hid) if yardimci(w, n, m, now) else ('b', n.id), now)
     hit = ('AttackHitCommand', dict(attackType=DN.attack_type(atype), attackerId=n.id, victimId=m.id, victimHitpoints=int(m.hp),
                                     victimShield=int(m.shield), victimNanoHull=0, damage=dmg, skilled=False, strike=False, cannonType=0))
@@ -622,25 +748,31 @@ def roket(w, n, hedef, m, o, now):
         if x.bot is not None:
             bot_hasar(w, x, dmg, n.id, t, katil_bot=b)
         else:
-            npc_vur(w, n, x, dmg, t, 0)
+            npc_vur(w, n, x, dmg, t, 0, ammo=rk)
     w.later(DN.SAVAS['roket_ucus_sn'], vur)
 
 
-def npc_odulu(b, m):
-    """Uzaylının ödülü bota (paketin hızı, X-1 kesintisi), ek ganimeti ve görev ilerlemesi."""
+def npc_odulu(b, m, pay=1):
+    """Uzaylının ödülü bota (paketin hızı, X-1 kesintisi), ek ganimeti ve görev ilerlemesi. pay: grupta paydaş sayısı (ödül
+    bölünür, ganimet ve görev tam; dunya.npc_reward gibi)."""
     from . import ganimet as GB, etkinlik as ET
     GB.ek_ganimet(b, m.tip, 1)
     ET.dusme(b, b.harita, m.tip)                         # etkinlik düşmeleri (Candy Corn …)
     y_ = YN.AKTIF
     hiz = y_.hiz(b) if y_ is not None else 1.0
     o = m.d.get('odul', {})
-    x1 = S.x1_kesinti(b)                                 # oyuncudaki gibi dört ödüle de
+    x1 = S.x1_kesinti(b) / pay                           # oyuncudaki gibi dört ödüle de
     b.odul('npc', hiz, ep=o.get('ep', 0) * x1, kredi=o.get('kredi', 0) * x1, uridyum=o.get('uridyum', 0) * x1,
            onur=o.get('onur', 0) * x1)
     b.ist('npc')
     if y_ is not None:
         with y_.lock:
             y_.npc_oldurdu(b, m.tip, 1)
+
+
+def grup_botlari(w):
+    """Kahramanın grubundaki, bu haritada yaşayan botlar (uzaylı ödülünün paydaşları; grup.py)."""
+    return [m.bot for m in list(w.npcs.values()) if m.bot is not None and m.alive and w.grup_uyesi(m.id)]
 
 
 def kargo_birak(w, m, uid, x, y):
@@ -687,6 +819,10 @@ def kutusu_calindi(mal, ad):
 def oyuncuya_saldirabilir(w, n, o, now):
     if o.hero_dead or o.jumping or o.gizli(now) or not o.running:
         return False
+    import yonetici_modu as YM
+    from . import yonetici_uyari as YU
+    if YM.mi(profil=o.p) or YM.izleyici(o.p) or YU.etkin(n.bot, 'pvp', now):
+        return False                                     # yöneticiye saldırılmaz (wiki Administrator: "should not be shot at"); PvP uyarısı
     if now < o.invuln_until or o.invulnerable or o.hero_etki.invulnerable(now):
         return False
     hx, hy = o.hero_pos(now)
@@ -698,7 +834,8 @@ def oyuncuya_saldirabilir(w, n, o, now):
 
 
 def bota_saldirabilir(w, n, m, now):
-    if not m.alive or m.bot.firma == n.bot.firma:
+    from . import yonetici_uyari as YU
+    if not m.alive or m.bot.firma == n.bot.firma or YU.etkin(n.bot, 'pvp', now):
         return False
     if (n.bot.k.get('klan') and n.bot.k.get('klan') == m.bot.k.get('klan')) or T.klan_iliskisi(n.bot, m.bot) in (1, 2):
         return False
@@ -721,6 +858,13 @@ def npc_bota(w, m, now):
     dist = math.hypot(tx - mx, ty - my)
     if dist > 2500:
         m.bot_hedef = None
+        return False
+    if w.in_peace(tx, ty) and t.id not in m.attackers:
+        # güvenli bölge: oyuncunun kuralı (dunya.npc_retaliating), yalnız botun vurduğu uzaylı peşinden girer; çağrılan yardımcılar
+        # bölgeye dalıp ateş ediyordu
+        m.bot_hedef = None
+        w.alien_ceasefire(m)
+        w.stop_npc_motion(m, now)
         return False
     if now >= m.next_think:
         m.next_think = now + 1.0
@@ -770,10 +914,11 @@ def dusun(w, n, now):
     if AK.savas(w, n, now, d, oran, saldiranlar):         # Insta-Shield, Backup Shields, Battle Repair, Smart Bomb, Energy Leech
         oran = (n.hp + n.shield) / max(1, d['can'] + d['kalkan'])
     # 1) tehlike: canı azaldı ve vuruluyor -> kaç
-    if saldiranlar and oran < 0.18 + 0.32 * (1 - b.o('risk')):
+    kapida = kapi_dunyasi(w)
+    if saldiranlar and oran < 0.18 + 0.32 * (1 - b.o('risk')) and not kapida:
         return kac(w, n, now)
     # 2) portal yolunda
-    if b.yolda and not saldiranlar:
+    if b.yolda and not saldiranlar and not kapida:
         return portala(w, n, now)
     # 2b) hasarlı ve kimse vurmuyor: durup toparlanır
     if not saldiranlar and toparlan(w, n, now, d):
@@ -815,7 +960,15 @@ def _ad(w, uid):
     if o is not None:
         return o.p.d['pilot'].get('userName', '')
     m = w.npcs.get(uid)
-    return m.d.get('ad', '') if m is not None else ''
+    if m is not None:
+        return m.bot.ad if m.bot is not None else m.d.get('ad', '')
+    # haritada değil (ayrılmış ya da ölmüş bot, oyuncunun P.E.T.'i): önceden "" dönüyor, botlar adsız birinden "hakaret" biriktiriyordu
+    b = _bot(uid)
+    if b is not None:
+        return b.ad
+    if getattr(w, 'pet', None) is not None and w.pet.owned and w.pet.pid == uid:      # P.E.T.'i yoksa pid okunamaz (canlı test)
+        return w.p.d['pilot'].get('userName', '')
+    return ''
 
 
 def _guc(w, uid):
@@ -959,9 +1112,21 @@ def portala(w, n, now, acil=False):
         b.yolda = None
         return
     nx, ny = n.mover.pos(now)
+    if not acil and now < n.dogus + n.kalkis:             # yeni geldi: biraz oyalanır, sonra kendi vaktinde yola çıkar
+        if n.hareket is None:
+            a, r = random.uniform(0, 2 * math.pi), random.uniform(100, 350)
+            _git(w, n, nx + math.cos(a) * r, ny + math.sin(a) * r, now)
+        return
+    p = n.yanas.get(g['hedef'])
+    if p is None:                                         # portalın çevresinde kendi yanaşma noktası (hep aynı noktaya değil)
+        a, r = random.uniform(0, 2 * math.pi), random.uniform(30, 140)
+        p = n.yanas[g['hedef']] = (g['x'] + math.cos(a) * r, g['y'] + math.sin(a) * r)
     if math.hypot(g['x'] - nx, g['y'] - ny) > 180:
         n.portal_t = 0.0
-        _git(w, n, g['x'] + random.uniform(-60, 60), g['y'] + random.uniform(-60, 60), now)
+        if acil:
+            _git(w, n, p[0], p[1], now)                   # kaçarken dosdoğru
+        else:
+            _rota(w, n, p[0], p[1], now)
         return
     if not n.portal_t:
         n.portal_t = now + ATLAMA_SN * (0.8 if acil else random.uniform(1.0, 2.5))
@@ -1044,7 +1209,7 @@ def avlan(w, n, now):
         a = random.uniform(0, 2 * math.pi)
         r = random.uniform(2500, 6000)
         dv = n.devriye = (max(600, min(w.map_w - 600, nx + math.cos(a) * r)), max(600, min(w.map_h - 600, ny + math.sin(a) * r)))
-    _git(w, n, dv[0], dv[1], now, esik=400)
+    _rota(w, n, dv[0], dv[1], now, esik=400)
 
 
 def cikisa_git(w, n, now):
@@ -1059,7 +1224,11 @@ def cikisa_git(w, n, now):
         g = min(H.gates(w.map_id, b.firma) or [{'x': nx, 'y': ny}], key=lambda g: math.hypot(g['x'] - nx, g['y'] - ny))
         hx, hy = g['x'], g['y']
     if math.hypot(hx - nx, hy - ny) > 250:
-        _git(w, n, hx + random.uniform(-120, 120), hy + random.uniform(-120, 120), now, esik=150)
+        p = n.yanas.get('cikis')
+        if p is None or math.hypot(p[0] - hx, p[1] - hy) > 200:
+            a, r = random.uniform(0, 2 * math.pi), random.uniform(20, 140)
+            p = n.yanas['cikis'] = (hx + math.cos(a) * r, hy + math.sin(a) * r)
+        _rota(w, n, p[0], p[1], now)
     else:
         b.cikis_hazir = True
 
@@ -1192,9 +1361,9 @@ def kutu_topla(w, n, now):
         if tip in DN.CARGO_BOXES and (not b.izin.get('kargo', True) or b.kargo_dolu() >= 1):
             continue                                   # kargo kapalı ya da dolu
         mal = k.get('mal')
-        if tip in DN.CARGO_BOXES and mal is not None and tuple(mal) != kendi:
-            if h not in karar:                         # başkasının kargosu: kaba bot ara sıra çalar (kutu başına bir karar)
-                karar[h] = b.izin.get('kutu_calma', True) and random.random() < 0.35 * b.o('saldirganlik') * (1 - b.o('yardimseverlik'))
+        if tip in DN.CARGO_BOXES and mal is not None and tuple(mal) != kendi and DN.AY.get('kargo_sahipligi'):
+            if h not in karar:                         # başkasının kargosu: kaba bot ara sıra alır (kutu başına bir karar)
+                karar[h] = calar_mi(w, b, mal)
             if not karar[h]:
                 continue
         dd = math.hypot(k['x'] - nx, k['y'] - ny)
@@ -1237,7 +1406,7 @@ def kutu_topla(w, n, now):
         kalan = {t: int(v) - alinan.get(int(t), 0) for t, v in (k.get('icerik') or {}).items() if int(v) - alinan.get(int(t), 0) > 0}
         b.ist('kargo_kutusu')
         mal = k.get('mal')
-        if mal is not None and tuple(mal) != kendi and not k.get('calindi'):
+        if mal is not None and tuple(mal) != kendi and not k.get('calindi') and DN.AY.get('kargo_sahipligi'):
             k['calindi'] = True
             calma_cezasi(w, b, mal)
         if kalan:
@@ -1255,17 +1424,42 @@ def kutu_topla(w, n, now):
     return True
 
 
-def calma_cezasi(w, b, mal):
-    """Bot başkasının kargo kutusunu çaldı: sahibi aynı firmadansa onur kaybı (oyuncuyla aynı kural: o gün 10, her seferinde x2);
-    sahibi oyuncuysa bot onun gözünde kötüleşmez ama oyuncu kutusunu kaybeder."""
-    fac = w.p.d['pilot'].get('factionId') if mal[0] == 'h' and mal[1] == w.hid else bot_firma(mal[1]) if mal[0] == 'b' else None
-    b.ist('kutu_caldi')
-    if fac != b.firma:
-        return
+def _kutu_firmasi(w, mal):
+    return w.p.d['pilot'].get('factionId') if mal[0] == 'h' and mal[1] == w.hid else bot_firma(mal[1]) if mal[0] == 'b' else None
+
+
+def _calma_bugun(b):
+    """Botun bugünkü kargo alma sayacı {gun, n} (o günün ilk cezası 10, her seferinde iki katı)."""
     d = b.k.setdefault('kargo_calma', {})
     gun = time.strftime('%Y-%m-%d', time.localtime(b.saat()))
     if d.get('gun') != gun:
         d.update(gun=gun, n=0)
+    return d
+
+
+def calar_mi(w, b, mal):
+    """Başkasının kargo kutusunu alır mı. Düşman firmanınki cezasız: kaba bot ara sıra alır. Kendi firmasınınki onur kaybettirir
+    (o gün 10, her seferinde iki katı): gerçek oyuncu bunu bilir, nadiren ve günde en çok bir kez el uzatır. Önceden bot her kutu
+    için zar atıyordu; kalabalık haritada günde onlarca kutu alıp onurunu yüzbinlerce eksiye düşürüyordu (kullanıcı 2026-10-30)."""
+    from . import yonetici_uyari as YU
+    if not b.izin.get('kutu_calma', True) or YU.etkin(b, 'kutu'):
+        return False                                     # yöneticinin kutu uyarısı (bot/yonetici_uyari.py)
+    p = 0.35 * b.o('saldirganlik') * (1 - b.o('yardimseverlik'))
+    if _kutu_firmasi(w, mal) == b.firma:
+        if _calma_bugun(b)['n'] >= 1:
+            return False                               # bugün bir kez ceza yedi: bir daha almaz
+        p *= 0.15
+    return random.random() < p
+
+
+def calma_cezasi(w, b, mal):
+    """Bot başkasının kargo kutusunu aldı: sahibi aynı firmadansa onur kaybı (oyuncuyla aynı kural: o gün 10, her seferinde x2);
+    sahibi oyuncuysa bot onun gözünde kötüleşmez ama oyuncu kutusunu kaybeder."""
+    fac = _kutu_firmasi(w, mal)
+    b.ist('kutu_caldi')
+    if fac != b.firma:
+        return
+    d = _calma_bugun(b)
     b.kazan(onur=-10 * 2 ** min(d['n'], 16))
     d['n'] += 1
     if mal[0] == 'b':

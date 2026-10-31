@@ -87,6 +87,7 @@ INVENTORY = ('inventory', '')
 DEFAULT_SLOTS = {'laser': 15, 'generators': 15, 'extra': 3, 'rocket': 1, 'upgrades': 3, 'QuantumFluidCore': 2, 'cannon': 3,
                  'cannonShield': 6, 'drive': 0, 'lens': 0}
 EQUIP_SLOTS = ('laser', 'generators', 'extra', 'rocket', 'upgrades', 'QuantumFluidCore', 'cannon', 'cannonShield', 'drive', 'lens')
+CLIENT_SLOTS = {'laser': 'lasers', 'generators': 'generators'}       # CLIENT_SHIP_SLOTS'taki adları (capacity)
 MODULE_TYPE_IDS = {'DAMAGE': 1, 'HP': 2, 'SHIELD': 3, 'SPECIAL': 4}       # ShipUpgradeModuleUpdateCommand.moduleTypeIds (uyarlama)
 ORES = {int(t): loot for t, loot in ESYA['cevherler']['turler'].items()}     # OreType -> eşya (hangar envanteri)
 DRONES = ESYA['dronlar']
@@ -148,6 +149,13 @@ def res(key):
     """Yer tutucu değerinin istemcide yerelleştirilmesi (ShowCallBackText.ReturnTipByType: ':' ile bölünür, ikinci parça 'res' ise
     son parça GetTextById ile çevrilir). "res:<anahtar>" çalışmıyordu (canlı test H36: yer tutucu ham kalıyordu)."""
     return ':res:' + key
+
+
+def stack_ek(key, ek):
+    """İstemcinin yerelleştirdiği metin (key) ve ardına dilden bağımsız bir ek (sayılar): ham metin "XXX<ek>", XXX istemcide çevrilir
+    (RES_YERINE'deki gibi type 1). Ekteki yer tutucu (_AMOUNT_) bu yolda doldurulmuyor (canlı test 2026-10-30): değerler ekin içinde."""
+    return mod('BaseStackCommand', type=1, enumBaseKey=0, stringBasekey='XXX' + ek,
+               argsList=[mod('ArgStackCommand', type=0, value2=None, key=ARG_KEYS['XXX'], value=res(key))])
 
 
 def stack_msg(key, **args):
@@ -277,6 +285,7 @@ CLIENT_CLASS = {k: v['sinif'] for k, v in _ist.items() if v.get('sinif') in CLAS
 # canlıda görüldü; öteki dron ekstraları sorunsuz), ticaret dronu gemi yuvasında kalır.
 DRONE_EXTRAS = frozenset(k for k, v in _ist.items() if k.startswith('equipment_extra_') and 'DRONE' in (v.get('takilir') or ())
                          and v.get('tur') != 'MERCHANT_DRONE' and not EK.slot_bonus_of([k]))
+CLIENT_SHIP_SLOTS = {k: v['yuvalar'] for k, v in _ist.items() if v.get('yuvalar')}       # gemi ve tasarım lootId -> istemcinin yuvaları
 del _ist
 
 
@@ -377,8 +386,10 @@ class Magaza:
                 self.extra_entry[x['lootId']] = x
                 tpl = self.catalog.get(x['sablon'])
                 if tpl and x['lootId'] not in self.catalog:
-                    it = dict(copy(tpl), lootId=x['lootId'], price=[float(x['uridyum'])], currency='real', isPaymentItem=0,
-                              cost='{:,} U.'.format(x['uridyum']))
+                    kr = 'kredi' in x                    # kredili satır (Liberator 40.000 C: oyuncu isteği 2026-10-30)
+                    tutar = x['kredi'] if kr else x['uridyum']
+                    it = dict(copy(tpl), lootId=x['lootId'], price=[float(tutar)], currency='virtual' if kr else 'real', isPaymentItem=0,
+                              cost='{:,} {}'.format(tutar, 'C.' if kr else 'U.'))
                     lst['itemList'].append(it)
                     self.catalog[x['lootId']] = it
         # P.E.T. yakıtı PET/GEAR sekmesinde, kısayolun birim fiyatıyla (uridyum: gerçek kayıt 1.000 birim = 250 U, yani birimi 0,25 U),
@@ -460,6 +471,12 @@ class Magaza:
                 return None
             # istemcinin hangar gemi ızgarası mağazanın gemi listesini kullanır; liste gelmeden hangar açılırsa
             # HangerListCallBack NullReferenceException verir (canlı test). Kayıtta mağaza hep önce açılmıştı.
+            with self.p.lock:          # istemcinin göremediği yuvalarda kalanlar (önceden takılmış) envantere: yoksa hangar açılmıyor
+                trimmed = [i for sid in self.p.d['gemiler'] for i in self.trim_slots(sid)]
+                if trimmed:
+                    self.p.sync_ekipman()
+                    self.p.dirty = True
+                    self.log('   hangar: yuvası olmayan %d eşya envantere indi' % len(trimmed))
             pre = []
             if 'ship' not in self.sent_lists and self.shop_list('ship'):
                 pre.append(self.shop_list('ship'))
@@ -560,7 +577,22 @@ class Magaza:
             bonus = EK.slot_bonus_of(extras) if extras is not None else EK.slot_bonus(self.p, sid, cid)
         if slot == 'extra' and self.equip_tpl and 'extra' not in ship:
             return self.equip_tpl.get('extrasSlotsSize1', DEFAULT_SLOTS['extra']) + bonus
-        return ship.get(slot, DEFAULT_SLOTS[slot]) + bonus
+        n = ship.get(slot, DEFAULT_SLOTS[slot]) + bonus
+        if slot in CLIENT_SLOTS:          # istemci bu yuvaları kendi gemi verisinden çizer (HangarShipEquipmentCommand'da sayısı yok):
+            # elle artırılan esyalar.json yuvalarına takılan görünmüyor, ikinci düzenlemede hangar açılmıyordu (oyuncu bildirimi 2026-10-31)
+            y = CLIENT_SHIP_SLOTS.get(self.p.ship_look(sid)) or CLIENT_SHIP_SLOTS.get(self.p.ship(sid)['lootId']) or {}
+            n = min(n, y.get(CLIENT_SLOTS[slot], n))
+        return n
+
+    def trim_slots(self, sid):
+        """Yuvasından fazla takılı lazer, jeneratör ve fırlatıcı envantere (kilit altında) -> inenlerin kimlikleri."""
+        trimmed = []
+        for cfg in self.p.ship(sid)['konfigler'].values():
+            for slot in ('laser', 'generators', 'rocket'):
+                lst = cfg.get(slot, [])
+                trimmed += lst[self.capacity(slot, sid):]
+                del lst[self.capacity(slot, sid):]
+        return trimmed
 
     def inv_item(self, iid, loot, amount, hangar=0, level=None):
         lv = YK.item_level(self.p, iid) if str(iid) in self.p.d['esyalar'] else 0     # yükseltme seviyesi (yukseltme.py)
@@ -2424,12 +2456,7 @@ class Magaza:
             ship = self.p.ship(sid)
             old = self.p.ship_look(sid)
             ship['tasarim'] = None if loot == ship['lootId'] else loot
-            trimmed = []
-            for cfg in ship['konfigler'].values():       # tasarımın yuvası azsa (Tyrannos 15 lazer, *-6 roketsiz) fazlası envantere
-                for slot in ('laser', 'generators', 'rocket'):
-                    lst = cfg.get(slot, [])
-                    trimmed += lst[self.capacity(slot, sid):]
-                    del lst[self.capacity(slot, sid):]
+            trimmed = self.trim_slots(sid)               # tasarımın yuvası azsa (Tyrannos 15 lazer, *-6 roketsiz) fazlası envantere
             active = sid == self.p.d['aktif_gemi']
             if active:
                 self.p.d['gemi']['typeId'] = self.p.ship_look(sid)

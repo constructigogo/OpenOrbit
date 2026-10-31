@@ -178,6 +178,7 @@ const KE_SEKMELER = [
   ['pilot', N('Pilot'), 'user', 'pilotSheet_normal'], ['hangar', N('Hangar'), 'hangar', 'hangar_normal'], ['dronlar', N('Dronlar'), 'drone', null],
   ['pet', 'P.E.T.', 'paw', 'pet_normal'], ['envanter', N('Envanter'), 'box', 'assembly_normal'], ['cephane', N('Cephane'), 'ammo', null],
   ['kaynaklar', N('Kaynaklar'), 'gem', 'refinement_normal'], ['boosterlar', N('Boosterlar'), 'zap', 'booster_normal'], ['bakim', N('Bakım'), 'wrench', 'settings_normal'],
+  ['istatistik', N('İstatistik'), 'star', null],
 ];
 const KE_KAT = { hepsi: N('Hepsi'), gemi: N('Gemiler'), tasarim: N('Gemi tasarımları'), lazer: N('Lazerler'), roketatar: N('Roketatarlar'), jenerator: N('Jeneratörler'),
   ekstra: N('Ekstralar ve CPU'), modul: N('Modüller ve çekirdekler'), agir: N('Ağır silahlar'), dron: N('Dronlar ve formasyonlar'), pet: 'P.E.T.', cephane: N('Cephane'),
@@ -256,7 +257,8 @@ const keSekmeAciklama = id => T({ pilot: N('Ad, firma, seviye, deneyim, onur ve 
   dronlar: N('Dronlar, seviyeleri, yükseltmeleri ve donanımları.'), pet: N('P.E.T.: seviye, yakıt, açık yuvalar ve donanım.'),
   envanter: N('Takılı olmayan eşyalar: tak, seviyesini değiştir ya da sil.'), cephane: N('Lazer cephanesi, roketler, mayınlar ve özel cephane.'),
   kaynaklar: N('Kargodaki cevherler ve toplanabilir kaynaklar.'), boosterlar: N('Süreli bonuslar ve kalan süreleri.'),
-  bakim: N('Onarım, ana istasyon, tuş atamaları ve durum sıfırlama.') }[id]);
+  bakim: N('Onarım, ana istasyon, tuş atamaları ve durum sıfırlama.'),
+  istatistik: N('Rütbe puanının parçaları, öldürülen uzaylılar ve oyuncular, ölümler, kapı süreleri.') }[id]);
 
 function keCubuk(v) {
   const f = v.fark || { sayi: 0 }, ro = v.salt_okunur;
@@ -778,7 +780,35 @@ function keBakim(v) {
 }
 
 const KE_CIZ = { pilot: kePilot, hangar: keHangar, dronlar: keDronlar, pet: kePet, envanter: keEnvanter, cephane: keCephane, kaynaklar: keKaynaklar,
-  boosterlar: keBoosterlar, bakim: keBakim };
+  boosterlar: keBoosterlar, bakim: keBakim, istatistik: keIstatistik };
+
+// İstatistik (salt okunur; kayit_editoru.istatistik): rütbe puanı, öldürmeler, ölümler, kapılar ve süreleri, modların en iyileri
+const KE_PUAN = [['ExperiencePoints', N('Deneyim (EP)')], ['honorPoints', N('Onur')], ['yourLevel', N('Seviye')], ['npcShotPoints', N('Uzaylı puanı')],
+  ['playerShotPoints', N('Oyuncu puanı')], ['missionsCompleted', N('Biten görev')], ['daysSinceRegistration', N('Kayıttan beri gün')],
+  ['DestroyedByEnemies', N('Düşmana yenilme')], ['DestroyedByRadiationZone', N('Radyasyonda ölüm')], ['friendlyPlayersDestroyed', N('Dost öldürme')]];
+const keSure = sn => sn ? (sn >= 3600 ? Math.floor(sn / 3600) + ':' : '') + String(Math.floor(sn / 60) % 60).padStart(sn >= 3600 ? 2 : 1, '0') + ':' + String(sn % 60).padStart(2, '0') : '—';
+function keIstatistik(v) {
+  const s = v.istatistik || {}, p = s.puan || {};
+  const tablo = (basliklar, satirlar, bos) => satirlar.length ? h('div', { class: 'bt-tablo' }, h('table', { class: 'table' },
+    h('thead', null, h('tr', null, basliklar.map(x => h('th', null, x)))), h('tbody', null, satirlar)))
+    : h('div', { class: 'small muted' }, bos);
+  return h('div', { class: 'stack' },
+    keKart(T('Rütbe puanı'), 'star', h('div', { class: 'row wrap', style: { gap: '8px', marginBottom: '8px' } },
+      badge(T('Rütbe puanı') + ': ' + fmtN(p.rankPoints || 0), 'info'), badge(T('Oyun süresi') + ': ' + fmtDur(s.oynama_sn || 0), '')),
+      h('div', { class: 'ke-istat' }, KE_PUAN.map(([k, ad]) => h('div', { class: 'row' }, h('span', { class: 'grow muted' }, T(ad)), h('b', null, fmtN(p[k] || 0)))))),
+    keKart(T('Kapılar'), 'globe', tablo([T('Kapı'), T('Tamamlama'), T('En iyi süre'), T('Son süre')],
+      (s.kapilar || []).map(k => h('tr', null, h('td', null, k.ad), h('td', { class: 'num' }, fmtN(k.tamam)), h('td', { class: 'num' }, keSure(k.en_iyi)), h('td', { class: 'num' }, keSure(k.son)))),
+      T('Henüz tamamlanan kapı yok.')),
+      h('div', { class: 'small muted', style: { marginTop: '6px' } }, T('Süre kapının ilk dalgasına girişten tamamlanmaya; bu sürümden önce biten kapıların süresi yok.'))),
+    keKart(T('Öldürülen uzaylılar'), 'zap', tablo([T('Uzaylı'), T('Sayı'), T('Puan')],
+      (s.npc || []).map(([ad, n, pu]) => h('tr', null, h('td', null, ad), h('td', { class: 'num' }, fmtN(n)), h('td', { class: 'num' }, fmtN(pu * n)))), T('Henüz uzaylı öldürülmedi.'))),
+    keKart(T('Oyuncular ve ölümler'), 'shield', h('div', { class: 'ke-istat' },
+      [[T('Düşmana yenilme'), (s.olum || {}).dusman], [T('Radyasyonda ölüm'), (s.olum || {}).radyasyon], [T('Öteki ölümler'), (s.olum || {}).diger],
+       [T('Dost öldürme'), s.dost], [T('Biten görev'), s.gorev], [T('Eternal Black Light en iyi dalga'), (s.modlar || {}).ebl],
+       [T('Frozen Labyrinth avı'), (s.modlar || {}).labirent], [T('Mimesis en iyi sefer'), (s.modlar || {}).mimesis]]
+        .map(([ad, n]) => h('div', { class: 'row' }, h('span', { class: 'grow muted' }, ad), h('b', null, fmtN(n || 0))))),
+      tablo([T('Gemi'), T('Öldürülen')], (s.oyuncu || []).map(([ad, n]) => h('tr', null, h('td', null, ad), h('td', { class: 'num' }, fmtN(n)))), T('Henüz oyuncu öldürülmedi.'))));
+}
 
 // ---- değişiklik özeti, kaydet, vazgeç
 function keDegisiklikler() {

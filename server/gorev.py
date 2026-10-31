@@ -80,6 +80,8 @@ KABUL = '_kabul'             # havuzlu görevin kabul anı (haftalık GG cevher 
 NOT_ACCEPTABLE, NOT_STARTED, RUNNING, COMPLETED = 0, 1, 2, 3
 REQ_LEVEL, REQ_PRE_QUEST, REQ_EXCLUSIVE_POOL = 0, 3, 6      # QuestRequirementType (6: EXCLUSIVE_POOL_QUEST_RUNNING)
 MARK_GIVER, MARK_TRADE = 1, 2            # işaret kimliği quest_<görev>_<n> (kayıt: dönüşte 1)
+KAMPANYA_SN = 30 * 86400                 # başlangıç kampanyası ("Level N" 502001-502006; yeni sunucu açılışında ~1 ay): profilin
+                                          # 'kampanya'sından (yeni kayıtta seçilince açılış anı) bu süre görünür
 
 
 def mod(name, **f):
@@ -232,6 +234,8 @@ class Gorevler:
         q = QUESTS[qid]
         if q.get('kapali') and str(qid) not in self.st['aktif']:
             return False                                    # Dünya Editörü'nde kapatılan görev (sürüyorsa bitirilebilir)
+        if q.get('kampanya') and str(qid) not in self.st['aktif'] and time.time() >= self.p.d.get('kampanya', -KAMPANYA_SN) + KAMPANYA_SN:
+            return False                                    # başlangıç kampanyası: yeni kayıtta seçildiyse ilk ay (sürüyorsa bitirilebilir)
         if q.get('havuz') and qid not in offer and str(qid) not in self.st['aktif']:
             return False
         if str(qid) not in self.st['aktif'] and ((q.get('etkinlik') and not event_open(q))

@@ -115,6 +115,20 @@ class Yetenekler:
     def attacked(self, n, attacker, now):
         n.attackers[attacker or self.w.hid] = now
 
+    def cagiran_bot(self, n):
+        """Uzaylıyı son vuran bot gemisi (oyuncu onunla savaşmıyorsa): çağırdıkları ona saldırır (dunya.npc_summon vuran)."""
+        uid = n.ab.get('cagiran')
+        t = self.w.npcs.get(uid) if uid is not None else None
+        return t if t is not None and t.alive and t.bot is not None and not n.engaged else None
+
+    def saldirt(self, c, bot, now):
+        """Çağrılan yardımcı hemen saldırır: bot çağırttıysa bota, yoksa oyuncuya."""
+        if bot is not None:
+            c.engaged, c.bot_hedef = False, bot.id
+        else:
+            c.engaged = True
+        c.next_think = now
+
     def enraged(self, n, now):
         """Öfke (Battleray): son sure_sn içinde en az "saldiran" kadar farklı saldıran (oyuncu ve P.E.T. ayrı sayılır)."""
         o = n.davranis.get('ofke')
@@ -127,8 +141,9 @@ class Yetenekler:
         return n.davranis['ofke'].get('ek_cagri', 0) if self.enraged(n, now) else 0
 
     # ------------------------------------------------------------ vuruş
-    def on_hit(self, n, dmg, attacker, now):
-        """Uzaylı vuruldu (hasar uygulandıktan sonra): saldıran, can eşiğinde çağırma, kaybolma."""
+    def on_hit(self, n, dmg, attacker, now, oyuncuya=True):
+        """Uzaylı vuruldu (hasar uygulandıktan sonra): saldıran, can eşiğinde çağırma, kaybolma. oyuncuya: oyuncuya yönelik etkiler (ters
+        kontrol, EMP) uygulanır mı (bot vurduysa yalnız oyuncu yakındaysa: bot/govde.npc_vur)."""
         self.attacked(n, attacker, now)
         n.ab.pop('gizli', None)                                  # Emperor Lordakium bulundu: dolum durur
         for i, c in enumerate(n.davranis.get('can_esiginde_cagir', [])):
@@ -136,18 +151,18 @@ class Yetenekler:
             if key not in n.ab and n.hp <= n.d['hp'] * c['oran']:
                 n.ab[key] = now
                 self.summon(n, c['tur'], c['adet'], now)
-        t = n.davranis.get('ters_kontrol')
+        t = n.davranis.get('ters_kontrol') if oyuncuya else None
         if t and 'ters' not in n.ab and n.hp > 0 and (n.shield <= n.d['kalkan'] * t['kalkan_orani'] if 'kalkan_orani' in t
                                                       else n.hp <= n.d['hp'] * t['can_orani']):
             n.ab['ters'] = now                                   # bir kez
             self.reverse_controls(n, t['sn'])
-        if 'kalkan_bitince_emp' in n.davranis:                   # Obscured Mimesis: kalkanı her bitişinde bir EMP darbesi
+        if 'kalkan_bitince_emp' in n.davranis and oyuncuya:      # Obscured Mimesis: kalkanı her bitişinde bir EMP darbesi
             if n.shield > 0:
                 n.ab.pop('emp_kalkan', None)
             elif 'emp_kalkan' not in n.ab and n.hp > 0:
                 n.ab['emp_kalkan'] = now
                 self.emp(n, now)
-        c = n.davranis.get('kritik_emp')
+        c = n.davranis.get('kritik_emp') if oyuncuya else None
         if c and 'emp_kritik' not in n.ab and 0 < n.hp <= n.d['hp'] * c['can_orani']:
             n.ab['emp_kritik'] = now                             # Spookfish: kritik canda EMP (bir kez)
             self.emp(n, now)
@@ -191,8 +206,7 @@ class Yetenekler:
             a = 2 * math.pi * i / max(1, count)
             c = w.spawn_npc_at(tur, x + math.cos(a) * 300, y + math.sin(a) * 300)
             self.adopt(n, c)
-            c.engaged = True
-            c.next_think = now
+            self.saldirt(c, self.cagiran_bot(n), now)
             n.children.add(c.id)
         w.log('   %s %d %s çağırdı (can %%%d)' % (n.d['ad'], count, self.CFG['tipler'][tur]['ad'], 100 * n.hp // max(1, n.d['hp'])))
 
@@ -343,6 +357,79 @@ class Yetenekler:
                 self.periodic_emp(n, now)
             if 'hiz_oyuncu' in d:
                 self.match_speed(n, now)
+            if n.bot_hedef is not None and not n.engaged:
+                self.bota_yetenekler(n, now)
+
+    # ------------------------------------------------------------ bota karşı (uzaylı bir botla savaşırken)
+    def bota_yetenekler(self, n, now):
+        """Uzaylı bir bot gemisiyle savaşırken saldırı yetenekleri bota: roket, yapışkan bomba, temasla patlama, kamikaze, tekillik,
+        ölüm ışını, periyodik çağırma (yardımcılar bota). Oyuncuya özgü etkiler (EMP, gizlenme bozma, yavaşlatma, oyuncunun çevresine
+        mayın, hız eşleme) bota uygulanmaz. Önceden yetenekler yalnız oyuncuyla savaşırken çalışıyordu (kullanıcı bildirimi 2026-10-30)."""
+        from bot import govde as BG
+        w, d = self.w, n.davranis
+        t = w.npcs.get(n.bot_hedef)
+        if t is None or not t.alive or t.bot is None or n.etki.frozen(now):
+            return
+        nx, ny = n.mover.pos(now)
+        tx, ty = t.mover.pos(now)
+        uz = math.hypot(tx - nx, ty - ny)
+
+        def vur(dmg, gecikme=0.0):
+            uid, hid = n.id, t.id
+
+            def at():
+                h = w.npcs.get(hid)
+                if h is not None and h.alive and h.bot is not None:
+                    BG.bot_hasar(w, h, int(dmg), uid, time.time(), npc=w.npcs.get(uid) or n)
+            w.later(gecikme, at) if gecikme else at()
+        r = d.get('roket')
+        if r and now >= n.ab.get('roket', 0) and uz <= w.npc_range(n):
+            n.ab['roket'] = now + r.get('bekleme_sn', 8)
+            if random.random() < self.S['roket_isabet']:
+                from eski_protokol import legacy
+                BG._yayin(w, [legacy('0|v|%d|%d|H|%d|0|0' % (n.id, t.id, r.get('tur', 1)))], n.id, t.id)
+                vur(r['hasar'] * random.uniform(0.85, 1.0), self.S['roket_ucus_sn'])
+        b = d.get('yapiskan_bomba')
+        if b and uz <= w.npc_range(n) * 2:
+            if 'bomba' not in n.ab:
+                n.ab['bomba'] = now + b['aralik_sn']
+            elif now >= n.ab['bomba']:
+                n.ab['bomba'] = now + b['aralik_sn']
+                dmg = random.randint(*b['hasar']) if isinstance(b['hasar'], list) else b['hasar']
+                vur(dmg / max(1, b.get('grup', 1)), b.get('gecikme_sn', 2))
+        k = d.get('temasla_patla')
+        if k and uz <= k['yaricap']:
+            dmg = k['hasar'] * ((1 - (1 - k['kenarda']) * min(1.0, uz / k['yaricap'])) if 'kenarda' in k else 1)
+            vur(dmg)
+            boom = [('ShipDestroyedCommand', dict(destroyedUserId=n.id, explosionTypeId=0))] if n.id in w.visible else []
+            w.send(boom + w.remove_npc(n))
+            return
+        k = d.get('kamikaze_esik')
+        if k and n.hp <= n.d['hp'] * k['oran'] and n.hp > 0 and uz <= k['yaricap']:
+            vur(n.hp * k['hasar_can_orani'])
+            boom = [('ShipDestroyedCommand', dict(destroyedUserId=n.id, explosionTypeId=0))] if n.id in w.visible else []
+            w.send(boom + w.remove_npc(n))
+            if not n.gate and not n.summoned:
+                w.schedule(random.uniform(*w.respawn_range(n)), 'npc', n.tip)
+            return
+        s = d.get('tekillik')
+        if s and now >= n.ab.get('tekillik', 0) and uz <= s['menzil'] * AY.carpan('npc_menzil'):
+            n.ab['tekillik'] = now + s['bekleme_sn']
+            for i in range(int(min(s['sure_sn'], s['azami'] / max(1, s['sn_hasar'])))):
+                vur(s['sn_hasar'], i + 1.0)
+        o = d.get('olum_isini')
+        if o and now >= n.ab.get('isin', 0) and uz > o['uzaklik']:
+            n.ab['isin'] = now + o['aralik_sn']
+            vur(o['hasar'] * random.uniform(0.8, 1.2))
+        p = d.get('periyodik_cagir')
+        if p and now >= n.ab.get('periyodik', 0):
+            n.ab['periyodik'] = now + p['bekleme_sn']
+            n.ab['cagiran'] = t.id
+            n.children = {c for c in n.children if c in w.npcs and w.npcs[c].alive}
+            for e in p['cagrilar']:
+                room = e['en_cok'] - sum(1 for c in n.children if w.npcs[c].tip == e['tur'])
+                if room > 0:
+                    self.summon(n, e['tur'], min(e['adet'], room), now)
         self.dot_tick(now)
         self.capsule_tick(now)
 

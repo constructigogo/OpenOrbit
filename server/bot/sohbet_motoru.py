@@ -8,18 +8,28 @@ yetişemezse ya da LLM yoksa konusma.py'nin kalıpları.
 import random, time, traceback
 
 import harita as H
+from . import ad_uslup as AU
 from . import beyin as B
 from . import katalog as K
 from . import etkilesim as ET
 from . import konusma as KN
+from . import moderasyon as MOD
+from . import yonetici_uyari as YU
 
 OLAY_SN = 5.0
+KABA_CARPAN = (0.0, 1.0, 1.6, 2.2)      # kaba_sohbet düzeyine göre hakarete karşılık verme olasılığı çarpanı
+FIRMA = {1: 'MMO', 2: 'EIC', 3: 'VRU'}
 
 
 def kullanici(b):
     """Botun sohbetteki gönderen bilgisi (sosyal.Sosyal.chat_user biçimi)."""
     p = b.profil
     tag = p.d['pilot'].get('clanTag', '') if p is not None else ''
+    if b.__dict__.get('moderator'):
+        # [CM] etiketiyle, "mod" rolünde: istemci yaması (panel/eklenti/Yamalar.cs ModeratorRengi) onu kendi rengiyle çizer; yamasız
+        # istemcide beyaz (istemci yalnız admin'i renklendirir, o da etiketi gizleyip "Yönetici" yazar)
+        return {'userId': b.ad, 'id': str(b.uid), 'globalId': str(b.uid), 'role': MOD.SOHBET_ROLU, 'clanTag': MOD.ETIKET,
+                'factionId': str(b.firma), 'instanceId': '1'}
     return {'userId': b.ad, 'id': str(b.uid), 'globalId': str(b.uid), 'role': 'chatter', 'clanTag': tag, 'factionId': str(b.firma),
             'instanceId': '1'}
 
@@ -49,7 +59,8 @@ class SohbetMotoru:
         self.llm = None                # Gelişmiş kip: llm.Beyin
         self.giden = []                # [(an, bot, kanal, metin, alıcı, öncelik, ilk an)]: yazılmayı bekleyen satırlar
         self.gelen = []                # sohbetten gelenler (sohbet iş parçacığı ekler, tick işler)
-        self.gecmis = []               # son sohbet satırları [(an, ad, kanal, metin)]: LLM bağlamı
+        self.gecmis = []               # son sohbet satırları [(an, ad, kanal, metin, oda yolu)]: LLM bağlamı (oda yolu: hangi firmanın,
+        #                                klanın, grubun kanalı; fısıltıda None)
         self.son_soz = 0.0
         self.eylemler = []             # [(an, bot, (araç, argümanlar))]: kararın eylemi, yanıt yazıldıktan sonra (etkilesim.uygula)
         self._satirlar = []            # son bir dakikadaki bot satırlarının anları (sohbet_dk)
@@ -59,6 +70,8 @@ class SohbetMotoru:
         if not metin or not self.izin('sohbet'):
             return
         now = now or self.now
+        if not oncelik and YU.etkin(b, 'sohbet', now) and b.r.random() < 0.75:
+            return                                       # yönetici sohbet uyarısı: yalnız yanıtlar, çoğu kez susar
         t = now + (0 if hemen else KN.yazma_suresi(metin, b))
         self.giden.append((t, b, kanal, metin, alici, oncelik, t))
 
@@ -78,8 +91,11 @@ class SohbetMotoru:
             self.son_soz = now
             self.olay_tick(now)
             self.kendiliginden(now)
+            self.laf_at(now)
             self.ozel_baslat(now)
             self.grup_lafi(now)
+            YU.gorus_tick(self, now)
+            MOD.kurallari_hatirlat(self, now)
         if self.eylemler:
             vakti = [x for x in self.eylemler if x[0] <= now]
             self.eylemler = [x for x in self.eylemler if x[0] > now]
@@ -98,14 +114,16 @@ class SohbetMotoru:
         if not b.cevrimici:
             return
         if kanal in ('global', 'firma'):
+            if MOD.susturulu(self, b.ad, now) > 0:
+                return                                   # moderatör susturdu
             self._satirlar = [s for s in self._satirlar if now - s < 60]
             if len(self._satirlar) >= self.ayar('sohbet_dk', 6) and not oncelik:
                 if now - ilk < 60:                       # kanal sınırı: biraz bekler (sohbet sele dönmesin); çok bekleyen düşer
                     self.giden.append((now + b.r.uniform(6, 15), b, kanal, metin, alici, oncelik, ilk))
                 return
             self._satirlar.append(now)
-        self.gecmis.append((now, b.ad, kanal if not alici else 'fisilti:' + alici, metin))
-        del self.gecmis[:-200]               # fısıltı bağlamı kalabalık sohbette hemen silinmesin
+        self.gecmis.append((now, b.ad, kanal if not alici else 'fisilti:' + alici, metin, None if alici else kanal_yolu(b, kanal)))
+        del self.gecmis[:-600]               # fısıltı bağlamı kalabalık sohbette hemen silinmesin (güçlü sağlayıcı saatlerce geriye bakar)
         b.olay('dedim', now, kanal=kanal, metin=metin, alici=alici)
         if self.sohbet is None:
             return
@@ -115,11 +133,12 @@ class SohbetMotoru:
         yol = kanal_yolu(b, kanal)
         if yol:
             self.sohbet.broadcast(yol, metin, 'bot%d' % b.uid, kullanici(b))
+        MOD.denetle(self, b.ad, metin, kanal, now)       # botlar da kurala uyar (kaba bot susturulabilir)
 
     def sohbet_gelen(self, yol, msg, kim):
         """Sohbet iş parçacığından: oyuncunun oda mesajı (işlenmesi tick'te)."""
         self.gelen.append(('oda', yol, msg, kim))
-        self.gecmis.append((time.time(), kim.get('userId', '?'), kanal_adi(yol) or yol, msg))
+        self.gecmis.append((time.time(), kim.get('userId', '?'), kanal_adi(yol) or yol, msg, yol))
 
     def fisilti_gelen(self, ad, msg, kim):
         """Sohbet iş parçacığından: oyuncu bir bota fısıldadı -> alıcı çevrimiçi bot mu (değilse istemci "çevrimdışı" yazar)."""
@@ -131,6 +150,15 @@ class SohbetMotoru:
         return True
 
     def sohbet_isle(self, g, now):
+        if g[0] == 'oda':
+            MOD.denetle(self, g[3].get('userId', ''), g[2], kanal_adi(g[1]), now, g[3].get('role') or 'chatter')
+        from . import klan_emir as KE
+        if g[0] == 'oda' and kanal_adi(g[1]) == 'klan' and KE.isle(self, 'klan', g[2], g[3], self.dinleyenler('klan', g[3]), now):
+            return                                       # klan emri (odak, git, gel, savun, al, gemi, yapı, dur)
+        if g[0] == 'fisilti' and KE.isle(self, 'fisilti', g[2], g[3], [g[1]], now):
+            return
+        if YU.isle(self, g, now):                        # yöneticinin uyarısı ya da selamı (bot/yonetici_uyari.py)
+            return
         if self.llm is not None and self.llm.sohbet(self, g, now):
             return
         if g[0] == 'fisilti':
@@ -160,15 +188,15 @@ class SohbetMotoru:
             return
         tur, harita = KN.niyet(msg)
         dinleyen = self.dinleyenler(kanal, kim)
-        anilan = [b for b in dinleyen if b.ad.lower() in msg.lower()]
+        anilan = [b for b in dinleyen if AU.anildi_mi(b.ad, msg)]
         for b in anilan:
             b.hafiza.olay(ad, 'sohbet', now)
             if tur in ET.NIYETLER and tur != 'yardim':
                 self.istek_yanitla(b, tur, ad, kim, harita, msg, kanal, now)
             elif tur == 'hakaret':
                 b.hafiza.olay(ad, 'hakaret', now)
-                if b.r.random() < b.o('saldirganlik'):
-                    self.konus(b, kanal, KN.kalip(b, 'cevap_hakaret'), now=now)
+                if b.r.random() < b.o('saldirganlik') * KABA_CARPAN[self.kaba()]:
+                    self.konus(b, kanal, KN.kalip(b, self.laf(b, 'cevap_hakaret'), ad=ad), now=now)
             elif tur == 'yardim':
                 self.yardim_cagrisi(ad, kim, harita, [b], kanal, now)
             elif b.r.random() < 0.85:
@@ -178,7 +206,7 @@ class SohbetMotoru:
             return
         if tur == 'yardim' and harita:
             self.yardim_cagrisi(ad, kim, harita, dinleyen, kanal, now)
-        elif tur in ('grup', 'klan', 'gorev', 'duello', 'ozel'):
+        elif tur in ('grup', 'klan', 'gorev', 'duello', 'ozel', 'kapi'):
             for b in self.acik_cagri(tur, ad, kim, harita, msg, dinleyen, now):
                 self.istek_yanitla(b, tur, ad, kim, harita, msg, kanal, now)
         elif tur == 'takip' and kanal == 'grup':              # grup sohbetinde "follow me / come 2-4": grubun botları
@@ -201,9 +229,12 @@ class SohbetMotoru:
         ids = {v: k for k, v in H.NAMES.items()}
         m = ids.get(harita) if harita else None
         if m is None:
+            # harita yazılmadı: oyuncunun haritası, ama yalnız gerçekten saldırı altındaysa (son 90 sn'de hasar aldı); yoksa
+            # "help"in başka anlamı var ("help me with quest", şaka) ve kimse savaşa koşmaz (oyuncu bildirimi 2026-10-30)
             import topluluk as TP
             k = TP.bul(ad=ad)
-            m = int(k.profil.d['konum'].get('mapId', 0)) if k is not None else None
+            w = k.world if k is not None else None
+            m = int(k.profil.d['konum'].get('mapId', 0)) if w is not None and now - getattr(w, 'last_hurt', 0) < 90 else None
         if m is None or int(m) not in K.HARITALAR:
             return []
         gelen = []
@@ -236,6 +267,18 @@ class SohbetMotoru:
                     return [b]
             return []
         aday = [b for b in dinleyen if not fac or b.firma == fac]
+        if tur == 'kapi':                                 # kapı dolgusu: istenen sayıda (yoksa 3) kabul eden
+            import re
+            m = re.search(r'\b([1-7])\b', msg or '')
+            n, out = int(m.group(1)) if m else 3, []
+            for b in sorted(aday, key=lambda b: -(b.o('sosyallik') + b.o('hirs')) * b.r.uniform(0.5, 1.5))[:12]:
+                k = ET.karar(self, b, 'kapi', ad, kim, harita, msg, now)
+                if k and k['kabul']:
+                    b._istek_karari = k
+                    out.append(b)
+                    if len(out) >= n:
+                        break
+            return out
         if tur in ('grup', 'gorev', 'ozel'):
             for b in sorted(aday, key=lambda b: -b.o('sosyallik') * b.r.uniform(0.5, 1.5))[:4]:
                 k = ET.karar(self, b, tur, ad, kim, harita, msg, now)
@@ -275,8 +318,8 @@ class SohbetMotoru:
                 self.konus(b, 'fisilti', KN.kalip(b, 'cevap_hayir'), alici=ad, now=now)
         elif tur == 'hakaret':
             b.hafiza.olay(ad, 'hakaret', now)
-            if b.r.random() < 0.6:
-                self.konus(b, 'fisilti', KN.kalip(b, 'cevap_hakaret'), alici=ad, now=now)
+            if b.r.random() < 0.6 * KABA_CARPAN[self.kaba()]:
+                self.konus(b, 'fisilti', KN.kalip(b, self.laf(b, 'cevap_hakaret'), ad=ad), alici=ad, now=now)
         else:
             self.konus(b, 'fisilti', KN.kalip(b, {'selam': 'cevap_selam', 'tesekkur': 'tesekkur'}.get(tur, 'cevap_soru'), ad=ad),
                        alici=ad, now=now)
@@ -322,11 +365,15 @@ class SohbetMotoru:
             pass                                         # aynı oyuncuya dakikada en çok bir fısıltı (art arda öldürmede yağmur olmasın)
         elif tur == 'olum' and o.get('katil') and str(o['katil']).lower() not in self.ada and b.r.random() < 0.2 + 0.5 * kon:
             self._fisilti_son[str(o['katil']).lower()] = now
-            kizgin = b.ruh['ofke'] > 0.45 and b.o('saldirganlik') > 0.5
+            kaba = self.kaba()
+            kizgin = kaba and b.ruh['ofke'] > 0.55 - 0.1 * kaba and b.o('saldirganlik') > 0.6 - 0.1 * kaba
             self.konus(b, 'fisilti', KN.kalip(b, 'oldum_kizgin' if kizgin else 'oldum'), alici=o['katil'], now=now)
         elif tur == 'oyuncu_oldurdum' and b.r.random() < 0.25 + 0.3 * kon:
             self.__dict__.setdefault('_fisilti_son', {})[str(o.get('ad') or '').lower()] = now
-            self.konus(b, 'fisilti', KN.kalip(b, 'oldurdum'), alici=o.get('ad'), now=now)
+            kaba = self.kaba()
+            self.konus(b, 'fisilti', KN.kalip(b, 'oldurdum') if kaba else 'gg', alici=o.get('ad'), now=now)
+            if kaba >= 2 and o.get('ad') and b.r.random() < 0.25 * (kaba - 1) * b.o('saldirganlik'):
+                self.konus(b, 'global', KN.kalip(b, 'laf_oldurdum', ad=o['ad'], harita=H.name(b.harita)), now=now + b.r.uniform(4, 15))
         elif tur == 'klan_kurdu':
             self.konus(b, 'global', KN.kalip(b, 'klan_alim', etiket=o.get('etiket'), klan=o.get('ad'), seviye=max(3, b.seviye - 4)),
                        now=now + b.r.uniform(20, 120))
@@ -392,6 +439,32 @@ class SohbetMotoru:
             if self.llm is not None and self.llm.hazir and self.llm.grup_lafi(self, b, k.ad):
                 continue
             self.konus(b, 'grup', KN.kalip(b, 'grup_laf'), now=now)
+
+    def kaba(self):
+        return int(self.ayar('kaba_sohbet', 1) or 0)
+
+    def laf(self, b, durum):
+        """Sert düzeyde saldırgan bot hakarete sert karşılık verir."""
+        return 'laf_sert' if self.kaba() >= 2 and b.o('saldirganlik') > 0.5 and not b.__dict__.get('moderator') else durum
+
+    def laf_at(self, now):
+        """Sert ve çok sert düzeyde saldırgan botlar globalde başka firmaya ya da çevrimiçi düşman oyuncuya laf atar (kinliler önce)."""
+        kaba = self.kaba()
+        if kaba < 2 or random.random() > 0.05 * (kaba - 1):
+            return
+        acik = [b for b in self.botlar if b.cevrimici and b.olu_bitis <= now and b.o('saldirganlik') > 0.55
+                and not b.__dict__.get('moderator')]
+        if not acik:
+            return
+        b = max(acik, key=lambda b: b.o('saldirganlik') * b.r.random())
+        dusman = [k for k in self.cevrimici_insanlar() if int(k.profil.d['pilot'].get('factionId', 0)) != b.firma]
+        kin = [k for k in dusman if b.hafiza.iliski(k.ad, now) < -0.2]
+        if (kin or dusman) and b.r.random() < (0.8 if kin else 0.3 * (kaba - 1)):
+            k = b.r.choice(kin or dusman)
+            self.konus(b, 'global', KN.kalip(b, 'laf_oyuncu', ad=k.ad, harita=H.name(b.harita)), now=now)
+        else:
+            self.konus(b, 'global', KN.kalip(b, 'laf_firma', firma=b.r.choice([f for f in ('MMO', 'EIC', 'VRU') if f != FIRMA[b.firma]])),
+                       now=now)
 
     def kendiliginden(self, now):
         """Ara sıra bir bot kendiliğinden yazar (genel sohbet, grup arama, alım ilanı, müzayede): kanal sınırı içinde."""

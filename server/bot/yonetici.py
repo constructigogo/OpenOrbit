@@ -12,6 +12,7 @@ import harita as H
 from . import beyin as B
 from . import katalog as K
 from . import kisilik as KS
+from . import ani as ANI
 from . import soyut as S
 from .durum import Bot
 from . import konusma as KN
@@ -26,6 +27,8 @@ KAYIT_SN = 60.0
 GIRIS_DENEME_SN = 60.0
 SURUM = 1
 AKTIF = None                   # oyun sunucusunun yöneticisi (game.py kurar; govde.py okur)
+PRIME_NUFUS = 1.3              # yoğun saatte çevrimiçi olma eğilimi çarpanı
+CEPHELER = (16, 16, 29, 13, 14, 15)        # 4-4 iki kat, 4-5, 4-1, 4-2, 4-3
 
 VARSAYILAN = {                 # paketin ayarları (panel/botlar.py aynı anahtarları doğrular)
     'hiz': 1.0,                # ilerleme hızı çarpanı
@@ -42,8 +45,19 @@ VARSAYILAN = {                 # paketin ayarları (panel/botlar.py aynı anahta
     'yardim_en_cok': 3,        # bir yardım çağrısına gelen en çok bot
     'somut_en_cok': 40,        # oyuncunun haritasında gemi olarak gösterilen en çok bot
     'klan_basina': 12,         # kaç bota bir bot klanı
+    'kaba_sohbet': 1,          # laf atma: 0 kapalı, 1 hafif, 2 sert, 3 çok sert (küfür ve gerçek tehdit hiçbirinde yok)
+    'moderator': False,        # sohbet moderatörü botlar (bot/moderasyon.py)
+    'mod_sayisi': 2,
+    'kural_buyuk': True, 'kural_sel': True, 'kural_hakaret': True, 'kural_reklam': True,
+    'sustur_dk': 10,           # susturma süresi
+    'yasak_esik': 3,           # bu kadar susturmadan sonra yasak
+    'yasak_saat': 24,
+    'prime_baslangic': 19,     # akşam yoğun saatleri (yerel saat): çevrimiçi ve PvP artar, firmalar bir haritada toplanır
+    'prime_bitis': 23,
+    'prime_pvp': 2.0,          # yoğun saatte PvP isteği çarpanı (1: fark yok)
+    'buyuk_savas': True,       # yoğun saatte firmaların PvP botları ortak cephe haritasında toplanır
     'izinler': {'magaza': True, 'gorev': True, 'pvp': True, 'sohbet': True, 'klan': True, 'klan_kur': True, 'arkadas': True,
-                'grup': True, 'muzayede': True, 'oyuncuya_saldir': True, 'yardim': True, 'kutu_calma': True, 'kargo': True, 'roket': True, 'ozel_cephane': True, 'ekstra': True, 'mayin': True, 'lab': True, 'skylab': True, 'teknoloji': True, 'ganimet': True, 'assembly': True, 'kapi': True, 'etkinlik': True, 'modlar': True, 'klan_diplomasi': True},
+                'grup': True, 'muzayede': True, 'oyuncuya_saldir': True, 'yardim': True, 'kutu_calma': True, 'kargo': True, 'roket': True, 'ozel_cephane': True, 'ekstra': True, 'mayin': True, 'lab': True, 'skylab': True, 'teknoloji': True, 'ganimet': True, 'assembly': True, 'kapi': True, 'etkinlik': True, 'modlar': True, 'klan_diplomasi': True, 'klan_emir': True, 'kapi_dolgu': True},
 }
 
 
@@ -100,6 +114,8 @@ class Yonetici(SohbetMotoru):
         # progressive yeni paket: pilotlar oyuna aynı anda değil, gerçek bir sunucuya kayıt olur gibi tek tek katılır (performans,
         # haritalara doğal dağılım); jumpstart kadrosu zaten oynamış sayılır
         sirali = self.kip != 'basit' and self.paket.get('gelisim') != 'jumpstart' and self.ayar('kayit_sn', 15) > 0
+        from . import llm_saglayici as SG
+        cok_dilli = SG.cok_dilli()
         for kd in self.paket.get('kadro', []):
             k = eski.get(str(kd['no']))
             if k is None:
@@ -107,12 +123,14 @@ class Yonetici(SohbetMotoru):
                 yeni.append(k)
             else:
                 k.update(ad=kd['ad'], firma=kd['firma'], kisilik=kd['kisilik'])      # panelde ad değişmiş olabilir
-            if self.kip == 'gelismis':
-                k['kisilik'] = dict(k['kisilik'], dil='en')      # dil modeli yalnız İngilizce (llm.py)
+            if self.kip == 'gelismis' and not cok_dilli:
+                k['kisilik'] = dict(k['kisilik'], dil='en')      # dahili dil modeli yalnız İngilizce (llm.py; başka sağlayıcıda serbest)
             b = Bot(k)
             b.izin = self.ayarlar['izinler']
+            b.kaba = int(self.ayar('kaba_sohbet', 1))       # kaba sohbet düzeyi (llm.tarz, sohbet_motoru)
             b.saat = lambda: self.now
             b.oa = self.oa
+            b.hafiza.dinle = (lambda b: lambda ad, tur, now: ANI.olaydan(self, b, ad, tur, now))(b)     # anı defteri (güçlü sağlayıcı)
             b.sonraki_giris = now + b.r.uniform(0, 20)
             self.botlar.append(b)
             self.ada[b.ad.lower()] = b
@@ -132,6 +150,8 @@ class Yonetici(SohbetMotoru):
         if t and self.ayar('telafi_saat', 0) > 0 and now - t > 600:
             self.telafi(min(now - t, self.ayar('telafi_saat') * 3600) * self.ayar('telafi_oran', 0.35), now)
         self.ilk_nufus(now)
+        from . import moderasyon as MOD
+        MOD.sec(self)
 
     def ad_kaydi_uygula(self, yukleniyor=False):
         """Panelde adı değişen ya da silinen botlar (ad_kaydi.py): çalışan botların adı, botların hafızası ve rehberleri; oyun
@@ -188,8 +208,10 @@ class Yonetici(SohbetMotoru):
             return
         now = now or time.time()
         with self.lock:                                  # metin kilit içinde: dünya döngüsü sözlüklere eklerken yarım kalmasın
-            metin = json.dumps(dict(surum=SURUM, t=now, ad_kaydi=self.ad_kaydi_n, botlar={str(b.k['no']): b.kayit() for b in self.botlar}),
-                               ensure_ascii=False, separators=(',', ':'))
+            d = dict(surum=SURUM, t=now, ad_kaydi=self.ad_kaydi_n, botlar={str(b.k['no']): b.kayit() for b in self.botlar})
+            if self.llm is not None:
+                d['llm'] = self.llm.ozet()                    # panelin kullanım satırı (son bir saat: istek, token)
+            metin = json.dumps(d, ensure_ascii=False, separators=(',', ':'))
         tmp = self.durum_yolu + '.tmp'
         os.makedirs(os.path.dirname(self.durum_yolu), exist_ok=True)
         with open(tmp, 'w', encoding='utf8') as f:
@@ -328,9 +350,19 @@ class Yonetici(SohbetMotoru):
                 b.sonraki_giris = now + GIRIS_DENEME_SN
         return n
 
+    def prime(self, now=None):
+        """Akşamın yoğun saatleri mi (prime_baslangic-prime_bitis, yerel saat; gece yarısını geçebilir; eşitse yok)."""
+        h = time.localtime(now or self.now).tm_hour
+        a, b = int(self.ayar('prime_baslangic', 19)), int(self.ayar('prime_bitis', 23))
+        return a < b and a <= h < b or a > b and (h >= a or h < b)
+
+    def cephe(self, now=None):
+        """Yoğun saatin büyük savaş haritası: saat saat değişir, üç firmanın PvP botları aynı yerde buluşur (4-4, 4-5, 4-1/2/3)."""
+        return CEPHELER[int((now or self.now) // 3600) % len(CEPHELER)]
+
     def _girsin_mi(self, b, now):
         saat = time.localtime(now).tm_hour
-        p = KS.cevrimici_egilim(b.k['kisilik'], saat) * self.ayar('cevrimici_oran', 0.6)
+        p = KS.cevrimici_egilim(b.k['kisilik'], saat) * self.ayar('cevrimici_oran', 0.6) * (PRIME_NUFUS if self.prime(now) else 1)
         # dakikalık deneme: saatlik eğilimi dakikaya böl (ortalama oturum ~1-3 saat; denge çevrimiçi payını eğilime yaklaştırır)
         return b.r.random() < p / 45.0
 
@@ -345,7 +377,7 @@ class Yonetici(SohbetMotoru):
                 break
             if not b.kayitli:
                 continue
-            p = KS.cevrimici_egilim(b.k['kisilik'], saat) * self.ayar('cevrimici_oran', 0.6)
+            p = KS.cevrimici_egilim(b.k['kisilik'], saat) * self.ayar('cevrimici_oran', 0.6) * (PRIME_NUFUS if self.prime(now) else 1)
             ort = sum(KS.ALISKANLIKLAR[b.k['kisilik']['aliskanlik']][2]) / 2.0
             pay = (p / 45.0 * ort) / (1 + p / 45.0 * ort)
             if b.r.random() < pay:
@@ -547,8 +579,8 @@ def sunucu(yol, log=print):
         toplum.kaydol(y, getattr(TP.OYUN, 'SOHBET', None))
         y.toplum = True
         if y.kip == 'gelismis':
-            from . import llm, llm_sunucu
-            if llm_sunucu.kurulum() is not None:
+            from . import llm, llm_saglayici, llm_sunucu
+            if llm_saglayici.cok_dilli() or llm_sunucu.kurulum() is not None:   # kullanıcının sağlayıcısı ya da kurulu dahili model
                 y.llm = llm.Beyin(y, log)                  # model arka planda açılır; hazır olana dek kalıplar
                 y.llm.baslat()
             else:

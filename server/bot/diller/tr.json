@@ -178,6 +178,24 @@
   ]
  },
  "kaliplar": {
+  "laf_oldurdum": ["{ad} üsse yolladım lol", "{ad} ninem daha iyi uçar", "başka isteyen? {ad} payını aldı", "{ad} oyunu sil bence", "{harita}'de {ad} kestim, sıradaki", "{ad} onur için teşekkürler"],
+  "laf_sert": ["ağla biraz daha", "her gün kestiğim adam konuşuyor", "4-4'e gel de orda söyle", "konuşma kapış", "lol rüyanda", "yazmaya devam, nişanın düzelmez"],
+  "laf_firma": ["{firma} bedava onur", "{firma} yine üste saklanıyor", "{firma} nerde? korktunuz mu", "{firma} kendi haritasını tutamıyor", "bütün gece {firma} kestik ez"],
+  "laf_oyuncu": ["{ad} nerde saklanıyorsun", "{ad} cesaretin varsa {harita}'ye gel", "hala seni bekliyorum {ad}", "{ad} üs seni sonsuza kadar korumaz"],
+  "mod_uyari_buyuk": ["{ad} lütfen büyük harf yok", "{ad} capsi kapat lütfen", "{ad} bağırmaya gerek yok, caps kapat"],
+  "mod_uyari_sel": ["{ad} spam yapma lütfen", "{ad} sohbeti doldurma lütfen", "{ad} yavaş, flood yok"],
+  "mod_uyari_hakaret": ["{ad} saygılı ol lütfen", "{ad} hakaret yok, uyarı", "{ad} ağzını topla lütfen"],
+  "mod_uyari_reklam": ["{ad} link ve reklam yok", "{ad} reklam yasak", "{ad} sohbete link atma lütfen"],
+  "mod_sustur": ["{ad} {dk} dk susturuldu", "{ad} uyarılmıştın, {dk} dk sustur", "{ad} susturuldu ({dk} dk), temiz tutalım"],
+  "mod_yasak": ["{ad} çok susturma, {saat} saat sohbet yasağı", "{ad} {saat} saat sohbet yasağı", "{ad} {saat} saat sohbet yok"],
+  "mod_kurallar": ["hatırlatma: büyük harf, spam, hakaret, reklam yok. iyi oyunlar", "sohbet kuralları: saygı, spam yok, link yok", "sohbeti temiz tutalım lütfen"],
+  "emir_tamam": ["tamamdır", "ok başkan", "anlaşıldı", "hallediyorum", "emredersin", "yoldayım", "tmm yapıyorum"],
+  "emir_ret": ["şu an olmaz", "meşgulüm kusura bakma", "şimdi değil", "bunu bitireyim sonra", "çok yorgunum, sonra"],
+  "emir_us_yok": ["daha istasyonumuz yok ki", "ne üssü? yok bizde", "cbs kurmadık daha"],
+  "savas_cagri": ["herkes {harita}'ye, büyük savaş!", "hepiniz {harita}'ye, düşman dolu", "{harita} savaş var, çabuk gelin", "herkes {harita}'ye lazım"],
+  "yonetici_ozur": ["pardon {ad}, bi daha olmaz", "tamam {ad} anladım, kusura bakma", "özür dilerim, kesiyorum", "ok gm sorry", "tamamdır, düzeltiyorum"],
+  "yonetici_selam": ["selam {ad} o/", "gm geldi, selamlar", "selam admin", "hoş geldin {ad}"],
+  "yonetici_gordu": ["{harita} de gm var dikkat", "arkadaşlar {harita} de admin dolaşıyor", "gm gördüm {harita}", "ufo gibi bi gemi var {harita} de, admin bu"],
   "savas_ilan": [
    "[{etiket}] ile savaştayız, görünce vurun",
    "{klan} savaş ilanı aldı :)",
@@ -463,7 +481,30 @@
    "yoldayım {harita}",
    "dayan geliyorum",
    "kaç kişiler"
-  ]
+  ],
+  "klan_rutbeler": ["Subay|Kıdemli|Üye|Acemi", "Komutan|Elit|Pilot|Çaylak", "Yüzbaşı|Teğmen|Er|Acemi Er", "Başkan Yardımcısı|Kıdemli Üye|Üye|Deneme"],
+  "klan_aciklama_odak_pvp": ["{klan} [{etiket}] - PvP klanı. düşmanı haritasında avlarız", "[{etiket}] {klan}: savaş, onur, PvP. korkak yok", "{klan} aktif PvP klanı, 4-x bizim"],
+  "klan_aciklama_odak_pve": ["{klan} [{etiket}] - görev ve kasma klanı, birlikte gelişiyoruz", "[{etiket}] {klan}: PvE, kapılar, görevler. yardımlaşma önce", "{klan} rahat bir klan, kasıp gelişiyoruz"],
+  "klan_aciklama_odak_ksi": ["istasyonumuz: {istasyon}. savunmaya herkes gelir", "{istasyon} bizim, koruyoruz"],
+  "klan_aciklama_kural": ["kurallar: aktif ol, klan sohbetine yaz, üyelere saldırma", "vergi düşük, saygı şart, haftada birkaç gün aktif ol", "klan arkadaşını yalnız bırakma"],
+  "klan_aciklama_alim": ["alım açık, en az {seviye}. seviye. başvur", "üye alıyoruz (lvl {seviye}+)", "başvurular açık, seviye {seviye} ve üstü"],
+  "klan_aciklama_dolu": ["klan dolu, şimdilik alım yok", "alım kapalı"],
+  "klan_duyuru_ittifak": ["{klan} ile ittifak kurduk, onlara saldırmak yok", "yeni müttefikimiz: {klan}"],
+  "klan_duyuru_saldirmazlik": ["{klan} ile saldırmazlık anlaşması yaptık", "{klan} ile barış anlaşması var, saldırmıyoruz"],
+  "klan_duyuru_savas": ["{klan} ile savaştayız! gördüğünüz yerde vurun", "SAVAŞ: {klan}. herkes hazır olsun"],
+  "klan_duyuru_baris": ["{klan} ile savaş bitti", "{klan} ile barış yaptık, gg"],
+  "klan_duyuru_odeme": ["haftanın ödemesi kasadan: {adlar}. teşekkürler", "en çok katkı verenlere ödeme yapıldı: {adlar}"],
+  "klan_duyuru_hedef_ksi": ["bu haftanın hedefi: klan istasyonu. vergiyi verin, kasa dolsun", "istasyon için para topluyoruz, herkes kassın"],
+  "klan_duyuru_hedef_kas": ["bu hafta kasma ve görev haftası, seviye atlayın", "hedef: herkes bir seviye atlasın"],
+  "klan_duyuru_hedef_pvp": ["bu hafta PvP haftası, onur toplayın", "hedef: düşman firmayı 4-x'te avlamak"],
+  "klan_duyuru_ksi_yaris": ["{istasyon} ({harita}) için yarışa girdik, modüller kasadan", "{harita} asteroidi {istasyon}: istasyonu biz kuracağız"],
+  "klan_duyuru_ksi_kuruldu": ["istasyonumuz kuruldu: {istasyon} ({harita})! tebrikler", "{istasyon} artık bizim, gg herkese"],
+  "klan_duyuru_ksi_yikildi": ["{istasyon} ({harita}) istasyonumuz yıkıldı. yeniden kuracağız", "{istasyon} düştü, kasayı yeniden dolduralım"],
+  "klan_duyuru_ksi_saldiri": ["{istasyon} saldırı altında! herkes {harita}", "istasyona saldırı var, {harita} toplanın"],
+  "klan_posta_savas_konu": ["Savaş: {klan}"],
+  "klan_posta_savas": ["{klan} ile savaş başladı. tek uçmayın, grup kurun, gördüğünüz yerde vurun. kaybettiğiniz gemiyi klan sohbetine yazın"],
+  "klan_posta_ksi_konu": ["İstasyon saldırı altında: {istasyon}"],
+  "klan_posta_ksi": ["{istasyon} istasyonumuz {harita} haritasında vuruluyor. çevrimiçi olan herkes hemen gelsin"]
  },
  "kisaltma": [
   [
@@ -518,5 +559,13 @@
   "Ü": "U"
  },
  "ascii_oran": 0.55,
- "niyet": {}
+ "niyet": {},
+ "tepki": {
+  "kutlama": ["tebrikler", "tebrik ederim", "helal", "eline sağlık", "hayırlı olsun", "gözün aydın", "gratz"],
+  "veda": ["görüşürüz", "iyi geceler", "bay bay", "ben kaçtım", "hadi ben kaçar", "kaçtım ben", "gidiyorum ben"],
+  "donus": ["geldim", "döndüm", "tekrar geldim", "ben geldim", "geri geldim"],
+  "yoklama": ["kimse var mı", "kim var", "online olan", "aktif olan", "burada kimse", "kimse yok mu"],
+  "oyun": ["harita", "uzaylı", "görev", "gemi", "lazer", "kalkan", "uridyum", "kredi", "seviye", "klan", "dron", "drone", "boss", "kasma", "kasılır", "npc", "jeneratör", "portal", "kapı", "cephane"]
+ },
+ "zararli": ["kendini öldür", "kendini as", "intihar et", "geber", "gebersin", "öl de kurtul", "ölsen iyi olur", "ölsene", "kanser ol", "orospu", "kahpe", "ibne", "tecavüz", "zenci", "hitler", "nazi"]
 }

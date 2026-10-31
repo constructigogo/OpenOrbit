@@ -12,7 +12,8 @@ class PvpAvi(Hedef):
     en_az_sn = 240
 
     def uygun(self, bot, b):
-        return bot.seviye >= (b.ayar('pvp_seviye', 6) or 1) and bot.deger()['guc'] >= 8
+        from .. import yonetici_uyari as YU
+        return bot.seviye >= (b.ayar('pvp_seviye', 6) or 1) and bot.deger()['guc'] >= 8 and not YU.etkin(bot, 'pvp', b.now)
 
     def puan(self, bot, b):
         o = bot.ozellik
@@ -21,6 +22,8 @@ class PvpAvi(Hedef):
         p *= 0.6 + 0.6 * bot.ruh['ozguven']
         if b.y is not None and bot.hafiza.kinliler() and b.y.cevrimici_ad(bot.hafiza.kinliler()):
             p += 0.25 * o['saldirganlik']
+        if b.y is not None and b.y.prime(b.now):
+            p *= float(b.ayar('prime_pvp', 2.0) or 1.0)           # akşam yoğun saati: PvP canlanır
         return p
 
     def basla(self, bot, b):
@@ -41,6 +44,16 @@ class PvpAvi(Hedef):
                 adaylar.append((len(dusman) - 2.5 * max(0.0, tehdit - 1.0 - bot.o('risk')), m))
             if adaylar:
                 hedef_map = max(adaylar)[1]
+        if (y is not None and kin is None and y.prime(b.now) and b.ayar('buyuk_savas', True) and bot.r.random() < 0.75
+                and K.girebilir(y.cephe(b.now), bot.firma, bot.seviye) and K.yol(bot.harita, y.cephe(b.now), bot.firma, bot.seviye)):
+            hedef_map = y.cephe(b.now)                    # büyük savaş: firmalar yoğun saatin cephesinde toplanır
+            cagri = y.__dict__.setdefault('cephe_cagri', {})
+            anahtar = (bot.firma, int(b.now // 3600))
+            if anahtar not in cagri and bot.o('konuskanlik') + bot.o('saldirganlik') > 1.0:
+                cagri[anahtar] = bot.ad
+                import harita as H
+                from .. import konusma as KN
+                y.konus(bot, 'firma', KN.kalip(bot, 'savas_cagri', harita=H.name(hedef_map)), now=b.now + bot.r.uniform(3, 20))
         if hedef_map is None:
             hedef_map = next((m for m in (13 + bot.firma - 1, 16, 29) if K.girebilir(m, bot.firma, bot.seviye)), bot.harita)
         bot.plan['harita'] = int(hedef_map)

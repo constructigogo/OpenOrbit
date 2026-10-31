@@ -275,6 +275,14 @@ def percentages():
 LOOT_IDS = {'abr': 'resource_collectable_axion-beam-regulator', 'schism': 'resource_collectable_schism', 'yesil_anahtar': 'resource_booty-key'}
 
 
+def sure_yaz(kayit, key, sn):
+    """Kapının tamamlanma süresi (istatistik; oyuncu isteği 2026-10-30) -> kayit['kapi_sureleri'][key] {en_iyi, son, sayi} (sn)."""
+    d = kayit.setdefault('kapi_sureleri', {}).setdefault(key, {'en_iyi': 0, 'son': 0, 'sayi': 0})
+    sn = int(max(1, sn))
+    d.update(son=sn, sayi=d['sayi'] + 1, en_iyi=min(d['en_iyi'], sn) if d['en_iyi'] else sn)
+    return d
+
+
 class Kapilar:
     """Oturumun kapı üreticisi (profil: kapilar) ve kapı haritasındaki koşu."""
 
@@ -917,6 +925,8 @@ class Kosu:
         else:
             self.phase, self.t = 'intro', now + pace('giris_bekleme_sn')
             world.send(self.say('devam' if G['dalga'] else 'giris'))
+            if not G['dalga']:                       # süre ilk dalgaya girişten (oturumda; çok haritalı kapıda haritalar arası da)
+                kapilar.__dict__.setdefault('baslangic', {})[key] = now
         world.log('   %s kapısı: dalga %d/%d, can %d (%s)' % (self.g['ad'], G['dalga'] + 1, len(self.g['dalgalar']), G['can'], self.phase))
 
     def wave(self):
@@ -1205,6 +1215,11 @@ class Kosu:
     def complete(self):
         """Son dalga: ödüller (Kapilar.finish), çıkış portalı, ekran mesajları."""
         k, w = self.k, self.w
+        t0 = k.__dict__.get('baslangic', {}).pop(self.key, None)
+        if t0:
+            with k.p.lock:
+                sure_yaz(k.p.d, self.key, time.time() - t0)
+                k.p.dirty = True
         msgs, info = k.finish(self.key, w.reward_msgs)
         out = k.exit_portal(self.key, self.map)
         w.add_gate(out)

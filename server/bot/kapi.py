@@ -189,6 +189,14 @@ def odullendir(bot, kapi, hiz=1.0):
     bot.olay('kapi_tamam', kapi=KAPI[kapi]['ad'])
 
 
+def sure_yaz(kayit, key, sn):
+    """Kapının tamamlanma süresi (istatistik; oyuncu isteği 2026-10-30) -> kayit['kapi_sureleri'][key] {en_iyi, son, sayi} (sn)."""
+    d = kayit.setdefault('kapi_sureleri', {}).setdefault(key, {'en_iyi': 0, 'son': 0, 'sayi': 0})
+    sn = int(max(1, sn))
+    d.update(son=sn, sayi=d['sayi'] + 1, en_iyi=min(d['en_iyi'], sn) if d['en_iyi'] else sn)
+    return d
+
+
 def kosulabilir(bot):
     """Kurulu ve geçilebilir kapı ya da None."""
     st = durum(bot)

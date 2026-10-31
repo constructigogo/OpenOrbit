@@ -439,6 +439,10 @@ class Profil:
         import gm_konsol as GMK
         if GMK.enabled(self):
             f['dailyRank'] = GMK.ADMIN_RANK  # GM konsolu (Ö2): istemci yöneticiyi dailyRank 6000 ile tanıyor (UnitFactory.InitMyUnit)
+        import yonetici_modu as YM
+        if YM.acik(self):                    # yönetici modu: rozet ve yönetici gemisinin görünümü (değerler kendi geminin)
+            f['dailyRank'] = YM.ROZET
+            f['typeId'] = YM.gemi(self) or f['typeId']
         return f
 
     def beacon(self, station=None, near_gate=False, pos=None, repairing=False, gate_peace=False, radiation=False, void=False):

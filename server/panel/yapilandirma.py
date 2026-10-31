@@ -34,6 +34,18 @@ DEFAULTS = {
     'calistirici': 'otomatik',      # Linux ve macOS: istemciyi açan otomatik | motor | wine | proton | ozel (calistirici.py)
     'calistirici_yolu': '',         # wine programı, Proton klasörü ya da özel komut (boş: kendiliğinden)
     'wine_onek': '',                # Wine öneki / Proton veri klasörü (boş: save/wine ya da save/proton)
+    'discord_rp': True,             # Discord Rich Presence (discord_rp.py); rp_*: profilde görünenler
+    'rp_pilot': False,              # pilot adı (gizlilik: varsayılan kapalı)
+    'rp_klan': True,
+    'rp_gemi': True,
+    'rp_seviye': True,
+    'rp_harita': True,              # harita adı ve bölgenin görseli
+    'rp_durum': True,               # savaşta (hedef), kapı dalgası, güvenli bölge, gemi parçalandı
+    'rp_firma': True,               # firmanın amblemi
+    'rp_sure': True,                # oturumun geçen süresi
+    'rp_grup': True,                # Arkadaşlarınla Oyna: grup büyüklüğü
+    'rp_butonlar': True,            # Discord sunucusu ve GitHub düğmeleri
+    'rp_panelde': True,             # oyun kapalıyken de (panelde)
 }
 CHOICES = {'pencere_modu': ('pencere', 'tam_ekran', 'kenarliksiz'), 'istemci_kapaninca': ('kapat', 'acik'),
            'pencere_kapaninca': ('bekle', 'kapat'), 'guncelleme': ('otomatik', 'bildir', 'kapali'),

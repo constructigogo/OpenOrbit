@@ -164,7 +164,11 @@ def grup_davet(y, bot, ad=''):
     if hata is not None:                               # oyuncu başka grupta, çevrimdışı, davet sınırı ...: söz olarak kalır
         from . import etkilesim as ET
         ET.soz_ver(bot, 'grup', ad, y.now if y else 0)
-        return _hata('davet gitmedi (%s)' % hata)
+        neden = {GR.GROUP_FULL: 'grup dolu', GR.CANDIDATE_IN_GROUP: 'o zaten bir grupta', GR.CANDIDATE_NONEXISTENT: 'o çevrimiçi değil',
+                 GR.BOSS_ONLY: 'yalnız grup lideri davet edebilir', GR.MAX_INVITER: 'çok fazla bekleyen davetin var',
+                 GR.MAX_CANDIDATE: 'onun çok fazla bekleyen daveti var', GR.CANDIDATE_BLOCKING: 'seni engellemiş',
+                 GR.DUPLICATE_INVITATION: 'davetin zaten gitti, yanıtını bekliyor'}.get(hata, 'hata %s' % hata)
+        return _hata('davet gitmedi: %s' % neden)
     return _ok()
 
 
@@ -229,6 +233,292 @@ def klana_basvur(y, bot, klan=''):
     return _ok() if out and out[0][1].get('success') else _hata('başvurulamadı')
 
 
+# ------------------------------------------------------------------------------------------------------------ klan yönetimi
+# (klan_yonetim.py; lider ya da hakkı olan üye: oyunun klan istekleri hakları kendisi denetler)
+def _klan(bot):
+    import klan as KL
+    from . import toplum
+    k = KL.klani(toplum.profil(bot))
+    return k, (KL.Klan(bot.profil, log=lambda *_: None) if k else None)
+
+
+def _sonuc(out, ok='', hata='yapılamadı (hakkın yok ya da geçersiz)'):
+    if out and out[0][1].get('success'):
+        return _ok(ok)
+    e = out[0][1].get('errorMsg') if out else None
+    return _hata(hata if not isinstance(e, dict) or not e.get('stringBasekey') else '%s: %s' % (hata, e['stringBasekey']))
+
+
+@arac('klan_aciklama', 'Klanın açıklamasını yaz (yalnız lider).', {'metin': 'string, en çok 2000 karakter'}, izin='klan')
+def klan_aciklama(y, bot, metin=''):
+    k, kl = _klan(bot)
+    if k is None or not str(metin).strip():
+        return _hata('klanın yok ya da metin boş')
+    return _sonuc(kl.handle('ChangeClanDescriptionRequest', {'desc': str(metin).strip()[:2000]}))
+
+
+@arac('klan_duyuru', 'Klanın haberlerine duyuru yaz.', {'metin': 'string'}, izin='klan')
+def klan_duyuru(y, bot, metin=''):
+    k, kl = _klan(bot)
+    if k is None or not str(metin).strip():
+        return _hata('klanın yok ya da metin boş')
+    return _sonuc(kl.handle('ClanAddNewsRequest', {'newsMessage': str(metin).strip()[:500]}))
+
+
+@arac('klan_postasi', 'Bütün klana posta gönder.', {'konu': 'string', 'metin': 'string'}, izin='klan')
+def klan_postasi(y, bot, konu='', metin=''):
+    k, kl = _klan(bot)
+    if k is None or not str(konu).strip() or not str(metin).strip():
+        return _hata('klanın yok ya da konu/metin boş')
+    return _sonuc(kl.handle('ClanSendAllMessageRequest', {'subject': str(konu).strip()[:50], 'msgText': str(metin).strip()[:1500]}))
+
+
+@arac('klan_rutbe', 'Rütbe ekle, sil ya da haklarını değiştir.', {
+    'islem': 'ekle | sil | haklar', 'rutbe': 'string: rütbenin adı',
+    'haklar': 'string: virgüllü haklar (hiremember, firemember, editranks, news, roundmail, tax, payout, diplo_start, diplo_end, '
+              'diplo_war, battle_station_build, battle_station_replace_module, battle_station_deflector)'}, izin='klan')
+def klan_rutbe(y, bot, islem='ekle', rutbe='', haklar=''):
+    import klan as KL
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None or not str(rutbe).strip():
+        return _hata('klanın yok ya da rütbe adı boş')
+    hak = [h.strip() for h in str(haklar or '').split(',') if h.strip() in KL.HAKLAR]
+    if islem == 'ekle':
+        out = kl.handle('ClanNewRankRequest', {'newRank': str(rutbe).strip()[:30]})
+        r = KY.rutbe_bul(k, rutbe)
+        if out and out[0][1].get('success') and r is not None and hak:
+            kl.handle('EditClanRanksRequest', {'ranks': [{'rankId': r['id'], 'rankName': r['ad'], 'rights': hak}]})
+        return _sonuc(out, 'rütbe eklendi')
+    r = KY.rutbe_bul(k, rutbe)
+    if r is None:
+        return _hata('böyle bir rütbe yok')
+    if islem == 'sil':
+        return _sonuc(kl.handle('ClanDeleteRankRequest', {'deleteRankId': r['id']}), 'rütbe silindi')
+    if islem == 'haklar':
+        return _sonuc(kl.handle('EditClanRanksRequest', {'ranks': [{'rankId': r['id'], 'rankName': r['ad'], 'rights': hak}]}),
+                      'haklar: %s' % (', '.join(hak) or 'yok'))
+    return _hata('islem ekle, sil ya da haklar olmalı')
+
+
+@arac('uye_rutbe', 'Bir üyeye rütbe ver (boş rütbe: rütbesini al).', {'ad': 'string: üye', 'rutbe': 'string: rütbe adı'}, izin='klan')
+def uye_rutbe(y, bot, ad='', rutbe=''):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    a, u = KY.uye_bul(k, ad)
+    r = KY.rutbe_bul(k, rutbe) if str(rutbe or '').strip() else {'id': 0}
+    if u is None or r is None:
+        return _hata('böyle bir üye ya da rütbe yok')
+    return _sonuc(kl.handle('EditClanMemberRequest', {'rankId': r['id'], 'memberId': int(u.get('uid', 0))}))
+
+
+@arac('uyeyi_cikar', 'Bir üyeyi klandan çıkar.', {'ad': 'string'}, izin='klan')
+def uyeyi_cikar(y, bot, ad=''):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    sonuc = KY.cikar(y, bot, k, kl, y.now if y else 0, ad=ad)
+    return _ok('%s çıkarıldı' % sonuc) if sonuc else _hata('çıkarılamadı (hakkın yok ya da üye değil)')
+
+
+@arac('liderligi_devret', 'Klanın liderliğini bir üyeye bırak.', {'ad': 'string'}, izin='klan')
+def liderligi_devret(y, bot, ad=''):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    sonuc = KY.devret(y, bot, k, kl, y.now if y else 0, ad=ad)
+    return _ok('lider artık %s' % sonuc) if sonuc else _hata('devredilemedi (lider değilsin ya da üye değil)')
+
+
+@arac('klan_vergi', 'Klanın vergisini ayarla (yüzde 0-5).', {'oran': 'integer'}, izin='klan')
+def klan_vergi(y, bot, oran=0):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    return _ok('vergi %%%d' % int(oran)) if KY.vergi_ayarla(bot, k, kl, y.now if y else 0, oran=int(oran)) else _hata('vergi hakkın yok')
+
+
+@arac('klan_butce', 'Kasanın paylarını ayarla (yüzde; toplamı en çok 90, kalanı yedek): istasyon, üyelere ödeme, savaş.',
+      {'ksi': 'integer', 'odeme': 'integer', 'savas': 'integer'}, izin='klan')
+def klan_butce(y, bot, ksi=None, odeme=None, savas=None):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None or k['lider'] != bot.ad.lower():
+        return _hata('yalnız lider')
+    b = KY.butce_ayarla(bot, k, y.now if y else 0, *[None if v is None else max(0, int(v)) / 100.0 for v in (ksi, odeme, savas)])
+    return _ok('istasyon %d%%, ödeme %d%%, savaş %d%%' % (100 * b['ksi'], 100 * b['odeme'], 100 * b['savas']))
+
+
+@arac('klan_odeme', 'Kasadan bir üyeye kredi öde.', {'ad': 'string', 'miktar': 'integer'}, izin='klan')
+def klan_odeme(y, bot, ad='', miktar=0):
+    from . import klan_yonetim as KY
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    a, u = KY.uye_bul(k, ad)
+    if u is None:
+        return _hata('böyle bir üye yok')
+    return _sonuc(kl.handle('PayoutClanRequest', {'amount': int(miktar), 'payoutUserId': int(u.get('uid', 0)), 'reason': 'payout'}),
+                  'ödendi', 'ödenemedi (hakkın yok, kasa yetmiyor ya da üyenin haftalık sınırı doldu)')
+
+
+@arac('klan_istasyon', 'Klanın istasyon kuracağı boş asteroidi seç (adıyla; modüller kasadan, bütçenin istasyon payıyla).',
+      {'istasyon': 'string: asteroidin adı'}, izin='klan_ksi')
+def klan_istasyon(y, bot, istasyon=''):
+    from . import klan_us as KU
+    k, kl = _klan(bot)
+    if k is None or not KU.acik() or not kl.hak('battle_station_build', k):
+        return _hata('istasyon kurma hakkın yok')
+    return _ok('hedef: %s' % istasyon) if KU.hedefle(k, istasyon, bot) else _hata('böyle boş bir asteroit yok')
+
+
+_DIPLO = {'baris': 0, 'peace': 0, 'ittifak': 1, 'alliance': 1, 'saldirmazlik': 2, 'nap': 2, 'savas': 3, 'war': 3}
+
+
+@arac('klan_diplomasi', 'Başka bir klana ittifak, saldırmazlık, savaş ya da barış teklif et.',
+      {'klan': 'string: klanın adı ya da etiketi', 'tur': 'ittifak | saldirmazlik | savas | baris', 'metin': 'string'}, izin='klan_diplomasi')
+def klan_diplomasi(y, bot, klan='', tur='', metin=''):
+    import klan as KL
+    k, kl = _klan(bot)
+    c = next((c for c in KL.KLANLAR.values() if str(klan).lower() in (c['ad'].lower(), c['etiket'].lower())), None)
+    if k is None or c is None or str(tur).lower() not in _DIPLO:
+        return _hata('klanın yok, böyle bir klan yok ya da tür geçersiz')
+    return _sonuc(kl.handle('ClanNewDiplomacyRequest', {'diploClanID': c['id'], 'diploForm': _DIPLO[str(tur).lower()],
+                                                        'desc': str(metin or '').strip()[:200]}), 'teklif gitti')
+
+
+@arac('diplomasi_yanit', 'Klanına gelen diplomasi teklifini kabul ya da reddet.', {'klan': 'string', 'kabul': 'boolean'},
+      izin='klan_diplomasi')
+def diplomasi_yanit(y, bot, klan='', kabul=False):
+    import klan as KL
+    k, kl = _klan(bot)
+    if k is None:
+        return _hata('klanın yok')
+    s = str(klan).lower()
+    r = None
+    for x in k.get('diplo_istek', []):
+        o = KL.KLANLAR.get(x['kimden']) or {}
+        if x['kime'] == k['id'] and s in (str(o.get('ad', '')).lower(), str(o.get('etiket', '')).lower()):
+            r = x
+            break
+    if r is None:
+        return _hata('o klandan bekleyen teklif yok')
+    return _sonuc(kl.handle('ClanEditDiploOfferRequest', {'diploId': r['id'], 'status': 'allow' if kabul in (True, 'true', 1) else 'deny'}))
+
+
 @arac('hicbiri', 'Bir şey yapma.', {})
 def hicbiri(y, bot):
     return _ok()
+
+
+# ------------------------------------------------------------------------------------------------------------ ajanın araçları
+# (Gelişmiş kip, güçlü sağlayıcı: bot/ajan.py modele sunar; karar motoru da çağırabilir)
+def _esya(bot, esya):
+    """Mağaza adayı (artis, para, fiyat, loot): tam loot ya da sonu ("lf-2", "goliath") eşleşir."""
+    from .hedefler import alisveris as ALIS
+    s = str(esya or '').strip().lower()
+    if not s:
+        return None
+    m = bot.oa.carpan('magaza_fiyat')
+    for a, p, f, l in ALIS.adaylar(bot):
+        if l.lower() == s or l.lower().rsplit('_', 1)[-1] == s:
+            return a, p, f * m, l
+    return None
+
+
+@arac('esya_al', 'Mağazadan belirli bir yükseltmeyi al (magaza listesindeki ad).', {'esya': 'string: eşyanın adı'}, izin='magaza')
+def esya_al(y, bot, esya=''):
+    c = _esya(bot, esya)
+    if c is None:
+        return _hata('mağaza listesinde yok (ya da yuvası yok / daha iyisi takılı)')
+    para = {'C': bot.k['kredi'], 'U': bot.k['uridyum']}[c[1]]
+    if para < c[2]:
+        return _hata('para yetmiyor: %d %s gerekli, %d var' % (c[2], c[1], para))
+    if not bot.ode(c[1], c[2]):
+        return _hata('para yetmedi')
+    bot.ekle(c[3])
+    bot.ist('alim')
+    bot.olay('alim', y.now if y else None, esya=c[3], fiyat=c[2], para=c[1])
+    if c[3].startswith('ship_'):
+        bot.olay('yeni_gemi', y.now if y else None, esya=c[3])
+    if bot.k.get('birikim') == c[3]:
+        bot.k['birikim'] = None                         # biriktirdiği şeyi aldı
+    return _ok('%s alındı (%d %s)' % (c[3], c[2], c[1]))
+
+
+@arac('biriktir', 'Bir yükseltme için para biriktir (alışveriş başka şeye harcamaz); boş ad hedefi kaldırır.', {'esya': 'string'},
+      izin='magaza')
+def biriktir(y, bot, esya=''):
+    if not str(esya or '').strip():
+        bot.k['birikim'] = None
+        return _ok('biriktirme hedefi kaldırıldı')
+    c = _esya(bot, esya)
+    if c is None:
+        return _hata('mağaza listesinde yok')
+    bot.k['birikim'] = c[3]
+    bot._adaylar = None
+    bot._birikim_uyandi = False                         # para tamamlanınca ajan bir kez uyanır (ajan.uyandiranlar)
+    return _ok('%s için biriktiriliyor (%d %s)' % (c[3], c[2], c[1]))
+
+
+@arac('gorev_sec', 'Alınabilir görevlerden belirli birini al (görev yoksa).', {'gorev': 'string: görevin adı ya da numarası'},
+      izin='gorev')
+def gorev_sec(y, bot, gorev=''):
+    from .hedefler import gorev as GV
+    if bot.k.get('gorev'):
+        return _hata('zaten bir görev sürüyor: %s' % GV.gorevler().get(bot.k['gorev']['id'], {}).get('ad', '?'))
+    s = str(gorev or '').strip().lower().lstrip('#')
+    for qid, q in GV.uygunlar(bot):
+        if s in (str(qid), str(q.get('ad', '')).lower()):
+            bot.k['gorev'] = dict(id=qid, kosullar={})
+            if not (GV.siradaki(bot) or (None, None))[1]:
+                bot.k['gorev'] = None
+                return _hata('bu görevin yeri şu an gidilebilir değil')
+            bot.olay('gorev_aldi', y.now if y else None, ad=q.get('ad'))
+            B.zorla(bot, 'gorev', pay=0.9, now=y.now if y else None)
+            return _ok('görev alındı: %s' % q.get('ad'))
+    return _hata('alınabilir görevlerde yok')
+
+
+@arac('kargo_sat', 'Kargodaki cevherleri en yakın istasyonda sat.', {}, izin='kargo')
+def kargo_sat(y, bot):
+    if bot.kargo_dolu() <= 0:
+        return _hata('kargo boş')
+    B.zorla(bot, 'satis', pay=1.0, sure=900, now=y.now if y else None)
+    return _ok()
+
+
+@arac('mod_gir', 'Açık bir moda (etkinlik / PvE) gir: bedelini öder, modun haritasına geçer.', {'mod': 'string: modun adı'},
+      izin='modlar')
+def mod_gir(y, bot, mod=''):
+    from . import modlar as MD
+    now = y.now if y else None
+    s = str(mod or '').strip().lower()
+    m = next((m for m in MD.adaylar(bot, now) if s in (m.kimlik.lower(), str(m.ad).lower())), None)
+    if m is None:
+        return _hata('bu mod şu an girilebilir değil')
+    bot._mod_aday, bot._mod_bak = m, (now or 0) + 300
+    B.zorla(bot, 'mod', pay=1.2, sure=900, now=now)
+    return _ok(m.ad)
+
+
+@arac('kapi_kos', 'Kurulu Galaksi Kapısına gir.', {}, izin='kapi')
+def kapi_kos(y, bot):
+    from . import kapi as KP
+    k = KP.kosulabilir(bot)
+    if bot.seviye < 10 or k is None:
+        return _hata('geçilebilecek kurulu kapı yok')
+    B.zorla(bot, 'kapi', pay=1.2, sure=900, now=y.now if y else None)
+    return _ok(KP.KAPI[k]['ad'])
+
+
+@arac('oturum', 'Oyunda bu kadar dakika daha kal (5-180).', {'dakika': 'integer'})
+def oturum(y, bot, dakika=30):
+    d = max(5, min(180, int(dakika)))
+    bot.oturum_bitis = (y.now if y else 0) + d * 60
+    return _ok('%d dk daha' % d)

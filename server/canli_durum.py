@@ -44,12 +44,14 @@ def snapshot(game):
     played = p.d.get('oynama_sn', 0) + (time.time() - s.play_start if s and getattr(s, 'play_start', None) else 0)
     d = {'zaman': time.time(), 'bagli': s is not None,
          'pilot': {'ad': pl.get('userName'), 'seviye': pl.get('level', 1), 'ep': pl.get('ep', 0), 'kredi': pl.get('credits', 0),
-                   'uridyum': pl.get('uridium', 0), 'onur': pl.get('honourPoints', 0), 'firma': pl.get('factionId')},
+                   'uridyum': pl.get('uridium', 0), 'onur': pl.get('honourPoints', 0), 'firma': pl.get('factionId'),
+                   'klan': pl.get('clanTag') or None},
          'gemi': {'ad': ship.get('lootId'), 'can': int(g.get('hitPoints', 0)), 'can_azami': g.get('hitMax', 0),
                   'kalkan': int(g.get('shield', 0)), 'kalkan_azami': g.get('shieldMax', 0), 'kargo': p.cargo_used(),
                   'kargo_azami': g.get('cargoSpaceMax', 0)},
          'konum': {'harita': H.name(k.get('mapId')), 'harita_id': k.get('mapId'), 'x': int(k.get('x', 0)), 'y': int(k.get('y', 0))},
-         'etkinlikler': sorted(TK.active()), 'oynama_sn': int(played)}
+         'etkinlikler': sorted(TK.active()), 'oynama_sn': int(played),
+         'oturum_bas': s.play_start if s else None}         # Discord Rich Presence'ın süresi (panel/discord_rp.py)
     if w:
         try:
             x, y = w.hero_pos()

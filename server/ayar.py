@@ -28,7 +28,7 @@ YENILE_SN = 1.0
 
 GRUPLAR = (('gemi', 'Gemin'), ('savas', 'Savaş ve uzaylılar'), ('odul', 'Ödüller'), ('ilerleme', 'İlerleme'), ('dunya', 'Dünya'),
            ('kapi', 'Kapılar ve modlar'), ('ekonomi', 'Ekonomi'), ('sure', 'Süreler'), ('muzayede', 'Müzayede'), ('arayuz', 'Arayüz'),
-           ('gelistirici', 'Geliştirici'))
+           ('yonetici', 'Yönetici'), ('gelistirici', 'Geliştirici'))
 RAKIP_SEVIYELERI = ('Kapalı', 'Çekingen', 'Ilımlı', 'Rekabetçi', 'Agresif')
 UST_SINIR = 10000.0             # çarpanların elle yazılabilen en büyük değeri ('sinir' verilmemişse)
 I32 = 2 ** 31 - 1               # istemciye 32 bitlik alanla giden değerlerin üstü (protokol taşırır: can, kalkan, fiyat)
@@ -80,7 +80,7 @@ SCHEMA = [
     _c('npc_hasar', 'Uzaylıların verdiği hasar', 'savas', 'Uzaylıların (NPC) gemine, P.E.T.\'ine ve dost gemilere verdiği hasar. '
        '0: hiç hasar almazsın.', sinir=1000.0),
     _c('oyuncu_hasar', 'Verdiğin hasar', 'savas', 'Lazer, roket, fırlatıcı, mayın, Smart Bomb, top, P.E.T. ve yeteneklerle '
-       'uzaylılara verdiğin hasar.', lo=0.1, sinir=1000.0),
+       'uzaylılara, oyunculara ve botlara verdiğin hasar.', lo=0.1, sinir=1000.0),
     _c('npc_can', 'Uzaylıların canı ve kalkanı', 'savas', 'Uzaylıların can ve kalkanı. Düşük değer uzaylıları çabuk '
        'öldürür.', uygulama='harita', lo=0.1, sinir=100.0),
     _c('npc_isabet', 'Uzaylıların isabet şansı', 'savas', 'Uzaylıların gemine ve P.E.T.\'ine isabet ettirme olasılığı (oyunun '
@@ -239,7 +239,7 @@ SCHEMA = [
                            'Çok sık, yüksek bütçeli ve hızlı karşılık verirler. Kaptırmamak için iyi teklif ver.'],
          aciklama='Müzayedede sana rakip olan sanal teklifçiler. Çekingen ve Ilımlı: biraz teklif verirler ama seni hiç geçmezler, '
                   'teklif verdiğin lot hep senin olur. Rekabetçi ve Agresif: geçtiğinde karşılık verirler; bütçelerini aşmadıkça '
-                  'lotu kaybedebilirsin (kredin geri gelir). Bot oyuncular gelene dek.'),
+                  'lotu kaybedebilirsin (kredin geri gelir). Dünyada bot paketi açıkken kapalıdır: teklifleri botlar verir.'),
     # ---------------------------------------------------------------- arayüz
     _b('karanlik', 'Karanlık haritalar (el feneri)', 'arayuz', 'Trial of Terrors kapısının haritalarında ekran kararır, yalnız '
        'geminin baktığı yön aydınlıktır (istemcinin el feneri etkisi). Kapatılırsa haritalar aydınlık.', uygulama='harita',
@@ -253,12 +253,29 @@ SCHEMA = [
        '"Unstoppable", "Godlike", "Like a Boss" duyurusu ve sesi (3, 6, 10, 15 öldürme; aralık en çok 10 sn).'),
     _b('reklamsiz', 'Açılış pencerelerini gösterme', 'arayuz', 'Girişte kendiliğinden açılan günlük bonus, ipucu ve Season Pass '
        'pencereleri gönderilmez (menülerden açılabilirler).', uygulama='giriş'),
+    # ---------------------------------------------------------------- yönetici (yonetici_modu.py)
+    _b('yonetici_modu', 'Yönetici modu', 'yonetici', 'Oyunda yönetici olursun: adının önünde yönetici rozeti (sarı A), rütbe '
+       'sistemine, Şeref Salonu sıralamalarına ve şirketteki sıraya girmezsin. Botlar seni yönetici olarak tanır: sana saldırmaz, '
+       'sohbetteki uyarılarına uyar, seni görünce tepki verir. Arkadaş sunucusunda yalnız sunucunun oyuncusu için.', uygulama='giriş'),
+    dict(anahtar='yonetici_gemisi', ad='Yönetici gemisi', grup='yonetici', tur='seviye', varsayilan=0,
+         secenekler=['Kendi gemin', 'UFO', 'Polis', 'G-Admincloak', 'Goliath Admin'], renkler=['', 'info', 'info', 'info', 'info'],
+         uygulama='giriş',
+         secenek_aciklama=['Yönetici modunda da kendi geminle görünürsün.',
+                           'Yönetici gemisi (ship_admin): oyundaki UFO uzaylısıyla aynı model.',
+                           'Polis gemisi (ship_police).',
+                           'Yöneticinin gizlenme gemisi (ship_g-admincloak).',
+                           'Goliath\'ın yönetici tasarımı (admincloak).'],
+         aciklama='Yönetici modundayken gemin bu görünümde; değerleri (can, hız, donanım) kendi geminin.'),
+    _b('yonetici_izleyici', 'İzleyici (dokunulmaz)', 'yonetici', 'Yönetici modundayken uzaylılar ve botlar sana saldırmaz, hasar '
+       'almazsın; haritaları rahatça gezip botları izleyebilirsin.', uygulama='anında'),
+    _b('yonetici_sohbet', 'Sohbette yönetici', 'yonetici', 'Yönetici modundayken sohbet mesajların yönetici olarak (oyunun yönetici '
+       'rengiyle) görünür.', uygulama='giriş', varsayilan=True),
+    _b('gm_konsol', 'GM konsolu', 'yonetici', 'Oyunun gizli yönetici penceresi: oyunda Ctrl, ardından Shift, ardından Z. Haritaya '
+       'ışınlanma, uzaylı ve kutu doğurma, eşya ve paket verme, görevleri bitirme, kapı kurma, bekleme sürelerini sıfırlama, '
+       'dokunulmazlık. Açıkken adının önünde yönetici rozeti görünür (istemci yöneticiyi rütbe 6000 ile tanıyor).', uygulama='giriş'),
     # ---------------------------------------------------------------- geliştirici
     _b('yakin_npc', 'Yakında uzaylı doğur', 'gelistirici', 'Test kolaylığı: ilk dört uzaylı türünden birer tane geminin hemen '
        'yanında doğar.', uygulama='harita'),
-    _b('gm_konsol', 'GM konsolu', 'gelistirici', 'Oyunun gizli yönetici penceresi: oyunda Ctrl, ardından Shift, ardından Z. Haritaya '
-       'ışınlanma, uzaylı ve kutu doğurma, eşya ve paket verme, görevleri bitirme, kapı kurma, bekleme sürelerini sıfırlama, '
-       'dokunulmazlık. Açıkken rütbe simgesi boş görünebilir (istemci yöneticiyi rütbe 6000 ile tanıyor).', uygulama='giriş'),
     _b('kontrol', 'Canlı test kontrol kanalı', 'gelistirici', 'Geliştirici aracı (kontrol.py, 127.0.0.1:8099): mesaj izi ve '
        'istek enjeksiyonu.', uygulama='başlatma'),
 ]
@@ -287,6 +304,9 @@ ALTLAR = {
               ('kapi', 'Kapılar', 'Galaksi Kapılarının ve etkinlik kapılarının şanslı ödülleri (tasarımlar, LF-4 …).'),
               ('mod', 'Modlar', "Astral'ın kurtarma çekirdeği ve anahtarları, EBL'nin ek ödülü.")),
     'npc_hasar': _YER, 'npc_can': _YER,
+    'oyuncu_hasar': (('pve', 'Uzaylılara (PvE)', 'Uzaylılara (NPC) verdiğin hasar.'),
+                     ('pvp', 'Oyunculara (PvP)', 'Başka oyunculara lazer ve roketlerle verdiğin hasar.'),
+                     ('bot', 'Botlara', 'Botlara verdiğin hasar.')),
     'kutu_bolluk': (('bonus', 'Bonus kutuları', 'Haritalara dağılan bonus kutuları.'),
                     ('ganimet', 'Ganimet sandıkları', 'Anahtarla açılan ganimet sandıkları.'),
                     ('etkinlik', 'Etkinlik kutuları', 'Etkinliklerin haritalara getirdiği kutular.')),

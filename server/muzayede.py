@@ -99,6 +99,12 @@ def best(lst):
 
 
 def rival_level():
+    """Sanal rakiplerin seviyesi; dünyada müzayedeye katılan botlar varken 0: teklifleri botlar verir, sanal rakip onlarla çakışmasın
+    (kullanıcı isteği 2026-10-30)."""
+    from bot import yonetici as YN
+    y = YN.AKTIF
+    if y is not None and y.botlar and y.izin('muzayede'):
+        return 0
     return AY.get('muzayede_rakip')
 
 

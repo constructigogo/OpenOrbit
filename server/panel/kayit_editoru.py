@@ -326,6 +326,29 @@ def rng_kaydi(p, i, l):
     return {k: v for k, v in out.items() if v is not None}
 
 
+def istatistik(pr):
+    """İstatistik sekmesi (salt okunur; oyuncu isteği 2026-10-30): rütbe puanının parçaları, uzaylı ve oyuncu öldürmeleri, ölümler,
+    kapılar (tamamlama ve süreler: kapi.sure_yaz), modların en iyileri."""
+    import rutbe as RT
+    import kapi as KP
+    c = RT.counters(pr)
+    npc = sorted(([RT.R['npc_puan'].get(k, {}).get('ad', '#' + k).strip(), int(n), RT.R['npc_puan'].get(k, {}).get('puan', 0)]
+                  for k, n in c['npc'].items() if n), key=lambda x: -x[1])
+    oyuncu = sorted(([RT.R['gemi_puan'].get(k, {}).get('ad', k.replace('ship_', '')), int(n)] for k, n in c['oyuncu'].items() if n),
+                    key=lambda x: -x[1])
+    kd = (pr.d.get('kapilar') or {}).get('kapilar') or {}
+    sure = pr.d.get('kapi_sureleri') or {}
+    kapilar = [{'anahtar': k, 'ad': KP.KAPI[k]['ad'], 'tamam': int((kd.get(k) or {}).get('tamam', 0)), **(sure.get(k) or {})}
+               for k in KP.KAPI if (kd.get(k) or {}).get('tamam') or k in sure]
+    pve = pr.d.get('pve') or {}
+    return {'puan': RT.breakdown(pr), 'npc': npc, 'oyuncu': oyuncu,
+            'olum': {'dusman': c['olum_dusman'], 'radyasyon': c['olum_radyasyon'], 'diger': c['olum_diger']},
+            'gorev': c['gorev'], 'dost': c['dost'], 'kapilar': kapilar,
+            'modlar': {'ebl': int((pve.get('ebl') or {}).get('en_iyi', 0)), 'labirent': int((pr.d.get('labirent') or {}).get('avlar', 0)),
+                       'mimesis': int(max((pr.d.get('mimesis') or {}).get('seferler') or [0]))},
+            'oynama_sn': int(pr.d.get('oynama_sn') or 0)}
+
+
 def gorunum(pr, m, asil=None):
     import magaza as MG
     import pet as PETM
@@ -428,6 +451,7 @@ def gorunum(pr, m, asil=None):
                    for l in sorted(set(p.d['esyalar'].values())) if 'hak' in MG.EK.X.get(l, {})},
         'havuzlar': {l: rng_havuz(l) for l in sorted(set(p.d['esyalar'].values())) if rng_turu(l)},
         'tum_gemiler': sorted(MG.ESYA['gemiler']),
+        'istatistik': istatistik(p),
     }
     if asil:
         out['fark'] = fark(asil, p.d)

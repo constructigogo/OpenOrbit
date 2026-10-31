@@ -90,6 +90,47 @@ def bot_ad_kaydi(game, b):
     return {'tamam': True, 'degisen': y.ad_kaydi_uygula() if y is not None else 0}
 
 
+def _bot(b):
+    from bot import yonetici as YN
+    y = YN.AKTIF
+    if y is None:
+        raise Hata(409, 'botlar açık değil')
+    bot = next((x for x in y.botlar if x.k['no'] == int(b.get('no') or 0)), None)
+    kd = next((x for x in y.paket.get('kadro', []) if x['no'] == int(b.get('no') or 0)), None)
+    if bot is None or kd is None:
+        raise Hata(404, 'bot yok')
+    return y, bot, kd
+
+
+def bot_detay(game, b):
+    """Panelin bot penceresi, oyun açıkken: canlı botun durumu (bot/duzenle.gorunum)."""
+    from bot import duzenle as DZ
+    y, bot, kd = _bot(b)
+    with y.lock:
+        bot.kayit()                                    # ruh hâli nesneden sözlüğe
+        return DZ.gorunum(bot.k, kd, cevrimici=bot.cevrimici)
+
+
+def bot_duzenle(game, b):
+    """Panel bir botu düzenledi, oyun açıkken: canlı bota hemen uygulanır (ruh hâli nesnesi, ekipman önbelleği, profil eşitlenir).
+    Hata kodu yanıtta (panel kendi dilinde iletir)."""
+    from bot import duzenle as DZ, toplum
+    y, bot, kd = _bot(b)
+    deg = b.get('degisiklik') or {}
+    with y.lock:
+        bot.kayit()
+        try:
+            DZ.uygula(bot.k, kd, deg, cevrimici=bot.cevrimici)
+        except DZ.DuzenlemeHatasi as e:
+            return {'hata': e.kod, 'alan': e.alan}
+        if 'ruh' in deg:
+            bot.ruh.d.update(bot.k['ruh'])
+        if any(a in deg for a in ('gemi', 'ekip', 'cephane')):
+            bot.ekip_degisti()
+        toplum.guncelle(bot)
+        return DZ.gorunum(bot.k, kd, cevrimici=bot.cevrimici)
+
+
 def isle(s, name, f):
     """İstemci göndermiş gibi (game.Session.inject gibi) -> o sırada istemciye gönderilen mesajlar."""
     giden = []
@@ -480,7 +521,8 @@ def start(game, folder, log=print):
                       '/hangar/islem': hangar_islem,
                       '/skylab/islem': skylab_islem, '/skylab/robot': robot, '/muzayede/teklif': teklif, '/muzayede/hepsi': hepsi,
                       '/muzayede/anlik': anlik, '/muzayede/oto': lambda g, b: kural(g, b, 'otomatik'),
-                      '/muzayede/alarm': lambda g, b: kural(g, b, 'alarmlar'), '/bot/ad_kaydi': bot_ad_kaydi}
+                      '/muzayede/alarm': lambda g, b: kural(g, b, 'alarmlar'), '/bot/ad_kaydi': bot_ad_kaydi,
+                      '/bot/detay': bot_detay, '/bot/duzenle': bot_duzenle}
             if self.path in yollar and isinstance(b, dict):
                 return self._isle(lambda: yollar[self.path](game, b))
             self._yanit(404, {'hata': 'yok'})

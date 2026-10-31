@@ -27,10 +27,11 @@ def attack_error(w, other, now):
             or w.reload_pending or other.reload_pending
             or w.oyuncu(other.hid) is not other or other.gizli(now)):
         return _denied()
-    if (w.in_pvp_peace(*w.hero_pos(now)) or other.in_pvp_peace(*other.hero_pos(now))
-            or now < other.invuln_until or other.invulnerable or other.hero_etki.invulnerable(now)):
-        return _denied()
     if w.grup_uyesi(other.hid) or other.grup_uyesi(w.hid):
+        return _denied()
+    if w.in_pvp_peace(*w.hero_pos(now)) or other.in_pvp_peace(*other.hero_pos(now)):
+        return _denied('peacearea')          # güvenli bölge (grup üyesi iletisi yazıyordu: oyuncu bildirimi 2026-10-30)
+    if now < other.invuln_until or other.invulnerable or other.hero_etki.invulnerable(now):
         return _denied()
     a, b = w.p.d['pilot'], other.p.d['pilot']
     clan = int(a.get('clanId') or 0)
@@ -51,7 +52,7 @@ def attack_error(w, other, now):
 
 
 def on_kill(killer, victim):
-    """Oyuncu oyuncuyu yok etti (dunya.hero_death source_player): kendi şirketi ise ceza; değilse günlük sayaca göre azalan şeref/TP,
+    """Oyuncu oyuncuyu yok etti (dunya.hero_death source_player): kendi şirketi ise (klanı savaşta değilse) ceza; değilse günlük sayaca göre azalan şeref/TP,
     rütbe sayacı, görev olayı ve dron puanı (resmî forum 127379, 127509, 127526)."""
     import rutbe as RT
     import dunya as D
@@ -61,7 +62,7 @@ def on_kill(killer, victim):
     vf, kf = vp.d['pilot'].get('factionId'), kp.d['pilot'].get('factionId')
     name = vp.d['pilot'].get('userName', '')
     msgs = []
-    if vf == kf:
+    if vf == kf and 3 not in (KL.iliski(kp, vp), KL.iliski(vp, kp)):     # savaştaki klan: kendi şirketinden de ceza yok (oyuncu bildirimi 2026-10-31)
         with kp.lock:
             n = kp.d.setdefault('dost_oldurme', 0) + 1
             kp.d['dost_oldurme'] = n
@@ -100,9 +101,11 @@ def _hit(w, other, now, normal, shield=0, atype=1):
     with other.lock:
         if attack_error(w, other, now):
             return
+        import dunya as D
+        factor = D.AY.carpan('oyuncu_hasar', 'pvp')                 # panelin hasar çarpanı (Oyunculara alt ayarı)
         if atype == 1:
-            factor = max(0.0, 1 + other.p.mods().get('alinan_lazer', 0))
-            normal, shield = int(round(normal * factor)), int(round(shield * factor))
+            factor *= max(0.0, 1 + other.p.mods().get('alinan_lazer', 0))
+        normal, shield = int(round(normal * factor)), int(round(shield * factor))
         if shield > 0:
             before = other.p.d['gemi'].get('shield', 0)
             other.send(other.hurt_hero(shield, atype=atype, source_player=w, now=now, shield_only=True))

@@ -12,10 +12,11 @@ klan, grup, fısıltı, posta, sıralama ve müzayede onları kendiliğinden gö
   müzayede           tüccar ve zengin botlar değerine göre teklif verir, son dakikalarda artırır
   sohbet             konusma.py (Normal) ya da llm.py (Gelişmiş)
 """
-import os, random, time
+import os, random, re, time
 
 import profil as PF
 import yollar as YOL
+from . import ad_uslup as AU
 from . import katalog as K
 
 
@@ -60,8 +61,9 @@ def guncelle(bot):
     if son is not None:                  # oyun profilden harcadı ya da verdi (klan kurma, başvuru ücreti, klan ödemesi): bota geçer
         k['kredi'] = max(0, k['kredi'] + int(pl.get('credits', 0)) - son[0])
         k['uridyum'] = max(0, k['uridyum'] + int(pl.get('uridium', 0)) - son[1])
+    k['rutbe'] = rutbe(bot)                      # panelin kadrosu da gösterir
     pl.update(userName=bot.ad, factionId=bot.firma, level=k['seviye'], ep=k['ep'], honourPoints=k['onur'], credits=k['kredi'],
-              uridium=k['uridyum'], dailyRank=rutbe(bot))
+              uridium=k['uridyum'], dailyRank=k['rutbe'])
     bot._para = (k['kredi'], k['uridyum'])
     gemi = k['ekip']['gemi']
     p.d['gemiler']['1']['lootId'] = gemi
@@ -75,16 +77,24 @@ def guncelle(bot):
                       enumerate((l, n) for l, n in k['ekip'].get('dron', {}).items() for _ in range(n))]
 
 
-def rutbe(bot):
-    """Görünen rütbe simgesi (dailyRank 1-21): rutbe.json eşiklerine göre kabaca puan (EP, onur, seviye, öldürmeler)."""
+def puan(bot):
+    """Rütbe puanı (rutbe.json formülü, kabaca: EP, onur, seviye, öldürmeler, görevler, gemi)."""
     import rutbe as RT
     F = RT.R['formul']
     k = bot.k
-    puan = k['ep'] * F['ep'] + k['onur'] * F['onur'] + k['seviye'] * F['seviye'] + k['istat'].get('npc', 0) * F['npc'] \
+    return k['ep'] * F['ep'] + k['onur'] * F['onur'] + k['seviye'] * F['seviye'] + k['istat'].get('npc', 0) * F['npc'] \
         + k['istat'].get('oyuncu', 0) * F['oyuncu'] + k['istat'].get('gorev', 0) * F['gorev'] \
         + RT.R.get('gemi_puan', {}).get(k['ekip']['gemi'], {}).get('puan', 0) * F['gemi']
+
+
+def rutbe(bot):
+    """Görünen rütbe simgesi (dailyRank 1-21): eşiklere göre, şirketteki sırayla sınırlı (rutbe.sirket_rutbesi: Chief General 1 ...)."""
+    import rutbe as RT
+    p = puan(bot)
     esik = RT.R['esikler']
-    return max(1, min(len(esik), sum(1 for e in esik if puan >= e)))
+    r = max(1, min(len(esik), sum(1 for e in esik if p >= e)))
+    s = RT.sirket_rutbesi(bot.uid, bot.firma, p)
+    return r if s is None else min(r, s)
 
 
 # ------------------------------------------------------------------------------------------------------------ oturum ve kayıt
@@ -146,6 +156,8 @@ def kaydol(y, sohbet=None):
     if sohbet is not None:
         sohbet.bot_kanca = y.sohbet_gelen
         sohbet.bot_fisilti = y.fisilti_gelen
+        from . import moderasyon as MOD
+        sohbet.engel_kanca = lambda user, path, dil: MOD.engel(y, user, path, dil)
     y.sohbet = sohbet
 
 
@@ -278,10 +290,39 @@ _ARKA = ('Legion', 'Knights', 'Wolves', 'Eagles', 'Raiders', 'Hunters', 'Order',
 _ARKA_TR = ('Kurtlar', 'Kartallar', 'Akincilar', 'Savascilar', 'Lejyon', 'Ordu', 'Sahinler', 'Korsanlar')
 
 
-def klan_adi(b, r):
-    tr = b.k['kisilik'].get('dil') == 'tr' and r.random() < 0.7
-    ad = '%s %s' % (r.choice(_ON_TR if tr else _ON), r.choice(_ARKA_TR if tr else _ARKA))
-    etiket = ''.join(w[0] for w in ad.split()).upper() + r.choice(('', '', str(r.randint(1, 99)), 'X', 'TR' if tr else 'EU'))
+_ULKE = {'tr': 'Turkish', 'de': 'German', 'pl': 'Polish', 'ru': 'Russian', 'es': 'Spanish', 'fr': 'French', 'pt': 'Brazilian'}
+_TEK = ('Bandidos', 'Nocturnos', 'Inferno', 'Phantoms', 'Outlaws', 'Spartans', 'Vikings', 'Immortals', 'Mercenaries', 'Renegades',
+        'Elite', 'Legends', 'Nemesis', 'Valhalla', 'Ragnarok', 'Apocalypse', 'Chaos', 'Exodus', 'Oblivion', 'Hellfire')
+_SON = ('Power', 'Army', 'Force', 'Elite', 'Warriors', 'Family', 'Team', 'Mafia')
+
+
+def klan_adi(b, r, etiketler=()):
+    """Gerçek sunuculardaki gibi klan adı ve etiketi: ikili ad, tek sözcük (bazen süslü, küçük harf ya da sarılı), "The X",
+    "Turkish Power"; etiket önce paketin gerçek etiket havuzundan (DOStats), değilse baş harfler, bazen süslü (Λ И Σ)."""
+    dil = b.k['kisilik'].get('ad_dili') or b.k['kisilik'].get('dil')
+    tr = dil == 'tr' and r.random() < 0.7
+    bicim = r.choices(('ikili', 'tek', 'the', 'ulke', 'kucuk', 'sarili'), (35, 20, 10, 15 if dil in _ULKE else 0, 10, 10))[0]
+    tek = r.choice(_TEK + (_ARKA_TR if tr else _ARKA))
+    if bicim == 'ikili':
+        ad = '%s %s' % (r.choice(_ON_TR if tr else _ON), r.choice(_ARKA_TR if tr else _ARKA))
+    elif bicim == 'tek':
+        ad = AU._harfler(tek.upper(), r) if r.random() < 0.5 else tek
+    elif bicim == 'the':
+        ad = 'The ' + tek
+    elif bicim == 'ulke':
+        ad = '%s %s' % (_ULKE[dil], r.choice(_SON))
+    elif bicim == 'kucuk':
+        ad = tek.lower() + r.choice(('', '', '.', ' clan', ' squad'))
+    else:
+        on, son = AU._sec(r, AU.SARGI[:8])
+        ad = on + tek + son
+    if etiketler and r.random() < 0.7:
+        return ad, r.choice(list(etiketler))[:4]
+    sade = re.sub(r'[^A-Za-z ]', '', AU.sade(ad) if not ad.isascii() else ad).split() or [tek]
+    etiket = (''.join(w[0] for w in sade).upper() if len(sade) > 1 else sade[0][:r.choice((3, 3, 4))].upper())
+    etiket += r.choice(('', '', str(r.randint(1, 99)), 'X', 'TR' if tr else 'EU')) if len(etiket) < 3 else ''
+    if r.random() < 0.3:
+        etiket = ''.join(r.choice(AU.BUYUK[c]) if c in AU.BUYUK and r.random() < 0.6 else c for c in etiket)
     return ad, etiket[:4]
 
 
@@ -299,8 +340,8 @@ def klan_isleri(y, b, now):
             r = random.Random('%s|klan|%d' % (b.ad, len(KL.KLANLAR)))
             kl = KL.Klan(p, log=y.log)
             for _ in range(6):
-                ad, etiket = klan_adi(b, r)
-                if not kl.taken(ad, etiket):
+                ad, etiket = klan_adi(b, r, y.paket.get('klan_etiketleri') or ())
+                if KL.Klan.valid_tag(etiket) and not kl.taken(ad, etiket):      # [CM] gibi ayrılmış etiketler olmaz
                     break
             aciklama = 'PvP' if b.o('saldirganlik') > 0.6 else 'PvE & quests'
             out = kl.handle('FoundClanRequest', {'clanTag': etiket, 'clanName': ad, 'clanDescription': aciklama})
@@ -323,9 +364,6 @@ def klan_isleri(y, b, now):
         b.olay('klana_girdi', now, klan=k['ad'])
     vergi_ode(b, k)
     kl = KL.Klan(p, log=y.log)
-    if k['lider'] == b.ad.lower() and not k.get('vergi'):
-        with KL.LOCK:                                    # kurucu vergiyi koyar (oyuncunun klan ayarı gibi): tutumluya göre %3-8
-            k['vergi'] = 3 + int(5 * b.o('tutumluluk'))
     if kl.hak('hiremember', k):
         for bs in list(k.get('basvurular', [])):
             if not basvuru_karari(y, b, k, bs, now):
@@ -337,7 +375,11 @@ def klan_isleri(y, b, now):
                 hos_geldin_postasi(y, b, k, bs.get('ad', ''))
     if y.izin('klan_diplomasi') and kl.hak('diplo_start', k):
         diplomasi(y, b, k, kl, now)
-    elif b.o('sadakat') < 0.3 and b.r.random() < 0.004:
+    from . import klan_yonetim as KY
+    KY.yonet(y, b, k, kl, now)                           # rütbeler, açıklama, duyuru, vergi, bütçe, ödeme, üyeler (klan_yonetim)
+    if KL.klani(p) is not k:
+        return                                           # liderliği bıraktı ya da klanı dağıttı
+    if k['lider'] != b.ad.lower() and b.o('sadakat') < 0.3 and b.r.random() < 0.004:
         kl.handle('LeaveClanRequest', {})
         b.k['klan'] = None
         b.olay('klandan_ayrildi', now, klan=k['ad'])
@@ -360,6 +402,9 @@ def vergi_ode(b, k):
     with KL.LOCK:
         k['kasa'] += pay
         k['gelir'] = int(k.get('gelir', 0)) + pay
+        u = k['uyeler'].get(b.ad.lower())
+        if u is not None:
+            u['katki_donem'] = int(u.get('katki_donem', 0)) + pay     # haftalık ödemede en çok katkı verenlere (klan_yonetim)
 
 
 def klan_firmasi(c):
@@ -475,45 +520,71 @@ def basvuru_karari(y, b, k, bs, now, kesin=False):
 
 
 # ------------------------------------------------------------------------------------------------------------ müzayede
+def lot_onemi(b, lot):
+    """Lotun bota önemi: 0 istemez; 1 sıradan (cephane, booster, kaynak; tüccar her lota); 2 donanım (lazer, jeneratör, dron); 3 takılı
+    olmayan CPU ya da modül; 4 şimdikinden iyi gemi; 5 biriktirdiği gemi. Müzayedenin asıl değeri CPU'lar ve büyük gemiler:
+    resmî oyunda günlerce uridyum biriktirmek yerine krediyle alınırlar, bu yüzden rekabet onlarda (kullanıcı isteği 2026-10-30)."""
+    from . import ekstra as EK
+    loot = lot['loot']
+    if loot.startswith('ship_'):
+        g, simdiki = K.ESYA['gemiler'].get(loot) or {}, K.ESYA['gemiler'].get(b.k['ekip']['gemi']) or {}
+        # yalnız değerleri olan ve şimdikinden iyi olan (yalnız görünüm olan tasarımlar, "goliath_design_jade", gemi değildir)
+        if not g.get('hp') or g['hp'] + 20000 * (g['laser'] + g['generators']) <= simdiki.get('hp', 0) + 20000 * (
+                simdiki.get('laser', 0) + simdiki.get('generators', 0)):
+            return 0
+        return 5 if b.k.get('birikim') == loot else 4
+    if lot.get('grup') in ('extra', 'module'):
+        return 0 if EK.var(b, loot) else 3
+    if loot in K.ESYA['lazerler'] or loot in K.ESYA['kalkan_jeneratorleri'] or loot in K.ESYA['dronlar'] or lot.get('grup') == 'generator':
+        return 2
+    if loot.startswith('ammunition_') or lot.get('grup') in ('booster', 'special') or b.arketip == 'tuccar':
+        return 1
+    return 0
+
+
 def muzayede(y, b, now):
-    """Teklif: tüccar ve zengin botlar değer gördüğü lota (anlık alım fiyatının bir payına kadar) teklif verir; dönem sonuna doğru
-    daha istekli. Sonuçları settle_bot verir (kazanırsa eşya, geçilirse kredi geri)."""
+    """Teklif: geçilen teklifini her sosyal turda savunur; yoksa ara sıra lotlara bakar, önemli olanı (CPU, iyi gemi) seçer. Tavan lotun
+    anında alım değeri x önem, rekabet, hırs ve dönemin sonuna yakınlık; serbest kredinin hırsa göre bir payı. Sonuçları settle_bot
+    verir (kazanırsa eşya, geçilirse kredi geri)."""
     import muzayede as MZ
     settle_bot(b, now)
     from . import ganimet as GB
-    istek = (0.6 if b.arketip == 'tuccar' else 0.15) * (0.5 + b.o('rekabet'))
     serbest = b.k['kredi'] - b.klan_birikimi()
-    if serbest < 3 * MZ.D.get('en_az_teklif', 10000) or b.r.random() > istek:
+    if serbest < 3 * MZ.D.get('en_az_teklif', 10000):
         return
-    lots = list(MZ.LOTS.values())
-    if not lots:
-        return
-    lot = b.r.choice(lots)
+    adaylar = []
+    for lot in list(MZ.LOTS.values()):
+        onem = lot_onemi(b, lot)
+        if onem:
+            end = MZ.period_end(lot['tur'], now)
+            benim = b.k['muzayede']['teklifler'].get('%s|%s' % (lot['tur'], lot['loot']))
+            adaylar.append((onem, lot, end, int(benim['teklif']) if benim and benim.get('bitis') == end else 0))
+    savun = [a for a in adaylar if a[3] and a[3] <= (MZ.best(MZ.bids(a[1], a[2], skip=b.profil)) or (0,))[0]]
+    if savun:
+        onem, lot, end, eski = max(savun, key=lambda a: a[0])           # geçildi: karşılık (oyuncu gibi pencereye geri döner)
+    else:
+        istek = (0.6 if b.arketip == 'tuccar' else 0.2) * (0.5 + b.o('rekabet')) * (0.6 + 0.8 * b.o('hirs'))
+        if not adaylar or b.r.random() > istek:
+            return
+        agirlik = [a[0] ** 3 * (1 + (a[1].get('fiyat') or 0) / 50000.0) for a in adaylar]      # önemli ve değerli lot öne
+        onem, lot, end, eski = b.r.choices(adaylar, weights=agirlik)[0]
+        if eski:
+            return                                   # zaten önde
     loot = lot['loot']
-    g, simdiki = K.ESYA['gemiler'].get(loot) or {}, K.ESYA['gemiler'].get(b.k['ekip']['gemi']) or {}
-    # gemi: yalnız değerleri olan ve şimdikinden iyi olan (yalnız görünüm olan tasarımlar, "goliath_design_jade", gemi değildir)
-    gemi_iyi = bool(g.get('hp')) and g['hp'] + 20000 * (g['laser'] + g['generators']) > simdiki.get('hp', 0) + 20000 * (
-        simdiki.get('laser', 0) + simdiki.get('generators', 0))
-    isine = (loot in K.ESYA['lazerler'] or loot in K.ESYA['kalkan_jeneratorleri'] or loot in K.ESYA['dronlar'] or gemi_iyi
-             or loot.startswith('ammunition_') or lot.get('grup') in ('extra', 'generator'))      # cephane, CPU, jeneratör
-    if loot.startswith('ship_') and not gemi_iyi:
-        return
-    if not isine and b.arketip != 'tuccar':
-        return
-    end = MZ.period_end(lot['tur'], now)
     key = '%s|%s' % (lot['tur'], loot)
     # lotun fiyatı anında alımın uridyumu (tamamı için): krediye çevrilir (eskiden kredi sanılıyordu, ucuz lotlara hiç teklif yoktu)
     deger = int((lot.get('fiyat') or 0) * GB.KUR) or 1000000
     kalan = max(0.0, (end - now) / MZ.SPAN[lot['tur']])
+    hirs = b.o('hirs')
     tavan = deger * (0.35 + 0.4 * b.o('rekabet') + 0.25 * (1 - kalan)) * (0.7 + 0.3 * (b.arketip == 'tuccar'))
-    tavan = min(tavan, serbest * 0.5)
+    if onem >= 3:
+        tavan *= 1 + hirs + 0.25 * (onem - 3)       # CPU ve gemi: hırslı bot anında alım değerinin iki katına kadar çıkar
+    tavan = min(tavan, serbest * (0.5 + (0.45 * hirs if onem >= 3 else 0)))
     rakip = MZ.best(MZ.bids(lot, end, skip=b.profil))
-    benim = b.k['muzayede']['teklifler'].get(key)
-    eski = int(benim['teklif']) if benim and benim.get('bitis') == end else 0
     simdi = rakip[0] if rakip else 0
-    if eski and eski > simdi:
-        return                                   # zaten önde
     teklif = max(MZ.D.get('en_az_teklif', 10000), int(simdi * b.r.uniform(1.05, 1.25)) + MZ.D.get('artis', 1000))
+    if teklif > tavan and simdi + MZ.D.get('artis', 1000) <= tavan:
+        teklif = int(tavan)                          # son kuruşuna kadar: tavanı geçmeden en yüksek
     if teklif > tavan or not b.ode('C', teklif - eski):
         return
     b.k['muzayede']['teklifler'][key] = {'teklif': teklif, 'bitis': end, 'zaman': int(now)}

@@ -53,6 +53,8 @@ class Sunucu:
         self.proc = None
         self.port = None
         self.hazir = False
+        self.ad = 'Qwen3 4B'
+        self.kullanim = {'istek': 0, 'girdi': 0, 'onbellek': 0, 'cikti': 0}     # token sayımı (llm_saglayici.Uzak ile aynı)
 
     def baslat(self, bekle_sn=180):
         k = kurulum()
@@ -104,6 +106,11 @@ class Sunucu:
                       headers={'Content-Type': 'application/json'})
         with urlopen(req, timeout=zaman) as r:
             d = json.loads(r.read())
+        u, k = d.get('usage') or {}, self.kullanim
+        k['istek'] += 1
+        k['girdi'] += int(u.get('prompt_tokens') or 0)
+        k['onbellek'] += int((u.get('prompt_tokens_details') or {}).get('cached_tokens') or 0)
+        k['cikti'] += int(u.get('completion_tokens') or 0)
         metin = _THINK.sub('', d['choices'][0]['message'].get('content') or '').strip()
         if sema is not None:                     # ilk geçerli JSON nesnesi (model bazen ardına ikincisini yazıyor)
             i = metin.find('{')

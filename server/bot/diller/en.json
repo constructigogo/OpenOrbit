@@ -210,6 +210,24 @@
   ]
  },
  "kaliplar": {
+  "laf_oldurdum": ["just sent {ad} back to base lol", "{ad} you fly like my grandma", "anyone else want some? {ad} already got his", "{ad} uninstall maybe", "farmed {ad} on {harita}, next", "{ad} thanks for the honor"],
+  "laf_sert": ["cry more", "says the guy i farm every day", "come to 4-4 and say that", "talk is cheap, fight me", "lol you wish", "keep typing, it wont help your aim"],
+  "laf_firma": ["{firma} is just free honor", "{firma} hiding at base again", "where is {firma}? scared?", "{firma} cant even hold their own maps", "farming {firma} all night ez"],
+  "laf_oyuncu": ["{ad} where are you hiding", "{ad} come to {harita} if you dare", "still waiting for you {ad}", "{ad} your base cant protect you forever"],
+  "mod_uyari_buyuk": ["{ad} please no caps", "{ad} turn off caps pls", "{ad} no need to shout, caps off please"],
+  "mod_uyari_sel": ["{ad} stop spamming please", "{ad} no spam in chat pls", "{ad} slow down, no flooding"],
+  "mod_uyari_hakaret": ["{ad} keep it respectful please", "{ad} no insults in chat, warning", "{ad} watch your language pls"],
+  "mod_uyari_reklam": ["{ad} no links or ads here", "{ad} advertising is not allowed", "{ad} no links in chat please"],
+  "mod_sustur": ["{ad} muted for {dk} min", "{ad} you were warned, {dk} min mute", "muted {ad} ({dk} min), keep it clean guys"],
+  "mod_yasak": ["{ad} banned from chat for {saat}h, too many mutes", "{ad} chat ban {saat}h", "{ad} you are out of chat for {saat} hours"],
+  "mod_kurallar": ["reminder: no caps, no spam, no insults, no ads. have fun", "chat rules: be respectful, no spam, no links", "keep chat clean please, mods are watching"],
+  "emir_tamam": ["on it", "ok boss", "roger", "got it", "yes sir", "omw", "k doing it"],
+  "emir_ret": ["cant right now", "busy atm sorry", "not now", "after this, sorry", "too tired, maybe later"],
+  "emir_us_yok": ["we dont have a station yet", "what base? we have none", "no cbs built yet"],
+  "savas_cagri": ["everyone to {harita}, big fight!", "all to {harita} now, enemies everywhere", "{harita} war, come fast", "need everyone on {harita}"],
+  "yonetici_ozur": ["sorry {ad}, wont happen again", "ok {ad} got it, my bad", "sorry, stopping now", "ok gm sorry", "understood, my bad"],
+  "yonetici_selam": ["hi {ad} o/", "gm is here, hello", "hey admin", "welcome {ad}"],
+  "yonetici_gordu": ["gm on {harita} guys", "admin flying around {harita}", "just saw a gm on {harita}", "ufo ship on {harita}, thats an admin"],
   "savas_ilan": [
    "we are at war with [{etiket}], shoot on sight",
    "war declared on {klan}",
@@ -494,7 +512,30 @@
    "coming {harita}",
    "hold on",
    "how many?"
-  ]
+  ],
+  "klan_rutbeler": ["Officer|Veteran|Member|Recruit", "Commander|Elite|Pilot|Rookie", "Captain|Lieutenant|Soldier|Cadet", "Co-Leader|Senior|Member|Trial"],
+  "klan_aciklama_odak_pvp": ["{klan} [{etiket}] - PvP clan, we hunt enemies on their own maps", "[{etiket}] {klan}: war, honor, pvp. no cowards", "{klan} active pvp clan, 4-x is ours"],
+  "klan_aciklama_odak_pve": ["{klan} [{etiket}] - quests and farming, we grow together", "[{etiket}] {klan}: pve, gates, quests. we help each other", "{klan} chill clan, farm and level up together"],
+  "klan_aciklama_odak_ksi": ["our station: {istasyon}. everyone defends", "{istasyon} is ours, we hold it"],
+  "klan_aciklama_kural": ["rules: be active, talk in clan chat, never attack members", "low tax, respect everyone, be online a few days a week", "never leave a clanmate alone"],
+  "klan_aciklama_alim": ["recruiting, min level {seviye}. apply", "we take new members (lvl {seviye}+)", "applications open, level {seviye} and up"],
+  "klan_aciklama_dolu": ["clan is full, not recruiting right now", "recruitment closed"],
+  "klan_duyuru_ittifak": ["we are allied with {klan} now, do not attack them", "new ally: {klan}"],
+  "klan_duyuru_saldirmazlik": ["nap signed with {klan}", "we have a nap with {klan}, leave them alone"],
+  "klan_duyuru_savas": ["we are at war with {klan}! shoot on sight", "WAR: {klan}. everyone get ready"],
+  "klan_duyuru_baris": ["war with {klan} is over", "peace with {klan}, gg"],
+  "klan_duyuru_odeme": ["weekly payout from the treasury: {adlar}. thanks", "top contributors got paid: {adlar}"],
+  "klan_duyuru_hedef_ksi": ["goal this week: our own battle station. pay tax, fill the bank", "saving up for a station, everyone farm"],
+  "klan_duyuru_hedef_kas": ["this week: farm and quests, level up", "goal: everyone gets one more level"],
+  "klan_duyuru_hedef_pvp": ["pvp week, collect honor", "goal: hunt the enemy company on 4-x"],
+  "klan_duyuru_ksi_yaris": ["we started building at {istasyon} ({harita}), modules paid by the bank", "{istasyon} on {harita} will be ours, building now"],
+  "klan_duyuru_ksi_kuruldu": ["our station is up: {istasyon} ({harita})! gz all", "{istasyon} is ours now, gg everyone"],
+  "klan_duyuru_ksi_yikildi": ["we lost {istasyon} ({harita}). we will rebuild", "{istasyon} is down, refill the bank"],
+  "klan_duyuru_ksi_saldiri": ["{istasyon} under attack! everyone to {harita}", "station is being hit, regroup on {harita}"],
+  "klan_posta_savas_konu": ["War: {klan}"],
+  "klan_posta_savas": ["war with {klan} has started. do not fly alone, make groups, shoot on sight. report losses in clan chat"],
+  "klan_posta_ksi_konu": ["Station under attack: {istasyon}"],
+  "klan_posta_ksi": ["our station {istasyon} on {harita} is under attack. everyone online come now"]
  },
  "kisaltma": [
   [
@@ -532,5 +573,7 @@
  ],
  "ascii": {},
  "ascii_oran": 0.0,
- "niyet": {}
+ "niyet": {},
+ "tepki": {},
+ "zararli": []
 }

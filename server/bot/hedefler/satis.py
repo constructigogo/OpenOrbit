@@ -75,7 +75,7 @@ class Satis(Hedef):
             return True
         nx, ny = g.mover.pos(now)
         if math.hypot(s['posX'] - nx, s['posY'] - ny) > SATIS_MESAFE:
-            BG._git(w, g, s['posX'], s['posY'], now, esik=300)
+            BG._rota(w, g, s['posX'], s['posY'], now, esik=300)
             return True
         bot.kargo_sat()
         bot.plan['bitti'] = True

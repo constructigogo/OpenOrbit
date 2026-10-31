@@ -21,7 +21,7 @@ class KapiKosusu(Hedef):
     def basla(self, bot, b):
         k = KP.kosulabilir(bot)
         basari, sure = KP.kosu_sonucu(bot, k, bot.r)
-        bot.plan.update(kapi=k, basari=basari, bitis=b.now + sure)
+        bot.plan.update(kapi=k, basari=basari, bitis=b.now + sure, sure=sure)
         harita = KP.KAPI[k].get('harita')
         if harita:
             S.atla(bot, harita, b.y)                    # kapı haritası: senin haritandan kalkar
@@ -39,6 +39,7 @@ class KapiKosusu(Hedef):
             st['kronos'] = 0
         if bot.plan.get('basari'):
             KP.odullendir(bot, k, y.hiz(bot))
+            KP.sure_yaz(bot.k, k, bot.plan.get('sure') or 0)
         else:
             bot.ist('kapi_kayip')
             bot.olay('kapi_kaybetti', kapi=KP.KAPI[k]['ad'])

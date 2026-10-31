@@ -6,6 +6,8 @@ Kadro paket oluşturulurken bir kez üretilir (kadro_uret, tohumlu ve belirlenim
 """
 import math, random, re, time
 
+from . import ad_uslup as AU
+
 OZELLIKLER = ('saldirganlik', 'rekabet', 'sosyallik', 'sabir', 'risk', 'sadakat', 'yardimseverlik', 'konuskanlik', 'tutumluluk',
               'hirs')
 
@@ -53,7 +55,8 @@ def sinirla(v, a=0.0, b=1.0):
 _LEET = {'a': '4', 'e': '3', 'i': '1', 'o': '0', 's': '5', 't': '7'}
 _SAYILAR = ('1', '7', '13', '23', '34', '35', '06', '16', '41', '42', '61', '69', '77', '88', '99', '007', '123', '1903', '1905',
             '1907', '1453', '2000', '2003', '2005', '2010', '666', '777', '1923', '01', '07', '27', '33', '38', '55', '21')
-AD_DESEN = re.compile(r'^[A-Za-z0-9_.\-]{3,20}$')
+AD_DESEN = re.compile(r'^[^\x00-\x20/|<>\\"\x7f\u200b-\u200f\u2028\u2029]{3,20}$')   # gerçek sunucular gibi süslü adlar
+#                                                  (ad_uslup.py); boşluk, / | < > \ " ve görünmez karakterler yok
 
 
 def _leet(s, r, oran):
@@ -115,14 +118,18 @@ def kisilik_uret(r, arketip=None, dil='tr'):
                 tepki_sn=round(sinirla(r.gauss(0.9, 0.35), 0.35, 2.0), 2))   # insan tepki süresi (sn): somut savaşta gecikme
 
 
-def kadro_uret(tohum, adet, firma_dagilimi=(1, 1, 1), dil='karisik', mevcut=(), ad_dili=None):
+def kadro_uret(tohum, adet, firma_dagilimi=(1, 1, 1), dil='karisik', mevcut=(), ad_dili=None, ozel=(), havuz=None):
     """Paketin kadrosu: [{no, ad, firma, kisilik}]. firma_dagilimi: (MMO, EIC, VRU) ağırlıkları. mevcut: kullanılmış adlar
     (büyük/küçük harf ayrımsız; oyuncunun ve başka botların adlarıyla çakışmasın). Aynı tohum ve girdi aynı kadroyu verir.
-    ad_dili: adların dili ('karisik': dosyaların ağırlığıyla); dil: sohbet dili ('karisik': her bot adının dilinde konuşur)."""
+    ad_dili: adların dili ('karisik': dosyaların ağırlığıyla); dil: sohbet dili ('karisik': her bot adının dilinde konuşur).
+    ozel: kullanıcının kendi botları [{ad, firma?, arketip?, dil?}] (oyuncu isteği 2026-10-30): kadronun başında, verilmeyen
+    alanları ötekiler gibi üretilir; firması verilen, dağılımdaki o firmanın bir yerini alır.
+    havuz: gerçek oyuncu adları {dil: [ad]} (bot/dostats.py): adlar önce oradan, bitince üretilir."""
     from .dil_verisi import DILLER, karisik_sec
     ad_dili = ad_dili or dil
     r = random.Random(tohum)
     kullanilan = {str(a).lower() for a in mevcut}
+    ozel = [o for o in ozel if str(o['ad']).lower() not in kullanilan][:adet]
     toplam = sum(firma_dagilimi) or 1
     # firmaları paylara göre tam sayıya böl (en büyük kalan), sonra karıştır: dağılım küçük kadroda da tutar
     paylar = [adet * f / toplam for f in firma_dagilimi]
@@ -131,18 +138,34 @@ def kadro_uret(tohum, adet, firma_dagilimi=(1, 1, 1), dil='karisik', mevcut=(), 
         sayi[i] += 1
     firmalar = [f + 1 for f in range(3) for _ in range(sayi[f])]
     r.shuffle(firmalar)
+    for o in ozel:                                   # firması verilen özel bot o firmanın bir yerini alır
+        if o.get('firma') in firmalar:
+            firmalar.remove(o['firma'])
+    kalan = iter(firmalar)
     out = []
-    for no, firma in enumerate(firmalar, 1):
+    for no in range(1, adet + 1):
+        o = ozel[no - 1] if no <= len(ozel) else {}
+        firma = o.get('firma') or next(kalan, None) or r.randint(1, 3)
         adl = ad_dili if ad_dili in DILLER else karisik_sec(r)
-        sohbet = dil if dil in DILLER else adl                              # karışık: adı Almanca olan Almanca konuşur
-        for _ in range(50):
-            ad = ad_uret(r, adl)
-            if ad.lower() not in kullanilan and AD_DESEN.match(ad):
-                break
+        sohbet = o.get('dil') or (dil if dil in DILLER else adl)          # karışık: adı Almanca olan Almanca konuşur
+        gercek = [x for x in (havuz or {}).get(adl) or [y for v in (havuz or {}).values() for y in v]
+                  if x.lower() not in kullanilan and AU.harf_tutarli(x)]
+        if o:
+            ad = str(o['ad'])
+        elif gercek:
+            ad = r.choice(gercek)
         else:
-            ad = 'Pilot%d' % r.randint(1000, 99999)
+            for _ in range(50):
+                ad = AU.susle(ad_uret(r, adl), r, adl)
+                if ad.lower() not in kullanilan and AD_DESEN.match(ad) and AU.harf_tutarli(ad):
+                    break
+            else:
+                ad = 'Pilot%d' % r.randint(1000, 99999)
         kullanilan.add(ad.lower())
-        out.append(dict(no=no, ad=ad, firma=firma, kisilik=dict(kisilik_uret(r, dil=sohbet), ad_dili=adl)))
+        x = dict(no=no, ad=ad, firma=firma, kisilik=dict(kisilik_uret(r, arketip=o.get('arketip'), dil=sohbet), ad_dili=o.get('dil') or adl))
+        if o:
+            x['ozel'] = True                             # kullanıcının botu (panel: Kadro'da işaretli)
+        out.append(x)
     return out
 
 
@@ -180,6 +203,7 @@ class RuhHali:
 OLAYLAR = {          # olay -> ilişkiye etkisi
     'oldurdu_beni': -0.35, 'oldurdum': -0.05, 'yardim_etti': 0.25, 'yardim_ettim': 0.1, 'sohbet': 0.03, 'hakaret': -0.2,
     'ovgu': 0.12, 'grup': 0.08, 'klan': 0.1, 'arkadas': 0.2, 'reddetti': -0.08, 'birlikte_avlandik': 0.05,
+    'dedikodu_iyi': 0.06, 'dedikodu_kotu': -0.08,          # başka bottan duyulan (ani.duydu)
 }
 
 
@@ -191,8 +215,11 @@ class Hafiza:
 
     def __init__(self, d=None):
         self.d = d if d is not None else {}
+        self.dinle = None                # (ad, tür, an) -> olay kancası: güçlü sağlayıcıda anı defteri (ani.olaydan; yönetici bağlar)
 
     def olay(self, ad, tur, now=None, kat=1.0):
+        if not str(ad or '').strip():
+            return 0.0                                     # kimliği bilinmeyen (adsız) biri: hatırlanacak kimse yok
         now = now or time.time()
         k = str(ad).lower()
         e = self.d.setdefault(k, {'d': 0.0, 'n': {}, 's': now, 'ad': str(ad)})
@@ -202,6 +229,8 @@ class Hafiza:
         e['s'] = now
         if len(self.d) > self.EN_COK:
             del self.d[min(self.d, key=lambda x: self.d[x]['s'])]
+        if self.dinle is not None:
+            self.dinle(ad, tur, now)
         return e['d']
 
     def _unut(self, e, now):

@@ -44,6 +44,10 @@ class Bot:
         k.setdefault('stok', {'ammunition_laser_lcb-10': 1000, 'ammunition_rocket_r-310': 20})     # yeni oyuncunun cephanesi
         k.setdefault('hedef', None)
         k.setdefault('niyet', None)
+        if k.get('onur', 0) < 0 and not k.get('_onur_duzeltme'):
+            k['onur'] = 0              # eski kayıt: kargo kutusu cezasıyla eksiye düşen onur bir kez sıfırlanır (govde.calar_mi)
+        k['_onur_duzeltme'] = 1
+        k['hafiza'].pop('', None)      # eski kayıt: saldıran bot gemisi adsız hatırlanıyordu (govde._ad)
         k['kisilik']['_ad'] = k['ad']                     # saat dilimi ve zevk adından (kişilik kadrodan her açılışta yeniden gelir)
         self.ruh = KS.RuhHali(k['ruh'], k.get('ruh_t'))
         self.hafiza = KS.Hafiza(k['hafiza'])
@@ -112,7 +116,11 @@ class Bot:
         self.k['istat'][ad] = self.k['istat'].get(ad, 0) + n
 
     def kalkan_payi(self):
-        """Jeneratör yuvalarının kalkana ayrılan payı: temkinli kalkan, avcı hız sever."""
+        """Jeneratör yuvalarının kalkana ayrılan payı: temkinli kalkan, avcı hız sever; klan emri (klan_emir: tam kalkan, tam hız,
+        dengeli) önce gelir."""
+        if self.k.get('yapi'):
+            from .klan_emir import YAPI_PAYI
+            return YAPI_PAYI.get(self.k['yapi'], 0.6)
         return KS.sinirla(0.85 - 0.45 * self.o('risk') * self.o('saldirganlik') - 0.15 * (self.arketip == 'avci'), 0.3, 0.95)
 
     def klan_birikimi(self):

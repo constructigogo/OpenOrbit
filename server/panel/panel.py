@@ -52,6 +52,8 @@ from coklu import Coklu, CokluHatasi  # noqa: E402
 import dunyalar as DW          # noqa: E402
 import botlar as BT            # noqa: E402  (Botlar sayfası: bot paketleri)
 import llm_kurulum as LLMK     # noqa: E402  (Gelişmiş bot kipinin dil modeli)
+import discord_rp as DRP       # noqa: E402  (Discord Rich Presence)
+from bot import llm_saglayici as SG  # noqa: E402  (dil modelinin sağlayıcısı: dahili ya da kullanıcının seçtiği)
 import kilitler as KL         # noqa: E402
 
 SURUM = '1.0'
@@ -154,6 +156,19 @@ TOKEN = secrets.token_hex(16)
 STATE = {'oyna': {'calisiyor': False, 'adimlar': [], 'hata': None, 'bitti': None, 'sadece_sunucu': False},
          'nabiz': time.monotonic(), 'pencere_kapandi': False, 'pencere_izleniyor': False, 'son_yedek': 0.0, 'kapaniyor': False,
          'sonraki_denetim': time.time() + 8, 'guncellendi': '--guncellendi' in sys.argv, 'srv': None, 'acilis': time.time()}
+
+
+def rp_kaynak():
+    """Discord Rich Presence'ın kaynağı (discord_rp.py) -> (canlı durum ya da None, panelin durumu)."""
+    canli = read_json(os.path.join(YOL.LOGS, 'canli_durum.json'), None) if YON.running() else None
+    if canli and time.time() - canli.get('zaman', 0) > 15:
+        canli = None
+    if YON.client_alive():
+        return canli, 'oyunda' if canli and canli.get('bagli') else 'arkadas' if ARK.m['durum'] == 'oyunda' else 'giris'
+    return None, 'baslatiliyor' if STATE['oyna']['calisiyor'] else 'panel'
+
+
+RP = DRP.Sunum(CFG, rp_kaynak, _, log)
 
 
 class Hata(Exception):
@@ -1291,7 +1306,7 @@ def botlar_durumu():
                  'pilotlar': [u.get('pilot') or u.get('ad') for u in w.get('kullananlar') or []]} for w in DW.liste(users)]
     return {'liste': BT.liste(), 'dunyalar': dunyalar, 'kipler': BT.KIPLER, 'izinler': BT.IZINLER, 'siniflar': BT.BASIT_SINIFLAR,
             'ayarlar': {k: {'tur': v[0], 'en_az': v[1], 'en_cok': v[2], 'varsayilan': v[3]} for k, v in BT.AYARLAR.items()},
-            'sunucu_acik': YON.running(), 'sunucu_paketi': getattr(YON, 'bot', None) and YON.bot[0], 'oyun_ayarlari': bot_oyun_ayarlari()}
+            'llm_cok_dilli': SG.cok_dilli(), 'sunucu_acik': YON.running(), 'sunucu_paketi': getattr(YON, 'bot', None) and YON.bot[0], 'oyun_ayarlari': bot_oyun_ayarlari()}
 
 
 def bot_oyun_ayarlari():
@@ -1311,7 +1326,9 @@ def bot_get(path, q):
     if path == '/api/botlar':
         return botlar_durumu()
     if path == '/api/bot/llm':
-        return LLM.state()
+        return dict(LLM.state(), saglayici=SG.durum())
+    if path == '/api/bot/detay':                   # Kadro > bot penceresi: oyun açıkken canlı bot, kapalıyken son kayıt
+        return bot_detayi(q.get('id'), int(q.get('no') or 0))
     if path == '/api/bot':
         pid = q.get('id')
         d = BT.ayrinti(pid)
@@ -1321,7 +1338,47 @@ def bot_get(path, q):
     raise Hata(_('Bilinmeyen istek.'))
 
 
+def bot_detayi(pid, no):
+    if paket_acik(pid):
+        try:
+            return dict(oyun_kanali('/bot/detay', {'no': no}), katalog=BT.duzenle_katalog(), canli=True)
+        except Hata:
+            # oyun açık ama kanal yanıt vermedi: son kayıt, düzenlenemez (oyun dosyayı yeniden yazar)
+            return dict(BT.bot_detay(pid, no), katalog=BT.duzenle_katalog(), canli=False, salt_okunur=True)
+    return dict(BT.bot_detay(pid, no), katalog=BT.duzenle_katalog(), canli=False)
+
+
 def bot_post(path, b):
+    if path == '/api/bot/detay':                   # botu düzenle (bot/duzenle.py): oyun açıkken canlı, kapalıyken dosyada
+        pid, no, deg = b.get('id'), int(b.get('no') or 0), b.get('degisiklik') or {}
+        if not isinstance(deg, dict) or not deg:
+            raise Hata(_('Değişiklik yok.'))
+        if paket_acik(pid):
+            r = oyun_kanali('/bot/duzenle', {'no': no, 'degisiklik': deg})
+            if r.get('hata'):
+                from bot import duzenle as DZ
+                raise Hata(BT.duzenleme_hatasi(DZ.DuzenlemeHatasi(r['hata'], r.get('alan', ''))))
+            if 'ozellik' in deg:
+                BT.bot_kisilik(pid, no, deg['ozellik'])
+            return dict(r, katalog=BT.duzenle_katalog(), canli=True)
+        return dict(BT.bot_duzenle(pid, no, deg), katalog=BT.duzenle_katalog(), canli=False)
+    if path == '/api/bot/llm/saglayici':          # sağlayıcı seçimi: dahili model, OpenAI, Claude ... (bot/llm_saglayici.py)
+        if b.get('kimlik') not in SG.SAGLAYICILAR:
+            raise Hata(_('Bilinmeyen istek.'))
+        if b.get('adres') and not re.fullmatch(r'https?://\S+', str(b['adres']).strip()):
+            raise Hata(_('Adres http:// ya da https:// ile başlamalı.'))
+        SG.kaydet(b['kimlik'], b.get('adres'), b.get('model'), b.get('anahtar'))
+        return bot_get('/api/bot/llm', {})
+    if path == '/api/bot/llm/modeller':
+        try:
+            return {'modeller': SG.modeller(b.get('kimlik'), b.get('adres') or None, b.get('anahtar') or None)}
+        except SG.SaglayiciHatasi as e:
+            raise Hata(str(e))
+    if path == '/api/bot/llm/test' and SG.ayar()['secili'] != SG.YEREL:
+        try:
+            return dict(LLM.test_uzak(), saglayici=SG.durum())
+        except LLMK.IndirmeHatasi as e:
+            raise Hata(str(e))
     if path.startswith('/api/bot/llm/'):           # dil modeli: kur, durdur, sil, test
         islem = {'kur': LLM.start, 'durdur': LLM.cancel, 'sil': LLM.sil, 'test': LLM.test}.get(path.rsplit('/', 1)[1])
         if islem is None:
@@ -1329,13 +1386,13 @@ def bot_post(path, b):
         if path.endswith('/sil') and YON.running():
             raise Hata(_('Önce oyunu kapat.'))
         try:
-            return islem()
+            return dict(islem(), saglayici=SG.durum())
         except LLMK.IndirmeHatasi as e:
             raise Hata(str(e))
     if path == '/api/bot/olustur':
         pid = BT.olustur(b.get('ad'), b.get('aciklama', ''), b.get('dunya'), b.get('kip', 'normal'), b.get('gelisim', 'progressive'),
                          b.get('adet', 60), b.get('dil', 'karisik'), b.get('firma_dagilimi') or (1, 1, 1), b.get('ayarlar') or {},
-                         oyuncular=oyuncu_adlari(), ad_dili_=b.get('ad_dili'))
+                         oyuncular=oyuncu_adlari(), ad_dili_=b.get('ad_dili'), ozel=b.get('ozel') or '', ad_kaynagi=b.get('ad_kaynagi'))
         return dict(botlar_durumu(), yeni=pid)
     pid = b.get('id')
     if path == '/api/bot/guncelle':
@@ -1351,7 +1408,7 @@ def bot_post(path, b):
         if paket_acik(pid) and (b.get('yeniden') or int(b.get('adet') or 0) < len(BT.oku(pid)['kadro'])):
             raise Hata(_('Bu paket oyunda açık: önce oyunu kapat.'))     # çalışan oyun eski kadroyla durumu yeniden yazar
         BT.kadro(pid, adet=b.get('adet'), dil=b.get('dil'), firma_dagilimi=b.get('firma_dagilimi'), yeniden=bool(b.get('yeniden')),
-                 oyuncular=oyuncu_adlari(), ad_dili_=b.get('ad_dili'))
+                 oyuncular=oyuncu_adlari(), ad_dili_=b.get('ad_dili'), ozel=b.get('ozel') or '', ad_kaynagi=b.get('ad_kaynagi'))
         return bot_get('/api/bot', {'id': pid})
     if path == '/api/bot/ad':
         BT.bot_adi(pid, int(b.get('no') or 0), b.get('ad'), oyuncular=oyuncu_adlari())
@@ -1404,6 +1461,8 @@ def h_get(path, q):
         return api_client()
     if path == '/api/panel_ayarlari':
         return CFG.all()
+    if path == '/api/discord_rp':                   # Discord Rich Presence: bağlantı ve profilde görünecek etkinlik (önizleme)
+        return {'durum': RP.durum, 'hata': RP.hata, 'etkinlik': RP.onizleme(), 'ayarlar': CFG.all()}
     if path == '/api/diller':
         return {'diller': D.liste()}
     if path == '/api/takvim':                       # etkinlik takvimi: ?bas=&bit= (zaman damgası, en çok 62 gün)
@@ -1616,7 +1675,8 @@ def h_post(path, b):
     # ---- kayıtlar
     if path == '/api/kayitlar/yeni':
         sid = KAY.create(b.get('ad'), b.get('pilot'), b.get('firma'), b.get('kredi'), b.get('uridyum'), b.get('seviye'), b.get('onur'),
-                         b.get('lazer'), b.get('roket'), bool(b.get('ilerlemeli')), b.get('ayar_kaynagi') or KAY.active())
+                         b.get('lazer'), b.get('roket'), bool(b.get('ilerlemeli')), b.get('ayar_kaynagi') or KAY.active(),
+                         kampanya=bool(b.get('kampanya')))
         if b.get('aktif_yap', True):
             KAY.set_active(sid)
         log('yeni kayıt: %s' % sid)
@@ -1677,6 +1737,7 @@ def h_post(path, b):
     # ---- istemci ve panel ayarları
     if path == '/api/panel_ayarlari':
         CFG.update({k: v for k, v in (b.get('degerler') or {}).items() if k != 'aktif_kayit'})
+        RP.uyan.set()                               # Discord Rich Presence ayarı değiştiyse hemen
         return api_client()
     if path == '/api/istemci/sec':
         start = client_folder() or ROOT
@@ -1934,6 +1995,7 @@ def main():
     if not CFG.get('aktif_kayit') and KAY.slots():
         CFG.update({'aktif_kayit': KAY.slots()[0]})
     threading.Thread(target=ticker, daemon=True).start()
+    RP.baslat()
     KL.baslat(YOL.KAYITLAR, YON, ARK, COK, log)       # OrbitBot ile ortak kayıt kilitleri (kilitler.py)
     if '--pencere-yok' not in sys.argv:
         proc = open_window('http://127.0.0.1:%d/' % PORT)

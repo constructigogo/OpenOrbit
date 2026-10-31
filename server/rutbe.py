@@ -23,7 +23,7 @@ Yerel uyarlama: rütbe puan eşiklerine göre; Hall of Fame listelerinde sunucud
 istemci ve arkadaş sunucusunda bütün bağlı oyuncular: her istemci aynı listeyi görür), klan listelerinde sunucunun klanları (klan.py;
 puanı üyelerin rütbe puanlarının toplamı).
 """
-import json, math, os, time
+import json, math, os, threading, time
 import veri as VERI
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -136,14 +136,106 @@ def rank_for(points):
     return max(i + 1 for i, t in enumerate(R['esikler']) if points >= t)
 
 
+# ------------------------------------------------------------ şirket sırası (bot oyuncular)
+# Gerçek sistem (darkorbitwiki guides/ranks; rutbe.json rutbeler): rütbe şirketteki sıraya göre, Chief General 1, General 2, Basic
+# General 3, Chief Colonel 5, Colonel 20 kişi; kalanlar yüzdeyle (Basic Colonel %1 ... Basic Space Pilot %20). Dünyada bot paketi
+# varken bu sıra kullanılır (oyuncu isteği 2026-10-30); eşikler tavan olarak kalır: küçük bir şirkette (paket başına onlarca bot)
+# az puanlı pilotlar general olmasın. Bot yokken eskisi gibi yalnız eşikler.
+SIRA_SN = 30
+_SIRA = {}                        # firma -> (zaman, [(puan, kimlik)])
+_YEREL = threading.local()        # hesap sürerken: topluluk.hepsi() botların profilini günceller, o da rütbeyi sorar
+
+
+def _botlar():
+    from bot import yonetici as YN
+    y = YN.AKTIF
+    return y.botlar if y is not None and y.botlar else None
+
+
+def _sirket(firma, now):
+    """Şirketin pilotları [(rütbe puanı, kimlik)]: kayıtlı botlar ve sunucunun oyuncuları (SIRA_SN önbellekli)."""
+    t = _SIRA.get(firma)
+    if getattr(_YEREL, 'icinde', False):
+        return t[1] if t else []                  # iç içe çağrı (canlı test 2026-10-30: sonsuz özyineleme): eski liste
+    if t and now - t[0] < SIRA_SN:
+        return t[1]
+    _YEREL.icinde = True
+    try:
+        out = _sirket_kur(firma, now)
+    finally:
+        _YEREL.icinde = False
+    _SIRA[firma] = (now, out)
+    return out
+
+
+def _sirket_kur(firma, now):
+    import topluluk as TP
+    from bot import toplum as TB
+    import yonetici_modu as YM
+    botlar = {b.uid: b for b in _botlar() or ()}
+    out = [(TB.puan(b), uid) for uid, b in botlar.items() if b.firma == firma and b.kayitli]
+    for uid, k in TP.hepsi().items():
+        if uid not in botlar and int(k.profil.d['pilot'].get('factionId') or 0) == firma and not YM.mi(profil=k.profil):
+            out.append((breakdown(k.profil, now)['rankPoints'], uid))
+    return out
+
+
+def sira_rutbesi(sira, n):
+    """Şirketin n pilotu arasında sira'ncının (0: en çok puanlı) rütbesi: önce sabit sayılı rütbeler (21'den aşağı), sonra kalanlar
+    yüzdeleriyle (16'dan aşağı; yüzdelerin dışında kalan en alt rütbe)."""
+    sabit = 0
+    for r in reversed(R['rutbeler']):
+        if r['tur'] == 'fixedPlayersPerCompany':
+            sabit += r['deger']
+            if sira < sabit:
+                return r['rutbe']
+    q, c = 100.0 * (sira - sabit + 1) / max(1, n - sabit), 0.0
+    for r in reversed(R['rutbeler']):
+        if r['tur'] == 'percentOfCompany':
+            c += r['deger']
+            if q <= c + 1e-9:
+                return r['rutbe']
+    return 1
+
+
+def sirket_rutbesi(uid, firma, puan, now=None):
+    """Botlar varken şirketteki sıradan rütbe (uid'nin kendi kaydı yerine güncel puanı) -> rütbe ya da None (bot yok)."""
+    if _botlar() is None or not firma:
+        return None
+    now = now or time.time()
+    others = [x for x in _sirket(firma, now) if x[1] != uid]
+    return sira_rutbesi(sum(1 for x in others if (x[0], -x[1]) > (puan, -uid)), len(others) + 1)      # eşitlikte önce kayıtlı (küçük kimlik)
+
+
+def gecilecek_puan(p, rank, now=None):
+    """Botlar varken rank rütbesine çıkmak için geçilmesi gereken şirket pilotunun puanı (o rütbedeki en alt sıradaki) ya da None."""
+    if _botlar() is None:
+        return None
+    now = now or time.time()
+    others = sorted((x for x in _sirket(int(p.d['pilot'].get('factionId') or 0), now) if x[1] != p.user_id), reverse=True)
+    n = len(others) + 1
+    k = max((i for i in range(n) if sira_rutbesi(i, n) >= rank), default=-1)
+    return others[k][0] if 0 <= k < len(others) else None
+
+
+def rank_of(p, points, now=None):
+    """Oyuncunun rütbesi: eşiklere göre; botlar varken şirketteki sırası da (ikisinin küçüğü)."""
+    r = rank_for(points)
+    s = sirket_rutbesi(p.user_id, int(p.d['pilot'].get('factionId') or 0), points, now)
+    return r if s is None else min(r, s)
+
+
 def daily_rank(p, now=None, force=False):
     """Günde bir (giriş ve harita değişiminde bakılır): rütbe hesaplanır, pilot.dailyRank'e yazılır -> yeni rütbe ya da None."""
+    import yonetici_modu as YM
+    if YM.acik(p):
+        return None                     # yönetici rütbe sistemine girmez (rozeti profil.ship_init verir)
     day = today(now)
     st = p.d.setdefault('rutbe', {})
     if st.get('gun') == day and not force:
         return None
     b = breakdown(p, now)
-    rank = rank_for(b['rankPoints'])
+    rank = rank_of(p, b['rankPoints'], now)
     icon = rank_icon(p, rank)
     prev, prev_rank = st.get('ay'), st.get('rutbe') or 1
     monthly = bool(prev and prev != day[:7] and active_month(st.get('gecmis', {}), prev))
@@ -184,8 +276,11 @@ def live_rank(p, now=None):
     """Rütbe puanı değişince (uzaylı, EP, onur, görev) rütbe hemen: eşiği geçen oyuncu o anda yükselir (kullanıcı bildirimi
     2026-10-24: puan yetse de rütbe ertesi güne dek değişmiyordu; gerçek oyunda rütbe günde bir, şirketteki sıraya göre verilir,
     tek oyunculuda sıra yok). Günlük kayıt (geçmiş, aylık ödül) daily_rank'te kalır. -> (eski, yeni) ya da None."""
+    import yonetici_modu as YM
+    if YM.acik(p):
+        return None                     # yönetici: rütbe değişmez, "rütbe atladın" yok
     pl = p.d['pilot']
-    rank = rank_for(breakdown(p, now)['rankPoints'])
+    rank = rank_of(p, breakdown(p, now)['rankPoints'], now)
     icon, old = rank_icon(p, rank), pl.get('dailyRank', 1)
     if icon == old:
         return None
@@ -233,8 +328,11 @@ def ranking_points(p, now=None):
     points.") yourRanking 2-20 iken, 1'de "hof_rank_lowest", 21'de "hof_rank_highest" kurar; aboveRanking/belowRanking'i okumaz. Kurduğu
     satırı pencereye koymayıp hep "hof_rank_lowest" yazıyor: istemcinin BepInEx eklentisi (panel/eklenti/Yamalar.cs RutbePenceresi)."""
     b = breakdown(p, now)
-    rank = rank_for(b['rankPoints'])
+    rank = rank_of(p, b['rankPoints'], now)
     nxt = R['esikler'][rank] if rank < len(R['esikler']) else b['rankPoints']
+    rakip = gecilecek_puan(p, rank + 1, now) if rank < len(R['esikler']) else None
+    if rakip is not None:
+        nxt = max(nxt, int(rakip) + 1)                  # şirkette o rütbenin sınırındaki pilotu geçmek gerek
     loot = p.ship()['lootId']
     out = _zero_points()
     out.update(b, yourRanking=rank, aboveRanking=min(rank + 1, 21), abovePoints=max(0, nxt - b['rankPoints']),
@@ -251,8 +349,9 @@ def _page(page_type, rows, total=1, cur=1):
 def oyuncular(p):
     """Hall of Fame'e girenler: sunucudaki oyuncuların profilleri (tek oyunculuda yalnız oyuncu; sunucuda olmayan profil tek başına)."""
     import topluluk as TP
-    lst = [k.profil for k in TP.hepsi().values()]
-    return lst if any(x is p for x in lst) else [p]
+    import yonetici_modu as YM
+    lst = [k.profil for k in TP.hepsi().values() if not YM.mi(profil=k.profil)]       # yönetici listelerde yok
+    return lst if any(x is p for x in lst) or YM.mi(profil=p) else [p]
 
 
 def _sorted(p, value):

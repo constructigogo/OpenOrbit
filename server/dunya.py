@@ -39,6 +39,7 @@ import etkinlik_harita as ETK  # noqa: E402
 import takvim as TKV          # noqa: E402
 import ganimet as GN
 import ayar as AY
+import yonetici_modu as YM
 import yukseltme as YK
 import ipucu as IP
 import ortak_harita as OH
@@ -533,7 +534,7 @@ class World:
 
     def ulasilir(self, now):
         """Uzaylılar bu kahramana saldırabilir mi (ölü, atlamada, gizli, güvenli bölgede değil)."""
-        return not (self.hero_dead or self.jumping or self.gizli(now) or self.in_peace(*self.hero_pos(now)))
+        return not (self.hero_dead or self.jumping or self.gizli(now) or self.in_peace(*self.hero_pos(now)) or YM.izleyici(self.p))
 
     def tanir(self, uid):
         """İstemci bu gemiyi tanıyor mu (kendisi ve P.E.T.'i, gördüğü uzaylılar, oyuncular ve P.E.T.'leri; 0: çevre)."""
@@ -1778,7 +1779,7 @@ class World:
             asset = None if n or pet else self.asset_at(f.get('targetId'))
             player = self.oyuncu(f.get('targetId')) if not n and not asset and not pet else None
             if n is not None and n.bot is not None:
-                denied = BG.saldiri_hatasi(self, n)
+                denied = BG.saldiri_hatasi(self, n) or ([('ShipDeselectionCommand', {})] if n.__dict__.get('gizli') else [])
                 if denied:
                     self.send(denied)
                     return
@@ -2230,7 +2231,7 @@ class World:
                 immune = True
             if immune:
                 dmg = 0
-            k = 1.0 if source_asset else AY.carpan('oyuncu_hasar')                       # panelin hasar çarpanı (lazer, roket, mayın, top, P.E.T. …)
+            k = 1.0 if source_asset else AY.carpan('oyuncu_hasar', 'pve' if n.bot is None else 'bot')                     # panelin hasar çarpanı (lazer, roket, mayın, top, P.E.T. …)
             if k != 1.0:
                 dmg = int(dmg * k)
                 if split:
@@ -2485,8 +2486,11 @@ class World:
             if sahip is None:
                 return []
         pay = sahip.paydaslar()
+        botlar = BG.grup_botlari(sahip)                    # kahramanın grubundaki botlar da paydaş (oyuncu bildirimi 2026-10-31)
         for w in pay:
-            w.npc_reward(n, x, y, len(pay), own=w is sahip)
+            w.npc_reward(n, x, y, len(pay) + len(botlar), own=w is sahip)
+        for b in botlar:
+            BG.npc_odulu(b, n, len(pay) + len(botlar))
         return pay
 
     def paydaslar(self):
@@ -2963,6 +2967,13 @@ class World:
         if not n or not n.alive:
             self.attacking = False
             return
+        if n.bot is not None and n.__dict__.get('gizli'):
+            # gizlenen bot (bot/aktif.gizlen): saldırı ve seçim biter; yoksa ateş hasarsız sürüyor, kırmızı hedef işareti kalıyordu
+            # (oyuncu bildirimi 2026-10-30; ortak haritada botun dünyası öteki oyuncunun hedefini temizlemez)
+            self.laser_stop()
+            self.target = None
+            self.send([('ShipDeselectionCommand', {})])
+            return
         hx, hy = self.hero_pos(now)
         nx, ny = n.mover.pos(now)
         rng = self.laser_range()
@@ -3181,10 +3192,13 @@ class World:
         n.children = {c for c in n.children if c in self.npcs and self.npcs[c].alive}
         return bool(n.children)
 
-    def npc_summon(self, n, now, hit=True):
+    def npc_summon(self, n, now, hit=True, vuran=None):
         """vurulunca_cagir {tur, adet, en_cok, bekleme_sn, ilk_bekleme_sn, sakin_sn}: vurulunca çevresine yardımcı çağırır (Cubikon ->
         Protegit …). ilk_bekleme_sn: sakin_sn (15) vurulmadıktan sonraki ilk vuruşta çağrı o kadar sonra (kullanıcı bildirimi 2026-10-25:
-        Protegit'ler ilk atışta hemen çıkıyordu). hit: vuruş değil, bekleyen ilk çağrı."""
+        Protegit'ler ilk atışta hemen çıkıyordu). hit: vuruş değil, bekleyen ilk çağrı. vuran: vuran bot gemisi (yardımcılar botun
+        çevresinde doğar, ona saldırır: uzayli.cagiran_bot); oyuncunun vuruşu None."""
+        if hit:                         # can eşiği ve periyodik çağrılar da bilsin (uzayli.cagiran_bot)
+            n.ab['cagiran'] = vuran.id if vuran is not None else None
         v = n.davranis.get('vurulunca_cagir')
         if not v:
             return
@@ -3245,13 +3259,16 @@ class World:
 
     def summon_one(self, n, v, now):
         x, y, r = *n.mover.pos(now), 200
-        if v.get('dogma'):              # oyuncunun biraz uzağından ekranın hemen dışına dek (Cubikon; kullanıcı bildirimi 2026-10-27)
+        bot = self.alien.cagiran_bot(n)
+        if bot is not None:             # botun çağırttığı: botun çevresinde doğar, bota saldırır
+            (x, y), r = bot.mover.pos(now), random.uniform(*v['dogma']) if v.get('dogma') else 250
+        elif v.get('dogma'):            # oyuncunun biraz uzağından ekranın hemen dışına dek (Cubikon; kullanıcı bildirimi 2026-10-27)
             (x, y), r = self.hero_pos(now), random.uniform(*v['dogma'])
         a = random.uniform(0, 2 * math.pi)
         c = self.spawn_npc_at(v['tur'], min(max(x + math.cos(a) * r, 300), self.map_w - 300),
                               min(max(y + math.sin(a) * r, 300), self.map_h - 300))
         self.alien.adopt(n, c)
-        c.engaged, c.next_think = True, now      # sürü hemen saldırır (fandom: Protegit'ler bir anda üstüne gelir)
+        self.alien.saldirt(c, bot, now)          # sürü hemen saldırır (fandom: Protegit'ler bir anda üstüne gelir)
         if v.get('koru'):
             c.guard = (n.id, v['koru'])
         n.children.add(c.id)
@@ -3410,12 +3427,13 @@ class World:
             self.send([('CombatMusicCommand', {'combatEvent': 0 if fight else 1})] + (self.p.hint(IP.SHIP_REPAIR) if hurt else []))
 
     def shield_tick(self, now):
-        """Savaş dışında kalkan dolar: son vuruştan yenilenme_bekleme_sn (15) sonra saniyede kalkan_yenilenme_sn (%4) oranında;
-        panelin kalkan_yenilenme çarpanı ve SREG-B01 üstüne biner (kayıt ve fandom Shield: esyalar.json notları)."""
+        """Kalkan dolar: son alınan hasardan yenilenme_bekleme_sn (15) sonra saniyede kalkan_yenilenme_sn (%4) oranında; ateş etmek
+        dolumu durdurmaz (gerçek kayıt 20261027_235305: oyuncu ateş ederken, son hasardan 17 sn sonra %4/sn dolum; oyuncu bildirimi
+        2026-10-30). Panelin kalkan_yenilenme çarpanı ve SREG-B01 üstüne biner (kayıt ve fandom Shield: esyalar.json notları)."""
         g = self.p.d['gemi']
         k = AY.carpan('kalkan_yenilenme')                   # panel: 0 dolmaz
         if (now < self.next_shield or self.hero_dead or g.get('shield', 0) >= g.get('shieldMax', 0) or k <= 0
-                or now - self.last_combat < ESYA['yenilenme_bekleme_sn']
+                or now - self.last_hurt < ESYA['yenilenme_bekleme_sn']
                 or self.p.mods().get('kalkan_erime_sn', 0) > 0):       # Moth / 3D Wheel eritir: pasif dolum erimeyi silmesin
             return
         self.next_shield = now + 1.0
@@ -3509,6 +3527,8 @@ class World:
         dmg = int(dmg * max(0.0, 1 + m.get('alinan_hasar', 0)) * k)       # Fortify, Revenge (alınan hasar %5)
         if self.hero_etki.invulnerable(now) or ((source_player or source_asset) and (self.invulnerable or now < self.invuln_until)):
             dmg = 0                                 # Insta-Shield (savas_esya.py)
+        if YM.izleyici(self.p):
+            dmg = 0                                 # yönetici izleyici: hasar almaz (yonetici_modu.py)
         if dmg and killer is not None and getattr(killer, 'alive', False):
             back = GY.effect(self.p, 'yansit', now) or self.hero_etki.ability('yansit', now)       # Berserker Revenge (Mimesis Chest'inki de): hasar saldırana döner
             if back:
@@ -4055,7 +4075,7 @@ class World:
         # protected zone (station, portal, layout safe zone): nobody attacks the pilot, except the alien he attacked (permission set in hit_npc)
         zoned = self.in_peace(hx, hy) and not retaliating
         cloaked = self.abilities.cloaked(now) or self.items.cloaked()
-        hidden = self.hero_dead or self.jumping
+        hidden = self.hero_dead or self.jumping or YM.izleyici(self.p)       # yönetici izleyici: kimse kovalamaz (yonetici_modu.py)
         hero_safe = zoned or hidden                 # peşini bırakma nedenleri; gizlenme yok: saldıran uzaylı EMP-01'e dek vazgeçmez (oyuncu bildirimi)
         spared = hero_safe or cloaked               # yeni saldırı başlatma nedenleri
         if n.yol:                                   # gezgin: kovalamaz, rotasında sürer; menzildeki oyuncuya ateş eder
