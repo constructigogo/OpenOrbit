@@ -98,24 +98,33 @@ Remotes: `origin` = constructigogo/OpenOrbit (the fork), `upstream` = kaanumay/O
   `git merge upstream/main`, `git push origin main`. The panel's git updater fetches `origin main` (the fork) and only
   fast-forwards, so it never pulls upstream directly. Keep the fork diff small, since `panel.py` is the conflict hotspot.
 
-The sibling project `../OrbitBot` (headless bot, a separate repo) depends on these. Don't change them blindly:
-- **Imports** (`OrbitBot/orbitbot/openorbit.py` puts `server/` on `sys.path`). Keep both modules import-safe, with no
-  import side effects and stdlib only, including `harita_duzeni`/`veri`.
-  - `protocol`: `CLIENT_HASH`, `encode_message`, `Framer(client_side=False)`, `messages(payload, server_side=True)`,
-    `DecodeError`.
-  - `harita`: `name()`, `company()`, `NO_DMZ_MAPS`, `DMZ_AFTER_JUMP_SN`.
+The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends on these. Don't change them blindly:
+- **Files it reads at runtime** (no Python import; the C# port reimplements the codec and map rules):
+  - `server/data/protocol_read.json` (message spec) and `server/data/spacemap-config.xml` (map name lines).
+  - The `CLIENT_HASH = '<32 hex>'` line in `server/protocol.py` and the `DESTEKLENEN = '<x.y.z>'` line in
+    `server/panel/istemci.py`, both read with a regex: keep them single-line string assignments.
+  - `server/data/protokol/surum.txt`: the local client version is `istemci.supported()` rebuilt in C#.
+  - Ported by hand, so a change here needs the C# port updated: `protocol.py`'s `FIXES` table, value transforms,
+    framing and LZ4 block format; `harita`'s name parsing, `company()`, `NO_DMZ_MAPS`, `DMZ_AFTER_JUMP_SN` and
+    `EXTRA_NAMES`.
+- **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol` and `harita` and loads
+  `server/panel/istemci.py` by path, with `server/` and `server/panel/` on `sys.path`. Keep these modules import-safe,
+  with no import side effects and stdlib only (`harita_duzeni`, `veri`, and `istemci.py`'s own imports included). After
+  each upstream merge, rerun it in OrbitBot: failing reference tests there mean the C# port needs updating.
 - **HTTP on 8081:**
-  - `/misafir/bilgi`: OrbitBot reads `protokol`, `misafir`, `en_cok`, `yer` and `sifre`.
+  - `/misafir/bilgi`: OrbitBot reads `protokol`, `misafir`, `en_cok`, `yer`, `sifre` and `istemci`. It refuses to join
+    when `istemci` is present and differs from its local `supported()` label, the same rule as the panel's JOIN.
   - `/misafir/giris`, `/misafir/profil` (long poll) and `/misafir/cikis`.
-  - `/yerel/ekle` and `/yerel/cikar` (localhost plus the admin key).
-  - `cok_oyunculu.PROTOKOL` (1) must equal OrbitBot's `guest.PROTOKOL`.
+  - `cok_oyunculu.PROTOKOL` (1) must equal OrbitBot's `GuestApi.Protokol`.
+- **Its end-to-end tool** starts `python -I server/game.py <logs> --cok-oyunculu --profil= --ayarlar= --durdur=` with
+  `DO_KAYIT_KLASORU`, `DO_GUNLUK_KLASORU` and `DO_COK_OYUNCULU` (`{misafir, sifre, en_cok}`) on copied saves.
 - **Save format:**
   - `profil.json`: `pilot.{userName, level, factionId, userId}`, `gemi.typeId`, `konum.mapId`.
   - `kayit.json`: `ad`.
   - `yedek/oto_YYYYmmdd_HHMMSS.json` backups and `yedek/notlar.json`.
   - `panel.json`: `aktif_kayit`.
-- **Locks** (`kilitler.py`): `panel.lock` / `orbitbot.lock` in each slot folder. Each holds JSON `{pid, since, ne, adres}`
-  and counts only while its pid is alive. The panel rewrites its locks atomically every 2 s and removes them on exit.
+- **Locks** (`kilitler.py`): `panel.lock` (`{pid, since, ne, adres}`) and `orbitbot.lock` (`{address, pid, since}`) in
+  each slot folder. Each counts only while its pid is alive. The panel rewrites its locks atomically every 2 s and removes them on exit.
   OrbitBot reads `panel.lock`'s `adres` to detect the user's own session.
 - **OrbitBot detects lock support by checking that `server/panel/kilitler.py` exists.** Renaming or moving it silently
   disables the integration.
