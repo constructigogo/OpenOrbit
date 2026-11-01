@@ -101,16 +101,23 @@ Remotes: `origin` = constructigogo/OpenOrbit (the fork), `upstream` = kaanumay/O
 The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends on these. Don't change them blindly:
 - **Files it reads at runtime** (no Python import; the C# port reimplements the codec and map rules):
   - `server/data/protocol_read.json` (message spec) and `server/data/spacemap-config.xml` (map name lines).
+  - Travel: `server/data/maps-config.xml` (gates) and `server/data/harita_duzeni.json` (map layout).
+  - Quests: `server/data/gorevler.json`, `gorev_ekleri.json`, `npc.json` (alien spawns) and `seviyeler.json` (levels).
+  - Collecting: `server/data/esyalar.json` (`cevherler`: ore fields, types and prices) and `npc.json`'s cargo and
+    pick-up keys (each alien's `kargo` and `ek_odul`, `bonus_kutu`/`bonus_kutu_4x`, `toplama_mesafe`, `kutu_gorus`).
+    A malformed `esyalar.json` stops every bot.
   - The `CLIENT_HASH = '<32 hex>'` line in `server/protocol.py` and the `DESTEKLENEN = '<x.y.z>'` line in
     `server/panel/istemci.py`, both read with a regex: keep them single-line string assignments.
   - `server/data/protokol/surum.txt`: the local client version is `istemci.supported()` rebuilt in C#.
   - Ported by hand, so a change here needs the C# port updated: `protocol.py`'s `FIXES` table, value transforms,
-    framing and LZ4 block format; `harita`'s name parsing, `company()`, `NO_DMZ_MAPS`, `DMZ_AFTER_JUMP_SN` and
-    `EXTRA_NAMES`.
-- **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol` and `harita` and loads
-  `server/panel/istemci.py` by path, with `server/` and `server/panel/` on `sys.path`. Keep these modules import-safe,
-  with no import side effects and stdlib only (`harita_duzeni`, `veri`, and `istemci.py`'s own imports included). After
-  each upstream merge, rerun it in OrbitBot: failing reference tests there mean the C# port needs updating.
+    framing and LZ4 block format; `harita`'s name parsing, `company()`, `NO_DMZ_MAPS`, `DMZ_AFTER_JUMP_SN`,
+    `EXTRA_NAMES`, `GATES`, `map_size()` and `level_required()`; `gorev`'s quest resolver and constants; the pick-up,
+    harvest and ore-sale rules in `dunya.py` (ranges, view range, own home station only) and `profil.py`'s `CARGO_ORES`.
+- **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `harita`, `ayar` and
+  `gorev` and loads `server/panel/istemci.py` by path, with `server/` and `server/panel/` on `sys.path`. Keep these
+  modules import-safe, with no import side effects and stdlib only (`harita_duzeni`, `veri`, and `gorev`'s and
+  `istemci.py`'s own imports included). After each upstream merge, rerun it in OrbitBot: failing reference tests there
+  mean the C# port needs updating.
 - **HTTP on 8081:**
   - `/misafir/bilgi`: OrbitBot reads `protokol`, `misafir`, `en_cok`, `yer`, `sifre` and `istemci`. It refuses to join
     when `istemci` is present and differs from its local `supported()` label, the same rule as the panel's JOIN.
