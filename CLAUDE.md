@@ -101,22 +101,38 @@ Remotes: `origin` = constructigogo/OpenOrbit (the fork), `upstream` = kaanumay/O
 The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends on these. Don't change them blindly:
 - **Files it reads at runtime** (no Python import; the C# port reimplements the codec and map rules):
   - `server/data/protocol_read.json` (message spec) and `server/data/spacemap-config.xml` (map name lines).
-  - Travel: `server/data/maps-config.xml` (gates) and `server/data/harita_duzeni.json` (map layout).
+  - Travel: `server/data/maps-config.xml` (gates) and `server/data/harita_duzeni.json` (map layout, `portal_guvenli`: a
+    map's gate safe-zone radius, and `guvenli`: a map's own safe zones, e.g. 5-2's pirate base).
   - Quests: `server/data/gorevler.json`, `gorev_ekleri.json`, `npc.json` (alien spawns) and `seviyeler.json` (levels).
   - Collecting: `server/data/esyalar.json` (`cevherler`: ore fields, types and prices) and `npc.json`'s cargo and
     pick-up keys (each alien's `kargo` and `ek_odul`, `bonus_kutu`/`bonus_kutu_4x`, `toplama_mesafe`, `kutu_gorus`).
     A malformed `esyalar.json` stops every bot.
+  - Kiting: `npc.json` (each alien type's `ad`, `hiz`, `menzil` and `saldirgan`, and the `savas` constants `lazer_menzil`,
+    `npc_menzil`, `npc_menzil_sabit`) and `esyalar.json` (`lazerler`: each laser's `menzil`). A missing file or key reads
+    as empty or the default.
   - The `CLIENT_HASH = '<32 hex>'` line in `server/protocol.py` and the `DESTEKLENEN = '<x.y.z>'` line in
     `server/panel/istemci.py`, both read with a regex: keep them single-line string assignments.
   - `server/data/protokol/surum.txt`: the local client version is `istemci.supported()` rebuilt in C#.
   - Ported by hand, so a change here needs the C# port updated: `protocol.py`'s `FIXES` table, value transforms,
     framing and LZ4 block format; `harita`'s name parsing, `company()`, `NO_DMZ_MAPS`, `DMZ_AFTER_JUMP_SN`,
-    `EXTRA_NAMES`, `GATES`, `map_size()` and `level_required()`; `gorev`'s quest resolver and constants; the pick-up,
-    harvest and ore-sale rules in `dunya.py` (ranges, view range, own home station only) and `profil.py`'s `CARGO_ORES`.
-- **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `harita`, `ayar` and
-  `gorev` and loads `server/panel/istemci.py` by path, with `server/` and `server/panel/` on `sys.path`. Keep these
-  modules import-safe, with no import side effects and stdlib only (`harita_duzeni`, `veri`, and `gorev`'s and
-  `istemci.py`'s own imports included). After each upstream merge, rerun it in OrbitBot: failing reference tests there
+    `EXTRA_NAMES`, `GATES`, `map_size()`, `level_required()`, `GATE_PEACE_RADIUS` (with `harita_duzeni`'s
+    `gate_peace_radius()`), `giver_dmz()` and `GIVER_PEACE_RADIUS` (the safe zones the bot's kiter keeps out of, with
+    `dunya.in_peace`'s station and layout zones); `gorev`'s quest resolver and constants; the pick-up, harvest and ore-sale
+    rules in `dunya.py` (ranges, view range, own home station only) and `profil.py`'s `CARGO_ORES`; and the kiting rules:
+    an alien's firing range (`menzil`, else `npc_menzil`, else `npc_menzil_sabit` when `hiz <= 0`), the laser range
+    (`savas.lazer_menzil` x `lazer.range_factor`; the bot ignores the Momentum/Stockpile bonus), the engaged alien's
+    chase and fire in `dunya.py` (it re-plans once a second while farther than `min(450, keep + 150)`, flying to `keep`
+    from the hero turned by its spread, `near` and `keep` scaled by `min(1, carpan('npc_menzil'))`; it fires while the
+    hero is inside its range; its damage is flushed at the next whole second, a rocket's lands about 0.8 s after launch),
+    and `uzayli.low_health`'s flee (a low-health alien flies to the edge or corner point farthest from the hero, then parks).
+  - Protocol fields the C# port parses for kiting: `AttributeShipSpeedUpdateCommand.newSpeed` (the hero's speed),
+    `AttackLaserRunCommand` `attackerId`/`targetId` and `AttackHitCommand`'s attacker and victim (who shoots the hero, and
+    from how far), and the legacy rocket-launch line `0|v|<launcher>|<target>|...` (`uzayli.py`). Changing that line's
+    field order silently stops the bot's reach learning.
+- **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `harita`, `ayar`,
+  `lazer` and `gorev` and loads `server/panel/istemci.py` by path, with `server/` and `server/panel/` on `sys.path`. Keep
+  these modules import-safe, with no import side effects and stdlib only (`harita_duzeni`, `veri`, and `gorev`'s, `lazer`'s
+  and `istemci.py`'s own imports included). After each upstream merge, rerun it in OrbitBot: failing reference tests there
   mean the C# port needs updating.
 - **HTTP on 8081:**
   - `/misafir/bilgi`: OrbitBot reads `protokol`, `misafir`, `en_cok`, `yer`, `sifre` and `istemci`. It refuses to join
@@ -124,9 +140,12 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
   - `/misafir/giris`, `/misafir/profil` (long poll) and `/misafir/cikis`.
   - `cok_oyunculu.PROTOKOL` (1) must equal OrbitBot's `GuestApi.Protokol`.
 - **Its end-to-end tool** starts `python -I server/game.py <logs> --cok-oyunculu --profil= --ayarlar= --durdur=` with
-  `DO_KAYIT_KLASORU`, `DO_GUNLUK_KLASORU` and `DO_COK_OYUNCULU` (`{misafir, sifre, en_cok}`) on copied saves.
+  `DO_KAYIT_KLASORU`, `DO_GUNLUK_KLASORU` and `DO_COK_OYUNCULU` (`{misafir, sifre, en_cok}`) on copied saves. Its kite
+  scenario (through `--kontrol` `py`) also relies on `dunya.hurt_hero`, `dunya.in_peace`, `w.next_ayar`,
+  `magaza.stats`/`apply_stats`, and the `ayarlar` keys `oyuncu_hasar` and `oyuncu_hasar_pve`.
 - **Save format:**
-  - `profil.json`: `pilot.{userName, level, factionId, userId}`, `gemi.typeId`, `konum.mapId`.
+  - `profil.json`: `pilot.{userName, level, factionId, userId}`, `gemi.typeId`, `konum.mapId`, and `ekipman.laser` (the
+    equipped laser loot ids: the kiter's laser range).
   - `kayit.json`: `ad`.
   - `yedek/oto_YYYYmmdd_HHMMSS.json` backups and `yedek/notlar.json`.
   - `panel.json`: `aktif_kayit`.
