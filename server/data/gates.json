@@ -1,0 +1,10698 @@
+{
+ "_description": "Galaxy Gates (via tools/gates.py from the belgeler/wiki/galaxy_gates.md wiki data). Alien types are the server's NPC types or the client's ship types (\"player\": the player's own appearance); in the gate all are aggressive. \"groups\": sub-waves, each a list of [alien order, count]. \"permanent\": independent of the sub-waves, takes no damage until the others die (Zeta Devourer; if the gate has shield_gap, when a group ends its shield goes down by that much, escort groups spawn around it at shield_spawn distance). \"group_counter\": the group's share in the window's wave counter (1 if absent). \"_estimate\": values estimated because the wiki gives none. Constants: recording (energy price 100 U, draw probabilities, draw counts), wiki (life prices, weekend -15%, Kronos day Saturday two parts), client texts (max 5 multipliers = x6) and adaptations (draw quantities, break and cooldown durations, the probability of a duplicate part turning into a missing part, the distribution of Zeta/Kuiper waves over the maps).",
+ "gates": {
+  "alpha": {
+   "uid": 1,
+   "name": "Alpha Gate",
+   "map": 51,
+   "maps": [
+    51
+   ],
+   "sizes": {},
+   "portal": 2,
+   "part": 34,
+   "hp": 5,
+   "kronos_part": 4,
+   "waves": [
+    {
+     "name": "I",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 40,
+       "hp": 800,
+       "shield": 400,
+       "damage": 20,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 400,
+        "honor": 2,
+        "credits": 400,
+        "uridium": 1
+       },
+       "cargo": {
+        "0": 10,
+        "2": 10
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 40,
+       "hp": 2000,
+       "shield": 2000,
+       "damage": 80,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 40,
+        "1": 40
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "73",
+       "name": "Mordon",
+       "display_name": "-=[ Mordon ]=-",
+       "count": 40,
+       "hp": 20000,
+       "shield": 10000,
+       "damage": 390,
+       "speed": 200,
+       "npc_id": 4,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 6400,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 8,
+        "5": 8,
+        "6": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 80,
+       "hp": 6000,
+       "shield": 6000,
+       "damage": 200,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 40,
+        "1": 40,
+        "4": 2,
+        "5": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "72",
+       "name": "Devolarium",
+       "display_name": "-=[ Devolarium ]=-",
+       "count": 20,
+       "hp": 100000,
+       "shield": 100000,
+       "damage": 1200,
+       "speed": 150,
+       "npc_id": 3,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 51200,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 80,
+       "hp": 50000,
+       "shield": 40000,
+       "damage": 1650,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "74",
+       "name": "Sibelon",
+       "display_name": "-=[ Sibelon ]=-",
+       "count": 20,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 2650,
+       "speed": 150,
+       "npc_id": 5,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 80,
+       "hp": 40000,
+       "shield": 40000,
+       "damage": 1200,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 12800,
+        "uridium": 12
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 8,
+        "5": 8,
+        "6": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "79",
+       "name": "Kristallon",
+       "display_name": "-=[ Kristallon ]=-",
+       "count": 16,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 4450,
+       "speed": 200,
+       "npc_id": 10,
+       "reward": {
+        "ep": 51200,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 51,
+     "alien_spawns": [
+      {
+       "type": "81",
+       "name": "Protegit",
+       "display_name": "-=[ Protegit ]=-",
+       "count": 30,
+       "hp": 50000,
+       "shield": 40000,
+       "damage": 1500,
+       "speed": 420,
+       "npc_id": 12,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 4000000,
+    "honor": 100000,
+    "uridium": 20000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 20000
+    },
+    "xenomit": 200,
+    "log_disk": 2,
+    "voucher": 2,
+    "energy": 0,
+    "booty": {
+     "abr": 2
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "ship_pusat_design_pusat-sandstorm",
+      "count": 1,
+      "probability": 0.1
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.05
+     }
+    ]
+   }
+  },
+  "beta": {
+   "uid": 2,
+   "name": "Beta Gate",
+   "map": 52,
+   "maps": [
+    52
+   ],
+   "sizes": {},
+   "portal": 3,
+   "part": 48,
+   "hp": 5,
+   "kronos_part": 3,
+   "waves": [
+    {
+     "name": "I",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 40,
+       "hp": 1600,
+       "shield": 800,
+       "damage": 40,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 800,
+        "honor": 4,
+        "credits": 800,
+        "uridium": 2
+       },
+       "cargo": {
+        "0": 20,
+        "2": 20
+       },
+       "_reward_source": "correction (tools/gates.py ODUL_DUZELTME)"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 40,
+       "hp": 4000,
+       "shield": 4000,
+       "damage": 160,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "73",
+       "name": "Mordon",
+       "display_name": "-=[ Mordon ]=-",
+       "count": 40,
+       "hp": 40000,
+       "shield": 20000,
+       "damage": 780,
+       "speed": 200,
+       "npc_id": 4,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 80,
+       "hp": 12000,
+       "shield": 12000,
+       "damage": 400,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 4,
+        "5": 4
+       },
+       "_reward_source": "correction (tools/gates.py ODUL_DUZELTME)"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "72",
+       "name": "Devolarium",
+       "display_name": "-=[ Devolarium ]=-",
+       "count": 20,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 2400,
+       "speed": 150,
+       "npc_id": 3,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 80,
+       "hp": 100000,
+       "shield": 80000,
+       "damage": 3300,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "74",
+       "name": "Sibelon",
+       "display_name": "-=[ Sibelon ]=-",
+       "count": 20,
+       "hp": 400000,
+       "shield": 400000,
+       "damage": 5300,
+       "speed": 150,
+       "npc_id": 5,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 204800,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 8
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 80,
+       "hp": 80000,
+       "shield": 80000,
+       "damage": 2400,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 25600,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "79",
+       "name": "Kristallon",
+       "display_name": "-=[ Kristallon ]=-",
+       "count": 16,
+       "hp": 800000,
+       "shield": 600000,
+       "damage": 8900,
+       "speed": 200,
+       "npc_id": 10,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 256,
+        "5": 256,
+        "6": 32
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 52,
+     "alien_spawns": [
+      {
+       "type": "81",
+       "name": "Protegit",
+       "display_name": "-=[ Protegit ]=-",
+       "count": 30,
+       "hp": 100000,
+       "shield": 80000,
+       "damage": 3000,
+       "speed": 420,
+       "npc_id": 12,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 8000000,
+    "honor": 200000,
+    "uridium": 40000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 40000
+    },
+    "xenomit": 400,
+    "log_disk": 4,
+    "voucher": 4,
+    "energy": 0,
+    "booty": {
+     "abr": 2
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "ship_pusat_design_pusat-sandstorm",
+      "count": 1,
+      "probability": 0.1
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.05
+     }
+    ]
+   }
+  },
+  "gamma": {
+   "uid": 3,
+   "name": "Gamma Gate",
+   "map": 53,
+   "maps": [
+    53
+   ],
+   "sizes": {},
+   "portal": 4,
+   "part": 82,
+   "hp": 5,
+   "kronos_part": 1,
+   "waves": [
+    {
+     "name": "I",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 40,
+       "hp": 2400,
+       "shield": 1200,
+       "damage": 60,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 1200,
+        "honor": 6,
+        "credits": 1200,
+        "uridium": 3
+       },
+       "cargo": {
+        "0": 30,
+        "2": 30
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 40,
+       "hp": 6000,
+       "shield": 6000,
+       "damage": 240,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 4800,
+        "honor": 24,
+        "credits": 4800,
+        "uridium": 12
+       },
+       "cargo": {
+        "0": 120,
+        "2": 120,
+        "1": 120
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "73",
+       "name": "Mordon",
+       "display_name": "-=[ Mordon ]=-",
+       "count": 40,
+       "hp": 60000,
+       "shield": 30000,
+       "damage": 1170,
+       "speed": 200,
+       "npc_id": 4,
+       "reward": {
+        "ep": 9600,
+        "honor": 48,
+        "credits": 19200,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 240,
+        "2": 240,
+        "1": 240,
+        "4": 24,
+        "5": 24,
+        "6": 3
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 80,
+       "hp": 18000,
+       "shield": 18000,
+       "damage": 600,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 4800,
+        "honor": 24,
+        "credits": 4800,
+        "uridium": 12
+       },
+       "cargo": {
+        "0": 120,
+        "2": 120,
+        "1": 120,
+        "4": 6,
+        "5": 6
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "72",
+       "name": "Devolarium",
+       "display_name": "-=[ Devolarium ]=-",
+       "count": 20,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 3600,
+       "speed": 150,
+       "npc_id": 3,
+       "reward": {
+        "ep": 19200,
+        "honor": 96,
+        "credits": 153600,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 6
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 80,
+       "hp": 150000,
+       "shield": 120000,
+       "damage": 4950,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 19200,
+        "honor": 96,
+        "credits": 38400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 3
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "74",
+       "name": "Sibelon",
+       "display_name": "-=[ Sibelon ]=-",
+       "count": 20,
+       "hp": 600000,
+       "shield": 600000,
+       "damage": 4950,
+       "speed": 150,
+       "npc_id": 5,
+       "reward": {
+        "ep": 38400,
+        "honor": 192,
+        "credits": 307200,
+        "uridium": 96
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 96,
+        "5": 96,
+        "6": 12
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 80,
+       "hp": 120000,
+       "shield": 120000,
+       "damage": 3200,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 9600,
+        "honor": 48,
+        "credits": 38400,
+        "uridium": 36
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 24,
+        "5": 24,
+        "6": 3
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        20
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "79",
+       "name": "Kristallon",
+       "display_name": "-=[ Kristallon ]=-",
+       "count": 16,
+       "hp": 1200000,
+       "shield": 900000,
+       "damage": 13350,
+       "speed": 200,
+       "npc_id": 10,
+       "reward": {
+        "ep": 153600,
+        "honor": 768,
+        "credits": 1228800,
+        "uridium": 384
+       },
+       "cargo": {
+        "0": 900,
+        "2": 900,
+        "1": 900,
+        "4": 384,
+        "5": 384,
+        "6": 48
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 53,
+     "alien_spawns": [
+      {
+       "type": "81",
+       "name": "Protegit",
+       "display_name": "-=[ Protegit ]=-",
+       "count": 30,
+       "hp": 150000,
+       "shield": 120000,
+       "damage": 4500,
+       "speed": 420,
+       "npc_id": 12,
+       "reward": {
+        "ep": 19200,
+        "honor": 96,
+        "credits": 38400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 6
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 12000000,
+    "honor": 300000,
+    "uridium": 60000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 60000
+    },
+    "xenomit": 600,
+    "log_disk": 10,
+    "voucher": 6,
+    "energy": 0,
+    "booty": {
+     "abr": 3
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "ship_pusat_design_pusat-sandstorm",
+      "count": 1,
+      "probability": 0.1
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.1
+     }
+    ]
+   }
+  },
+  "delta": {
+   "uid": 4,
+   "name": "Delta Gate",
+   "map": 55,
+   "maps": [
+    55
+   ],
+   "sizes": {},
+   "portal": 5,
+   "part": 128,
+   "hp": 5,
+   "kronos_part": 1,
+   "waves": [
+    {
+     "name": "I",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 5,
+       "hp": 4000,
+       "shield": 4000,
+       "damage": 160,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 40
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "73",
+       "name": "Mordon",
+       "display_name": "-=[ Mordon ]=-",
+       "count": 10,
+       "hp": 40000,
+       "shield": 20000,
+       "damage": 780,
+       "speed": 200,
+       "npc_id": 4,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 15,
+       "hp": 12000,
+       "shield": 12000,
+       "damage": 400,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 4,
+        "5": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        15
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "II",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 11,
+       "hp": 1600,
+       "shield": 800,
+       "damage": 40,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 800,
+        "honor": 4,
+        "credits": 800,
+        "uridium": 2
+       },
+       "cargo": {
+        "0": 20,
+        "2": 20
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "85",
+       "name": "StreuneR",
+       "display_name": "-=[ StreuneR ]=-",
+       "count": 1,
+       "hp": 160000,
+       "shield": 120000,
+       "damage": 4000,
+       "speed": 300,
+       "npc_id": 11,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 48000,
+        "uridium": 60
+       },
+       "cargo": {
+        "0": 640,
+        "2": 640,
+        "1": 640,
+        "4": 60,
+        "5": 60,
+        "6": 4
+       },
+       "_reward_source": "wiki gate",
+       "protected": true
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        11
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "group_counter": [
+      2
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "III",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "73",
+       "name": "Mordon",
+       "display_name": "-=[ Mordon ]=-",
+       "count": 5,
+       "hp": 40000,
+       "shield": 20000,
+       "damage": 780,
+       "speed": 200,
+       "npc_id": 4,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 10,
+       "hp": 12000,
+       "shield": 12000,
+       "damage": 400,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 4,
+        "5": 4,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 15,
+       "hp": 100000,
+       "shield": 80000,
+       "damage": 3300,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        15
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "IV",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 12,
+       "hp": 8000,
+       "shield": 8000,
+       "damage": 240,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "77",
+       "name": "Lordakium",
+       "display_name": "-=[ Lordakium ]=-",
+       "count": 1,
+       "hp": 600000,
+       "shield": 400000,
+       "damage": 7200,
+       "speed": 200,
+       "npc_id": 8,
+       "reward": {
+        "ep": 51200,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 128,
+        "5": 128,
+        "6": 16
+       },
+       "_reward_source": "wiki gate",
+       "protected": true
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        12
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "group_counter": [
+      2
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "V",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "24",
+       "name": "Boss Lordakia",
+       "display_name": "..::{ Boss Lordakia }::..",
+       "count": 10,
+       "hp": 8000,
+       "shield": 8000,
+       "damage": 160,
+       "speed": 240,
+       "npc_id": 15,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "31",
+       "name": "Boss Mordon",
+       "display_name": "..::{ Boss Mordon }::..",
+       "count": 8,
+       "hp": 80000,
+       "shield": 40000,
+       "damage": 1500,
+       "speed": 180,
+       "npc_id": 16,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "25",
+       "name": "Boss Saimon",
+       "display_name": "..::{ Boss Saimon }::..",
+       "count": 6,
+       "hp": 24000,
+       "shield": 12000,
+       "damage": 650,
+       "speed": 250,
+       "npc_id": 17,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 8,
+        "5": 8
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ],
+      [
+       [
+        2,
+        6
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "VI",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 15,
+       "hp": 80000,
+       "shield": 80000,
+       "damage": 6400,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 25600,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "74",
+       "name": "Sibelon",
+       "display_name": "-=[ Sibelon ]=-",
+       "count": 1,
+       "hp": 600000,
+       "shield": 600000,
+       "damage": 7950,
+       "speed": 150,
+       "npc_id": 5,
+       "reward": {
+        "ep": 38400,
+        "honor": 192,
+        "credits": 307200,
+        "uridium": 96
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 96,
+        "5": 96,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "protected": true
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        15
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "group_counter": [
+      2
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "VII",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 5,
+       "hp": 80000,
+       "shield": 80000,
+       "damage": 6400,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 25600,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 10,
+       "hp": 150000,
+       "shield": 120000,
+       "damage": 4950,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 19200,
+        "honor": 96,
+        "credits": 38400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 3
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "34",
+       "name": "Boss StreuneR",
+       "display_name": "..::{ Boss StreuneR }::..",
+       "count": 5,
+       "hp": 80000,
+       "shield": 40000,
+       "damage": 2000,
+       "speed": 280,
+       "npc_id": 24,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 32,
+        "5": 32,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "79",
+       "name": "Kristallon",
+       "display_name": "-=[ Kristallon ]=-",
+       "count": 1,
+       "hp": 800000,
+       "shield": 600000,
+       "damage": 8900,
+       "speed": 200,
+       "npc_id": 10,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 256,
+        "5": 256,
+        "6": 32
+       },
+       "_reward_source": "wiki gate",
+       "protected": true
+      },
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 10,
+       "hp": 150000,
+       "shield": 120000,
+       "damage": 4950,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 19200,
+        "honor": 96,
+        "credits": 38400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 3
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        10
+       ]
+      ]
+     ],
+     "group_counter": [
+      2
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "IX",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "81",
+       "name": "Protegit",
+       "display_name": "-=[ Protegit ]=-",
+       "count": 15,
+       "hp": 100000,
+       "shield": 80000,
+       "damage": 3000,
+       "speed": 420,
+       "npc_id": 12,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "28",
+       "name": "Boss Lordakium",
+       "display_name": "..::{ Boss Lordakium }::...",
+       "count": 3,
+       "hp": 1200000,
+       "shield": 800000,
+       "damage": 16000,
+       "speed": 180,
+       "npc_id": 21,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 32
+       },
+       "_reward_source": "wiki gate",
+       "protected": true
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        1,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ],
+       [
+        1,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "group_counter": [
+      2,
+      2,
+      2
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "X",
+     "map": 55,
+     "alien_spawns": [
+      {
+       "type": "11",
+       "name": "DemaNeR",
+       "display_name": "-=[ DemaNeR ]=-",
+       "count": 3,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 300,
+       "npc_id": 39,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 409600,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 126,
+        "5": 126,
+        "6": 44,
+        "3": 22
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        1
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    }
+   ],
+   "reward": {
+    "ep": 9000000,
+    "honor": 225000,
+    "uridium": 45000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 45000
+    },
+    "xenomit": 450,
+    "log_disk": 8,
+    "voucher": 5,
+    "energy": 0,
+    "booty": {
+     "schism": 6,
+     "abr": 4
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "drone_designs_hermes",
+      "count": 1,
+      "probability": 0.1,
+      "no_double_reward": true
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.15
+     }
+    ],
+    "items": [
+     [
+      "resource_ore_promerium",
+      450
+     ]
+    ]
+   }
+  },
+  "epsilon": {
+   "uid": 5,
+   "name": "Epsilon Gate",
+   "map": 70,
+   "maps": [
+    70
+   ],
+   "sizes": {},
+   "portal": 53,
+   "part": 99,
+   "hp": 5,
+   "kronos_part": 4,
+   "waves": [
+    {
+     "name": "I",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "94",
+       "name": "Vagrant",
+       "display_name": "-=[ Vagrant ]=-",
+       "count": 17,
+       "hp": 40000,
+       "shield": 40000,
+       "damage": 2500,
+       "speed": 300,
+       "npc_id": 42,
+       "reward": {
+        "ep": 4000,
+        "honor": 4,
+        "credits": 15000,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 60,
+        "2": 60,
+        "1": 60,
+        "4": 4,
+        "5": 4,
+        "3": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "94",
+       "name": "Vagrant",
+       "display_name": "-=[ Vagrant ]=-",
+       "count": 12,
+       "hp": 40000,
+       "shield": 40000,
+       "damage": 2500,
+       "speed": 300,
+       "npc_id": 42,
+       "reward": {
+        "ep": 4000,
+        "honor": 4,
+        "credits": 15000,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 60,
+        "2": 60,
+        "1": 60,
+        "4": 4,
+        "5": 4,
+        "3": 1
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "93",
+       "name": "Marauder",
+       "display_name": "-=[ Marauder ]=-",
+       "count": 5,
+       "hp": 100000,
+       "shield": 60000,
+       "damage": 4500,
+       "speed": 300,
+       "npc_id": 43,
+       "reward": {
+        "ep": 8000,
+        "honor": 8,
+        "credits": 30000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 8,
+        "5": 8,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "III",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "93",
+       "name": "Marauder",
+       "display_name": "-=[ Marauder ]=-",
+       "count": 5,
+       "hp": 100000,
+       "shield": 60000,
+       "damage": 4500,
+       "speed": 300,
+       "npc_id": 43,
+       "reward": {
+        "ep": 8000,
+        "honor": 8,
+        "credits": 30000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 8,
+        "5": 8,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "92",
+       "name": "Outcast",
+       "display_name": "-=[ Outcast ]=-",
+       "count": 9,
+       "hp": 150000,
+       "shield": 80000,
+       "damage": 4500,
+       "speed": 280,
+       "npc_id": 44,
+       "reward": {
+        "ep": 11000,
+        "honor": 12,
+        "credits": 50000,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "7": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "93",
+       "name": "Marauder",
+       "display_name": "-=[ Marauder ]=-",
+       "count": 5,
+       "hp": 100000,
+       "shield": 60000,
+       "damage": 4500,
+       "speed": 300,
+       "npc_id": 43,
+       "reward": {
+        "ep": 8000,
+        "honor": 8,
+        "credits": 30000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 8,
+        "5": 8,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "92",
+       "name": "Outcast",
+       "display_name": "-=[ Outcast ]=-",
+       "count": 12,
+       "hp": 150000,
+       "shield": 80000,
+       "damage": 4500,
+       "speed": 280,
+       "npc_id": 44,
+       "reward": {
+        "ep": 11000,
+        "honor": 12,
+        "credits": 50000,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "7": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "92",
+       "name": "Outcast",
+       "display_name": "-=[ Outcast ]=-",
+       "count": 6,
+       "hp": 150000,
+       "shield": 80000,
+       "damage": 4500,
+       "speed": 280,
+       "npc_id": 44,
+       "reward": {
+        "ep": 11000,
+        "honor": 12,
+        "credits": 50000,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "7": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "91",
+       "name": "Corsair",
+       "display_name": "-=[ Corsair ]=-",
+       "count": 9,
+       "hp": 200000,
+       "shield": 120000,
+       "damage": 7800,
+       "speed": 300,
+       "npc_id": 45,
+       "reward": {
+        "ep": 15000,
+        "honor": 16,
+        "credits": 80000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 25,
+        "5": 25,
+        "6": 2,
+        "7": 2,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "91",
+       "name": "Corsair",
+       "display_name": "-=[ Corsair ]=-",
+       "count": 4,
+       "hp": 200000,
+       "shield": 120000,
+       "damage": 7800,
+       "speed": 300,
+       "npc_id": 45,
+       "reward": {
+        "ep": 15000,
+        "honor": 16,
+        "credits": 80000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 25,
+        "5": 25,
+        "6": 2,
+        "7": 2,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "92",
+       "name": "Outcast",
+       "display_name": "-=[ Outcast ]=-",
+       "count": 6,
+       "hp": 150000,
+       "shield": 80000,
+       "damage": 4500,
+       "speed": 280,
+       "npc_id": 44,
+       "reward": {
+        "ep": 11000,
+        "honor": 12,
+        "credits": 50000,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "7": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "96",
+       "name": "Hooligan",
+       "display_name": "-=[ Hooligan ]=-",
+       "count": 5,
+       "hp": 250000,
+       "shield": 200000,
+       "damage": 9000,
+       "speed": 280,
+       "npc_id": 46,
+       "reward": {
+        "ep": 20000,
+        "honor": 32,
+        "credits": 125000,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 4,
+        "3": 12
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        2,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "91",
+       "name": "Corsair",
+       "display_name": "-=[ Corsair ]=-",
+       "count": 5,
+       "hp": 200000,
+       "shield": 120000,
+       "damage": 7800,
+       "speed": 300,
+       "npc_id": 45,
+       "reward": {
+        "ep": 15000,
+        "honor": 16,
+        "credits": 80000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 25,
+        "5": 25,
+        "6": 2,
+        "7": 2,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "96",
+       "name": "Hooligan",
+       "display_name": "-=[ Hooligan ]=-",
+       "count": 9,
+       "hp": 250000,
+       "shield": 200000,
+       "damage": 9000,
+       "speed": 280,
+       "npc_id": 46,
+       "reward": {
+        "ep": 20000,
+        "honor": 32,
+        "credits": 125000,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 4,
+        "3": 12
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "96",
+       "name": "Hooligan",
+       "display_name": "-=[ Hooligan ]=-",
+       "count": 10,
+       "hp": 250000,
+       "shield": 200000,
+       "damage": 9000,
+       "speed": 280,
+       "npc_id": 46,
+       "reward": {
+        "ep": 20000,
+        "honor": 32,
+        "credits": 125000,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 4,
+        "3": 12
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "97",
+       "name": "Ravager",
+       "display_name": "-=[ Ravager ]=-",
+       "count": 4,
+       "hp": 300000,
+       "shield": 200000,
+       "damage": 10700,
+       "speed": 280,
+       "npc_id": 47,
+       "reward": {
+        "ep": 25000,
+        "honor": 64,
+        "credits": 160000,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 50,
+        "5": 50,
+        "6": 8,
+        "7": 8,
+        "3": 16
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        1,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "96",
+       "name": "Hooligan",
+       "display_name": "-=[ Hooligan ]=-",
+       "count": 5,
+       "hp": 250000,
+       "shield": 200000,
+       "damage": 9000,
+       "speed": 280,
+       "npc_id": 46,
+       "reward": {
+        "ep": 20000,
+        "honor": 32,
+        "credits": 125000,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 4,
+        "3": 12
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "97",
+       "name": "Ravager",
+       "display_name": "-=[ Ravager ]=-",
+       "count": 6,
+       "hp": 300000,
+       "shield": 200000,
+       "damage": 10700,
+       "speed": 280,
+       "npc_id": 47,
+       "reward": {
+        "ep": 25000,
+        "honor": 64,
+        "credits": 160000,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 50,
+        "5": 50,
+        "6": 8,
+        "7": 8,
+        "3": 16
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "95",
+       "name": "Convict",
+       "display_name": "-=[ Convict ]=-",
+       "count": 3,
+       "hp": 400000,
+       "shield": 200000,
+       "damage": 11500,
+       "speed": 260,
+       "npc_id": 48,
+       "reward": {
+        "ep": 30000,
+        "honor": 100,
+        "credits": 220000,
+        "uridium": 150
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 16,
+        "7": 16,
+        "3": 24
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        2,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "95",
+       "name": "Convict",
+       "display_name": "-=[ Convict ]=-",
+       "count": 4,
+       "hp": 400000,
+       "shield": 200000,
+       "damage": 11500,
+       "speed": 260,
+       "npc_id": 48,
+       "reward": {
+        "ep": 30000,
+        "honor": 100,
+        "credits": 220000,
+        "uridium": 150
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 16,
+        "7": 16,
+        "3": 24
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "XI",
+     "map": 70,
+     "alien_spawns": [
+      {
+       "type": "97",
+       "name": "Ravager",
+       "display_name": "-=[ Ravager ]=-",
+       "count": 5,
+       "hp": 300000,
+       "shield": 200000,
+       "damage": 10700,
+       "speed": 280,
+       "npc_id": 47,
+       "reward": {
+        "ep": 25000,
+        "honor": 64,
+        "credits": 160000,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 50,
+        "5": 50,
+        "6": 8,
+        "7": 8,
+        "3": 16
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "95",
+       "name": "Convict",
+       "display_name": "-=[ Convict ]=-",
+       "count": 6,
+       "hp": 400000,
+       "shield": 200000,
+       "damage": 11500,
+       "speed": 260,
+       "npc_id": 48,
+       "reward": {
+        "ep": 30000,
+        "honor": 100,
+        "credits": 220000,
+        "uridium": 150
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 16,
+        "7": 16,
+        "3": 24
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 5000000,
+    "honor": 150000,
+    "uridium": 25000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 20000
+    },
+    "xenomit": 0,
+    "log_disk": 10,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 5,
+     "abr": 4
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "equipment_weapon_laser_lf-4",
+      "count": 1,
+      "probability": 0.25,
+      "first_guaranteed": true
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.1
+     }
+    ]
+   }
+  },
+  "zeta": {
+   "uid": 6,
+   "name": "Zeta Gate",
+   "map": 71,
+   "maps": [
+    71,
+    72,
+    73
+   ],
+   "sizes": {},
+   "portal": 54,
+   "part": 111,
+   "hp": 5,
+   "kronos_part": 1,
+   "shield_gap_sec": 10,
+   "_shield_interval_sec": "Devourer (permanent): while the escort group is alive Insta-Shield is on and it takes no damage; when the group is finished the shield drops for this many seconds, then comes back up and the next group spawns around the Devourer; always off after the last group; when the Devourer dies the wave ends immediately (fandom Galaxy Gates: \"dropped for 10(?) seconds\"). In the last wave one group has all of its types together (normal, Boss, Uber), with one sub-wave per type in the counter (group_counter)",
+   "waves": [
+    {
+     "name": "I",
+     "map": 71,
+     "alien_spawns": [
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 10,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "aliens.md infernal"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 71,
+     "alien_spawns": [
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 9,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "aliens.md infernal"
+      },
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 3,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 71,
+     "alien_spawns": [
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 5,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "aliens.md infernal"
+      },
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 7,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        2
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 72,
+     "alien_spawns": [
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 9,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 72,
+     "alien_spawns": [
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 8,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      },
+      {
+       "type": "102",
+       "name": "Melter",
+       "display_name": "-=[ Melter ]=-",
+       "count": 2,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 240,
+       "npc_id": 65,
+       "reward": {
+        "ep": 55000,
+        "honor": 12,
+        "credits": 400000,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "7": 8
+       },
+       "_reward_source": "aliens.md melter"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        1,
+        2
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 72,
+     "alien_spawns": [
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 3,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      },
+      {
+       "type": "102",
+       "name": "Melter",
+       "display_name": "-=[ Melter ]=-",
+       "count": 6,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 240,
+       "npc_id": 65,
+       "reward": {
+        "ep": 55000,
+        "honor": 12,
+        "credits": 400000,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "7": 8
+       },
+       "_reward_source": "aliens.md melter"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        1,
+        4
+       ]
+      ],
+      [
+       [
+        1,
+        2
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 73,
+     "alien_spawns": [
+      {
+       "type": "102",
+       "name": "Melter",
+       "display_name": "-=[ Melter ]=-",
+       "count": 10,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 240,
+       "npc_id": 65,
+       "reward": {
+        "ep": 55000,
+        "honor": 12,
+        "credits": 400000,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "7": 8
+       },
+       "_reward_source": "aliens.md melter"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 73,
+     "alien_spawns": [
+      {
+       "type": "102",
+       "name": "Melter",
+       "display_name": "-=[ Melter ]=-",
+       "count": 13,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 240,
+       "npc_id": 65,
+       "reward": {
+        "ep": 55000,
+        "honor": 12,
+        "credits": 400000,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "7": 8
+       },
+       "_reward_source": "aliens.md melter"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 73,
+     "alien_spawns": [
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 6,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "aliens.md infernal"
+      },
+      {
+       "type": "105",
+       "name": "Devourer",
+       "display_name": "-=[ Devourer ]=-",
+       "count": 1,
+       "hp": 2000000,
+       "shield": 1000000,
+       "damage": 12000,
+       "speed": 120,
+       "npc_id": 66,
+       "reward": {
+        "ep": 1000000,
+        "honor": 512,
+        "credits": 2500000,
+        "uridium": 1024
+       },
+       "cargo": {
+        "0": 1600,
+        "2": 1600,
+        "1": 1600,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "7": 16,
+        "3": 64
+       },
+       "_reward_source": "aliens.md devourer",
+       "permanent": true
+      }
+     ],
+     "groups": [
+      [
+       [
+        1,
+        1
+       ],
+       [
+        0,
+        6
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 73,
+     "alien_spawns": [
+      {
+       "type": "105",
+       "name": "Devourer",
+       "display_name": "-=[ Devourer ]=-",
+       "count": 1,
+       "hp": 2000000,
+       "shield": 1000000,
+       "damage": 12000,
+       "speed": 120,
+       "npc_id": 66,
+       "reward": {
+        "ep": 1000000,
+        "honor": 512,
+        "credits": 2500000,
+        "uridium": 1024
+       },
+       "cargo": {
+        "0": 1600,
+        "2": 1600,
+        "1": 1600,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "7": 16,
+        "3": 64
+       },
+       "_reward_source": "aliens.md devourer",
+       "permanent": true
+      },
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 2,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "aliens.md infernal"
+      },
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 10,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "aliens.md scorcher"
+      },
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 2,
+       "hp": 1600,
+       "shield": 800,
+       "damage": 40,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 800,
+        "honor": 4,
+        "credits": 800,
+        "uridium": 2
+       },
+       "cargo": {
+        "0": 20,
+        "2": 20
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "85",
+       "name": "StreuneR",
+       "display_name": "-=[ StreuneR ]=-",
+       "count": 2,
+       "hp": 20000,
+       "shield": 15000,
+       "damage": 500,
+       "speed": 300,
+       "npc_id": 11,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 6400,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 8,
+        "5": 8,
+        "6": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "23",
+       "name": "Boss Streuner",
+       "display_name": "..::{ Boss Streuner }::..",
+       "count": 2,
+       "hp": 3200,
+       "shield": 1600,
+       "damage": 100,
+       "speed": 220,
+       "npc_id": 14,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 10,
+        "1": 40
+       },
+       "_reward_source": "aliens.md boss_streuner"
+      },
+      {
+       "type": "36",
+       "name": "Uber Streuner",
+       "display_name": "( UberStreuner )",
+       "count": 2,
+       "hp": 6400,
+       "shield": 3200,
+       "damage": 160,
+       "speed": 250,
+       "npc_id": 28,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 20,
+        "4": 2,
+        "5": 2
+       },
+       "_reward_source": "aliens.md uber_streuner"
+      },
+      {
+       "type": "44",
+       "name": "Uber StreuneR",
+       "display_name": "( UberStreuneR )",
+       "count": 2,
+       "hp": 320000,
+       "shield": 240000,
+       "damage": 3700,
+       "speed": 280,
+       "npc_id": 38,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 51200,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 640,
+        "2": 640,
+        "1": 640,
+        "4": 64,
+        "5": 64,
+        "6": 8,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "71",
+       "name": "Lordakia",
+       "display_name": "-=[ Lordakia ]=-",
+       "count": 3,
+       "hp": 2000,
+       "shield": 2000,
+       "damage": 80,
+       "speed": 242,
+       "npc_id": 2,
+       "reward": {
+        "ep": 800,
+        "honor": 4,
+        "credits": 800,
+        "uridium": 2
+       },
+       "cargo": {
+        "0": 20,
+        "2": 20,
+        "1": 20
+       },
+       "_reward_source": "aliens.md lordakia"
+      },
+      {
+       "type": "24",
+       "name": "Boss Lordakia",
+       "display_name": "..::{ Boss Lordakia }::..",
+       "count": 3,
+       "hp": 8000,
+       "shield": 8000,
+       "damage": 320,
+       "speed": 240,
+       "npc_id": 15,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 10,
+        "3": 1
+       },
+       "_reward_source": "aliens.md boss_lordakia",
+       "_count_source": "fandom Galaxy Gates (Zeta) ve de.fandom Zeta Gate: 3 (darkorbitwiki 2)"
+      },
+      {
+       "type": "37",
+       "name": "Uber Lordakia",
+       "display_name": "( UberLordakia )",
+       "count": 3,
+       "hp": 16000,
+       "shield": 16000,
+       "damage": 640,
+       "speed": 250,
+       "npc_id": 29,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 20,
+        "5": 20,
+        "6": 2,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 3,
+       "hp": 6000,
+       "shield": 6000,
+       "damage": 200,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 40,
+        "1": 40,
+        "4": 2,
+        "5": 2
+       },
+       "_reward_source": "aliens.md saimon"
+      },
+      {
+       "type": "25",
+       "name": "Boss Saimon",
+       "display_name": "..::{ Boss Saimon }::..",
+       "count": 3,
+       "hp": 24000,
+       "shield": 12000,
+       "damage": 800,
+       "speed": 250,
+       "npc_id": 17,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 8,
+        "5": 8,
+        "6": 1,
+        "3": 2
+       },
+       "_reward_source": "aliens.md boss_saimon",
+       "_count_source": "fandom Galaxy Gates (Zeta) ve de.fandom Zeta Gate: 3 (darkorbitwiki 2)"
+      },
+      {
+       "type": "38",
+       "name": "Uber Saimon",
+       "display_name": "( UberSaimon )",
+       "count": 3,
+       "hp": 48000,
+       "shield": 24000,
+       "damage": 1600,
+       "speed": 250,
+       "npc_id": 31,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "3": 4
+       },
+       "_reward_source": "aliens.md uber_saimon"
+      },
+      {
+       "type": "76",
+       "name": "Sibelonit",
+       "display_name": "-=[ Sibelonit ]=-",
+       "count": 3,
+       "hp": 40000,
+       "shield": 40000,
+       "damage": 3200,
+       "speed": 300,
+       "npc_id": 7,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 12800,
+        "uridium": 12
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 8,
+        "5": 8,
+        "6": 1
+       },
+       "_reward_source": "aliens.md sibelonit"
+      },
+      {
+       "type": "27",
+       "name": "Boss Sibelonit",
+       "display_name": "..::{ Boss Sibelonit }::..",
+       "count": 3,
+       "hp": 160000,
+       "shield": 160000,
+       "damage": 6400,
+       "speed": 280,
+       "npc_id": 19,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "3": 8
+       },
+       "_reward_source": "aliens.md boss_sibelonit"
+      },
+      {
+       "type": "40",
+       "name": "Uber Sibelonit",
+       "display_name": "( UberSibelonit )",
+       "count": 3,
+       "hp": 320000,
+       "shield": 320000,
+       "damage": 8000,
+       "speed": 280,
+       "npc_id": 33,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 204800,
+        "uridium": 96
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 64,
+        "5": 64,
+        "6": 8,
+        "3": 16
+       },
+       "_reward_source": "aliens.md uber_sibelonit"
+      },
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 3,
+       "hp": 50000,
+       "shield": 40000,
+       "damage": 1650,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1
+       },
+       "_reward_source": "aliens.md kristallin"
+      },
+      {
+       "type": "29",
+       "name": "Boss Kristallin",
+       "display_name": "..::{ Boss Kristallin }::..",
+       "count": 3,
+       "hp": 200000,
+       "shield": 160000,
+       "damage": 4700,
+       "speed": 280,
+       "npc_id": 22,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 51200,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 4,
+        "3": 6
+       },
+       "_reward_source": "aliens.md boss_kristallin"
+      },
+      {
+       "type": "42",
+       "name": "Uber Kristallin",
+       "display_name": "( UberKristallin )",
+       "count": 3,
+       "hp": 400000,
+       "shield": 320000,
+       "damage": 9600,
+       "speed": 280,
+       "npc_id": 36,
+       "reward": {
+        "ep": 51200,
+        "honor": 156,
+        "credits": 102400,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "3": 16
+       },
+       "_reward_source": "aliens.md uber_kristallin"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ],
+      [
+       [
+        3,
+        2
+       ],
+       [
+        4,
+        2
+       ],
+       [
+        5,
+        2
+       ],
+       [
+        6,
+        2
+       ],
+       [
+        7,
+        2
+       ]
+      ],
+      [
+       [
+        8,
+        3
+       ],
+       [
+        9,
+        3
+       ],
+       [
+        10,
+        3
+       ]
+      ],
+      [
+       [
+        11,
+        3
+       ],
+       [
+        12,
+        3
+       ],
+       [
+        13,
+        3
+       ]
+      ],
+      [
+       [
+        14,
+        3
+       ],
+       [
+        15,
+        3
+       ],
+       [
+        16,
+        3
+       ]
+      ],
+      [
+       [
+        17,
+        3
+       ],
+       [
+        18,
+        3
+       ],
+       [
+        19,
+        3
+       ]
+      ]
+     ],
+     "group_counter": [
+      1,
+      1,
+      5,
+      3,
+      3,
+      3,
+      3
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 6000000,
+    "honor": 200000,
+    "uridium": 35000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 25000
+    },
+    "xenomit": 0,
+    "log_disk": 50,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 25,
+     "abr": 3
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "drone_designs_havoc",
+      "count": 1,
+      "probability": 0.45,
+      "first_guaranteed": true
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.1
+     }
+    ]
+   }
+  },
+  "kappa": {
+   "uid": 7,
+   "name": "Kappa Gate",
+   "map": 74,
+   "maps": [
+    74
+   ],
+   "sizes": {},
+   "portal": 70,
+   "part": 120,
+   "hp": 5,
+   "kronos_part": 2,
+   "waves": [
+    {
+     "name": "I",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "84",
+       "name": "Streuner",
+       "display_name": "-=[ Streuner ]=-",
+       "count": 10,
+       "hp": 1600,
+       "shield": 800,
+       "damage": 40,
+       "speed": 172,
+       "npc_id": 1,
+       "reward": {
+        "ep": 800,
+        "honor": 8,
+        "credits": 800,
+        "uridium": 2
+       },
+       "cargo": {
+        "0": 20,
+        "2": 20
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "94",
+       "name": "Vagrant",
+       "display_name": "-=[ Vagrant ]=-",
+       "count": 10,
+       "hp": 40000,
+       "shield": 40000,
+       "damage": 2500,
+       "speed": 300,
+       "npc_id": 42,
+       "reward": {
+        "ep": 4000,
+        "honor": 4,
+        "credits": 15000,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 50,
+        "2": 50,
+        "1": 50,
+        "4": 4,
+        "5": 4,
+        "3": 1
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "100",
+       "name": "Infernal",
+       "display_name": "-=[ Infernal ]=-",
+       "count": 10,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1000,
+       "speed": 320,
+       "npc_id": 63,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 25000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "7": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "93",
+       "name": "Marauder",
+       "display_name": "-=[ Marauder ]=-",
+       "count": 6,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 4500,
+       "speed": 300,
+       "npc_id": 43,
+       "reward": {
+        "ep": 8000,
+        "honor": 4,
+        "credits": 30000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 8,
+        "5": 8,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 7,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "31",
+       "name": "Boss Mordon",
+       "display_name": "..::{ Boss Mordon }::..",
+       "count": 8,
+       "hp": 80000,
+       "shield": 40000,
+       "damage": 1500,
+       "speed": 180,
+       "npc_id": 16,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 32,
+        "5": 32,
+        "6": 10,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        7
+       ]
+      ],
+      [
+       [
+        2,
+        8
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "92",
+       "name": "Outcast",
+       "display_name": "-=[ Outcast ]=-",
+       "count": 6,
+       "hp": 150000,
+       "shield": 80000,
+       "damage": 4500,
+       "speed": 280,
+       "npc_id": 44,
+       "reward": {
+        "ep": 9000,
+        "honor": 12,
+        "credits": 50000,
+        "uridium": 24
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "72",
+       "name": "Devolarium",
+       "display_name": "-=[ Devolarium ]=-",
+       "count": 6,
+       "hp": 100000,
+       "shield": 100000,
+       "damage": 1200,
+       "speed": 150,
+       "npc_id": 3,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 51200,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "103",
+       "name": "Icy",
+       "display_name": "-=[ Icy ]=-",
+       "count": 3,
+       "hp": 100000,
+       "shield": 80000,
+       "damage": 2000,
+       "speed": 250,
+       "npc_id": 56,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        2,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "27",
+       "name": "Boss Sibelonit",
+       "display_name": "..::{ Boss Sibelonit }::..",
+       "count": 5,
+       "hp": 160000,
+       "shield": 160000,
+       "damage": 4350,
+       "speed": 280,
+       "npc_id": 19,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "91",
+       "name": "Corsair",
+       "display_name": "-=[ Corsair ]=-",
+       "count": 5,
+       "hp": 200000,
+       "shield": 120000,
+       "damage": 7800,
+       "speed": 300,
+       "npc_id": 45,
+       "reward": {
+        "ep": 15000,
+        "honor": 16,
+        "credits": 80000,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 25,
+        "5": 25,
+        "6": 2,
+        "7": 2,
+        "3": 8
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "99",
+       "name": "Scorcher",
+       "display_name": "-=[ Scorcher ]=-",
+       "count": 5,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 280,
+       "npc_id": 64,
+       "reward": {
+        "ep": 16500,
+        "honor": 8,
+        "credits": 150000,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        2,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "96",
+       "name": "Hooligan",
+       "display_name": "-=[ Hooligan ]=-",
+       "count": 4,
+       "hp": 250000,
+       "shield": 200000,
+       "damage": 9000,
+       "speed": 280,
+       "npc_id": 46,
+       "reward": {
+        "ep": 20000,
+        "honor": 32,
+        "credits": 125000,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "7": 4,
+        "3": 12
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "78",
+       "name": "Kristallin",
+       "display_name": "-=[ Kristallin ]=-",
+       "count": 5,
+       "hp": 50000,
+       "shield": 40000,
+       "damage": 1650,
+       "speed": 300,
+       "npc_id": 9,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 1
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "102",
+       "name": "Melter",
+       "display_name": "-=[ Melter ]=-",
+       "count": 4,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 240,
+       "npc_id": 65,
+       "reward": {
+        "ep": 55000,
+        "honor": 12,
+        "credits": 400000,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "7": 8
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        2,
+        4
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "111",
+       "name": "Interceptor",
+       "display_name": "-=[ Interceptor ]=-",
+       "count": 8,
+       "hp": 60000,
+       "shield": 40000,
+       "damage": 500,
+       "speed": 320,
+       "npc_id": 58,
+       "reward": {
+        "ep": 7500,
+        "honor": 40,
+        "credits": 25500,
+        "uridium": 20
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 18,
+        "5": 18,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "112",
+       "name": "Barracuda",
+       "display_name": "-=[ Barracuda ]=-",
+       "count": 6,
+       "hp": 180000,
+       "shield": 100000,
+       "damage": 6000,
+       "speed": 280,
+       "npc_id": 59,
+       "reward": {
+        "ep": 15000,
+        "honor": 56,
+        "credits": 90000,
+        "uridium": 25
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 24,
+        "5": 24,
+        "6": 4
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "kamikaze_threshold": null
+       }
+      },
+      {
+       "type": "114",
+       "name": "Annihilator",
+       "display_name": "-=[ Annihilator ]=-",
+       "count": 3,
+       "hp": 300000,
+       "shield": 200000,
+       "damage": 15000,
+       "speed": 240,
+       "npc_id": 61,
+       "reward": {
+        "ep": 75000,
+        "honor": 128,
+        "credits": 250000,
+        "uridium": 65
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 48,
+        "5": 48,
+        "6": 12,
+        "3": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": null
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        2,
+        3
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "28",
+       "name": "Boss Lordakium",
+       "display_name": "..::{ Boss Lordakium }::...",
+       "count": 6,
+       "hp": 1200000,
+       "shield": 800000,
+       "damage": 16000,
+       "speed": 180,
+       "npc_id": 21,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "3": 32
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "81",
+       "name": "Protegit",
+       "display_name": "-=[ Protegit ]=-",
+       "count": 8,
+       "hp": 50000,
+       "shield": 40000,
+       "damage": 1500,
+       "speed": 420,
+       "npc_id": 12,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "46",
+       "name": "Boss Sibelon",
+       "display_name": "..::{ Boss Sibelon }::..",
+       "count": 2,
+       "hp": 800000,
+       "shield": 800000,
+       "damage": 12350,
+       "speed": 140,
+       "npc_id": 20,
+       "reward": {
+        "ep": 51000,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "3": 32
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ],
+      [
+       [
+        2,
+        2
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "82",
+       "name": "Kucurbium",
+       "display_name": "-=[ Kucurbium ]=-",
+       "count": 6,
+       "hp": 800000,
+       "shield": 600000,
+       "damage": 7000,
+       "speed": 200,
+       "npc_id": 40,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 1638400,
+        "uridium": 512
+       },
+       "cargo": {
+        "0": 600,
+        "2": 600,
+        "1": 600,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "3": 64
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "38",
+       "name": "Uber Saimon",
+       "display_name": "( UberSaimon )",
+       "count": 8,
+       "hp": 48000,
+       "shield": 24000,
+       "damage": 1600,
+       "speed": 250,
+       "npc_id": 31,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 16,
+        "5": 16,
+        "6": 2,
+        "3": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "95",
+       "name": "Convict",
+       "display_name": "-=[ Convict ]=-",
+       "count": 5,
+       "hp": 400000,
+       "shield": 200000,
+       "damage": 11500,
+       "speed": 260,
+       "npc_id": 48,
+       "reward": {
+        "ep": 30000,
+        "honor": 100,
+        "credits": 220000,
+        "uridium": 150
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 16,
+        "7": 16,
+        "3": 24
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "29",
+       "name": "Boss Kristallin",
+       "display_name": "..::{ Boss Kristallin }::..",
+       "count": 5,
+       "hp": 200000,
+       "shield": 160000,
+       "damage": 4700,
+       "speed": 280,
+       "npc_id": 22,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 51200,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 4,
+        "3": 6
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "11",
+       "name": "DemaNeR",
+       "display_name": "-=[ DemaNeR ]=-",
+       "count": 1,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 300,
+       "npc_id": 39,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 409600,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 126,
+        "5": 126,
+        "6": 44,
+        "3": 22
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "X",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "83",
+       "name": "Boss Kucurbium",
+       "display_name": "..::{ Boss Kucurbium }::..",
+       "count": 1,
+       "hp": 800000,
+       "shield": 600000,
+       "damage": 46000,
+       "speed": 180,
+       "npc_id": 41,
+       "reward": {
+        "ep": 204800,
+        "honor": 1024,
+        "credits": 3276800,
+        "uridium": 2048
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 128
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "XI",
+     "map": 74,
+     "alien_spawns": [
+      {
+       "type": "90",
+       "name": "Century Falcon",
+       "display_name": "-=[ Century Falcon ]=-",
+       "count": 1,
+       "hp": 800000,
+       "shield": 600000,
+       "damage": 46000,
+       "speed": 250,
+       "npc_id": 49,
+       "reward": {
+        "ep": 1000000,
+        "honor": 5000,
+        "credits": 1000000,
+        "uridium": 5000
+       },
+       "cargo": {
+        "0": 1,
+        "2": 1,
+        "1": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "3": 1
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 9000000,
+    "honor": 325000,
+    "uridium": 15000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 30000
+    },
+    "xenomit": 0,
+    "log_disk": 10,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 5,
+     "abr": 4
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "drone_designs_hercules",
+      "count": 1,
+      "probability": 0.375,
+      "single_spin": true
+     },
+     {
+      "item": "equipment_weapon_laser_lf-4",
+      "count": 1,
+      "probability": 0.25,
+      "single_spin": true
+     },
+     {
+      "item": "booster_kappa-b01",
+      "count": 5,
+      "probability": 0.25,
+      "single_spin": true
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.15
+     }
+    ]
+   },
+   "title": "title_204"
+  },
+  "lambda": {
+   "uid": 8,
+   "name": "Lambda Gate",
+   "map": 75,
+   "maps": [
+    75
+   ],
+   "sizes": {},
+   "portal": 71,
+   "part": 45,
+   "hp": 5,
+   "kronos_part": 5,
+   "waves": [
+    {
+     "name": "I",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "23",
+       "name": "Boss Streuner",
+       "display_name": "..::{ Boss Streuner }::..",
+       "count": 10,
+       "hp": 3200,
+       "shield": 1600,
+       "damage": 100,
+       "speed": 220,
+       "npc_id": 14,
+       "reward": {
+        "ep": 1600,
+        "honor": 8,
+        "credits": 1600,
+        "uridium": 4
+       },
+       "cargo": {
+        "0": 40,
+        "2": 10,
+        "1": 40
+       },
+       "_reward_source": "aliens.md boss_streuner"
+      },
+      {
+       "type": "24",
+       "name": "Boss Lordakia",
+       "display_name": "..::{ Boss Lordakia }::..",
+       "count": 20,
+       "hp": 8000,
+       "shield": 8000,
+       "damage": 320,
+       "speed": 240,
+       "npc_id": 15,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 10,
+        "3": 1
+       },
+       "_reward_source": "aliens.md boss_lordakia"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "31",
+       "name": "Boss Mordon",
+       "display_name": "..::{ Boss Mordon }::..",
+       "count": 6,
+       "hp": 80000,
+       "shield": 40000,
+       "damage": 1500,
+       "speed": 180,
+       "npc_id": 16,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 25600,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 320,
+        "2": 320,
+        "1": 320,
+        "4": 32,
+        "5": 32,
+        "6": 8,
+        "3": 8
+       },
+       "_reward_source": "aliens.md boss_mordon"
+      },
+      {
+       "type": "25",
+       "name": "Boss Saimon",
+       "display_name": "..::{ Boss Saimon }::..",
+       "count": 14,
+       "hp": 24000,
+       "shield": 12000,
+       "damage": 800,
+       "speed": 250,
+       "npc_id": 17,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 8,
+        "5": 8,
+        "6": 1,
+        "3": 2
+       },
+       "_reward_source": "aliens.md boss_saimon"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        7
+       ]
+      ],
+      [
+       [
+        1,
+        7
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "26",
+       "name": "Boss Devolarium",
+       "display_name": "..::{ Boss Devolarium }::..",
+       "count": 4,
+       "hp": 400000,
+       "shield": 400000,
+       "damage": 4650,
+       "speed": 140,
+       "npc_id": 18,
+       "reward": {
+        "ep": 26500,
+        "honor": 128,
+        "credits": 204800,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 8,
+        "3": 8
+       },
+       "_reward_source": "aliens.md boss_devolarium"
+      },
+      {
+       "type": "27",
+       "name": "Boss Sibelonit",
+       "display_name": "..::{ Boss Sibelonit }::..",
+       "count": 6,
+       "hp": 160000,
+       "shield": 160000,
+       "damage": 4350,
+       "speed": 280,
+       "npc_id": 19,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "3": 8
+       },
+       "_reward_source": "aliens.md boss_sibelonit"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "IV",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "27",
+       "name": "Boss Sibelonit",
+       "display_name": "..::{ Boss Sibelonit }::..",
+       "count": 10,
+       "hp": 160000,
+       "shield": 160000,
+       "damage": 4350,
+       "speed": 280,
+       "npc_id": 19,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 48
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 32,
+        "5": 32,
+        "6": 4,
+        "3": 8
+       },
+       "_reward_source": "aliens.md boss_sibelonit"
+      },
+      {
+       "type": "46",
+       "name": "Boss Sibelon",
+       "display_name": "..::{ Boss Sibelon }::..",
+       "count": 1,
+       "hp": 800000,
+       "shield": 800000,
+       "damage": 12350,
+       "speed": 140,
+       "npc_id": 20,
+       "reward": {
+        "ep": 51000,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "3": 32
+       },
+       "_reward_source": "aliens.md boss_sibelon"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "V",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "28",
+       "name": "Boss Lordakium",
+       "display_name": "..::{ Boss Lordakium }::...",
+       "count": 3,
+       "hp": 1200000,
+       "shield": 800000,
+       "damage": 16000,
+       "speed": 180,
+       "npc_id": 21,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "3": 32
+       },
+       "_reward_source": "aliens.md boss_lordakium"
+      },
+      {
+       "type": "24",
+       "name": "Boss Lordakia",
+       "display_name": "..::{ Boss Lordakia }::..",
+       "count": 10,
+       "hp": 8000,
+       "shield": 8000,
+       "damage": 320,
+       "speed": 240,
+       "npc_id": 15,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 10,
+        "3": 1
+       },
+       "_reward_source": "aliens.md boss_lordakia"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "VI",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "29",
+       "name": "Boss Kristallin",
+       "display_name": "..::{ Boss Kristallin }::..",
+       "count": 12,
+       "hp": 200000,
+       "shield": 160000,
+       "damage": 4700,
+       "speed": 280,
+       "npc_id": 22,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 51200,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 4,
+        "3": 6
+       },
+       "_reward_source": "aliens.md boss_kristallin"
+      },
+      {
+       "type": "35",
+       "name": "Boss Kristallon",
+       "display_name": "..::{ Boss Kristallon }::..",
+       "count": 1,
+       "hp": 1600000,
+       "shield": 1200000,
+       "damage": 20000,
+       "speed": 180,
+       "npc_id": 23,
+       "reward": {
+        "ep": 204800,
+        "honor": 1024,
+        "credits": 1638400,
+        "uridium": 512
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "aliens.md boss_kristallon"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 75,
+     "alien_spawns": [
+      {
+       "type": "35",
+       "name": "Boss Kristallon",
+       "display_name": "..::{ Boss Kristallon }::..",
+       "count": 2,
+       "hp": 1600000,
+       "shield": 1200000,
+       "damage": 20000,
+       "speed": 180,
+       "npc_id": 23,
+       "reward": {
+        "ep": 204800,
+        "honor": 1024,
+        "credits": 1638400,
+        "uridium": 512
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "aliens.md boss_kristallon"
+      },
+      {
+       "type": "29",
+       "name": "Boss Kristallin",
+       "display_name": "..::{ Boss Kristallin }::..",
+       "count": 20,
+       "hp": 200000,
+       "shield": 160000,
+       "damage": 4700,
+       "speed": 280,
+       "npc_id": 22,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 51200,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 64,
+        "5": 64,
+        "6": 4,
+        "3": 6
+       },
+       "_reward_source": "aliens.md boss_kristallin"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 2750000,
+    "honor": 100000,
+    "uridium": 15000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 10000
+    },
+    "xenomit": 0,
+    "log_disk": 3,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 5,
+     "abr": 4
+    },
+    "part": 1,
+    "chance": [
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.05
+     }
+    ]
+   },
+   "title": "title_205"
+  },
+  "kronos": {
+   "uid": 12,
+   "name": "Kronos Gate",
+   "map": 76,
+   "maps": [
+    76
+   ],
+   "sizes": {},
+   "portal": 72,
+   "part": 21,
+   "hp": 5,
+   "kronos_part": 0,
+   "waves": [
+    {
+     "name": "I",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_phoenix",
+       "name": "Saturn Phoenix",
+       "display_name": "-=[ Saturn Phoenix ]=-",
+       "count": 10,
+       "hp": 4000,
+       "shield": 10000,
+       "damage": 150,
+       "speed": 300,
+       "npc_id": 77,
+       "reward": {
+        "ep": 100,
+        "honor": 1,
+        "credits": 400,
+        "uridium": 5
+       },
+       "cargo": {
+        "0": 45,
+        "2": 45,
+        "1": 45,
+        "4": 20,
+        "5": 20
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_yamato",
+       "name": "Saturn Yamato",
+       "display_name": "-=[ Saturn Yamato ]=-",
+       "count": 30,
+       "hp": 8000,
+       "shield": 20000,
+       "damage": 400,
+       "speed": 300,
+       "npc_id": 78,
+       "reward": {
+        "ep": 200,
+        "honor": 2,
+        "credits": 800,
+        "uridium": 7
+       },
+       "cargo": {
+        "0": 45,
+        "2": 45,
+        "1": 45,
+        "4": 20,
+        "5": 20
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1500,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_defcom",
+       "name": "Saturn Defcom",
+       "display_name": "-=[ Saturn Defcom ]=-",
+       "count": 20,
+       "hp": 12000,
+       "shield": 50000,
+       "damage": 500,
+       "speed": 300,
+       "npc_id": 79,
+       "reward": {
+        "ep": 1600,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 12
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 50,
+        "5": 50
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1500,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_liberator",
+       "name": "Saturn Liberator",
+       "display_name": "-=[ Saturn Liberator ]=-",
+       "count": 30,
+       "hp": 16000,
+       "shield": 30000,
+       "damage": 900,
+       "speed": 300,
+       "npc_id": 80,
+       "reward": {
+        "ep": 200,
+        "honor": 2,
+        "credits": 800,
+        "uridium": 7
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 50,
+        "5": 50
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1500,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_nostromo",
+       "name": "Saturn Nostromo",
+       "display_name": "-=[ Saturn Nostromo ]=-",
+       "count": 20,
+       "hp": 64000,
+       "shield": 80000,
+       "damage": 900,
+       "speed": 300,
+       "npc_id": 81,
+       "reward": {
+        "ep": 6400,
+        "honor": 64,
+        "credits": 6400,
+        "uridium": 18
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 50,
+        "5": 50
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1500,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_piranha",
+       "name": "Saturn Piranha",
+       "display_name": "-=[ Saturn Piranha ]=-",
+       "count": 30,
+       "hp": 64000,
+       "shield": 80000,
+       "damage": 900,
+       "speed": 300,
+       "npc_id": 82,
+       "reward": {
+        "ep": 6400,
+        "honor": 64,
+        "credits": 6400,
+        "uridium": 15
+       },
+       "cargo": {
+        "0": 75,
+        "2": 75,
+        "1": 75,
+        "4": 50,
+        "5": 50
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1500,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ],
+      [
+       [
+        1,
+        15
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "IV",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_bigboy",
+       "name": "Saturn Bigboy",
+       "display_name": "-=[ Saturn Bigboy ]=-",
+       "count": 30,
+       "hp": 128000,
+       "shield": 150000,
+       "damage": 2500,
+       "speed": 300,
+       "npc_id": 83,
+       "reward": {
+        "ep": 25600,
+        "honor": 256,
+        "credits": 12800,
+        "uridium": 56
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "V",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_vengeance",
+       "name": "Saturn Vengeance",
+       "display_name": "-=[ Saturn Vengeance ]=-",
+       "count": 15,
+       "hp": 180000,
+       "shield": 100000,
+       "damage": 3000,
+       "speed": 300,
+       "npc_id": 84,
+       "reward": {
+        "ep": 12800,
+        "honor": 128,
+        "credits": 25600,
+        "uridium": 28
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_g-saturn",
+       "name": "Saturn Goliath",
+       "display_name": "-=[ Saturn Goliath ]=-",
+       "count": 8,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 85,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VI",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_leonov",
+       "name": "Saturn Leonov",
+       "display_name": "-=[ Saturn Leonov ]=-",
+       "count": 20,
+       "hp": 160000,
+       "shield": 60000,
+       "damage": 5000,
+       "speed": 300,
+       "npc_id": 86,
+       "reward": {
+        "ep": 12800,
+        "honor": 65,
+        "credits": 25600,
+        "uridium": 25
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VII",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_venom",
+       "name": "Saturn Venom",
+       "display_name": "-=[ Saturn Venom ]=-",
+       "count": 5,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 8500,
+       "speed": 300,
+       "npc_id": 87,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_sentinel",
+       "name": "Saturn Sentinel",
+       "display_name": "-=[ Saturn Sentinel ]=-",
+       "count": 5,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 88,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_spectrum",
+       "name": "Saturn Spectrum",
+       "display_name": "-=[ Saturn Spectrum ]=-",
+       "count": 5,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 89,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_diminisher",
+       "name": "Saturn Diminisher",
+       "display_name": "-=[ Saturn Diminisher ]=-",
+       "count": 5,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 8500,
+       "speed": 300,
+       "npc_id": 90,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_solace",
+       "name": "Saturn Solace",
+       "display_name": "-=[ Saturn Solace ]=-",
+       "count": 5,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 8500,
+       "speed": 300,
+       "npc_id": 91,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        2,
+        5
+       ]
+      ],
+      [
+       [
+        3,
+        5
+       ]
+      ],
+      [
+       [
+        4,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "VIII",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_v-revenge",
+       "name": "Saturn Revenge",
+       "display_name": "-=[ Saturn Revenge ]=-",
+       "count": 10,
+       "hp": 180000,
+       "shield": 100000,
+       "damage": 3000,
+       "speed": 300,
+       "npc_id": 92,
+       "reward": {
+        "ep": 12800,
+        "honor": 128,
+        "credits": 25600,
+        "uridium": 28
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_g-enforcer",
+       "name": "Saturn Enforcer",
+       "display_name": "-=[ Saturn Enforcer ]=-",
+       "count": 15,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 8500,
+       "speed": 300,
+       "npc_id": 96,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IX",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_v-lightning",
+       "name": "Saturn Lightning",
+       "display_name": "-=[ Saturn Lightning ]=-",
+       "count": 18,
+       "hp": 180000,
+       "shield": 100000,
+       "damage": 3000,
+       "speed": 300,
+       "npc_id": 93,
+       "reward": {
+        "ep": 12800,
+        "honor": 128,
+        "credits": 25600,
+        "uridium": 28
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_v-avenger",
+       "name": "Saturn Avenger",
+       "display_name": "-=[ Saturn Avenger ]=-",
+       "count": 12,
+       "hp": 180000,
+       "shield": 200000,
+       "damage": 3000,
+       "speed": 300,
+       "npc_id": 94,
+       "reward": {
+        "ep": 12800,
+        "honor": 128,
+        "credits": 25600,
+        "uridium": 28
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "X",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_g-bastion",
+       "name": "Saturn Bastion",
+       "display_name": "-=[ Saturn Bastion ]=-",
+       "count": 12,
+       "hp": 256000,
+       "shield": 250000,
+       "damage": 3000,
+       "speed": 300,
+       "npc_id": 95,
+       "reward": {
+        "ep": 12800,
+        "honor": 128,
+        "credits": 25600,
+        "uridium": 28
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_g-enforcer",
+       "name": "Saturn Enforcer",
+       "display_name": "-=[ Saturn Enforcer ]=-",
+       "count": 6,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 8500,
+       "speed": 300,
+       "npc_id": 96,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "XI",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_spearhead",
+       "name": "Saturn Spearhead",
+       "display_name": "-=[ Saturn Spearhead ]=-",
+       "count": 10,
+       "hp": 100000,
+       "shield": 120000,
+       "damage": 1400,
+       "speed": 300,
+       "npc_id": 97,
+       "reward": {
+        "ep": 7500,
+        "honor": 75,
+        "credits": 20000,
+        "uridium": 20
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 75,
+        "5": 75,
+        "6": 8
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_citadel",
+       "name": "Saturn Citadel",
+       "display_name": "-=[ Saturn Citadel ]=-",
+       "count": 5,
+       "hp": 550000,
+       "shield": 200000,
+       "damage": 6500,
+       "speed": 300,
+       "npc_id": 98,
+       "reward": {
+        "ep": 120000,
+        "honor": 1200,
+        "credits": 80000,
+        "uridium": 175
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 200,
+        "5": 200,
+        "6": 20
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_aegis",
+       "name": "Saturn Aegis",
+       "display_name": "-=[ Saturn Aegis ]=-",
+       "count": 8,
+       "hp": 275000,
+       "shield": 150000,
+       "damage": 5000,
+       "speed": 300,
+       "npc_id": 99,
+       "reward": {
+        "ep": 25000,
+        "honor": 250,
+        "credits": 50000,
+        "uridium": 56
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_g-saturn",
+       "name": "Saturn Goliath",
+       "display_name": "-=[ Saturn Goliath ]=-",
+       "count": 10,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 85,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       [
+        2,
+        8
+       ]
+      ],
+      [
+       [
+        3,
+        10
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "XII",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "ship_goliath_design_crimson",
+       "name": "Saturn Crimson",
+       "display_name": "-=[ Saturn Crimson ]=-",
+       "count": 8,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 100,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_goliath_design_jade",
+       "name": "Saturn Jade",
+       "display_name": "-=[ Saturn Jade ]=-",
+       "count": 8,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 101,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "ship_goliath_design_sapphire",
+       "name": "Saturn Sapphire",
+       "display_name": "-=[ Saturn Sapphire ]=-",
+       "count": 8,
+       "hp": 256000,
+       "shield": 150000,
+       "damage": 7000,
+       "speed": 300,
+       "npc_id": 102,
+       "reward": {
+        "ep": 51200,
+        "honor": 512,
+        "credits": 45000,
+        "uridium": 100
+       },
+       "cargo": {
+        "0": 150,
+        "2": 150,
+        "1": 150,
+        "4": 100,
+        "5": 100,
+        "6": 12
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        8
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ],
+      [
+       [
+        2,
+        8
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "XIII",
+     "map": 76,
+     "alien_spawns": [
+      {
+       "type": "player",
+       "name": "Evil Clone Of Your Ship",
+       "display_name": "-=[ Evil You ]=-",
+       "count": 1,
+       "hp": 750000,
+       "shield": 500000,
+       "damage": 35000,
+       "speed": 320,
+       "npc_id": 103,
+       "reward": {
+        "ep": 250000,
+        "honor": 2000,
+        "credits": 150000,
+        "uridium": 500
+       },
+       "cargo": {
+        "0": 400,
+        "2": 400,
+        "1": 400,
+        "4": 200,
+        "5": 200,
+        "6": 25
+       },
+       "_reward_source": "wiki gate",
+       "behavior": {
+        "rocket": {
+         "damage": 1000,
+         "cooldown_sec": 6
+        }
+       }
+      },
+      {
+       "type": "108",
+       "name": "Evil Iris",
+       "display_name": "-=[ Evil Iris ]=-",
+       "count": 8,
+       "hp": 60000,
+       "shield": 50000,
+       "damage": 1400,
+       "speed": 380,
+       "npc_id": 104,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 12800,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 100,
+        "2": 100,
+        "1": 100,
+        "4": 16,
+        "5": 16,
+        "6": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        8
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 12000000,
+    "honor": 450000,
+    "uridium": 25000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 25000,
+     "ammunition_laser_rsb-75": 5000,
+     "ammunition_rocketlauncher_ubr-100": 500
+    },
+    "xenomit": 0,
+    "log_disk": 15,
+    "voucher": 0,
+    "energy": 250,
+    "booty": {
+     "abr": 100,
+     "green_key": 10,
+     "schism": 10
+    },
+    "part": 0,
+    "chance": [
+     {
+      "item": "drone_designs_spartan",
+      "count": 1,
+      "probability": 0.25,
+      "first_guaranteed": true
+     },
+     {
+      "item": "ship_g-saturn",
+      "count": 1,
+      "probability": 0.25
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.15
+     }
+    ]
+   },
+   "sources": {
+    "alpha": 4,
+    "beta": 3,
+    "gamma": 1,
+    "delta": 1,
+    "epsilon": 4,
+    "zeta": 1,
+    "kappa": 2,
+    "lambda": 5
+   },
+   "not_producible": true
+  },
+  "hades": {
+   "uid": 13,
+   "name": "Hades Gate",
+   "map": 203,
+   "maps": [
+    203
+   ],
+   "sizes": {
+    "203": [
+     10500,
+     6550
+    ]
+   },
+   "portal": 74,
+   "part": 45,
+   "hp": 5,
+   "kronos_part": 0,
+   "waves": [
+    {
+     "name": "I",
+     "map": 203,
+     "alien_spawns": [
+      {
+       "type": "74",
+       "name": "Sibelon",
+       "display_name": "-=[ Sibelon ]=-",
+       "count": 30,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 2650,
+       "speed": 150,
+       "npc_id": 5,
+       "reward": {
+        "ep": 12800,
+        "honor": 64,
+        "credits": 102400,
+        "uridium": 32
+       },
+       "cargo": {
+        "0": 200,
+        "2": 200,
+        "1": 200,
+        "4": 32,
+        "5": 32,
+        "6": 4
+       },
+       "_reward_source": "aliens.md sibelon"
+      },
+      {
+       "type": "46",
+       "name": "Boss Sibelon",
+       "display_name": "..::{ Boss Sibelon }::..",
+       "count": 10,
+       "hp": 800000,
+       "shield": 800000,
+       "damage": 12350,
+       "speed": 140,
+       "npc_id": 20,
+       "reward": {
+        "ep": 51000,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "3": 32
+       },
+       "_reward_source": "aliens.md boss_sibelon"
+      },
+      {
+       "type": "47",
+       "name": "Uber Sibelon",
+       "display_name": "( UberSibelon )",
+       "count": 4,
+       "hp": 1600000,
+       "shield": 1600000,
+       "damage": 24000,
+       "speed": 150,
+       "npc_id": 34,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "aliens.md uber_sibelon"
+      },
+      {
+       "type": "124",
+       "name": "Emperor Sibelon",
+       "display_name": "-=[ Emperor Sibelon ]=-",
+       "count": 1,
+       "hp": 6400000,
+       "shield": 6400000,
+       "damage": 35000,
+       "speed": 200,
+       "npc_id": 113,
+       "reward": {
+        "ep": 409600,
+        "honor": 2048,
+        "credits": 1400000,
+        "uridium": 4608
+       },
+       "cargo": {
+        "0": 2560,
+        "2": 2560,
+        "1": 2560,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "3": 32
+       },
+       "_reward_source": "aliens.md emperor_sibelon"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        30
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        4
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 203,
+     "alien_spawns": [
+      {
+       "type": "77",
+       "name": "Lordakium",
+       "display_name": "-=[ Lordakium ]=-",
+       "count": 30,
+       "hp": 300000,
+       "shield": 200000,
+       "damage": 3600,
+       "speed": 200,
+       "npc_id": 8,
+       "reward": {
+        "ep": 25600,
+        "honor": 128,
+        "credits": 204800,
+        "uridium": 64
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 64,
+        "5": 64,
+        "6": 8
+       },
+       "_reward_source": "aliens.md lordakium"
+      },
+      {
+       "type": "28",
+       "name": "Boss Lordakium",
+       "display_name": "..::{ Boss Lordakium }::...",
+       "count": 10,
+       "hp": 1200000,
+       "shield": 800000,
+       "damage": 16000,
+       "speed": 180,
+       "npc_id": 21,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 32,
+        "3": 32
+       },
+       "_reward_source": "aliens.md boss_lordakium"
+      },
+      {
+       "type": "41",
+       "name": "Uber Lordakium",
+       "display_name": "( UberLordakium )",
+       "count": 4,
+       "hp": 2400000,
+       "shield": 1600000,
+       "damage": 32000,
+       "speed": 180,
+       "npc_id": 35,
+       "reward": {
+        "ep": 204800,
+        "honor": 1024,
+        "credits": 1638400,
+        "uridium": 512
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 128
+       },
+       "_reward_source": "aliens.md uber_lordakium"
+      },
+      {
+       "type": "123",
+       "name": "Emperor Lordakium",
+       "display_name": "-=[ Emperor Lordakium ]=-",
+       "count": 1,
+       "hp": 9600000,
+       "shield": 6800000,
+       "damage": 45000,
+       "speed": 180,
+       "npc_id": 114,
+       "reward": {
+        "ep": 768000,
+        "honor": 4096,
+        "credits": 2000000,
+        "uridium": 9214
+       },
+       "cargo": {
+        "0": 2560,
+        "2": 2560,
+        "1": 2560,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "aliens.md emperor_lordakium"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        30
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        4
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "III",
+     "map": 203,
+     "alien_spawns": [
+      {
+       "type": "79",
+       "name": "Kristallon",
+       "display_name": "-=[ Kristallon ]=-",
+       "count": 30,
+       "hp": 400000,
+       "shield": 300000,
+       "damage": 4450,
+       "speed": 200,
+       "npc_id": 10,
+       "reward": {
+        "ep": 51200,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 300,
+        "2": 300,
+        "1": 300,
+        "4": 128,
+        "5": 128,
+        "6": 16
+       },
+       "_reward_source": "aliens.md kristallon"
+      },
+      {
+       "type": "35",
+       "name": "Boss Kristallon",
+       "display_name": "..::{ Boss Kristallon }::..",
+       "count": 10,
+       "hp": 1600000,
+       "shield": 1200000,
+       "damage": 20000,
+       "speed": 180,
+       "npc_id": 23,
+       "reward": {
+        "ep": 204800,
+        "honor": 1024,
+        "credits": 1638400,
+        "uridium": 512
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 512,
+        "5": 512,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "aliens.md boss_kristallon"
+      },
+      {
+       "type": "45",
+       "name": "Uber Kristallon",
+       "display_name": "( UberKristallon )",
+       "count": 4,
+       "hp": 3200000,
+       "shield": 2400000,
+       "damage": 40000,
+       "speed": 180,
+       "npc_id": 37,
+       "reward": {
+        "ep": 490000,
+        "honor": 2048,
+        "credits": 3276800,
+        "uridium": 1024
+       },
+       "cargo": {
+        "0": 2400,
+        "2": 2400,
+        "1": 2400,
+        "4": 512,
+        "5": 512,
+        "6": 128,
+        "3": 128
+       },
+       "_reward_source": "aliens.md uber_kristallon"
+      },
+      {
+       "type": "122",
+       "name": "Emperor Kristallon",
+       "display_name": "-=[ Emperor Kristallon ]=-",
+       "count": 1,
+       "hp": 14080000,
+       "shield": 10560000,
+       "damage": 40000,
+       "speed": 180,
+       "npc_id": 115,
+       "reward": {
+        "ep": 1536000,
+        "honor": 8192,
+        "credits": 5000000,
+        "uridium": 36864
+       },
+       "cargo": {
+        "0": 2560,
+        "2": 2560,
+        "1": 2560,
+        "4": 1024,
+        "5": 1024,
+        "6": 128,
+        "3": 128
+       },
+       "_reward_source": "aliens.md emperor_kristallon"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        30
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        4
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ]
+     ]
+    }
+   ],
+   "reward": {
+    "ep": 4000000,
+    "honor": 200000,
+    "uridium": 20000,
+    "ammunition": {
+     "ammunition_laser_ucb-100": 15000
+    },
+    "xenomit": 0,
+    "log_disk": 8,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 4,
+     "abr": 1
+    },
+    "part": 0,
+    "chance": [
+     {
+      "item": "equipment_weapon_laser_lf-4",
+      "count": 1,
+      "probability": 0.25
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.05
+     }
+    ]
+   },
+   "title": "title_event_gg-hades"
+  },
+  "streuner": {
+   "uid": 19,
+   "name": "Kuiper Gate",
+   "map": 300,
+   "maps": [
+    300,
+    301,
+    302,
+    303,
+    304
+   ],
+   "sizes": {},
+   "portal": 82,
+   "part": 100,
+   "hp": 5,
+   "kronos_part": 0,
+   "waves": [
+    {
+     "name": "I",
+     "map": 300,
+     "alien_spawns": [
+      {
+       "type": "85",
+       "name": "StreuneR",
+       "display_name": "-=[ StreuneR ]=-",
+       "count": 25,
+       "hp": 40000,
+       "shield": 30000,
+       "damage": 1000,
+       "speed": 300,
+       "npc_id": 11,
+       "reward": {
+        "ep": 6000,
+        "honor": 30,
+        "credits": 12000,
+        "uridium": 15
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 15,
+        "5": 15,
+        "6": 1
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 1,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        20
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "II",
+     "map": 301,
+     "alien_spawns": [
+      {
+       "type": "44",
+       "name": "Uber StreuneR",
+       "display_name": "( UberStreuneR )",
+       "count": 10,
+       "hp": 320000,
+       "shield": 240000,
+       "damage": 7500,
+       "speed": 280,
+       "npc_id": 38,
+       "reward": {
+        "ep": 48000,
+        "honor": 240,
+        "credits": 96000,
+        "uridium": 120
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 230,
+        "5": 230,
+        "6": 8,
+        "3": 16
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "25",
+       "name": "Boss Saimon",
+       "display_name": "..::{ Boss Saimon }::..",
+       "count": 10,
+       "hp": 24000,
+       "shield": 12000,
+       "damage": 800,
+       "speed": 250,
+       "npc_id": 17,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 8,
+        "5": 8,
+        "6": 1,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 1,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 12,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "75",
+       "name": "Saimon",
+       "display_name": "-=[ Saimon ]=-",
+       "count": 12,
+       "hp": 12000,
+       "shield": 12000,
+       "damage": 400,
+       "speed": 280,
+       "npc_id": 6,
+       "reward": {
+        "ep": 3200,
+        "honor": 16,
+        "credits": 3200,
+        "uridium": 8
+       },
+       "cargo": {
+        "0": 80,
+        "2": 80,
+        "1": 80,
+        "4": 4,
+        "5": 4
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ],
+      [
+       [
+        3,
+        2
+       ]
+      ],
+      [
+       [
+        3,
+        10
+       ]
+      ],
+      [
+       [
+        4,
+        12
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "III",
+     "map": 302,
+     "alien_spawns": [
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 5,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "149",
+       "name": "Streuner Specialist",
+       "display_name": "-=[ Streuner Specialist ]=-",
+       "count": 1,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 280,
+       "npc_id": 149,
+       "reward": {
+        "ep": 20000,
+        "honor": 70,
+        "credits": 200000,
+        "uridium": 200
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 10,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 1,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "46",
+       "name": "Boss Sibelon",
+       "display_name": "..::{ Boss Sibelon }::..",
+       "count": 4,
+       "hp": 800000,
+       "shield": 800000,
+       "damage": 12350,
+       "speed": 140,
+       "npc_id": 20,
+       "reward": {
+        "ep": 51000,
+        "honor": 256,
+        "credits": 409600,
+        "uridium": 128
+       },
+       "cargo": {
+        "0": 800,
+        "2": 800,
+        "1": 800,
+        "4": 128,
+        "5": 128,
+        "6": 16,
+        "3": 32
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 10,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "149",
+       "name": "Streuner Specialist",
+       "display_name": "-=[ Streuner Specialist ]=-",
+       "count": 2,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 280,
+       "npc_id": 149,
+       "reward": {
+        "ep": 20000,
+        "honor": 70,
+        "credits": 200000,
+        "uridium": 200
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 10,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "149",
+       "name": "Streuner Specialist",
+       "display_name": "-=[ Streuner Specialist ]=-",
+       "count": 2,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 280,
+       "npc_id": 149,
+       "reward": {
+        "ep": 20000,
+        "honor": 70,
+        "credits": 200000,
+        "uridium": 200
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 1,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        1,
+        1
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        4,
+        4
+       ]
+      ],
+      [
+       [
+        5,
+        10
+       ]
+      ],
+      [
+       [
+        6,
+        2
+       ]
+      ],
+      [
+       [
+        7,
+        10
+       ]
+      ],
+      [
+       [
+        8,
+        2
+       ]
+      ],
+      [
+       [
+        9,
+        1
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "IV",
+     "map": 303,
+     "alien_spawns": [
+      {
+       "type": "148",
+       "name": "Streuner Turret",
+       "display_name": "-=[ Streuner Turret ]=-",
+       "count": 4,
+       "hp": 200000,
+       "shield": 200000,
+       "damage": 4000,
+       "speed": 0,
+       "npc_id": 148,
+       "reward": {
+        "ep": 18000,
+        "honor": 50,
+        "credits": 180000,
+        "uridium": 100
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 20,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "149",
+       "name": "Streuner Specialist",
+       "display_name": "-=[ Streuner Specialist ]=-",
+       "count": 6,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 280,
+       "npc_id": 149,
+       "reward": {
+        "ep": 20000,
+        "honor": 70,
+        "credits": 200000,
+        "uridium": 200
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 4,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "47",
+       "name": "Uber Sibelon",
+       "display_name": "( UberSibelon )",
+       "count": 2,
+       "hp": 1600000,
+       "shield": 1600000,
+       "damage": 24000,
+       "speed": 150,
+       "npc_id": 34,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "25",
+       "name": "Boss Saimon",
+       "display_name": "..::{ Boss Saimon }::..",
+       "count": 10,
+       "hp": 24000,
+       "shield": 12000,
+       "damage": 800,
+       "speed": 250,
+       "npc_id": 17,
+       "reward": {
+        "ep": 6400,
+        "honor": 32,
+        "credits": 6400,
+        "uridium": 16
+       },
+       "cargo": {
+        "0": 160,
+        "2": 160,
+        "1": 160,
+        "4": 8,
+        "5": 8,
+        "6": 1,
+        "3": 2
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        4,
+        2
+       ]
+      ],
+      [
+       [
+        5,
+        10
+       ]
+      ],
+      [
+       [
+        1,
+        3
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        3
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        1
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        1,
+        10
+       ]
+      ],
+      [
+       [
+        2,
+        2
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    },
+    {
+     "name": "V",
+     "map": 304,
+     "alien_spawns": [
+      {
+       "type": "158",
+       "name": "Streuner Rocketeer",
+       "display_name": "-=[ Streuner Rocketeer ]=-",
+       "count": 13,
+       "hp": 120000,
+       "shield": 80000,
+       "damage": 0,
+       "speed": 260,
+       "npc_id": 158,
+       "reward": {
+        "ep": 3200,
+        "honor": 6,
+        "credits": 6400,
+        "uridium": 10
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "147",
+       "name": "Streuner Emperor",
+       "display_name": "-=[ Streuner Emperor ]=-",
+       "count": 1,
+       "hp": 2000000,
+       "shield": 1500000,
+       "damage": 20000,
+       "speed": 220,
+       "npc_id": 147,
+       "reward": {
+        "ep": 300000,
+        "honor": 150,
+        "credits": 400000,
+        "uridium": 6000
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "150",
+       "name": "Streuner Soldier",
+       "display_name": "-=[ Streuner Soldier ]=-",
+       "count": 35,
+       "hp": 80000,
+       "shield": 60000,
+       "damage": 2000,
+       "speed": 300,
+       "npc_id": 150,
+       "reward": {
+        "ep": 12000,
+        "honor": 40,
+        "credits": 100000,
+        "uridium": 80
+       },
+       "cargo": {
+        "0": 166,
+        "2": 166,
+        "1": 166,
+        "4": 16,
+        "5": 16,
+        "6": 1,
+        "3": 4
+       },
+       "_reward_source": "wiki gate",
+       "_estimate": [
+        "can/kalkan/hasar"
+       ]
+      },
+      {
+       "type": "149",
+       "name": "Streuner Specialist",
+       "display_name": "-=[ Streuner Specialist ]=-",
+       "count": 6,
+       "hp": 300000,
+       "shield": 300000,
+       "damage": 5000,
+       "speed": 280,
+       "npc_id": 149,
+       "reward": {
+        "ep": 20000,
+        "honor": 70,
+        "credits": 200000,
+        "uridium": 200
+       },
+       "cargo": {},
+       "_reward_source": "wiki gate"
+      },
+      {
+       "type": "47",
+       "name": "Uber Sibelon",
+       "display_name": "( UberSibelon )",
+       "count": 2,
+       "hp": 1600000,
+       "shield": 1600000,
+       "damage": 24000,
+       "speed": 150,
+       "npc_id": 34,
+       "reward": {
+        "ep": 102400,
+        "honor": 512,
+        "credits": 819200,
+        "uridium": 256
+       },
+       "cargo": {
+        "0": 1200,
+        "2": 1200,
+        "1": 1200,
+        "4": 256,
+        "5": 256,
+        "6": 64,
+        "3": 64
+       },
+       "_reward_source": "wiki gate"
+      }
+     ],
+     "groups": [
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        1,
+        1
+       ]
+      ],
+      [
+       [
+        2,
+        5
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ],
+      [
+       [
+        4,
+        2
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ],
+      [
+       [
+        3,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ],
+      [
+       [
+        3,
+        2
+       ]
+      ],
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       [
+        2,
+        10
+       ]
+      ],
+      [
+       [
+        3,
+        1
+       ]
+      ]
+     ],
+     "_lineup_source": "official Turkish forum FAQ and fandom Galaxy Gates (tools/gates.py FORUM_LINEUP)"
+    }
+   ],
+   "reward": {
+    "ep": 2000000,
+    "honor": 150000,
+    "uridium": 15000,
+    "ammunition": {},
+    "xenomit": 0,
+    "log_disk": 0,
+    "voucher": 0,
+    "energy": 0,
+    "booty": {
+     "green_key": 10,
+     "schism": 8,
+     "abr": 6
+    },
+    "part": 0,
+    "chance": [
+     {
+      "item": "design_choice",
+      "options": [
+       "ship_a-elite",
+       "ship_c-elite",
+       "ship_s-elite",
+       "ship_venom",
+       "ship_pusat"
+      ],
+      "count": 1,
+      "fallback_uridium": 10000,
+      "probability": 0.25
+     },
+     {
+      "item": "resource_collectable_diametrion",
+      "count": 70,
+      "max_count": 80,
+      "probability": 0.01,
+      "together": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ]
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ]
+       ]
+      ]
+     },
+     {
+      "item": "ore_pack",
+      "package": [
+       [
+        "resource_collectable_kyhalon",
+        [
+         8,
+         14
+        ],
+        0.05
+       ],
+       [
+        "resource_collectable_tetrathrin",
+        [
+         8,
+         14
+        ],
+        0.25
+       ],
+       [
+        "resource_collectable_bifenon",
+        [
+         6,
+         10
+        ],
+        0.7
+       ]
+      ],
+      "count": 1,
+      "probability": 0.1
+     }
+    ]
+   }
+  }
+ },
+ "energy_price": 100,
+ "weekend_discount": 0.15,
+ "premium_discount": 0.05,
+ "_premium_discount": "belgeler/wiki/galaxy_gates.md: Premium enerji -%5 (tek oyunculuda herkes premium)",
+ "kronos_day": 5,
+ "spin_amounts": [
+  1,
+  5,
+  10,
+  100
+ ],
+ "probability": [
+  [
+   1,
+   67
+  ],
+  [
+   2,
+   12
+  ],
+  [
+   3,
+   3
+  ],
+  [
+   4,
+   13
+  ],
+  [
+   5,
+   4
+  ],
+  [
+   6,
+   1
+  ]
+ ],
+ "ammunition": [
+  [
+   "ammunition_laser_mcb-25",
+   2,
+   100
+  ],
+  [
+   "ammunition_laser_mcb-50",
+   3,
+   50
+  ],
+  [
+   "ammunition_laser_ucb-100",
+   4,
+   20
+  ],
+  [
+   "ammunition_laser_sab-50",
+   5,
+   50
+  ],
+  [
+   "ammunition_rocket_plt-2021",
+   3,
+   10
+  ],
+  [
+   "ammunition_mine_acm-01",
+   11,
+   1
+  ]
+ ],
+ "xenomit": [
+  10,
+  15
+ ],
+ "nano_hull": [
+  5000,
+  15000
+ ],
+ "duplicate_to_missing": 0.5,
+ "max_multiplier": 5,
+ "life_prices": [
+  5000,
+  10000,
+  20000,
+  40000,
+  80000
+ ],
+ "wave_break_sec": 30,
+ "intro_wait_sec": 6,
+ "ring_wait_sec": 3,
+ "spawn_distance": [
+  1500,
+  2000
+ ],
+ "spawn_interval_sec": [
+  1,
+  2
+ ],
+ "group_radius": [
+  200,
+  70
+ ],
+ "group_spacing": 140,
+ "shield_spawn": [
+  300,
+  450
+ ],
+ "portal_distance": 2200,
+ "bonus_box_energy": 1,
+ "schism": {
+  "alpha": [
+   5,
+   10
+  ],
+  "beta": [
+   5,
+   10
+  ],
+  "gamma": [
+   8,
+   16
+  ],
+  "delta": [
+   10,
+   15
+  ],
+  "epsilon": [
+   10,
+   15
+  ],
+  "zeta": [
+   10,
+   15
+  ],
+  "kappa": [
+   10,
+   15
+  ],
+  "lambda": [
+   10,
+   15
+  ],
+  "kronos": [
+   25,
+   30
+  ],
+  "hades": [
+   25,
+   30
+  ],
+  "streuner": [
+   25,
+   30
+  ]
+ },
+ "x1_position": {
+  "1": {
+   "alpha": [
+    3800,
+    700
+   ],
+   "epsilon": [
+    4800,
+    1500
+   ],
+   "lambda": [
+    5800,
+    2500
+   ],
+   "beta": [
+    3400,
+    3300
+   ],
+   "gamma": [
+    800,
+    3800
+   ],
+   "delta": [
+    3800,
+    3800
+   ],
+   "zeta": [
+    1600,
+    4700
+   ],
+   "kappa": [
+    2600,
+    5700
+   ],
+   "kronos": [
+    5000,
+    4800
+   ],
+   "hades": [
+    5400,
+    4900
+   ]
+  },
+  "2": {
+   "alpha": [
+    16200,
+    1700
+   ],
+   "epsilon": [
+    15300,
+    2500
+   ],
+   "lambda": [
+    14300,
+    3000
+   ],
+   "beta": [
+    17000,
+    2800
+   ],
+   "gamma": [
+    18100,
+    3800
+   ],
+   "zeta": [
+    17100,
+    4200
+   ],
+   "kappa": [
+    14600,
+    4200
+   ],
+   "kronos": [
+    14000,
+    4500
+   ],
+   "hades": [
+    13400,
+    4700
+   ],
+   "delta": [
+    15500,
+    5300
+   ]
+  },
+  "3": {
+   "alpha": [
+    16300,
+    12400
+   ],
+   "epsilon": [
+    15500,
+    11400
+   ],
+   "beta": [
+    17000,
+    10000
+   ],
+   "lambda": [
+    13800,
+    10100
+   ],
+   "zeta": [
+    17400,
+    9500
+   ],
+   "gamma": [
+    18100,
+    9000
+   ],
+   "kappa": [
+    14500,
+    9300
+   ],
+   "kronos": [
+    14200,
+    9300
+   ],
+   "delta": [
+    15500,
+    8300
+   ],
+   "hades": [
+    14600,
+    8300
+   ]
+  }
+ },
+ "_schism": "Login flag AllGatesSchism (open indefinitely in real traffic; client news \"guaranteed rewards for all GGs (Schism)\"): on every completion Schism from the range (wiki Booty day amounts); replaces the fixed Schism of Delta, Kronos and Kuiper (whether it comes on top of it or replaces it is not verified).",
+ "countdown": [
+  5,
+  4,
+  3,
+  2,
+  1
+ ],
+ "_messages": "On-screen messages on the gate map (the client's MessageCommand: caps = large notification + log, short = brief message at the top). English because the client is English; those beginning with \"key:\" are the client's own translation text. {gate} gate name, {wave} wave number, {total} wave count, {sec} seconds, {groups} sub-waves, {remaining} remaining aliens, {name} alien name, {sk} Kronos part singular/plural (s/p; the count is %COUNT%). Countdown and wave start from the footage of the real game (user, 2026-10-28): \"-=- 1 -=-\", \"-=- 0 -=-\", remaining lives (the client's lifes_left text, galaxy_gates.py), \"Map Alpha - Wave 5\". \"wave_remaining\" when 3 or fewer remain after all aliens have spawned; \"remaining\" in the escort group of a shielded boss.",
+ "messages": {
+  "entry": {
+   "short": "Galaxy Gate {gate}: {total} attack waves."
+  },
+  "ongoing": {
+   "short": "Welcome back! The gate continues from wave {wave}/{total}."
+  },
+  "countdown": {
+   "short": "-=- {sec} -=-"
+  },
+  "wave_started": {
+   "short": "Map {gate} - Wave {wave}"
+  },
+  "remaining": {
+   "short": "Aliens left in this group: {remaining}"
+  },
+  "wave_remaining": {
+   "short": "Aliens left in this wave: {remaining}"
+  },
+  "wave_finished": {
+   "caps": "Attack wave {wave} survived!",
+   "short": "The portal in the center of the map is open: return home or wait for the next wave ({sec} seconds). Your progress is kept."
+  },
+  "next_map": {
+   "caps": "Attack wave {wave} survived!",
+   "short": "The way deeper into the gate is open: the left portal in the center of the map leads to the next map, the right one leads home. Your progress is kept."
+  },
+  "next_wave": {
+   "caps": "Attack wave {wave} survived!",
+   "short": "Two portals are open in the center of the map: the left one starts the next wave, the right one leads home. Your progress is kept."
+  },
+  "protection": {
+   "short": "{name} cannot be damaged while other aliens are alive. Destroy them first!"
+  },
+  "protection_ended": {
+   "caps": "{name} is vulnerable now!"
+  },
+  "done": {
+   "caps": "key:log_msg_gg_completed_{key}"
+  },
+  "last_wave": {
+   "short": "Final wave! Destroy all aliens to complete the gate."
+  },
+  "kronos_part": {
+   "short": "key:log_msg_gg_reward_kronos_part_{sk}"
+  },
+  "shield_gap": {
+   "caps": "{name} is vulnerable! Its Insta-Shield returns in {sec} seconds."
+  }
+ },
+ "bonus": {
+  "_source": "The recording's GalaxyGateBuilderInfoCommand: bonus on three gates (bonusGGRewardModules {claimed, countdown s, lootId, amount}: Delta LF-4 HP, Epsilon 1,050,000 honor, Kappa P.E.T. G-Champion Lava; countdown 22,002 s), the client (GateVo.ParseBonusGReward: the gate's first bonus, runs the countdown itself; texts title_bonus_gg_reward, msg_bonus_gg_reward_info / _time_left / _collected) and darkorbitwiki Galaxy Gates Events \"Bonus Rewards For The First Completing\" (reward pool and ship chance).",
+  "_adaptation": "The bonuses in the recording were a fixed leftover (duration always 22,002 s, no reward was given); the recording was taken on a Sunday with the bonus active, so it applies every period instead of the wiki's 'every Tuesday' schedule. In every period (panel: gate_bonus_hours, default 24 hours, aligned to midnight) the server randomly picks gate_bonus_count of the gates and their rewards (fixed within the period; ranged rewards too, using the period's seed); when a gate is completed before the period ends (including Dispatch's gate dispatch) the reward is given once. The pool is the wiki's list (the three rewards in the recording are in it); quantity rewards use the panel's gate_bonus_multiplier (single items give one). ship_chance: client text 'There's also a chance to get a Cyborg, Hammerclaw, or Mimesis ship' and the wiki (10,000 uridium instead of an owned ship); the probability is not on the wiki (adaptation, DEFAULT_LUCKY_CHANCE).",
+  "gates": [
+   "alpha",
+   "beta",
+   "gamma",
+   "delta",
+   "epsilon",
+   "zeta",
+   "kappa",
+   "lambda",
+   "kronos",
+   "hades",
+   "streuner"
+  ],
+  "rewards": [
+   [
+    "currency_experience",
+    [
+     14580000,
+     16200000
+    ]
+   ],
+   [
+    "currency_honour",
+    [
+     900000,
+     1500000
+    ]
+   ],
+   [
+    "resource_collectable_rinusk",
+    3000
+   ],
+   [
+    "resource_collectable_indoctrineoil",
+    45
+   ],
+   [
+    "resource_ore_seprom",
+    10000
+   ],
+   [
+    "ammunition_laser_rsb-75",
+    15000
+   ],
+   [
+    "ammunition_laser_ucb-100",
+    100000
+   ],
+   [
+    "equipment_weapon_laser_lf-4",
+    3
+   ],
+   [
+    "equipment_weapon_laser_lf-4-hp",
+    1
+   ],
+   [
+    "equipment_weapon_laser_lf-4-md",
+    1
+   ],
+   [
+    "equipment_weapon_laser_lf-4-pd",
+    1
+   ],
+   [
+    "equipment_weapon_laser_lf-p01",
+    1
+   ],
+   [
+    "equipment_weapon_laser_lf-px01",
+    1
+   ],
+   [
+    "equipment_generator_shield_sg3n-p01",
+    1
+   ],
+   [
+    "equipment_generator_shield_sg3n-px01",
+    1
+   ],
+   [
+    "equipment_shipupgrade_hp-vp01",
+    1
+   ],
+   [
+    "equipment_shipupgrade_dmg-vp01",
+    1
+   ],
+   [
+    "equipment_shipupgrade_dmg-t01",
+    1
+   ],
+   [
+    "equipment_shipupgrade_dmg-t02",
+    1
+   ],
+   [
+    "equipment_shipupgrade_spc-spd01",
+    1
+   ],
+   [
+    "pet_designs_pet-berserker-borealis",
+    1
+   ],
+   [
+    "pet_designs_pet-phoenix",
+    1
+   ],
+   [
+    "pet_designs_pet-g-champion-lava",
+    1
+   ],
+   [
+    "pet_designs_pet-diminisher-lava",
+    1
+   ],
+   [
+    "pet_designs_pet-sentinel-lava",
+    1
+   ],
+   [
+    "ship_v-lightning_design_v-lightning-expo2016",
+    1
+   ],
+   [
+    "ship_pusat_design_pusat-expo2016",
+    1
+   ],
+   [
+    "ship_sentinel_design_sentinel-expo2016",
+    1
+   ],
+   [
+    "pet_designs_green",
+    1
+   ]
+  ],
+  "ship_chance": {
+   "probability": 0.25,
+   "ships": [
+    "ship_cyborg",
+    "ship_hammerclaw",
+    "ship_mimesis"
+   ],
+   "fallback_uridium": 10000
+  }
+ }
+}

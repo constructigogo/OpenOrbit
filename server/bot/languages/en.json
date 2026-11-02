@@ -1,0 +1,701 @@
+{
+ "code": "en",
+ "name": "English",
+ "weight": 30,
+ "names": {
+  "parts": {
+   "on": [
+    "Dark",
+    "Shadow",
+    "Night",
+    "Iron",
+    "Steel",
+    "Blood",
+    "Ghost",
+    "Storm",
+    "Thunder",
+    "Silent",
+    "Crimson",
+    "Black",
+    "Red",
+    "Cyber",
+    "Star",
+    "Void",
+    "Nova",
+    "Frost",
+    "Fire",
+    "Death",
+    "Toxic",
+    "Mad",
+    "Lone",
+    "Wild",
+    "Rogue",
+    "Alpha",
+    "Omega",
+    "Hyper",
+    "Ultra",
+    "Neo",
+    "Lunar",
+    "Solar",
+    "Venom",
+    "Grim",
+    "Savage",
+    "Royal",
+    "Sky",
+    "Nuclear",
+    "Quantum"
+   ],
+   "back": [
+    "Hunter",
+    "Slayer",
+    "Killer",
+    "Wolf",
+    "Hawk",
+    "Eagle",
+    "Dragon",
+    "Reaper",
+    "Rider",
+    "Knight",
+    "Lord",
+    "King",
+    "Blade",
+    "Fury",
+    "Viper",
+    "Cobra",
+    "Phantom",
+    "Raven",
+    "Tiger",
+    "Lion",
+    "Sniper",
+    "Pilot",
+    "Ace",
+    "Storm",
+    "Strike",
+    "Fang",
+    "Warrior",
+    "Ranger",
+    "Demon",
+    "Angel",
+    "Titan",
+    "Falcon",
+    "Wraith",
+    "Spectre",
+    "Hammer",
+    "Shark",
+    "Panther",
+    "X"
+   ],
+   "single": [
+    "Maverick",
+    "Ghostrider",
+    "Nightmare",
+    "Predator",
+    "Terminator",
+    "Destroyer",
+    "Annihilator",
+    "Executioner",
+    "Gladiator",
+    "Spartan",
+    "Viking",
+    "Samurai",
+    "Ninja",
+    "Outlaw",
+    "Bandit",
+    "Nomad",
+    "Zephyr",
+    "Kraken",
+    "Leviathan",
+    "Phoenix",
+    "Hydra",
+    "Chaos",
+    "Havoc",
+    "Inferno",
+    "Eclipse",
+    "Vortex",
+    "Nebula",
+    "Pulsar",
+    "Quasar",
+    "Zenith",
+    "Apex",
+    "Rebel",
+    "Legend"
+   ],
+   "country": [
+    "PL",
+    "DE",
+    "ES",
+    "FR",
+    "RU",
+    "BR",
+    "GR",
+    "HU",
+    "RO"
+   ],
+   "separator": [
+    "",
+    "_",
+    "-"
+   ],
+   "number": [
+    "1",
+    "7",
+    "13",
+    "23",
+    "34",
+    "35",
+    "06",
+    "16",
+    "41",
+    "42",
+    "61",
+    "69",
+    "77",
+    "88",
+    "99",
+    "007",
+    "123",
+    "1903",
+    "1905",
+    "1907",
+    "1453",
+    "2000",
+    "2003",
+    "2005",
+    "2010",
+    "666",
+    "777",
+    "1923",
+    "01",
+    "07",
+    "27",
+    "33",
+    "38",
+    "55",
+    "21"
+   ]
+  },
+  "patterns": [
+   [
+    30,
+    "{on}{back}"
+   ],
+   [
+    15,
+    "{on}{back}{number}"
+   ],
+   [
+    10,
+    "xX{on|single}Xx"
+   ],
+   [
+    10,
+    "{leet:single|back}"
+   ],
+   [
+    10,
+    "{on_k}_{back_k}"
+   ],
+   [
+    10,
+    "{single}{number}"
+   ],
+   [
+    7,
+    "The{single|back}"
+   ],
+   [
+    8,
+    "{single}{separator}{country}"
+   ]
+  ]
+ },
+ "templates": {
+  "banter_kill": ["just sent {name} back to base lol", "{name} you fly like my grandma", "anyone else want some? {name} already got his", "{name} uninstall maybe", "farmed {name} on {map}, next", "{name} thanks for the honor"],
+  "banter_harsh": ["cry more", "says the guy i farm every day", "come to 4-4 and say that", "talk is cheap, fight me", "lol you wish", "keep typing, it wont help your aim"],
+  "banter_company": ["{company} is just free honor", "{company} hiding at base again", "where is {company}? scared?", "{company} cant even hold their own maps", "farming {company} all night ez"],
+  "banter_player": ["{name} where are you hiding", "{name} come to {map} if you dare", "still waiting for you {name}", "{name} your base cant protect you forever"],
+  "mod_warning_caps": ["{name} please no caps", "{name} turn off caps pls", "{name} no need to shout, caps off please"],
+  "mod_warning_flood": ["{name} stop spamming please", "{name} no spam in chat pls", "{name} slow down, no flooding"],
+  "mod_warning_insult": ["{name} keep it respectful please", "{name} no insults in chat, warning", "{name} watch your language pls"],
+  "mod_warning_ads": ["{name} no links or ads here", "{name} advertising is not allowed", "{name} no links in chat please"],
+  "mod_mute": ["{name} muted for {min} min", "{name} you were warned, {min} min mute", "muted {name} ({min} min), keep it clean guys"],
+  "mod_ban": ["{name} banned from chat for {hour}h, too many mutes", "{name} chat ban {hour}h", "{name} you are out of chat for {hour} hours"],
+  "mod_rules": ["reminder: no caps, no spam, no insults, no ads. have fun", "chat rules: be respectful, no spam, no links", "keep chat clean please, mods are watching"],
+  "order_done": ["on it", "ok boss", "roger", "got it", "yes sir", "omw", "k doing it"],
+  "order_refuse": ["cant right now", "busy atm sorry", "not now", "after this, sorry", "too tired, maybe later"],
+  "order_hunt": ["hunting {name} down", "on it, looking for {name}", "{name} is a dead man", "roger, going after {name}", "i'll find {name}"],
+  "order_clan_focus": ["focusing {clan} then", "ok {clan} first", "{clan} is priority, got it", "roger, {clan} it is"],
+  "order_no_base": ["we dont have a station yet", "what base? we have none", "no cbs built yet"],
+  "battle_call": ["everyone to {map}, big fight!", "all to {map} now, enemies everywhere", "{map} war, come fast", "need everyone on {map}"],
+  "admin_apology": ["sorry {name}, wont happen again", "ok {name} got it, my bad", "sorry, stopping now", "ok gm sorry", "understood, my bad"],
+  "admin_greeting": ["hi {name} o/", "gm is here, hello", "hey admin", "welcome {name}"],
+  "admin_saw": ["gm on {map} guys", "admin flying around {map}", "just saw a gm on {map}", "ufo ship on {map}, thats an admin"],
+  "war_declared": [
+   "we are at war with [{tag}], shoot on sight",
+   "war declared on {clan}",
+   "[{tag}] get ready"
+  ],
+  "alliance": [
+   "allied with [{tag}]",
+   "{clan} are our allies now, hold fire",
+   "[{tag}] friends now"
+  ],
+  "peace": [
+   "peace with [{tag}]",
+   "war is over, gg {clan}",
+   "we made peace"
+  ],
+  "witness_boss": [
+   "gg {who}",
+   "nice kill",
+   "boss down :D",
+   "gj {who}",
+   "damn i wanted that one",
+   "nice one"
+  ],
+  "witness_death": [
+   "rip {name}",
+   "oof",
+   "f",
+   "rip",
+   "get back here {name}",
+   "that looked painful"
+  ],
+  "i_killed_boss": [
+   "boss down",
+   "got the boss :)",
+   "nice loot from that boss"
+  ],
+  "mail_welcome": [
+   "welcome to [{tag}]! write me if you need anything",
+   "welcome to {clan}, say hi in clan chat",
+   "welcome aboard, see you in clan chat"
+  ],
+  "mail_group_yes": [
+   "sure, invite me when you see me online",
+   "yeah sounds good, inv me when we are both on",
+   "ok, whisper me when you are on and we go"
+  ],
+  "mail_group_no": [
+   "sorry, playing solo these days",
+   "cant right now, busy with my own quests",
+   "not much time this week, sorry"
+  ],
+  "mail_reply": [
+   "got your message, whisper me in game",
+   "hey, saw your mail",
+   "ok, lets talk in game"
+  ],
+  "duel_accept": [
+   "{map}, im waiting",
+   "ok {map}, come get some",
+   "sure, {map} now"
+  ],
+  "duel_same": [
+   "we are same company lol",
+   "cant shoot my own company",
+   "same side man"
+  ],
+  "duel_refuse": [
+   "not now",
+   "maybe later",
+   "nah, busy"
+  ],
+  "private_greeting": [
+   "yo {name}, wb",
+   "hey {name}",
+   "sup {name}, hows it going",
+   "oh hey {name}"
+  ],
+  "private_group": [
+   "wanna group up? im on {map}",
+   "doing quests, wanna join?",
+   "group up {name}?"
+  ],
+  "private_chat": [
+   "hows it going?",
+   "got any new gear?",
+   "still farming?"
+  ],
+  "group_banter": [
+   "where to next?",
+   "nice kills",
+   "gotta repair quick",
+   "wanna try that boss?",
+   "going well"
+  ],
+  "pm_reply": [
+   "yo, whats up?",
+   "here, what do you need?",
+   "hey, you wanted a pm?"
+  ],
+  "inv_me": [
+   "inv me",
+   "sure, inv me",
+   "send inv",
+   "yeah inv me",
+   "invite me"
+  ],
+  "invite_sent": [
+   "sent inv",
+   "inv sent",
+   "sure, check inv",
+   "yeah sent you an inv"
+  ],
+  "already_in_group": [
+   "already in a group",
+   "got a group atm",
+   "in another group rn"
+  ],
+  "clan_apply": [
+   "apply to [{tag}]",
+   "sure, apply to [{tag}]",
+   "apply [{tag}], ill accept"
+  ],
+  "clan_member": [
+   "im in [{tag}], ask {leader}",
+   "apply to [{tag}], {leader} handles apps"
+  ],
+  "no_clan": [
+   "no clan here",
+   "not in a clan atm",
+   "looking for one myself"
+  ],
+  "applied_to_clan": [
+   "applied",
+   "ok sent an application",
+   "applied, accept me"
+  ],
+  "clan_apply_friend": [
+   "{name} helped me out the other day and flies with you, would love to join {clan}",
+   "hey, {name} saved me in a tough fight a while ago. looking to fly with you guys, lvl {lv}",
+   "{name} had my back before, so I figured I'd ask to join. lvl {lv}, {style}",
+   "heard good things and {name} helped me once, can I join {clan}?"
+  ],
+  "clan_apply_group": [
+   "grouped with {name} a few times, great pilot. would like to join {clan}, lvl {lv}",
+   "flew with {name} before and had fun, looking for a clan like this. {style}",
+   "{name} is a good wingman, hope you take me too. lvl {lv}"
+  ],
+  "clan_apply_pvp": [
+   "lvl {lv}, mostly pvp, looking for an active clan to fly with",
+   "lvl {lv} pvp player, want some people to hunt with. will be online daily",
+   "looking for a pvp clan, I know my way around a fight. lvl {lv}"
+  ],
+  "clan_apply_pve": [
+   "lvl {lv}, mostly pve and quests, looking for a friendly clan",
+   "new-ish pilot (lvl {lv}) looking for a chill clan to farm and chat with",
+   "lvl {lv}, I do quests and farming, would like to team up with some people"
+  ],
+  "used_in": [
+   "on {map}",
+   "{map}",
+   "farming on {map}"
+  ],
+  "coming": [
+   "omw",
+   "coming",
+   "on my way to {map}"
+  ],
+  "cant_come": [
+   "cant go there",
+   "cant enter that map",
+   "cant come rn"
+  ],
+  "friend_done": [
+   "added",
+   "sent you a request",
+   "sure, added"
+  ],
+  "greeting": [
+   "hi all",
+   "hello",
+   "yo",
+   "hey guys",
+   "sup",
+   "hi",
+   "good evening all"
+  ],
+  "level": [
+   "lvl {level} finally",
+   "just hit level {level}",
+   "level {level} :D",
+   "ding {level}"
+  ],
+  "new_ship": [
+   "finally got my {ship}",
+   "new ship: {ship}",
+   "bought {ship} :D",
+   "{ship} at last"
+  ],
+  "i_killed": [
+   "gg",
+   "gg wp",
+   "ez",
+   "too easy",
+   "better luck next time",
+   "come again",
+   "gg :)"
+  ],
+  "died": [
+   "gg",
+   "lucky",
+   "rematch?",
+   "wait for it",
+   "lag...",
+   "nice one",
+   "wp"
+  ],
+  "died_angry": [
+   "i'll find you",
+   "won't forget this",
+   "always hitting weak ones huh",
+   "coming back with my clan"
+  ],
+  "group_search": [
+   "lf group {map}",
+   "anyone farming {map}?",
+   "group for quests?",
+   "lfg {map}"
+  ],
+  "clan_recruit": [
+   "[{tag}] {clan} recruiting, lvl {level}+",
+   "{clan} looking for active players",
+   "[{tag}] recruiting pm me"
+  ],
+  "trade": [
+   "nobody bid on {item} pls :D",
+   "auction prices crazy again",
+   "best place to farm credits?"
+  ],
+  "general": [
+   "when does the event end",
+   "lots of npcs on x-4",
+   "dead chat",
+   "back online, what did i miss",
+   "so many aliens on {map} today",
+   "need a break from farming lol",
+   "just flying around {map}, nothing going on",
+   "gotta love a quiet map",
+   "anyone tried the lab upgrades yet?",
+   "lvl {level} and still no clue what im doing :D",
+   "good night for hunting"
+  ],
+  "complaint": [
+   "lag for anyone else?",
+   "uridium is so slow",
+   "uri farming is a grind",
+   "ping spiked for a sec there"
+  ],
+  "status_gate": [
+   "just finished {gate}, finally",
+   "{gate} done, took long enough",
+   "cleared {gate} :D",
+   "{gate} wasnt that bad once i got it going"
+  ],
+  "status_purchase": [
+   "bought {item} just now",
+   "picked up {item}, lets see if it helps",
+   "got myself {item} :)",
+   "new toy: {item}"
+  ],
+  "status_death": [
+   "died on {map} to some random alien, rip",
+   "those aliens on {map} hit harder than they look",
+   "got jumped on {map}, need to be more careful",
+   "lost a fight with npcs on {map} lol"
+  ],
+  "status_quest": [
+   "finished the quest {name}",
+   "{name} done, next one",
+   "quest {name} complete, easy rewards"
+  ],
+  "status_fled": [
+   "ran from {map}, too hot there",
+   "got out of {map} just in time",
+   "{map} is not worth it right now"
+  ],
+  "status_cargo": [
+   "cargo is {percent}% full, heading to sell",
+   "hold is almost full, time to go back",
+   "carrying so much ore my ship is crawling"
+  ],
+  "status_grind": [
+   "farming {map} for a bit",
+   "{map} is decent for farming rn",
+   "grinding npcs on {map}, anyone around?",
+   "farming {map} at lvl {level}, going ok"
+  ],
+  "status_stats": [
+   "{npc} aliens down so far, still going",
+   "just passed {npc} kills, not bad",
+   "{npc} kills and {death} deaths, i call it even"
+  ],
+  "exit": [
+   "bb",
+   "gtg",
+   "cya",
+   "night all",
+   "bye"
+  ],
+  "reply_greeting": [
+   "hi",
+   "hey",
+   "yo {name}",
+   "hello",
+   "welcome back"
+  ],
+  "reply_question": [
+   "idk",
+   "not sure",
+   "i think so",
+   "don't think so",
+   "check the wiki",
+   "no idea",
+   "maybe"
+  ],
+  "reply_yes": [
+   "ok coming",
+   "sure",
+   "on my way",
+   "ok wait",
+   "omw",
+   "ok"
+  ],
+  "reply_no": [
+   "not now",
+   "busy",
+   "later",
+   "doing quests",
+   "no thanks",
+   "sorry"
+  ],
+  "reply_insult": [
+   "you too",
+   "ok",
+   "k",
+   "talk less fight more",
+   ":)"
+  ],
+  "thanks": [
+   "thanks",
+   "ty",
+   "thx",
+   "thank you"
+  ],
+  "going_to_help": [
+   "omw to {map}",
+   "coming {map}",
+   "hold on",
+   "how many?"
+  ],
+  "clan_ranks": ["Officer|Veteran|Member|Recruit", "Commander|Elite|Pilot|Rookie", "Captain|Lieutenant|Soldier|Cadet", "Co-Leader|Senior|Member|Trial"],
+  "clan_description_focus_pvp": ["{clan} [{tag}] - PvP clan, we hunt enemies on their own maps", "[{tag}] {clan}: war, honor, pvp. no cowards", "{clan} active pvp clan, 4-x is ours"],
+  "clan_description_focus_pve": ["{clan} [{tag}] - quests and farming, we grow together", "[{tag}] {clan}: pve, gates, quests. we help each other", "{clan} chill clan, farm and level up together"],
+  "clan_description_focus_cbs": ["our station: {station}. everyone defends", "{station} is ours, we hold it"],
+  "clan_description_rules": ["rules: be active, talk in clan chat, never attack members", "low tax, respect everyone, be online a few days a week", "never leave a clanmate alone"],
+  "clan_description_recruiting": ["recruiting, min level {level}. apply", "we take new members (lvl {level}+)", "applications open, level {level} and up"],
+  "clan_description_full": ["clan is full, not recruiting right now", "recruitment closed"],
+  "clan_announce_alliance": ["we are allied with {clan} now, do not attack them", "new ally: {clan}"],
+  "clan_announce_non_aggression": ["nap signed with {clan}", "we have a nap with {clan}, leave them alone"],
+  "clan_announce_war": ["we are at war with {clan}! shoot on sight", "WAR: {clan}. everyone get ready"],
+  "clan_announce_peace": ["war with {clan} is over", "peace with {clan}, gg"],
+  "clan_announce_payout": ["weekly payout from the treasury: {names}. thanks", "top contributors got paid: {names}"],
+  "clan_announce_target_cbs": ["goal this week: our own battle station. pay tax, fill the bank", "saving up for a station, everyone farm"],
+  "clan_announce_target_farm": ["this week: farm and quests, level up", "goal: everyone gets one more level"],
+  "clan_announce_target_pvp": ["pvp week, collect honor", "goal: hunt the enemy company on 4-x"],
+  "clan_announce_cbs_race": ["we started building at {station} ({map}), modules paid by the bank", "{station} on {map} will be ours, building now"],
+  "clan_announce_cbs_built": ["our station is up: {station} ({map})! gz all", "{station} is ours now, gg everyone"],
+  "clan_announce_cbs_destroyed": ["we lost {station} ({map}). we will rebuild", "{station} is down, refill the bank"],
+  "clan_announce_cbs_attack": ["{station} under attack! everyone to {map}", "station is being hit, regroup on {map}"],
+  "clan_mail_war_subject": ["War: {clan}"],
+  "clan_mail_war": ["war with {clan} has started. do not fly alone, make groups, shoot on sight. report losses in clan chat"],
+  "clan_mail_cbs_subject": ["Station under attack: {station}"],
+  "clan_mail_cbs": ["our station {station} on {map} is under attack. everyone online come now"]
+ },
+ "dialogues": [
+  [
+   ["shields or lasers first?", "what should i upgrade first, shields or lasers?"],
+   ["lasers, then shields", "lasers imo", "shields first, dying a lot is expensive"],
+   ["ok lasers it is, thx", "thanks, going lasers"]
+  ],
+  [
+   ["any boss up?", "anyone seen a boss today?"],
+   ["saw one on {map} a bit ago", "not on {map}, sorry"],
+   ["ill check it out", "ty, heading there"]
+  ],
+  [
+   ["when will i ever get goliath", "still no goliath, so far away"],
+   ["keep farming, you will get there", "it took me forever too", "just save up, its worth it"]
+  ],
+  [
+   ["is {map} good for farming?", "where do you guys farm at lvl {level}?"],
+   ["{map} is fine for me", "i farm {map}, not too crowded"],
+   ["nice, ill try it"]
+  ],
+  [
+   ["how do you beat the gates solo?", "any tips for the gates?"],
+   ["bring good shields and dont rush the waves", "take your time and repair between waves"]
+  ],
+  [
+   ["what do you all fly?", "which ship is best for pve?"],
+   ["goliath all the way", "depends on your budget tbh", "still in my old ship lol"],
+   ["fair enough", "same here"]
+  ],
+  [
+   ["worth buying a drone yet?", "is the first drone worth it?"],
+   ["yes, the damage boost is real", "not yet, get your ship first"]
+  ],
+  [
+   ["anyone else dying a lot on {map}?", "{map} is brutal for me today"],
+   ["yeah those aliens hurt", "just back off and repair, no shame"]
+  ],
+  [
+   ["how long does the lab take?", "is the lab upgrade worth the ore?"],
+   ["a few minutes per ore, just queue it", "worth it for shields at least"]
+  ],
+  [
+   ["gg everyone, good session", "ok that was a good run"],
+   ["gg", "gg, see you around"]
+  ]
+ ],
+ "abbreviation": [
+  [
+   "you",
+   "u"
+  ],
+  [
+   "please",
+   "pls"
+  ],
+  [
+   "thanks",
+   "thx"
+  ],
+  [
+   "are",
+   "r"
+  ],
+  [
+   "okay",
+   "ok"
+  ],
+  [
+   "because",
+   "cuz"
+  ],
+  [
+   "going to",
+   "gonna"
+  ],
+  [
+   "want to",
+   "wanna"
+  ]
+ ],
+ "ascii": {},
+ "ascii_ratio": 0.0,
+ "intent": {},
+ "reaction": {},
+ "harmful": []
+}

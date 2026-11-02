@@ -1,45 +1,45 @@
-"""Skylab (yol haritası Aşama 5): toplayıcılar, rafineriler, Xeno modülü, enerji, yükseltmeler, robotlar ve gemiye taşıma.
+"""Skylab (roadmap stage 5): collectors, refineries, the Xeno module, energy, upgrades, robots and transport to the ship.
 
-Veri: data/skylab.json (tools/skylab.py <- wiki tabloları + kayıttaki başlangıç durumu). İstekler istemcinin kodundan
-(UISkylabSystem: SendActionRequest(construction, subaction, transportMode, sayılar), SendBuyRobot(robotType 1|2)):
-  SkylabActionRequest {subaction}      '' pencere/yenile; 'upgrade' süreli yükseltme (kredi + depodan Prometium/Endurium/Terbium);
-                                       'instantUpgrade' yalnız uridyumla anında; 'instantFinishUpgrade' süren yükseltmeyi kalan
-                                       süre oranında uridyumla bitirir; 'abortUpgrade' iptal (istemcinin uyarısı: harcananlar geri
-                                       gelmez); 'setActive' / 'setInactive'; 'startTransport' {transportMode '' normal, 'fast' anında
-                                       gönderme, 'instantFinish' yoldakini bitir; count<Cevher>}
+Data: data/skylab.json (tools/skylab.py <- wiki tables + the starting state in the recording). Requests are from the client's code
+(UISkylabSystem: SendActionRequest(construction, subaction, transportMode, numbers), SendBuyRobot(robotType 1|2)):
+  SkylabActionRequest {subaction}      '' window/refresh; 'upgrade' timed upgrade (credits + Prometium/Endurium/Terbium from storage);
+                                       'instantUpgrade' instantly, with uridium only; 'instantFinishUpgrade' finishes the running upgrade with uridium in
+                                       proportion to the remaining time; 'abortUpgrade' cancel (the client's warning: what was spent is not
+                                       returned); 'setActive' / 'setInactive'; 'startTransport' {transportMode '' normal, 'fast' instant
+                                       send, 'instantFinish' finish the one under way; count<Ore>}
      -> SkylabMainViewCommand {listModule, oreList} + SkylabUnifiedReceiptCommand {construction, subaction, transportPrice,
         robotsLeftTimeList, errorId / sucessId: BaseStackCommand (BaseKey 22, 30-53)}
-  SkylabViewModuleRequest {moduleName} -> SkylabViewModuleBackCommand (üretim, yükseltme bedeli, robotlar, Xeno, depo bilgisi)
-  SkylabPurchaseRobotRequest {construction, robotType}: 1 = 250 kredi (+%1), 2 = 50 uridyum (+%4); toplayıcı başına 12 etkin,
-                                       fazlası depoda bekler ve süresi (48 saat) dolanın yerine geçer
-Kurallar (wiki ve istemci metinleri): toplayıcı/rafineri/güneş/depo seviyesi ana modülü geçemez; aynı anda bir yükseltme; etkin
-modüllerin enerjisi güneş modülünün verdiğini geçemez; yükseltmedeki modül çalışmaz ve enerji harcamaz. Üretim saat başına,
-verimle (robot bonusu) ve depo sınırıyla; rafineriler girdileri depodan harcar (Prometid / Duranium -> Promerium -> Seprom).
-Süreler oyun kapalıyken de işler (girişte ve saniyede bir kaldığı yerden hesaplanır).
-Uyarlamalar: süreli yükseltmede harcanan kaynaklar Skylab deposundan; Xeno modülü Xenomit sağlar (data/skylab.json _xeno);
-anında gönderme / bitirme kayıttaki transportPrice (1.250 U). Normal taşıma cevher başına 7,2 sn, Premium 3,6 sn (wikiwiki).
-Profilde: skylab {moduller: {tür: {seviye, etkin, yukseltme: bitiş | yok}}, depo: {cevher kimliği: miktar}, robotlar: {tür: [[tip,
-bitiş]]}, yedek: {tür: [tip]}, tasima: {bitis, yuk} | yok, son}.
+  SkylabViewModuleRequest {moduleName} -> SkylabViewModuleBackCommand (production, upgrade cost, robots, Xeno, storage info)
+  SkylabPurchaseRobotRequest {construction, robotType}: 1 = 250 credits (+1%), 2 = 50 uridium (+4%); 12 active per collector,
+                                       the excess waits in storage and replaces the one whose time (48 hours) runs out
+Rules (wiki and client texts): the level of a collector/refinery/solar/storage cannot exceed the base module; one upgrade at a time; the energy of active
+modules cannot exceed what the solar module gives; a module being upgraded does not run and uses no energy. Production is per hour,
+with efficiency (robot bonus) and the storage limit; refineries consume inputs from storage (Prometid / Duranium -> Promerium -> Seprom).
+Times run while the game is closed too (computed from where it left off on login and every second).
+Adaptations: in a timed upgrade the resources spent come from the Skylab storage; the Xeno module provides Xenomit (data/skylab.json _xeno);
+instant send / finish uses the transportPrice in the recording (1,250 U). Normal transport is 7.2 s per ore, Premium 3.6 s (wikiwiki).
+In the profile: skylab {modules: {type: {level, 'etkin' (active), upgrade: end | None}}, storage: {ore id: amount}, robots: {type: [[type,
+end]]}, backup: {type: [type]}, transport: {end_time, cargo} | None, last}.
 """
 import json, math, os, time
 
-import envanter as INV
-import ayar as AY
+import inventory as INV
+import settings as SET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 S = json.load(open(os.path.join(HERE, 'data', 'skylab.json'), encoding='utf8'))
-LEVELS, COSTS, MODULES, ORES = S['seviyeler'], S['maliyetler'], S['moduller'], S['cevherler']
-COLLECTORS, REFINERIES, XENO = S['toplayicilar'], S['rafineriler'], S['xeno']
-ROBOTS, TRANSPORT = S['robotlar'], S['tasima']
+LEVELS, COSTS, MODULES, ORES = S['levels'], S['costs'], S['modules'], S['ores']
+COLLECTORS, REFINERIES, XENO = S['collectors'], S['refineries'], S['xeno']
+ROBOTS, TRANSPORT = S['robots'], S['transport']
 ORDER = ['DURANIUM_REFINERY', 'BASE_MODULE', 'ENDURIUM_COLLECTOR', 'SOLAR_MODULE', 'XENO_MODULE', 'PROMETID_REFINERY',
          'STORAGE_MODULE', 'TRANSPORT_MODULE', 'SEPROM_REFINERY', 'PROMETIUM_COLLECTOR', 'TERBIUM_COLLECTOR', 'PROMERIUM_REFINERY']
-ORE_ORDER = ['1', '2', '3', '11', '12', '4', '13', '14']           # kayıttaki depo listesi sırası
-COUNT_FIELDS = {'count' + v[0]: k for k, v in ORES.items()}         # SkylabActionRequest.countPrometium … -> cevher kimliği
-ALWAYS_ON = ('BASE_MODULE', 'SOLAR_MODULE', 'STORAGE_MODULE')     # istemci bunlarda aç/kapa düğmesi göstermez
+ORE_ORDER = ['1', '2', '3', '11', '12', '4', '13', '14']           # order of the storage list in the recording
+COUNT_FIELDS = {'count' + v[0]: k for k, v in ORES.items()}         # SkylabActionRequest.countPrometium ... -> ore id
+ALWAYS_ON = ('BASE_MODULE', 'SOLAR_MODULE', 'STORAGE_MODULE')     # the client shows no on/off button for these
 UPGRADE_RES = (('1', 33), ('2', 34), ('3', 35))                     # Prometium, Endurium, Terbium yetmezse BaseKey
 REFINE_ORDER = ['PROMETID_REFINERY', 'DURANIUM_REFINERY', 'PROMERIUM_REFINERY', 'SEPROM_REFINERY']
-CARGO = {k: v[2] for k, v in ORES.items()}                          # Skylab cevheri -> geminin OreType'ı
-STEP_SN = 600                                                       # çevrimdışı birikimin hesap adımı
+CARGO = {k: v[2] for k, v in ORES.items()}                          # Skylab ore -> the ship's OreType
+STEP_SEC = 600                                                       # calculation step of offline accumulation
 
 
 def mod(name, **f):
@@ -56,110 +56,121 @@ def stack(code):
 
 
 class Skylab:
-    def __init__(self, profil, log=print):
-        self.p, self.log = profil, log
-        self.m = None                 # mağaza (para ve kargo güncellemeleri; oturum bağlar)
-        self.send = None              # zamanla biten işler (yükseltme, taşıma) için bildirim (oturum bağlar)
-        self.quest = None             # görev olayı (UPDATE_SKYLAB_TO_LEVEL; oturum bağlar) -> mesajlar
+    def __init__(self, profile, log=print):
+        self.p, self.log = profile, log
+        self.m = None                 # shop (money and cargo updates; the session binds it)
+        self.send = None              # notification for jobs that finish with time (upgrade, transport) (the session binds it)
+        self.quest = None             # quest event (UPDATE_SKYLAB_TO_LEVEL; the session binds it) -> messages
+        self.pending_quest = []      # (module, level): the quest event when the profile lock is released (quest_tracker takes that lock too)
         self.next_tick = 0.0
 
-    # ------------------------------------------------------------ durum
+    # ------------------------------------------------------------ state
     @property
     def st(self):
         d = self.p.d.get('skylab')
         if not d:
             d = self.p.d['skylab'] = {
-                'moduller': {k: {'seviye': v[0], 'etkin': v[1], 'yukseltme': None} for k, v in S['baslangic']['moduller'].items()},
-                'depo': {k: float(v) for k, v in S['baslangic']['depo'].items()},
-                'robotlar': {}, 'yedek': {}, 'tasima': None, 'son': time.time()}
+                'modules': {k: {'level': v[0], 'enabled': v[1], 'upgrade': None} for k, v in S['start']['modules'].items()},
+                'storage': {k: float(v) for k, v in S['start']['storage'].items()},
+                'robots': {}, 'backup': {}, 'transport': None, 'last': time.time()}
             self.p.dirty = True
         return d
 
     def module(self, key):
-        return self.st['moduller'].setdefault(key, {'seviye': 0, 'etkin': False, 'yukseltme': None})
+        return self.st['modules'].setdefault(key, {'level': 0, 'enabled': False, 'upgrade': None})
 
     def level(self, key):
-        return self.module(key)['seviye']
+        return self.module(key)['level']
 
     def levels(self):
-        """Modül -> seviye (görev kabulünde şimdiki durum; Ö1)."""
-        return {k: m['seviye'] for k, m in self.st['moduller'].items()}
+        """Module -> level (the current state when a quest is accepted; stage 1)."""
+        return {k: m['level'] for k, m in self.st['modules'].items()}
 
     def state(self, key):
         m = self.module(key)
-        if m.get('yukseltme'):
+        if m.get('upgrade'):
             return 'UPGRADE'
-        return 'ACTIVE' if m['etkin'] and m['seviye'] > 0 else 'INACTIVE'
+        return 'ACTIVE' if m['enabled'] and m['level'] > 0 else 'INACTIVE'
 
     def working(self, key):
         return self.state(key) == 'ACTIVE'
 
     def energy(self, key, level=None):
         lv = self.level(key) if level is None else level
-        return row(lv)['enerji'] if lv > 0 and key != 'SOLAR_MODULE' else 0
+        return row(lv)['energy'] if lv > 0 and key != 'SOLAR_MODULE' else 0
 
     def consumption(self):
         return sum(self.energy(k) for k in MODULES if k != 'SOLAR_MODULE' and self.working(k))
 
     def solar(self):
-        return row(self.level('SOLAR_MODULE'))['gunes']
+        return row(self.level('SOLAR_MODULE'))['solar']
 
     def capacity(self, ore):
-        v = row(self.level('STORAGE_MODULE'))['depo'][ORES[ore][1]]
-        return v if AY.carpan('skylab_depo') == 1.0 else min(AY.I32, int(v * AY.carpan('skylab_depo')))    # panel: depo
+        v = row(self.level('STORAGE_MODULE'))['storage'][ORES[ore][1]]
+        return v if SET.multiplier('skylab_storage') == 1.0 else min(SET.I32, int(v * SET.multiplier('skylab_storage')))    # panel: storage
 
     def amount(self, ore):
-        return int(self.st['depo'].get(ore, 0))
+        return int(self.st['storage'].get(ore, 0))
 
     def bonus(self, key):
-        return sum(ROBOTS[str(t)]['bonus'] for t, _ in self.st['robotlar'].get(key, []))
+        return sum(ROBOTS[str(t)]['bonus'] for t, _ in self.st['robots'].get(key, []))
 
     def efficiency(self, key):
         return 100 + self.bonus(key)
 
     def production(self, key):
-        """Saatlik üretim (verimle)."""
+        """Hourly production (with efficiency)."""
         lv = self.level(key)
         if lv <= 0:
             return 0
-        k = AY.carpan('skylab_uretim')                     # panel: Skylab üretimi
+        k = SET.multiplier('skylab_production')                     # panel: Skylab production
         if key in COLLECTORS:
-            return int(row(lv)['uretim']['ham'] * self.efficiency(key) / 100 * k)
+            return int(row(lv)['production']['raw'] * self.efficiency(key) / 100 * k)
         if key in REFINERIES:
-            return int(row(lv)['uretim'][REFINERIES[key][2]] * k)
+            return int(row(lv)['production'][REFINERIES[key][2]] * k)
         if key == 'XENO_MODULE':
-            return int(row(lv)['uretim'][XENO['sutun']] * k)
+            return int(row(lv)['production'][XENO['column']] * k)
         return 0
 
-    # ------------------------------------------------------------ zaman
+    # ------------------------------------------------------------ time
     def events(self, after):
-        ev = [m['yukseltme'] for m in self.st['moduller'].values() if m.get('yukseltme')]
-        ev += [b for rs in self.st['robotlar'].values() for _, b in rs]
-        if self.st.get('tasima'):
-            ev.append(self.st['tasima']['bitis'])
+        ev = [m['upgrade'] for m in self.st['modules'].values() if m.get('upgrade')]
+        ev += [b for rs in self.st['robots'].values() for _, b in rs]
+        if self.st.get('transport'):
+            ev.append(self.st['transport']['end_time'])
         return [e for e in ev if e > after]
 
     def advance(self, now=None):
-        """Son hesaptan bu yana üretim; araya giren olaylar (yükseltme bitişi, robot süresi, taşıma) sırayla -> bildirimler."""
+        """Production since the last computation; the events in between (upgrade finish, robot time, transport) in order -> notifications."""
         now = now or time.time()
         st, out = self.st, []
-        t = min(st.get('son', now), now)
+        t = min(st.get('last', now), now)
         with self.p.lock:
             while True:
                 ev = self.events(t)
-                nxt = min([now, t + STEP_SN] + [e for e in ev if e <= now])     # uzun aralık adım adım (üretim/tüketim sırası)
+                nxt = min([now, t + STEP_SEC] + [e for e in ev if e <= now])     # a long interval step by step (production/consumption order)
                 if nxt > t:
                     self.produce((nxt - t) / 3600.0)
                 t = nxt
                 out += self.fire(t)
                 if t >= now:
                     break
-            st['son'] = now
+            st['last'] = now
             self.p.dirty = True
+        self.notify_quest()
         return out
 
+    def notify_quest(self):
+        """Quest event for finished upgrades: outside the lock (when called under the lock threading.Lock waited for itself)."""
+        while self.pending_quest:
+            key, lv = self.pending_quest.pop(0)
+            if self.quest and self.send:                     # quest: "Upgrade the Prometium collector to level 1" (stage 1)
+                msgs = self.quest(module=key, level=lv)
+                if msgs:
+                    self.send(msgs)
+
     def produce(self, hours):
-        dep = self.st['depo']
+        dep = self.st['storage']
 
         def add(ore, n):
             dep[ore] = min(self.capacity(ore), dep.get(ore, 0) + n) if n > 0 else dep.get(ore, 0)
@@ -167,7 +178,7 @@ class Skylab:
             if self.working(key):
                 add(ore, self.production(key) * hours)
         if self.working('XENO_MODULE'):
-            add(XENO['cevher'], self.production('XENO_MODULE') * hours)
+            add(XENO['ore'], self.production('XENO_MODULE') * hours)
         for key in REFINE_ORDER:
             if not self.working(key):
                 continue
@@ -181,42 +192,39 @@ class Skylab:
             add(out, n)
 
     def fire(self, t):
-        """t anında dolan olaylar -> istemci bildirimleri."""
+        """Events that fill at time t -> client notifications."""
         st, out = self.st, []
-        for key, m in st['moduller'].items():
-            if m.get('yukseltme') and m['yukseltme'] <= t:
+        for key, m in st['modules'].items():
+            if m.get('upgrade') and m['upgrade'] <= t:
                 out += self.finish_upgrade(key, code=46)
-        for key, rs in list(st['robotlar'].items()):
+        for key, rs in list(st['robots'].items()):
             alive = [r for r in rs if r[1] > t]
             for _ in range(len(rs) - len(alive)):
-                spare = st['yedek'].get(key) or []
+                spare = st['backup'].get(key) or []
                 if spare:
-                    alive.append([spare.pop(0), t + ROBOTS['omur_sn']])
-            st['robotlar'][key] = alive
-        tr = st.get('tasima')
-        if tr and tr['bitis'] <= t:
-            out += self.deliver(tr['yuk'])
-            st['tasima'] = None
+                    alive.append([spare.pop(0), t + ROBOTS['lifetime_sec']])
+            st['robots'][key] = alive
+        tr = st.get('transport')
+        if tr and tr['end_time'] <= t:
+            out += self.deliver(tr['cargo'])
+            st['transport'] = None
         return out
 
     def finish_upgrade(self, key, code):
         m = self.module(key)
-        m['seviye'] += 1
-        m['yukseltme'] = None
-        if self.quest and self.send:                         # görev: "Prometium collector'ı 1. seviyeye yükselt" (Ö1)
-            msgs = self.quest(modul=key, seviye=m['seviye'])
-            if msgs:
-                self.send(msgs)
+        m['level'] += 1
+        m['upgrade'] = None
+        self.pending_quest.append((key, m['level']))      # quest_notify: when the lock is released
         others = self.consumption() - (self.energy(key) if self.working(key) else 0)
         if key not in ALWAYS_ON and others + self.energy(key) > self.solar():
-            m['etkin'] = False                              # enerji yetmiyor: kapalı kalır
+            m['enabled'] = False                              # not enough energy: it stays off
         self.p.dirty = True
-        self.log('   Skylab: %s seviye %d' % (key, m['seviye']))
+        self.log('   Skylab: %s level %d' % (key, m['level']))
         return [('_receipt', key, '', [], [code])]
 
     def deliver(self, load):
-        """Taşıma vardı: kargoya sığan kısmı gemiye ('_ores', render kilit dışında ekler), kalanı Skylab deposuna geri.
-        Profil kilidi tutulurken çağrılabilir (yalnız sözlük değişir)."""
+        """There was a transport: the part that fits the cargo goes to the ship ('_ores', render adds it outside the lock), the rest back to the Skylab storage.
+        Can be called while holding the profile lock (only a dict changes)."""
         free, got, back = self.p.cargo_free(), {}, {}
         for ore, n in sorted(load.items(), key=lambda kv: ORE_ORDER.index(kv[0])):
             take = min(int(n), free)
@@ -226,8 +234,8 @@ class Skylab:
             if n - take > 0:
                 back[ore] = n - take
         for ore, n in back.items():
-            self.st['depo'][ore] = min(self.capacity(ore), self.st['depo'].get(ore, 0) + n)
-        self.log('   Skylab: taşıma geldi %s%s' % (got, ' (sığmayan depoya döndü %s)' % back if back else ''))
+            self.st['storage'][ore] = min(self.capacity(ore), self.st['storage'].get(ore, 0) + n)
+        self.log('   Skylab: transport arrived %s%s' % (got, ' (what did not fit returned to storage %s)' % back if back else ''))
         return ([('_ores', got)] if got else []) + [('_receipt', 'TRANSPORT_MODULE', 'startTransport', [], [53])]
 
     # ------------------------------------------------------------ mesajlar
@@ -236,9 +244,9 @@ class Skylab:
         for key in ORDER:
             m = self.module(key)
             power = self.consumption() if key == 'SOLAR_MODULE' else (self.energy(key) if self.working(key) else 0)
-            mods.append(mod('SkylabMainViewModuleCommand', maxLevel=MODULES[key]['azami'], state=self.state(key), moduleType=key,
+            mods.append(mod('SkylabMainViewModuleCommand', maxLevel=MODULES[key]['maximum'], state=self.state(key), moduleType=key,
                             efficiency=self.bonus(key) if key in COLLECTORS else 0, currentPower=power,
-                            maxPower=self.solar() if key == 'SOLAR_MODULE' else -1, level=m['seviye']))
+                            maxPower=self.solar() if key == 'SOLAR_MODULE' else -1, level=m['level']))
         ores = [mod('SkylabStorageOreCommand', current=self.amount(o), oreId=int(o), capacity=self.capacity(o), oreName=ORES[o][0])
                 for o in ORE_ORDER]
         return ('SkylabMainViewCommand', {'listModule': mods, 'oreList': ores})
@@ -246,52 +254,52 @@ class Skylab:
     def robots_left(self, key, now=None):
         now = now or time.time()
         return [mod('SkylabActiveRobotsLeftTimeCommand', uridium=1 if t == 2 else 0, leftTime=max(0, int(b - now)))
-                for t, b in self.st['robotlar'].get(key, [])]
+                for t, b in self.st['robots'].get(key, [])]
 
     def robot_price(self, kind):
-        """Robotun para birimi ve alınan fiyatı (panelin hizmet ücreti çarpanıyla; pencerede de bu görünür)."""
-        cur, price = ROBOTS[kind]['fiyat']
-        return cur, AY.fiyat('hizmet_fiyat', price, 'skylab')
+        """The robot's currency and the price paid (with the panel's service-fee multiplier; this is shown in the window too)."""
+        cur, price = ROBOTS[kind]['price']
+        return cur, SET.price('service_price', price, 'skylab')
 
     def productivity(self, key, now=None):
-        """Toplayıcının Productivity sekmesi (robotlar, verim, fiyatlar)."""
-        price = lambda kind: mod('SkylabRobotPriceCommand', priceType=ROBOTS[kind]['fiyat'][0], value=self.robot_price(kind)[1])
+        """The collector's Productivity tab (robots, efficiency, prices)."""
+        price = lambda kind: mod('SkylabRobotPriceCommand', priceType=ROBOTS[kind]['price'][0], value=self.robot_price(kind)[1])
         return mod('SkylabModuleProductivityCommand', type1Price=price('1'), efficienty=self.efficiency(key),
-                   active=len(self.st['robotlar'].get(key, [])), robotsLeftTimeList=self.robots_left(key, now), type2Price=price('2'),
-                   bonus=self.bonus(key), maxActive=ROBOTS['azami'], inStorage=len(self.st['yedek'].get(key, [])))
+                   active=len(self.st['robots'].get(key, [])), robotsLeftTimeList=self.robots_left(key, now), type2Price=price('2'),
+                   bonus=self.bonus(key), maxActive=ROBOTS['maximum'], inStorage=len(self.st['backup'].get(key, [])))
 
     def receipt(self, construction='', subaction='', errors=(), success=()):
-        """İstemci (UISkylabSystem.ShowTips) yalnız errorId'yi açılır pencerede gösterir; sucessId gelince pencere boş açılıyordu.
-        Başarı metinleri de errorId'de; %module% / %level% / %date% yer tutucuları ArgStackCommand ile (canlı test H37).
-        İstemci (SetSkylabActionHandler.Run) construction boş değilse pencereyi açar: metin yoksa construction boş gider (robot
-        alımında, kapanmayan modülü aç/kapada metinsiz "Ok" penceresi çıkıyordu; kullanıcı 2026-10-24). Kod yerine hazır metin de
-        verilebilir (BaseStackCommand)."""
+        """The client (UISkylabSystem.ShowTips) shows only errorId in the pop-up window; with sucessId the window opened empty.
+        Success texts are in errorId too; the %module% / %level% / %date% placeholders go with ArgStackCommand (live test H37).
+        The client (SetSkylabActionHandler.Run) opens the window if construction is not empty: with no text construction goes empty (on
+        robot purchase, toggling a module that does not close brought up a textless "Ok" window; user 2026-10-24). A ready-made text can be
+        given instead of a code (BaseStackCommand)."""
         texts = [c if isinstance(c, dict) else self.stack_args(c, construction) for c in list(errors) + list(success)]
         return ('SkylabUnifiedReceiptCommand', dict(
-            construction=construction if texts else '', resultId=0, transportPrice=TRANSPORT['hizli_uridyum'],
+            construction=construction if texts else '', resultId=0, transportPrice=TRANSPORT['fast_uridium'],
             robotsLeftTimeList=self.robots_left(construction) if construction in COLLECTORS else [], subaction=subaction,
             errorId=texts, sucessId=[]))
 
     def stack_args(self, code, key):
-        import magaza as MG
+        import shop as SHP
         st = stack(code)
         if key in MODULES:
             lv = self.level(key)
-            args = dict(_module_=MG.res('skylab_' + key.lower()), _level_=lv + (1 if code in (40, 43) else 0),
-                        _date_=time.strftime('%d.%m.%Y'))      # ':' olmamalı: istemci ':' içereni 'res' biçimi sanıp atlar
-            st['argsList'] = [mod('ArgStackCommand', type=0, value2=None, key=MG.ARG_KEYS[k], value=str(v)) for k, v in args.items()]
+            args = dict(_module_=SHP.res('skylab_' + key.lower()), _level_=lv + (1 if code in (40, 43) else 0),
+                        _date_=time.strftime('%d.%m.%Y'))      # must not contain ':' : the client takes anything with ':' for the 'res' format and skips it
+            st['argsList'] = [mod('ArgStackCommand', type=0, value2=None, key=SHP.ARG_KEYS[k], value=str(v)) for k, v in args.items()]
         return st
 
     def window(self, construction='', subaction='', errors=(), success=()):
         return [self.main_view(), self.receipt(construction, subaction, errors, success)]
 
     def upgrade_cost(self, key):
-        g, lv = MODULES[key]['grup'], self.level(key)
-        if not g or lv >= MODULES[key]['azami']:
+        g, lv = MODULES[key]['group'], self.level(key)
+        if not g or lv >= MODULES[key]['maximum']:
             return None
         c = COSTS[g][lv]
-        f = lambda n: AY.fiyat('hizmet_fiyat', n, 'skylab')  # panel: hizmet ücretleri (kredi ve uridyum; kaynaklar aynı)
-        return dict(c, kredi=f(c['kredi']), uridyum=f(c['uridyum']))
+        f = lambda n: SET.price('service_price', n, 'skylab')  # panel: service fees (credits and uridium; the resources are the same)
+        return dict(c, credits=f(c['credits']), uridium=f(c['uridium']))
 
     def ore_info(self, ore, n, cap=None):
         return mod('SkylabStorageOreCommand', current=int(n), oreId=int(ore), capacity=int(self.capacity(ore) if cap is None else cap),
@@ -302,10 +310,10 @@ class Skylab:
         if key not in MODULES:
             return None
         m, c = self.module(key), self.upgrade_cost(key)
-        left = max(0, int(m['yukseltme'] - now)) if m.get('yukseltme') else 0
-        upgrade = mod('SkylabModuleUpgradeCommand', timeLeft=left, credits=c['kredi'] if c else 0, terbium=c['kaynak'] if c else 0,
-                      uridiumInstant=self.finish_price(key, now) if left else (c['uridyum'] if c else 0),
-                      endurium=c['kaynak'] if c else 0, prometium=c['kaynak'] if c else 0, timeNormal=AY.sure(c['sure_sn'], 'skylab') // 60 if c else 0)
+        left = max(0, int(m['upgrade'] - now)) if m.get('upgrade') else 0
+        upgrade = mod('SkylabModuleUpgradeCommand', timeLeft=left, credits=c['credits'] if c else 0, terbium=c['source'] if c else 0,
+                      uridiumInstant=self.finish_price(key, now) if left else (c['uridium'] if c else 0),
+                      endurium=c['source'] if c else 0, prometium=c['source'] if c else 0, timeNormal=SET.duration(c['duration_sec'], 'skylab') // 60 if c else 0)
         info = mod('SkylabCollectorInfoCommand', production=self.production(key), maxTime=0, leftTime=0)
         prod, xeno, ores = None, mod('SkylabXenoInfoCommand', activeEfficiency=0, activeConsumption=0, inactiveConsumption=0,
                                      activeEnergy=0), []
@@ -317,47 +325,47 @@ class Skylab:
             n = self.production(key)
             ores = [self.ore_info(o, -n * k) for o, k in inputs.items()] + [self.ore_info(out, n)]
         elif key == 'XENO_MODULE':
-            use = self.production('PROMERIUM_REFINERY') * REFINERIES['PROMERIUM_REFINERY'][1].get(XENO['cevher'], 0) \
+            use = self.production('PROMERIUM_REFINERY') * REFINERIES['PROMERIUM_REFINERY'][1].get(XENO['ore'], 0) \
                 if self.working('PROMERIUM_REFINERY') else 0
             xeno = mod('SkylabXenoInfoCommand', activeEfficiency=self.production(key), activeConsumption=use, inactiveConsumption=0,
                        activeEnergy=self.energy(key))
-            ores = [self.ore_info(XENO['cevher'], self.production(key))]
+            ores = [self.ore_info(XENO['ore'], self.production(key))]
         elif key == 'STORAGE_MODULE':
-            nxt = row(self.level(key) + 1)['depo'] if self.level(key) < MODULES[key]['azami'] else None
+            nxt = row(self.level(key) + 1)['storage'] if self.level(key) < MODULES[key]['maximum'] else None
             ores = [self.ore_info(o, (nxt[ORES[o][1]] - self.capacity(o)) if nxt else 0, nxt[ORES[o][1]] if nxt else None)
                     for o in ORE_ORDER]
         elif key == 'TRANSPORT_MODULE':
-            tr = self.st.get('tasima')
+            tr = self.st.get('transport')
             if tr:
-                info = mod('SkylabCollectorInfoCommand', production=int(sum(tr['yuk'].values())), maxTime=self.transport_time(tr['yuk']),
-                           leftTime=max(0, int(tr['bitis'] - now)))
-                ores = [self.ore_info(o, n) for o, n in sorted(tr['yuk'].items(), key=lambda kv: ORE_ORDER.index(kv[0]))]
+                info = mod('SkylabCollectorInfoCommand', production=int(sum(tr['cargo'].values())), maxTime=self.transport_time(tr['cargo']),
+                           leftTime=max(0, int(tr['end_time'] - now)))
+                ores = [self.ore_info(o, n) for o, n in sorted(tr['cargo'].items(), key=lambda kv: ORE_ORDER.index(kv[0]))]
         return ('SkylabViewModuleBackCommand', dict(collectorInfo=info, upgrade=upgrade, productivity=prod, xenoInfo=xeno,
                                                     strorageInfo=mod('SkylabStorageInfoCommand', efficiency=self.efficiency(key)
                                                                      if key in COLLECTORS else 0, infoOreList=ores),
                                                     moduleName=key))
 
-    # ------------------------------------------------------------ yükseltme
+    # ------------------------------------------------------------ upgrade
     def finish_price(self, key, now=None):
-        """Süren yükseltmeyi bitirme: anında yükseltme fiyatının kalan süre oranı (en az 1)."""
+        """Finishing a running upgrade: the instant upgrade price times the fraction of time remaining (at least 1)."""
         m, now = self.module(key), now or time.time()
-        if not m.get('yukseltme'):
+        if not m.get('upgrade'):
             return 0
-        c = COSTS[MODULES[key]['grup']][m['seviye']]
-        u = AY.fiyat('hizmet_fiyat', c['uridyum'], 'skylab')
-        return max(1 if u else 0, int(math.ceil(u * (m['yukseltme'] - now) / max(1, AY.sure(c['sure_sn'], 'skylab')))))
+        c = COSTS[MODULES[key]['group']][m['level']]
+        u = SET.price('service_price', c['uridium'], 'skylab')
+        return max(1 if u else 0, int(math.ceil(u * (m['upgrade'] - now) / max(1, SET.duration(c['duration_sec'], 'skylab')))))
 
     def check_upgrade(self, key):
-        """Yükseltilebilir mi -> hata kodu ya da None."""
-        if key not in MODULES or not MODULES[key]['grup'] or self.level(key) >= MODULES[key]['azami']:
+        """Can it be upgraded -> error code or None."""
+        if key not in MODULES or not MODULES[key]['group'] or self.level(key) >= MODULES[key]['maximum']:
             return 30
-        if self.module(key).get('yukseltme'):        # aynı anda birden çok modül yükseltilebilir (oyuncu bildirimi 2026-10-30); aynı modül bir kez
+        if self.module(key).get('upgrade'):        # several modules can be upgraded at once (player report 2026-10-30); the same module once
             return 42
         if key != 'BASE_MODULE' and self.level(key) + 1 > self.level('BASE_MODULE'):
             return 31
-        if key == 'PROMERIUM_REFINERY' and self.level(key) + 1 > self.level('XENO_MODULE'):     # resmî forum: Xeno-Modül sınırı
+        if key == 'PROMERIUM_REFINERY' and self.level(key) + 1 > self.level('XENO_MODULE'):     # official forum: Xeno module limit
             return self.raw('skylab_message_upgrade_xenomoduleLevel')
-        if key != 'SOLAR_MODULE' and self.module(key)['etkin'] and \
+        if key != 'SOLAR_MODULE' and self.module(key)['enabled'] and \
                 self.consumption() - (self.energy(key) if self.working(key) else 0) + self.energy(key, self.level(key) + 1) > self.solar():
             return 41
         return None
@@ -367,22 +375,22 @@ class Skylab:
         if err:
             return [err], []
         c = self.upgrade_cost(key)
-        if INV.count(self.p, 'currency_credits') < c['kredi']:
+        if INV.count(self.p, 'currency_credits') < c['credits']:
             return [32], []
         for ore, code in UPGRADE_RES:
-            if self.amount(ore) < c['kaynak']:
+            if self.amount(ore) < c['source']:
                 return [code], []
-        INV.spend(self.p, {'currency_credits': c['kredi']}, reason='buy_SPECIAL', detail='skylab_' + key.lower())
+        INV.spend(self.p, {'currency_credits': c['credits']}, reason='buy_SPECIAL', detail='skylab_' + key.lower())
         with self.p.lock:
             for ore, _ in UPGRADE_RES:
-                self.st['depo'][ore] -= c['kaynak']
+                self.st['storage'][ore] -= c['source']
             m = self.module(key)
-            m['yukseltme'] = now + AY.sure(c['sure_sn'], 'skylab')       # panel: bekleme
-            if m['seviye'] == 0:
-                m['etkin'] = True                          # yeni kurulan modül bitince çalışır (enerji yetiyorsa)
+            m['upgrade'] = now + SET.duration(c['duration_sec'], 'skylab')       # panel: waiting time
+            if m['level'] == 0:
+                m['enabled'] = True                          # a newly built module runs when it finishes (if energy suffices)
             self.p.dirty = True
-        self.log('   Skylab: %s -> %d yükseltmesi başladı (%d sn, %d C, %d x3 kaynak)' % (key, m['seviye'] + 1, c['sure_sn'], c['kredi'],
-                                                                                        c['kaynak']))
+        self.log('   Skylab: %s -> %d upgrade started (%d s, %d C, %d x3 resources)' % (key, m['level'] + 1, c['duration_sec'], c['credits'],
+                                                                                        c['source']))
         return [], [40]
 
     def instant_upgrade(self, key, now):
@@ -390,39 +398,41 @@ class Skylab:
         if err:
             return [err], []
         c = self.upgrade_cost(key)
-        if INV.missing(self.p, {'currency_uridium': c['uridyum']}):
+        if INV.missing(self.p, {'currency_uridium': c['uridium']}):
             return [44], []
-        INV.spend(self.p, {'currency_uridium': c['uridyum']}, reason='buy_SPECIAL', detail='skylab_' + key.lower())
+        INV.spend(self.p, {'currency_uridium': c['uridium']}, reason='buy_SPECIAL', detail='skylab_' + key.lower())
         with self.p.lock:
             if self.level(key) == 0:
-                self.module(key)['etkin'] = True
+                self.module(key)['enabled'] = True
             self.finish_upgrade(key, 45)
-        self.log('   Skylab: %s anında yükseltildi (%d U)' % (key, c['uridyum']))
+        self.notify_quest()
+        self.log('   Skylab: %s upgraded instantly (%d U)' % (key, c['uridium']))
         return [], [45]
 
     def instant_finish(self, key, now):
         m = self.module(key)
-        if not m.get('yukseltme'):
-            return [30 if self.level(key) >= MODULES.get(key, {}).get('azami', 0) else 42], []
+        if not m.get('upgrade'):
+            return [30 if self.level(key) >= MODULES.get(key, {}).get('maximum', 0) else 42], []
         price = self.finish_price(key, now)
         if INV.missing(self.p, {'currency_uridium': price}):
             return [44], []
         INV.spend(self.p, {'currency_uridium': price}, reason='buy_SPECIAL', detail='skylab_' + key.lower())
         with self.p.lock:
             self.finish_upgrade(key, 46)
-        self.log('   Skylab: %s yükseltmesi bitirildi (%d U)' % (key, price))
+        self.notify_quest()
+        self.log('   Skylab: %s upgrade finished (%d U)' % (key, price))
         return [], [45, 46]
 
     def abort(self, key):
         m = self.module(key)
-        if not m.get('yukseltme'):
+        if not m.get('upgrade'):
             return [], []
         with self.p.lock:
-            m['yukseltme'] = None
-            if m['seviye'] == 0:
-                m['etkin'] = False
+            m['upgrade'] = None
+            if m['level'] == 0:
+                m['enabled'] = False
             self.p.dirty = True
-        self.log('   Skylab: %s yükseltmesi iptal (harcananlar geri gelmez)' % key)
+        self.log('   Skylab: %s upgrade cancelled (what was spent is not returned)' % key)
         return [], [43]
 
     def toggle(self, key, on):
@@ -430,39 +440,39 @@ class Skylab:
         if key not in MODULES or key in ALWAYS_ON:
             return [], []
         if on:
-            if m['seviye'] <= 0:
+            if m['level'] <= 0:
                 return [36], []
-            if m.get('yukseltme'):
+            if m.get('upgrade'):
                 return [42], []
-            if not m['etkin'] and self.consumption() + self.energy(key) > self.solar():
+            if not m['enabled'] and self.consumption() + self.energy(key) > self.solar():
                 return [39], []
         with self.p.lock:
-            m['etkin'] = on
+            m['enabled'] = on
             self.p.dirty = True
         return [], [38 if on else 37]
 
-    # ------------------------------------------------------------ taşıma
+    # ------------------------------------------------------------ transport
     def transport_time(self, load):
-        """Normal taşımanın süresi: cevher başına birim_sn (Premium premium_birim_sn)."""
-        per = TRANSPORT['premium_birim_sn' if self.p.premium else 'birim_sn']
-        return AY.sure(int(math.ceil(sum(load.values()) * per)), 'skylab')
+        """Duration of normal transport: unit_sec per ore (Premium premium_unit_sec)."""
+        per = TRANSPORT['premium_unit_sec' if self.p.premium else 'unit_sec']
+        return SET.duration(int(math.ceil(sum(load.values()) * per)), 'skylab')
 
     def transport(self, f, now):
         mode, st = f.get('transportMode') or '', self.st
-        price = AY.fiyat('hizmet_fiyat', TRANSPORT['hizli_uridyum'], 'skylab')      # panel
+        price = SET.price('service_price', TRANSPORT['fast_uridium'], 'skylab')      # panel
         if mode == 'instantFinish':
-            if not st.get('tasima'):
+            if not st.get('transport'):
                 return [22], [], []
             if INV.missing(self.p, {'currency_uridium': price}):
                 return [47], [], []
             INV.spend(self.p, {'currency_uridium': price}, reason='buy_SPECIAL', detail='skylab_transport')
             with self.p.lock:
-                load, st['tasima'] = st['tasima']['yuk'], None
+                load, st['transport'] = st['transport']['cargo'], None
                 msgs = [x for x in self.deliver(load) if x[0] != '_receipt']
             return [], [53], msgs
         if not self.working('TRANSPORT_MODULE'):
             return [22], [], []
-        if st.get('tasima'):
+        if st.get('transport'):
             return [48], [], []
         load = {}
         for field, ore in COUNT_FIELDS.items():
@@ -482,28 +492,28 @@ class Skylab:
             INV.spend(self.p, {'currency_uridium': price}, reason='buy_SPECIAL', detail='skylab_transport')
         with self.p.lock:
             for ore, n in load.items():
-                st['depo'][ore] -= n
+                st['storage'][ore] -= n
             if mode == 'fast':
                 msgs = [x for x in self.deliver(load) if x[0] != '_receipt']
             else:
-                st['tasima'] = {'bitis': now + self.transport_time(load), 'yuk': load}
+                st['transport'] = {'end_time': now + self.transport_time(load), 'cargo': load}
                 msgs = []
             self.p.dirty = True
-        self.log('   Skylab: taşıma %s %s' % ('anında' if mode == 'fast' else 'başladı', load))
+        self.log('   Skylab: transport %s %s' % ('instantly' if mode == 'fast' else 'started', load))
         return [], [52, 53] if mode == 'fast' else [52], msgs
 
-    # ------------------------------------------------------------ robotlar
+    # ------------------------------------------------------------ robots
     def raw(self, key):
-        """BaseKey'lerde olmayan istemci metni: ham "XXX" + çevrilen değeri (magaza.RES_YERINE gibi)."""
-        import magaza as MG
+        """A client text not among the BaseKeys: raw "XXX" + its translated value (like shop.RES_REPLACEMENT)."""
+        import shop as SHP
         return mod('BaseStackCommand', type=1, enumBaseKey=0, stringBasekey='XXX', argsList=[
-            mod('ArgStackCommand', type=0, value2=None, key=MG.ARG_KEYS['XXX'], value=MG.res(key))])
+            mod('ArgStackCommand', type=0, value2=None, key=SHP.ARG_KEYS['XXX'], value=SHP.res(key))])
 
     def robots_bought(self):
-        """"Skylab robots bought" (istemcinin metni; BaseKey'lerde yok: ham "XXX" + çevrilen değeri, magaza.RES_YERINE gibi)."""
-        import magaza as MG
+        """"Skylab robots bought" (the client's text; not among the BaseKeys: raw "XXX" + its translated value, like shop.RES_REPLACEMENT)."""
+        import shop as SHP
         return mod('BaseStackCommand', type=1, enumBaseKey=0, stringBasekey='XXX', argsList=[
-            mod('ArgStackCommand', type=0, value2=None, key=MG.ARG_KEYS['XXX'], value=MG.res('skylab_history_robots_bought'))])
+            mod('ArgStackCommand', type=0, value2=None, key=SHP.ARG_KEYS['XXX'], value=SHP.res('skylab_history_robots_bought'))])
 
     def productivity_msg(self, key, now):
         f = dict(self.productivity(key, now))
@@ -511,8 +521,8 @@ class Skylab:
         return ('SkylabModuleProductivityCommand', f)
 
     def buy_robot(self, f, now):
-        """Robot alımı. Yanıtta modül sayfası (SkylabViewModuleBackCommand) yok: istemci sayfayı açarken (ShowSecondPage) sekmeyi
-        Info'ya döndürüyordu, Productivity'de kalınamıyordu (kullanıcı 2026-10-24). Sekme SkylabModuleProductivityCommand'la yenilenir
+        """Robot purchase. The reply has no module page (SkylabViewModuleBackCommand): when the client opens the page (ShowSecondPage) it switched the tab
+        to Info, and Productivity could not be stayed on (user 2026-10-24). The tab is refreshed with SkylabModuleProductivityCommand
         (RefreshSkyInfoRobotEvent -> UISkylabSystem.WriteProductivity)."""
         key, kind = f.get('construction', ''), str(f.get('robotType') or 1)
         if key not in COLLECTORS or kind not in ('1', '2'):
@@ -520,22 +530,22 @@ class Skylab:
         cur, price = self.robot_price(kind)                                       # panel
         loot = 'currency_' + cur
         if INV.missing(self.p, {loot: price}):
-            self.log('   Skylab: robot için %s yetmiyor' % cur)
-            self.son_islem = ([32 if cur == 'credits' else 44], [])
+            self.log('   Skylab: not enough %s for the robot' % cur)
+            self.last_operation = ([32 if cur == 'credits' else 44], [])
             return self.out(key, 'purchase', [32 if cur == 'credits' else 44], [], [], now) + [self.productivity_msg(key, now)]
         INV.spend(self.p, {loot: price}, reason='buy_SPECIAL', detail='skylab_robot')
         with self.p.lock:
-            rs = self.st['robotlar'].setdefault(key, [])
-            if len(rs) < ROBOTS['azami']:
-                rs.append([int(kind), now + ROBOTS['omur_sn']])
+            rs = self.st['robots'].setdefault(key, [])
+            if len(rs) < ROBOTS['maximum']:
+                rs.append([int(kind), now + ROBOTS['lifetime_sec']])
             else:
-                self.st['yedek'].setdefault(key, []).append(int(kind))
+                self.st['backup'].setdefault(key, []).append(int(kind))
             self.p.dirty = True
-        self.log('   Skylab: %s robotu (%s) alındı, etkin %d, depoda %d' % (key, cur, len(rs), len(self.st['yedek'].get(key, []))))
-        self.son_islem = ([], [self.robots_bought()])
+        self.log('   Skylab: %s robot (%s) bought, active %d, in storage %d' % (key, cur, len(rs), len(self.st['backup'].get(key, []))))
+        self.last_operation = ([], [self.robots_bought()])
         return self.out(key, 'purchase', [], [self.robots_bought()], [loot], now) + [self.productivity_msg(key, now)]
 
-    # ------------------------------------------------------------ istekler
+    # ------------------------------------------------------------ requests
     def out(self, key, sub, errors, success, spent, now, extra=()):
         msgs = INV.update_msgs(self.m, self.p, spent) if spent else []
         return msgs + list(extra) + self.window(key, sub, errors, success)
@@ -562,21 +572,21 @@ class Skylab:
             err, ok, extra = self.transport(f, now)
             extra = self.render(extra)
         else:
-            self.log('   Skylab: bilinmeyen işlem %r' % sub)
+            self.log('   Skylab: unknown operation %r' % sub)
             err, ok = [], []
-        self.son_islem = (err, ok)          # panelin Skylab sayfası (panel_kanali.py): hata mı başarı mı
+        self.last_operation = (err, ok)          # the panel's Skylab page (panel_channel.py): error or success
         if err:
-            self.log('   Skylab: %s %s -> hata %s' % (sub, key, err))
+            self.log('   Skylab: %s %s -> error %s' % (sub, key, err))
         after = (INV.count(self.p, 'currency_credits'), INV.count(self.p, 'currency_uridium'))
         spent = ['currency_credits'] if after != before else []
-        # modül sayfası (SkylabViewModuleBackCommand) gönderilmez: istemci işlem isteğiyle sayfayı kapatıp ana sayfaya dönüyor
-        # (UISkylabSystem.SendActionRequest) ve sayfanın "yükseltiliyor" görünümünü modüle tıklandığı andaki durumdan okuyor
-        # (UISkylab.Module.state); gönderilen sayfa eski durumla yeniden açılıyordu, kapatıp açınca düzeliyordu (kullanıcı 2026-10-18)
+        # the module page (SkylabViewModuleBackCommand) is not sent: the client closes the page on an action request and returns to the main page
+        # (UISkylabSystem.SendActionRequest) and reads the page's "upgrading" view from the state at the moment the module was clicked
+        # (UISkylab.Module.state); the page sent reopened with the old state, and closing and reopening fixed it (user 2026-10-18)
         return pending + self.out(key, sub, err, ok, spent, now, extra)
 
     def render(self, items):
-        """advance/deliver çıktısı (profil kilidi dışında): ('_ores', {OreType: adet}) kargoya eklenir; ('_receipt', modül, alt
-        işlem, hatalar, başarılar) -> pencere mesajları; ötekiler aynen."""
+        """Output of advance/deliver (outside the profile lock): ('_ores', {OreType: count}) is added to the cargo; ('_receipt', module, sub
+        action, errors, successes) -> window messages; the others as they are."""
         out = []
         for it in items:
             if it[0] == '_receipt':
@@ -602,7 +612,7 @@ class Skylab:
         return None
 
     def tick(self, now):
-        """Saniyede bir: dolan yükseltme ve taşımalar istemciye bildirilir (pencere açık değilse de zararsız)."""
+        """Every second: finished upgrades and transports are notified to the client (harmless if the window is not open)."""
         if now < self.next_tick:
             return
         self.next_tick = now + 1.0

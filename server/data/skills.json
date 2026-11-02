@@ -1,0 +1,1147 @@
+{
+ "_source": "The client's skilltree.xml (values, costs, prerequisites) and darkorbitwiki (names, log disk, reset); tools/skills.py. \"effect\": the server's bonus key (profile.mods); pvp_laser with bot players. prerequisite \"total\": the sum of points of the listed skills is at least; \"each\": at least in each of them.",
+ "skills": {
+  "1": {
+   "name": "Explosives",
+   "values": [
+    4,
+    8,
+    12,
+    18,
+    25
+   ],
+   "unit": "percent",
+   "effect": "mine_radius",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 1,
+     "type": "total",
+     "skills": [
+      "5a",
+      "2",
+      "18a"
+     ]
+    }
+   ]
+  },
+  "2": {
+   "name": "Tactics",
+   "values": [
+    2,
+    4,
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "ep",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": []
+  },
+  "4": {
+   "name": "Logistics",
+   "values": [
+    4,
+    8,
+    12,
+    18,
+    25
+   ],
+   "unit": "percent",
+   "effect": "cargo_space",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 1,
+     "type": "total",
+     "skills": [
+      "5a",
+      "2",
+      "18a"
+     ]
+    }
+   ]
+  },
+  "5a": {
+   "name": "Detonation I",
+   "values": [
+    7,
+    14
+   ],
+   "unit": "percent",
+   "effect": "mine",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": []
+  },
+  "5b": {
+   "name": "Detonation II",
+   "values": [
+    21,
+    28,
+    50
+   ],
+   "unit": "percent",
+   "effect": "mine",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "11",
+      "14"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "5a"
+     ]
+    }
+   ]
+  },
+  "6": {
+   "name": "Rocket Fusion",
+   "values": [
+    2,
+    4,
+    6,
+    8,
+    15
+   ],
+   "unit": "percent",
+   "effect": "rocket",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    },
+    {
+     "credits": 300000,
+     "seprom": 300,
+     "points": 1
+    },
+    {
+     "credits": 400000,
+     "seprom": 400,
+     "points": 1
+    },
+    {
+     "credits": 500000,
+     "seprom": 500,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "22a",
+      "23a",
+      "18b"
+     ]
+    }
+   ]
+  },
+  "8": {
+   "name": "Shield Mechanics",
+   "values": [
+    2,
+    4,
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "absorb",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    },
+    {
+     "credits": 4000000,
+     "seprom": 4000,
+     "points": 1
+    },
+    {
+     "credits": 5000000,
+     "seprom": 5000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "18b"
+     ]
+    }
+   ]
+  },
+  "9": {
+   "name": "Greed",
+   "values": [
+    4,
+    8,
+    12,
+    16,
+    25
+   ],
+   "unit": "percent",
+   "effect": "credits",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    },
+    {
+     "credits": 4000000,
+     "seprom": 4000,
+     "points": 1
+    },
+    {
+     "credits": 5000000,
+     "seprom": 5000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "11",
+      "14"
+     ]
+    }
+   ]
+  },
+  "11": {
+   "name": "Alien Hunter",
+   "values": [
+    2,
+    4,
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "npc_laser",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    },
+    {
+     "credits": 300000,
+     "seprom": 300,
+     "points": 1
+    },
+    {
+     "credits": 400000,
+     "seprom": 400,
+     "points": 1
+    },
+    {
+     "credits": 500000,
+     "seprom": 500,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "6",
+      "21a"
+     ]
+    }
+   ]
+  },
+  "13": {
+   "name": "Engineering",
+   "values": [
+    5,
+    10,
+    15,
+    20,
+    30
+   ],
+   "unit": "percent",
+   "effect": "repair",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 1,
+     "type": "total",
+     "skills": [
+      "5a",
+      "2",
+      "18a"
+     ]
+    }
+   ]
+  },
+  "14": {
+   "name": "Tractor Beam I",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    6
+   ],
+   "unit": "percent",
+   "effect": "cargo_box",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    },
+    {
+     "credits": 300000,
+     "seprom": 300,
+     "points": 1
+    },
+    {
+     "credits": 400000,
+     "seprom": 400,
+     "points": 1
+    },
+    {
+     "credits": 500000,
+     "seprom": 500,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "6",
+      "21a",
+      "18b"
+     ]
+    }
+   ]
+  },
+  "15": {
+   "name": "Tractor Beam II",
+   "values": [
+    2,
+    6,
+    10,
+    15,
+    20
+   ],
+   "unit": "percent",
+   "effect": "bonus_box",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    },
+    {
+     "credits": 4000000,
+     "seprom": 4000,
+     "points": 1
+    },
+    {
+     "credits": 5000000,
+     "seprom": 5000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 5,
+     "type": "total",
+     "skills": [
+      "5b",
+      "9",
+      "8"
+     ]
+    }
+   ]
+  },
+  "16a": {
+   "name": "Evasive Maneuvers I",
+   "values": [
+    2,
+    4
+   ],
+   "unit": "percent",
+   "effect": "evasion",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "20",
+      "17"
+     ]
+    }
+   ]
+  },
+  "16b": {
+   "name": "Evasive Maneuvers II",
+   "values": [
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "evasion",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "8"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "16a"
+     ]
+    }
+   ]
+  },
+  "17": {
+   "name": "Shield Engineering",
+   "values": [
+    4,
+    8,
+    12,
+    18,
+    25
+   ],
+   "unit": "percent",
+   "effect": "shield",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 1,
+     "type": "total",
+     "skills": [
+      "1",
+      "4",
+      "13"
+     ]
+    }
+   ]
+  },
+  "18a": {
+   "name": "Ship Hull I",
+   "values": [
+    5000,
+    10000
+   ],
+   "unit": "absolute",
+   "effect": "hp_flat",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": []
+  },
+  "18b": {
+   "name": "Ship Hull II",
+   "values": [
+    15000,
+    25000,
+    50000
+   ],
+   "unit": "absolute",
+   "effect": "hp_flat",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    },
+    {
+     "credits": 300000,
+     "seprom": 300,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "22a",
+      "23a",
+      "16a"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "18a"
+     ]
+    }
+   ]
+  },
+  "19": {
+   "name": "Electro-Optics",
+   "values": [
+    5,
+    10,
+    15,
+    20,
+    25
+   ],
+   "unit": "percent",
+   "effect": "laser_hit_chance",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    },
+    {
+     "credits": 4000000,
+     "seprom": 4000,
+     "points": 1
+    },
+    {
+     "credits": 5000000,
+     "seprom": 5000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 5,
+     "type": "total",
+     "skills": [
+      "5b",
+      "9",
+      "8"
+     ]
+    }
+   ]
+  },
+  "20": {
+   "name": "Heat-Seeking Misilles",
+   "values": [
+    1,
+    2,
+    4,
+    6,
+    10
+   ],
+   "unit": "percent",
+   "effect": "rocket_hit_chance",
+   "cost": [
+    {
+     "credits": 10000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 20000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 30000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 40000,
+     "seprom": 0,
+     "points": 1
+    },
+    {
+     "credits": 50000,
+     "seprom": 0,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 1,
+     "type": "total",
+     "skills": [
+      "1",
+      "4",
+      "13"
+     ]
+    }
+   ]
+  },
+  "21a": {
+   "name": "Cruelty I",
+   "values": [
+    4,
+    8
+   ],
+   "unit": "percent",
+   "effect": "honor",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "22a",
+      "23a",
+      "16a"
+     ]
+    }
+   ]
+  },
+  "21b": {
+   "name": "Cruelty II",
+   "values": [
+    12,
+    16,
+    25
+   ],
+   "unit": "percent",
+   "effect": "honor",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "19",
+      "15"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "21a"
+     ]
+    }
+   ]
+  },
+  "22a": {
+   "name": "Bounty Hunter I",
+   "values": [
+    2,
+    4
+   ],
+   "unit": "percent",
+   "effect": "pvp_laser",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "20",
+      "17"
+     ]
+    }
+   ]
+  },
+  "22b": {
+   "name": "Bounty Hunter II",
+   "values": [
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "pvp_laser",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "total",
+     "skills": [
+      "19",
+      "15"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "22a"
+     ]
+    }
+   ]
+  },
+  "23a": {
+   "name": "Luck I",
+   "values": [
+    2,
+    4
+   ],
+   "unit": "percent",
+   "effect": "bonus_uridium",
+   "cost": [
+    {
+     "credits": 100000,
+     "seprom": 100,
+     "points": 1
+    },
+    {
+     "credits": 200000,
+     "seprom": 200,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 2,
+     "type": "total",
+     "skills": [
+      "4"
+     ]
+    }
+   ]
+  },
+  "23b": {
+   "name": "Luck II",
+   "values": [
+    6,
+    8,
+    12
+   ],
+   "unit": "percent",
+   "effect": "bonus_uridium",
+   "cost": [
+    {
+     "credits": 1000000,
+     "seprom": 1000,
+     "points": 1
+    },
+    {
+     "credits": 2000000,
+     "seprom": 2000,
+     "points": 1
+    },
+    {
+     "credits": 3000000,
+     "seprom": 3000,
+     "points": 1
+    }
+   ],
+   "prerequisite": [
+    {
+     "points": 3,
+     "type": "each",
+     "skills": [
+      "22b",
+      "16b"
+     ]
+    },
+    {
+     "points": 2,
+     "type": "each",
+     "skills": [
+      "23a"
+     ]
+    }
+   ]
+  }
+ },
+ "log_disk": [
+  30,
+  33,
+  36,
+  40,
+  44,
+  48,
+  53,
+  58,
+  64,
+  71,
+  78,
+  86,
+  94,
+  104,
+  114,
+  125,
+  138,
+  152,
+  167,
+  183,
+  202,
+  222,
+  244,
+  269,
+  295,
+  325,
+  358,
+  393,
+  433,
+  476,
+  523,
+  576,
+  633,
+  697,
+  766,
+  843,
+  927,
+  1020,
+  1122,
+  1234,
+  1358,
+  1494,
+  1643,
+  1807,
+  1988,
+  2187,
+  2405,
+  2646,
+  2911,
+  3202
+ ],
+ "resets": [
+  1000,
+  2000,
+  4000,
+  8000,
+  16000,
+  32000,
+  64000,
+  128000,
+  256000,
+  512000,
+  1024000,
+  2048000,
+  4096000,
+  8192000,
+  16384000,
+  32768000,
+  65536000,
+  131072000,
+  262144000,
+  524288000
+ ]
+}

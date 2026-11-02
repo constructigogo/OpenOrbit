@@ -1,0 +1,1096 @@
+{
+ "_description": "Missing item systems -> server/data/items_o6.json and items.json extra_shop (roadmap Ö6).",
+ "_source": "belgeler/wiki/esyalar_o6.json; tools/esyalar_o6.py",
+ "phrases": {
+  "items": [
+   "ammunition_specialammo_emote_alien-angry",
+   "ammunition_specialammo_emote_alien-cheers",
+   "ammunition_specialammo_emote_alien-cool",
+   "ammunition_specialammo_emote_alien-cry",
+   "ammunition_specialammo_emote_alien-dizzy",
+   "ammunition_specialammo_emote_alien-flyingkiss",
+   "ammunition_specialammo_emote_alien-horror",
+   "ammunition_specialammo_emote_alien-laughcry",
+   "ammunition_specialammo_emote_alien-mask-up",
+   "ammunition_specialammo_emote_alien-party",
+   "ammunition_specialammo_emote_alien-roger",
+   "ammunition_specialammo_emote_alien-sick",
+   "ammunition_specialammo_emote_alien-sleepy",
+   "ammunition_specialammo_emote_alien-smile",
+   "ammunition_specialammo_emote_alien-smirk",
+   "ammunition_specialammo_emote_alien-sorry",
+   "ammunition_specialammo_emote_alien-starryeyes",
+   "ammunition_specialammo_emote_alien-wink",
+   "ammunition_specialammo_emote_bunny-confused",
+   "ammunition_specialammo_emote_bunny-cool",
+   "ammunition_specialammo_emote_bunny-sad",
+   "ammunition_specialammo_emote_bunny-sleepy",
+   "ammunition_specialammo_emote_bunny-stare",
+   "ammunition_specialammo_emote_eat-turkey",
+   "ammunition_specialammo_emote_injection",
+   "ammunition_specialammo_emote_like-turkey",
+   "ammunition_specialammo_emote_pumpkin-alien",
+   "ammunition_specialammo_emote_pumpkin-smile",
+   "ammunition_specialammo_emote_snowman-brr",
+   "ammunition_specialammo_emote_snowman-rolleyes",
+   "ammunition_specialammo_emote_snowman-thinking"
+  ],
+  "cooldown_group": 58,
+  "cooldown_sec": 20,
+  "duration_sec": 5,
+  "price_uridium": 50,
+  "_adaptation": "price (the client's 999 U value is a placeholder for an unknown item); duration 5 s and shared cooldown 20 s from the official Mimesis Mutiny FAQ"
+ },
+ "boosters": {
+  "kinds": {
+   "booster_bb-01": {
+    "bonus_box": 100
+   },
+   "booster_qr-01": {
+    "quest_reward": 100
+   },
+   "booster_prm-b01": {
+    "special_amount": 100
+   },
+   "booster_rc-b00": {
+    "event_chance": 20
+   },
+   "booster_rm-b00": {
+    "event_amount": 50
+   },
+   "booster_rwrddbl-b01": {
+    "proxium": 100
+   }
+  },
+  "_kinds": "the client's BoosterAttributes: bb-01 COLLECT_RESOURCES_NEWBIE 100 (bonus box x2), qr-01 SalvageEffect AMOUNT 100 (quest reward x2, except uridium), prm-b01 AMOUNT 100 (Hybrid Alloy / Indoctrine Oil x2), rc-b00 / rm-b00 event point chance +20% / amount +50%, rwrddbl-b01 Proxium x2 (Proxium is not on the server: no effect point)",
+  "alias": {
+   "booster_max-bp01": [
+    [
+     "booster_dmg-b01",
+     10
+    ],
+    [
+     "booster_hp-b01",
+     10
+    ],
+    [
+     "booster_shd-b01",
+     10
+    ],
+    [
+     "booster_ep-b01",
+     10
+    ],
+    [
+     "booster_hon-b01",
+     10
+    ]
+   ],
+   "booster_nbx-b01": [
+    [
+     "booster_bb-01",
+     72
+    ]
+   ],
+   "booster_nqr-b01": [
+    [
+     "booster_qr-01",
+     72
+    ]
+   ],
+   "booster_pcomb-b01": [
+    [
+     "booster_prc-b01",
+     4
+    ],
+    [
+     "booster_prm-b01",
+     4
+    ]
+   ],
+   "booster_rwrddbl-rc-b00": [
+    [
+     "booster_rc-b00",
+     1
+    ]
+   ],
+   "booster_rwrddbl-rm-b00": [
+    [
+     "booster_rm-b00",
+     1
+    ]
+   ]
+  },
+  "_aliases": "boosters the client does not recognize [[booster, hours]] (MAX-BP01: five B01 10 hours; NBX/NQR 72 hours; PCOMB 3 hours; the equivalents' hours in the client, E5)",
+  "shop": {
+   "booster_bb-01": 10000,
+   "booster_qr-01": 10000,
+   "booster_prm-b01": 50000,
+   "booster_rc-b00": 10000,
+   "booster_rm-b00": 10000
+  }
+ },
+ "resonator": {
+  "items": {
+   "equipment_xenoresonator_c-strike-resonator": {
+    "name": "C-Strike Resonator",
+    "quality": "c",
+    "order": 0,
+    "type": "strike",
+    "attribute_count": 1
+   },
+   "equipment_xenoresonator_uc-strike-resonator": {
+    "name": "UC-Strike Resonator",
+    "quality": "uc",
+    "order": 1,
+    "type": "strike",
+    "attribute_count": 2
+   },
+   "equipment_xenoresonator_r-strike-resonator": {
+    "name": "R-Strike Resonator",
+    "quality": "r",
+    "order": 2,
+    "type": "strike",
+    "attribute_count": 2
+   },
+   "equipment_xenoresonator_ep-strike-resonator": {
+    "name": "EP-Strike Resonator",
+    "quality": "ep",
+    "order": 3,
+    "type": "strike",
+    "attribute_count": 3
+   },
+   "equipment_xenoresonator_ma-strike-resonator": {
+    "name": "MA-Strike Resonator",
+    "quality": "ma",
+    "order": 4,
+    "type": "strike",
+    "attribute_count": 3
+   },
+   "equipment_xenoresonator_leg-strike-resonator": {
+    "name": "LEG-Strike Resonator",
+    "quality": "leg",
+    "order": 5,
+    "type": "strike",
+    "attribute_count": 4
+   },
+   "equipment_xenoresonator_ul-strike-resonator": {
+    "name": "UL-Strike Resonator",
+    "quality": "ul",
+    "order": 6,
+    "type": "strike",
+    "attribute_count": 4
+   },
+   "equipment_xenoresonator_c-aegis-resonator": {
+    "name": "C-Aegis Resonator",
+    "quality": "c",
+    "order": 0,
+    "type": "aegis",
+    "attribute_count": 1
+   },
+   "equipment_xenoresonator_uc-aegis-resonator": {
+    "name": "UC-Aegis Resonator",
+    "quality": "uc",
+    "order": 1,
+    "type": "aegis",
+    "attribute_count": 2
+   },
+   "equipment_xenoresonator_r-aegis-resonator": {
+    "name": "R-Aegis Resonator",
+    "quality": "r",
+    "order": 2,
+    "type": "aegis",
+    "attribute_count": 2
+   },
+   "equipment_xenoresonator_ep-aegis-resonator": {
+    "name": "EP-Aegis Resonator",
+    "quality": "ep",
+    "order": 3,
+    "type": "aegis",
+    "attribute_count": 3
+   },
+   "equipment_xenoresonator_ma-aegis-resonator": {
+    "name": "MA-Aegis Resonator",
+    "quality": "ma",
+    "order": 4,
+    "type": "aegis",
+    "attribute_count": 3
+   },
+   "equipment_xenoresonator_leg-aegis-resonator": {
+    "name": "LEG-Aegis Resonator",
+    "quality": "leg",
+    "order": 5,
+    "type": "aegis",
+    "attribute_count": 4
+   },
+   "equipment_xenoresonator_ul-aegis-resonator": {
+    "name": "UL-Aegis Resonator",
+    "quality": "ul",
+    "order": 6,
+    "type": "aegis",
+    "attribute_count": 4
+   }
+  },
+  "sources": {
+   "resource_attack-expansion": {
+    "type": "strike",
+    "attribute": "expansion"
+   },
+   "resource_attack-collapse": {
+    "type": "strike",
+    "attribute": "collapse"
+   },
+   "resource_attack-evernight": {
+    "type": "strike",
+    "attribute": "evernight"
+   },
+   "resource_attack-aftershock": {
+    "type": "strike",
+    "attribute": "aftershock"
+   },
+   "resource_attack-stagnation": {
+    "type": "strike",
+    "attribute": "stagnation"
+   },
+   "resource_attack-adhesion": {
+    "type": "strike",
+    "attribute": "adhesion"
+   },
+   "resource_defensive-grav-tolerance": {
+    "type": "aegis",
+    "attribute": "grav_tolerance"
+   },
+   "resource_defensive-entry-buffer": {
+    "type": "aegis",
+    "attribute": "entry_buffer"
+   },
+   "resource_defensive-zone-adaptation": {
+    "type": "aegis",
+    "attribute": "zone_adaptation"
+   },
+   "resource_defensive-slowing-resistance": {
+    "type": "aegis",
+    "attribute": "slowing_resistance"
+   },
+   "resource_defensive-detachment": {
+    "type": "aegis",
+    "attribute": "detachment"
+   }
+  },
+  "attributes": {
+   "strike": {
+    "expansion": {
+     "interval": {
+      "c": [
+       5.0,
+       7.0
+      ],
+      "uc": [
+       6.0,
+       8.0
+      ],
+      "r": [
+       6.5,
+       9.5
+      ],
+      "ep": [
+       7.5,
+       11.0
+      ],
+      "ma": [
+       8.0,
+       12.5
+      ],
+      "leg": [
+       9.0,
+       13.5
+      ],
+      "ul": [
+       9.5,
+       15.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {}
+    },
+    "collapse": {
+     "interval": {
+      "c": [
+       5.0,
+       7.0
+      ],
+      "uc": [
+       6.0,
+       8.0
+      ],
+      "r": [
+       6.5,
+       9.5
+      ],
+      "ep": [
+       7.5,
+       11.0
+      ],
+      "ma": [
+       8.0,
+       12.5
+      ],
+      "leg": [
+       9.0,
+       13.5
+      ],
+      "ul": [
+       9.5,
+       15.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {
+      "duration": -25
+     }
+    },
+    "evernight": {
+     "interval": {
+      "c": [
+       5.0,
+       7.0
+      ],
+      "uc": [
+       6.0,
+       8.0
+      ],
+      "r": [
+       6.5,
+       9.5
+      ],
+      "ep": [
+       7.5,
+       11.0
+      ],
+      "ma": [
+       8.0,
+       12.5
+      ],
+      "leg": [
+       9.0,
+       13.5
+      ],
+      "ul": [
+       9.5,
+       15.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {
+      "duration": 25
+     }
+    },
+    "aftershock": {
+     "interval": {
+      "c": [
+       10.0,
+       13.5
+      ],
+      "uc": [
+       11.5,
+       16.5
+      ],
+      "r": [
+       13.0,
+       19.0
+      ],
+      "ep": [
+       14.5,
+       22.0
+      ],
+      "ma": [
+       16.0,
+       24.5
+      ],
+      "leg": [
+       17.5,
+       27.5
+      ],
+      "ul": [
+       19.0,
+       30.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {
+      "active_share": 75,
+      "blast_share": 25
+     }
+    },
+    "stagnation": {
+     "interval": {
+      "c": [
+       20.0,
+       22.5
+      ],
+      "uc": [
+       21.0,
+       25.0
+      ],
+      "r": [
+       22.5,
+       27.0
+      ],
+      "ep": [
+       23.5,
+       29.0
+      ],
+      "ma": [
+       24.5,
+       31.0
+      ],
+      "leg": [
+       25.5,
+       33.0
+      ],
+      "ul": [
+       27.0,
+       35.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {}
+    },
+    "adhesion": {
+     "interval": {
+      "c": [
+       2.0,
+       2.4
+      ],
+      "uc": [
+       2.2,
+       2.6
+      ],
+      "r": [
+       2.3,
+       2.9
+      ],
+      "ep": [
+       2.5,
+       3.2
+      ],
+      "ma": [
+       2.6,
+       3.5
+      ],
+      "leg": [
+       2.8,
+       3.7
+      ],
+      "ul": [
+       2.9,
+       4.0
+      ]
+     },
+     "unit": "sec",
+     "fixed": {}
+    }
+   },
+   "aegis": {
+    "grav_tolerance": {
+     "interval": {
+      "c": [
+       5.0,
+       6.0
+      ],
+      "uc": [
+       5.5,
+       6.5
+      ],
+      "r": [
+       6.0,
+       7.5
+      ],
+      "ep": [
+       6.0,
+       8.0
+      ],
+      "ma": [
+       6.5,
+       8.5
+      ],
+      "leg": [
+       7.0,
+       9.5
+      ],
+      "ul": [
+       7.5,
+       10.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {}
+    },
+    "entry_buffer": {
+     "interval": {
+      "c": [
+       1.0,
+       1.2
+      ],
+      "uc": [
+       1.1,
+       1.3
+      ],
+      "r": [
+       1.2,
+       1.5
+      ],
+      "ep": [
+       1.2,
+       1.6
+      ],
+      "ma": [
+       1.3,
+       1.7
+      ],
+      "leg": [
+       1.4,
+       1.9
+      ],
+      "ul": [
+       1.5,
+       2.0
+      ]
+     },
+     "unit": "sec",
+     "fixed": {
+      "reduction": 30
+     }
+    },
+    "zone_adaptation": {
+     "interval": {
+      "c": [
+       10.0,
+       12.0
+      ],
+      "uc": [
+       11.0,
+       13.0
+      ],
+      "r": [
+       11.5,
+       14.5
+      ],
+      "ep": [
+       12.5,
+       16.0
+      ],
+      "ma": [
+       13.0,
+       17.5
+      ],
+      "leg": [
+       14.0,
+       18.5
+      ],
+      "ul": [
+       14.5,
+       20.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {
+      "per_second": 5
+     }
+    },
+    "slowing_resistance": {
+     "interval": {
+      "c": [
+       20.0,
+       23.5
+      ],
+      "uc": [
+       21.5,
+       26.5
+      ],
+      "r": [
+       23.0,
+       29.0
+      ],
+      "ep": [
+       24.5,
+       32.0
+      ],
+      "ma": [
+       26.0,
+       34.5
+      ],
+      "leg": [
+       27.5,
+       37.5
+      ],
+      "ul": [
+       29.0,
+       40.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {}
+    },
+    "detachment": {
+     "interval": {
+      "c": [
+       20.0,
+       23.5
+      ],
+      "uc": [
+       21.5,
+       26.5
+      ],
+      "r": [
+       23.0,
+       29.0
+      ],
+      "ep": [
+       24.5,
+       32.0
+      ],
+      "ma": [
+       26.0,
+       34.5
+      ],
+      "leg": [
+       27.5,
+       37.5
+      ],
+      "ul": [
+       29.0,
+       40.0
+      ]
+     },
+     "unit": "%",
+     "fixed": {}
+    }
+   }
+  },
+  "recipes": [
+   {
+    "target": "equipment_xenoresonator_c-strike-resonator",
+    "type": "strike",
+    "quality": "c",
+    "uridium": 1000,
+    "source_amount": 3
+   },
+   {
+    "target": "equipment_xenoresonator_uc-strike-resonator",
+    "type": "strike",
+    "quality": "uc",
+    "uridium": 500,
+    "input": "equipment_xenoresonator_c-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_r-strike-resonator",
+    "type": "strike",
+    "quality": "r",
+    "uridium": 1000,
+    "input": "equipment_xenoresonator_uc-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ep-strike-resonator",
+    "type": "strike",
+    "quality": "ep",
+    "uridium": 1000,
+    "input": "equipment_xenoresonator_r-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ma-strike-resonator",
+    "type": "strike",
+    "quality": "ma",
+    "uridium": 2000,
+    "input": "equipment_xenoresonator_ep-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_leg-strike-resonator",
+    "type": "strike",
+    "quality": "leg",
+    "uridium": 5000,
+    "input": "equipment_xenoresonator_ma-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ul-strike-resonator",
+    "type": "strike",
+    "quality": "ul",
+    "uridium": 10000,
+    "input": "equipment_xenoresonator_leg-strike-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_c-aegis-resonator",
+    "type": "aegis",
+    "quality": "c",
+    "uridium": 1000,
+    "source_amount": 3
+   },
+   {
+    "target": "equipment_xenoresonator_uc-aegis-resonator",
+    "type": "aegis",
+    "quality": "uc",
+    "uridium": 500,
+    "input": "equipment_xenoresonator_c-aegis-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_r-aegis-resonator",
+    "type": "aegis",
+    "quality": "r",
+    "uridium": 1000,
+    "input": "equipment_xenoresonator_uc-aegis-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ep-aegis-resonator",
+    "type": "aegis",
+    "quality": "ep",
+    "uridium": 1000,
+    "input": "equipment_xenoresonator_r-aegis-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ma-aegis-resonator",
+    "type": "aegis",
+    "quality": "ma",
+    "uridium": 2000,
+    "input": "equipment_xenoresonator_ep-aegis-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_leg-aegis-resonator",
+    "type": "aegis",
+    "quality": "leg",
+    "uridium": 5000,
+    "input": "equipment_xenoresonator_ma-aegis-resonator",
+    "count": 4
+   },
+   {
+    "target": "equipment_xenoresonator_ul-aegis-resonator",
+    "type": "aegis",
+    "quality": "ul",
+    "uridium": 10000,
+    "input": "equipment_xenoresonator_leg-aegis-resonator",
+    "count": 4
+   }
+  ],
+  "excluded": [
+   [
+    "collapse",
+    "evernight"
+   ]
+  ],
+  "resource_price_uridium": 2000,
+  "synthesis": {
+   "group": "synthesis_resonator_title",
+   "button": "synthesis_resonator_synthesis",
+   "tables": {
+    "strike": "synthesis_resonator_strike",
+    "aegis": "synthesis_resonator_aegis"
+   }
+  },
+  "_adaptation": "Resonator is unreleased content: ranges divided by quality, attribute count (1,2,2,3,3,4,4), recipes (C: the type's 3 sources + 1,000 U; above that 4 lower qualities + uridium), success 100% (no rate in the window), the shop price of the sources, the \"best Strike Resonator active\" rule (no slot in the hangar)."
+ },
+ "extra_recipes": {
+  "group": "title_assembly",
+  "table": "title_assembly",
+  "recipes": [
+   {
+    "recipe": "recipe_blueprint-a-elite-blaze",
+    "target": "ship_a-elite_design_a-elite-blaze",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_high-frequency-cable": 4,
+     "resource_nano-condenser": 3,
+     "resource_hybrid-processor": 1
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-a-elite-lava",
+    "target": "ship_a-elite_design_a-elite-lava",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_high-frequency-cable": 10,
+     "resource_prismatic-socket": 5,
+     "resource_hybrid-processor": 2
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-a-elite-sandstorm",
+    "target": "ship_a-elite_design_a-elite-sandstorm",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_high-frequency-cable": 8,
+     "resource_nano-condenser": 5,
+     "resource_micro-transistors": 2
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-captain-gen3-up",
+    "target": "captain_captain-gen3-up",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_neu": 1500
+    },
+    "max_count": 1,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-cubi-portal",
+    "target": "ammunition_specialammo_cubi-portal",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_bifenon": 30,
+     "resource_collectable_prismatium": 10,
+     "resource_collectable_scrapium": 10
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-drone-a-elite-blaze",
+    "target": "drone_designs_drone-a-elite-blaze",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_nano-case": 4,
+     "resource_prismatic-socket": 1,
+     "resource_hybrid-processor": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-drone-a-elite-lava",
+    "target": "drone_designs_drone-a-elite-lava",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_high-frequency-cable": 4,
+     "resource_nano-case": 4,
+     "resource_micro-transistors": 2
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-drone-a-elite-sandstorm",
+    "target": "drone_designs_drone-a-elite-sandstorm",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_high-frequency-cable": 8,
+     "resource_prismatic-socket": 2,
+     "resource_hybrid-processor": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-ep-5m-shc-1",
+    "target": "currency_experience",
+    "count": 5000000,
+    "star": 0,
+    "inputs": {
+     "equipment_weapon_laser_aa-1": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-ep-5m-shpc-1",
+    "target": "currency_experience",
+    "count": 5000000,
+    "star": 1,
+    "inputs": {
+     "equipment_weapon_laser_aap-1": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-honor-25k-shc-1",
+    "target": "currency_honour",
+    "count": 25000,
+    "star": 0,
+    "inputs": {
+     "equipment_weapon_laser_aa-1": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-honor-25k-shpc-1",
+    "target": "currency_honour",
+    "count": 25000,
+    "star": 1,
+    "inputs": {
+     "equipment_weapon_laser_aap-1": 1
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-hybrid-alloy",
+    "target": "resource_collectable_hybrid-alloy",
+    "count": 10,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_mucosum": 30,
+     "resource_collectable_scrapium": 25,
+     "resource_collectable_prismatium": 5
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-indra-hyperion",
+    "target": "equipment_weapon_cannon_ul-indra-hyperion",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_pulse-core": 2000
+    },
+    "max_count": 1,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-indra-retiarus-plus",
+    "target": "equipment_weapon_cannon_ul-indra-retiarus-plus",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_pulse-core": 1600
+    },
+    "max_count": 1,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-orcus-amor",
+    "target": "ship_orcus_design_orcus-amor",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_charopos-shard": 1400,
+     "resource_collectable_styxus-shard": 200
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-pet-a-elite-blaze",
+    "target": "pet_designs_pet-a-elite-blaze",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_nano-case": 4,
+     "resource_nano-condenser": 2,
+     "resource_micro-transistors": 1
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-pet-a-elite-lava",
+    "target": "pet_designs_pet-a-elite-lava",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_nano-case": 6,
+     "resource_nano-condenser": 4,
+     "resource_micro-transistors": 1
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-pet-a-elite-sandstorm",
+    "target": "pet_designs_pet-a-elite-sandstorm",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_nano-case": 6,
+     "resource_nano-condenser": 4,
+     "resource_micro-transistors": 1
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-pusat-plus-amor",
+    "target": "ship_pusat-plus_design_pusat-plus-amor",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_charopos-shard": 1400,
+     "resource_collectable_styxus-shard": 200
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-r-ic3",
+    "target": "ammunition_specialammo_r-ic3",
+    "count": 5,
+    "star": 0,
+    "inputs": {
+     "currency_uridium": 1500
+    },
+    "max_count": null,
+    "usage": "ALWAYS_USABLE",
+    "adaptation": true
+   },
+   {
+    "recipe": "recipe_blueprint-spectrum-plus-amor",
+    "target": "ship_spectrum-plus_design_spectrum-plus-amor",
+    "count": 1,
+    "star": 0,
+    "inputs": {
+     "resource_collectable_charopos-shard": 1400,
+     "resource_collectable_styxus-shard": 200
+    },
+    "max_count": 1,
+    "usage": "USABLE_ONCE",
+    "adaptation": true
+   }
+  ],
+  "_adaptation": "ingredients from the client's similar recipes (belgeler/wiki/esyalar_o6.json tarifler.liste); USABLE_ONCE designs once"
+ }
+}

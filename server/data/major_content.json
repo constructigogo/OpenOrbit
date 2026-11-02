@@ -1,0 +1,3026 @@
+{
+ "_description": "Ö4's major PvE content -> server/data/major_content.json and the calendar entries (server/data/events.json) (roadmap Ö4).",
+ "vortex": {
+  "event": "vortex_of_greed",
+  "map": 483,
+  "level": 13,
+  "entry": "X-1",
+  "portal_design": 1,
+  "tooltip": "ttip_jumpgate_sae",
+  "sessions": [
+   "09:00",
+   "13:00",
+   "20:00"
+  ],
+  "session_sec": 900,
+  "double_days": [
+   2,
+   4,
+   6
+  ],
+  "double_hour": "20:00",
+  "wave_sec": 120,
+  "wave_box": 15,
+  "box_sc": 4,
+  "box_type": "SAE_SMALL_BOX",
+  "ship_box": "SAE_SHIP_BOX",
+  "alien_spawns": {
+   "vog_interceptor": {
+    "name": "-=[ Interceptor ]=-",
+    "hp": 90000,
+    "shield": 60000,
+    "damage": 500,
+    "speed": 320,
+    "aggressive": true,
+    "reward": {
+     "ep": 7500,
+     "honor": 40,
+     "credits": 25000,
+     "uridium": 20
+    },
+    "cargo": {
+     "0": 100,
+     "2": 100,
+     "1": 100,
+     "4": 18,
+     "5": 18,
+     "6": 2
+    },
+    "model": "111",
+    "npc_id": 551,
+    "count": 12,
+    "sc": 20,
+    "box": "SAE_MEDIUM_BOX"
+   },
+   "vog_barracuda": {
+    "name": "-=[ Barracuda ]=-",
+    "hp": 270000,
+    "shield": 150000,
+    "damage": 6000,
+    "speed": 280,
+    "aggressive": true,
+    "reward": {
+     "ep": 15000,
+     "honor": 56,
+     "credits": 90000,
+     "uridium": 25
+    },
+    "cargo": {
+     "0": 200,
+     "2": 200,
+     "1": 200,
+     "4": 24,
+     "5": 24,
+     "6": 4
+    },
+    "model": "112",
+    "npc_id": 552,
+    "count": 6,
+    "sc": 46,
+    "box": "SAE_MEDIUM_BOX"
+   },
+   "vog_saboteur": {
+    "name": "-=[ Saboteur ]=-",
+    "hp": 300000,
+    "shield": 225000,
+    "damage": 4000,
+    "speed": 260,
+    "aggressive": true,
+    "reward": {
+     "ep": 22500,
+     "honor": 72,
+     "credits": 125000,
+     "uridium": 45
+    },
+    "cargo": {
+     "0": 200,
+     "2": 200,
+     "1": 200,
+     "4": 32,
+     "5": 32,
+     "6": 8
+    },
+    "model": "113",
+    "npc_id": 553,
+    "count": 3,
+    "sc": 100,
+    "box": "SAE_BIG_BOX"
+   }
+  },
+  "boss": {
+   "type": "vog_battleray",
+   "time_sec": 600,
+   "name": "-=[ Deadly Battleray ]=-",
+   "hp": 1125000,
+   "shield": 900000,
+   "damage": 14000,
+   "speed": 200,
+   "aggressive": true,
+   "reward": {
+    "ep": 187500,
+    "honor": 375,
+    "credits": 2625000,
+    "uridium": 265
+   },
+   "cargo": {},
+   "model": "115",
+   "npc_id": 554
+  },
+  "evacuation": {
+   "times": [
+    [
+     480,
+     2
+    ],
+    [
+     600,
+     1
+    ]
+   ],
+   "radius": 500,
+   "cooldown_sec": 10,
+   "distance": 3000
+  },
+  "treasure": {
+   "sc": 500,
+   "items": [
+    [
+     "resource_collectable_cryo-nano-coolant",
+     1
+    ]
+   ],
+   "title": "title_strikeandexit-aug2025"
+  },
+  "weekly_limit": 11000,
+  "vip_limit": 15400,
+  "vip_earnings": 1.5,
+  "vip_kept_on_death": 0.3,
+  "spawn_cooldown_sec": 10,
+  "currency": "resource_collectable_stellar-coin",
+  "vip_item": "resource_vog-vanguard",
+  "store": {
+   "StrikeAndExit": {
+    "store_id": "2",
+    "vip": false,
+    "items": [
+     {
+      "eid": 1,
+      "reward": "resource_collectable_cryo-nano-coolant",
+      "count": 1,
+      "price": 710,
+      "limit_type": 3,
+      "cap": 5
+     },
+     {
+      "eid": 2,
+      "reward": "resource_collectable_plasmatic-equalization-plate",
+      "count": 100,
+      "price": 100,
+      "limit_type": 1,
+      "cap": 99999
+     }
+    ]
+   },
+   "StrikeAndExitVIP": {
+    "store_id": "4",
+    "vip": true,
+    "items": [
+     {
+      "eid": 1,
+      "reward": "resource_collectable_plasmatic-stabilizer",
+      "count": 1,
+      "price": 5500,
+      "limit_type": 4,
+      "cap": 1
+     },
+     {
+      "eid": 2,
+      "reward": "resource_collectable_axion-beam-regulator",
+      "count": 10,
+      "price": 70,
+      "limit_type": 4,
+      "cap": 50
+     },
+     {
+      "eid": 3,
+      "reward": "resource_collectable_diametrion",
+      "count": 1,
+      "price": 80,
+      "limit_type": 4,
+      "cap": 100
+     },
+     {
+      "eid": 4,
+      "reward": "tech_versus-laser-overdrive",
+      "count": 1,
+      "price": 100,
+      "limit_type": 4,
+      "cap": 40
+     },
+     {
+      "eid": 5,
+      "reward": "equipment_shipupgrade_dmg-x3",
+      "count": 1,
+      "price": 2571,
+      "limit_type": 4,
+      "cap": 5
+     },
+     {
+      "eid": 6,
+      "reward": "equipment_shipupgrade_hp-x3",
+      "count": 1,
+      "price": 2571,
+      "limit_type": 4,
+      "cap": 5
+     },
+     {
+      "eid": 7,
+      "reward": "equipment_shipupgrade_shd-x3",
+      "count": 1,
+      "price": 2571,
+      "limit_type": 4,
+      "cap": 5
+     },
+     {
+      "eid": 8,
+      "reward": "equipment_shipupgrade_spc-x3",
+      "count": 1,
+      "price": 2571,
+      "limit_type": 4,
+      "cap": 5
+     },
+     {
+      "eid": 9,
+      "reward": "ammunition_laser_spacecup_group-c",
+      "count": 3000,
+      "price": 580,
+      "limit_type": 4,
+      "cap": 10
+     },
+     {
+      "eid": 10,
+      "reward": "ammunition_specialammo_dcr-250",
+      "count": 1,
+      "price": 50,
+      "limit_type": 4,
+      "cap": 20
+     },
+     {
+      "eid": 11,
+      "reward": "ammunition_mine_slm-01",
+      "count": 10,
+      "price": 10,
+      "limit_type": 4,
+      "cap": 10
+     },
+     {
+      "eid": 12,
+      "reward": "ammunition_specialammo_pld-8",
+      "count": 10,
+      "price": 10,
+      "limit_type": 4,
+      "cap": 20
+     }
+    ]
+   }
+  },
+  "_source": "vortex_of_greed.json: official FAQ 2025-08, the response in the recording 2026-10-15 (store and weekly limit), the client's texts; tools/major_content.py",
+  "_adaptation": "Aliens have 1.5 times the HP/shield of their normal types (the source only says \"more HP\"); the treasure holder's reward 500 SC + 1 CNC + title; evacuation radius 500 and locations 3,000 away from the player; the coins carried on death: SAE_SHIP_BOX; single map (483); Vanguard for uridium (shop)."
+ },
+ "world_boss": {
+  "event": "world_boss",
+  "map": 482,
+  "entries": [
+   "X-1",
+   "X-8"
+  ],
+  "portal_design": 1,
+  "windows": [
+   [
+    "09:00",
+    "09:30"
+   ],
+   [
+    "11:00",
+    "11:30"
+   ],
+   [
+    "16:00",
+    "16:30"
+   ],
+   [
+    "19:00",
+    "19:30"
+   ],
+   [
+    "20:00",
+    "20:30"
+   ],
+   [
+    "22:00",
+    "22:30"
+   ]
+  ],
+  "prep_sec": 300,
+  "boss_sec": 1200,
+  "closing_sec": 300,
+  "npcs": {
+   "dreadfyre_fortress": {
+    "name": "-=[ Dreadfyre Fortress ]=-",
+    "model": "DREADFYRE_FORTRESS",
+    "npc_id": 501,
+    "hp": 16000000,
+    "shield": 8000000,
+    "damage": 0,
+    "speed": 150,
+    "aggressive": true,
+    "reward": {
+     "ep": 4000000,
+     "honor": 20000,
+     "credits": 4000000,
+     "uridium": 4000
+    },
+    "cargo": {},
+    "orbit_radius": 2500
+   },
+   "dreadfyre_guardian": {
+    "name": "-=[ Dreadfyre Guardian ]=-",
+    "model": "DREADFYRE_GUARDIAN",
+    "npc_id": 502,
+    "hp": 300000,
+    "shield": 150000,
+    "damage": 0,
+    "speed": 0,
+    "aggressive": true,
+    "reward": {
+     "ep": 400000,
+     "honor": 2000,
+     "credits": 800000,
+     "uridium": 400
+    },
+    "cargo": {}
+   },
+   "dreadfyre_harbinger": {
+    "name": "-=[ Dreadfyre Harbinger ]=-",
+    "model": "DREADFYRE_HARBINGER",
+    "npc_id": 503,
+    "hp": 120000,
+    "shield": 60000,
+    "damage": 3500,
+    "speed": 320,
+    "aggressive": true,
+    "reward": {
+     "ep": 30000,
+     "honor": 150,
+     "credits": 60000,
+     "uridium": 15
+    },
+    "cargo": {}
+   }
+  },
+  "fortress_laser": {
+   "damage": 8000,
+   "interval_sec": 1.0,
+   "range": 700
+  },
+  "guardian_distance": 3500,
+  "harbinger_prep": 16,
+  "harbinger_respawn_sec": 20,
+  "harbinger_summon": 4,
+  "box_chance": 0.3,
+  "guardian_shield_ratio": 0.25,
+  "attacks": {
+   "magnetic": {
+    "radius": 500,
+    "damage_per_sec_max_hp_ratio": 0.015
+   },
+   "guided": {
+    "damage_max_hp_ratio": 0.08,
+    "repeat_sec": 20,
+    "range": 2000
+   },
+   "collision": {
+    "contact_radius": 350,
+    "damage_max_hp_ratio": 0.05,
+    "interval_sec": 0.5
+   },
+   "rocket": {
+    "damage": 12000,
+    "interval_sec": 4,
+    "range": 1500
+   },
+   "radiation": {
+    "radius": 1800,
+    "warning_sec": 2,
+    "damage_max_hp_ratio": 0.2
+   },
+   "mine": {
+    "mine_count": 24,
+    "ring_radius": [
+     1000,
+     1400
+    ],
+    "mine_damage_max_hp_ratio": 0.15,
+    "trigger_radius": 300,
+    "lifetime_sec": 60
+   },
+   "laser": {
+    "warning_sec": 3,
+    "width": 250,
+    "damage_max_hp_ratio": 0.35,
+    "direction": "From the Fortress toward the locked target, to the edge of the map"
+   }
+  },
+  "mine_thresholds": [
+   0.8,
+   0.5,
+   0.3,
+   0.1
+  ],
+  "healing_beacon": {
+   "radius": 600,
+   "hp_per_sec": 30000
+  },
+  "power": {
+   "base_dps": 60000,
+   "min_value": 0.25,
+   "maximum": 2.5
+  },
+  "tier": [
+   {
+    "tier": 1,
+    "multiplier": 0.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      250
+     ],
+     [
+      "currency_uridium",
+      1000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 2,
+    "multiplier": 0.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      500
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      1000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 3,
+    "multiplier": 0.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      750
+     ],
+     [
+      "currency_uridium",
+      1500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 4,
+    "multiplier": 0.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      1000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      2000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 5,
+    "multiplier": 0.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      1250
+     ],
+     [
+      "drone_designs_xanthos",
+      1
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 6,
+    "multiplier": 1.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      1500
+     ],
+     [
+      "currency_uridium",
+      2000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 7,
+    "multiplier": 1.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      1750
+     ],
+     [
+      "resource_collectable_axion-beam-regulator",
+      20
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 8,
+    "multiplier": 1.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      2000
+     ],
+     [
+      "currency_uridium",
+      2500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 9,
+    "multiplier": 1.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      2250
+     ],
+     [
+      "resource_collectable_axion-beam-regulator",
+      30
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 10,
+    "multiplier": 1.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      2500
+     ],
+     [
+      "drone_designs_xanthos",
+      1
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 11,
+    "multiplier": 1.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      2750
+     ],
+     [
+      "currency_uridium",
+      3500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 12,
+    "multiplier": 1.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      3000
+     ],
+     [
+      "resource_collectable_indoctrine-accelerator",
+      5
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 13,
+    "multiplier": 1.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      3250
+     ],
+     [
+      "currency_uridium",
+      4000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 14,
+    "multiplier": 1.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      3500
+     ],
+     [
+      "resource_collectable_indoctrine-accelerator",
+      8
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 15,
+    "multiplier": 1.5,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      3750
+     ],
+     [
+      "drone_designs_xanthos",
+      1
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 16,
+    "multiplier": 2.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      4000
+     ],
+     [
+      "currency_uridium",
+      4500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 17,
+    "multiplier": 2.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      4250
+     ],
+     [
+      "resource_collectable_indoctrineoil",
+      5
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 18,
+    "multiplier": 2.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      4500
+     ],
+     [
+      "currency_uridium",
+      5000
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 19,
+    "multiplier": 2.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      4750
+     ],
+     [
+      "resource_collectable_indoctrineoil",
+      8
+     ]
+    ],
+    "title": null
+   },
+   {
+    "tier": 20,
+    "multiplier": 2.0,
+    "rewards": [
+     [
+      "resource_collectable_infiltrator-fragment",
+      5000
+     ],
+     [
+      "drone_designs_xanthos",
+      1
+     ]
+    ],
+    "title": "title_worldboss_tier_june2026"
+   }
+  ],
+  "progress": [
+   {
+    "tier": 1,
+    "ratio": 0.1,
+    "rewards": [
+     [
+      "currency_uridium",
+      100
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      50
+     ],
+     [
+      "resource_collectable_tetrathrin",
+      5
+     ]
+    ],
+    "daily": 3
+   },
+   {
+    "tier": 2,
+    "ratio": 0.25,
+    "rewards": [
+     [
+      "currency_uridium",
+      200
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      100
+     ],
+     [
+      "resource_collectable_tetrathrin",
+      5
+     ]
+    ],
+    "daily": 3
+   },
+   {
+    "tier": 3,
+    "ratio": 0.5,
+    "rewards": [
+     [
+      "currency_uridium",
+      300
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      150
+     ],
+     [
+      "resource_collectable_tetrathrin",
+      8
+     ]
+    ],
+    "daily": 3
+   },
+   {
+    "tier": 4,
+    "ratio": 0.75,
+    "rewards": [
+     [
+      "currency_uridium",
+      400
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      200
+     ],
+     [
+      "resource_collectable_rinusk",
+      10
+     ]
+    ],
+    "daily": 3
+   },
+   {
+    "tier": 5,
+    "ratio": 1.0,
+    "rewards": [
+     [
+      "currency_uridium",
+      500
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      300
+     ],
+     [
+      "resource_collectable_rinusk",
+      10
+     ]
+    ],
+    "daily": 3
+   }
+  ],
+  "ranking": [
+   {
+    "from_": 1,
+    "e": 1,
+    "rewards": [
+     [
+      "currency_uridium",
+      15000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      500
+     ],
+     [
+      "resource_ore_seprom",
+      2000
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      25
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      1000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      5000
+     ]
+    ],
+    "titles": [
+     "title_worldboss_rank_1_june2026",
+     "title_worldboss_rank_10_june2026"
+    ]
+   },
+   {
+    "from_": 2,
+    "e": 2,
+    "rewards": [
+     [
+      "currency_uridium",
+      12000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      450
+     ],
+     [
+      "resource_ore_seprom",
+      1800
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      10
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      750
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      4000
+     ]
+    ],
+    "titles": [
+     "title_worldboss_rank_10_june2026"
+    ]
+   },
+   {
+    "from_": 3,
+    "e": 3,
+    "rewards": [
+     [
+      "currency_uridium",
+      10000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      400
+     ],
+     [
+      "resource_ore_seprom",
+      1500
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      10
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      500
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      3000
+     ]
+    ],
+    "titles": [
+     "title_worldboss_rank_10_june2026"
+    ]
+   },
+   {
+    "from_": 4,
+    "e": 5,
+    "rewards": [
+     [
+      "currency_uridium",
+      8000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      350
+     ],
+     [
+      "resource_ore_seprom",
+      1200
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      2500
+     ]
+    ],
+    "titles": [
+     "title_worldboss_rank_10_june2026"
+    ]
+   },
+   {
+    "from_": 6,
+    "e": 10,
+    "rewards": [
+     [
+      "currency_uridium",
+      5000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      300
+     ],
+     [
+      "resource_ore_seprom",
+      1000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      2000
+     ]
+    ],
+    "titles": [
+     "title_worldboss_rank_10_june2026"
+    ]
+   },
+   {
+    "from_": 11,
+    "e": 25,
+    "rewards": [
+     [
+      "currency_uridium",
+      3000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      250
+     ],
+     [
+      "resource_ore_seprom",
+      800
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      1500
+     ]
+    ],
+    "titles": []
+   },
+   {
+    "from_": 26,
+    "e": 50,
+    "rewards": [
+     [
+      "currency_uridium",
+      2000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      200
+     ],
+     [
+      "resource_ore_seprom",
+      500
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      1000
+     ]
+    ],
+    "titles": []
+   },
+   {
+    "from_": 51,
+    "e": 100,
+    "rewards": [
+     [
+      "currency_uridium",
+      1000
+     ],
+     [
+      "resource_collectable_infiltrator-fragment",
+      100
+     ],
+     [
+      "resource_ore_seprom",
+      300
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      500
+     ]
+    ],
+    "titles": []
+   }
+  ],
+  "virtual_rank": [
+   [
+    1.0,
+    1
+   ],
+   [
+    0.75,
+    2
+   ],
+   [
+    0.6,
+    3
+   ],
+   [
+    0.45,
+    4
+   ],
+   [
+    0.3,
+    6
+   ],
+   [
+    0.15,
+    11
+   ],
+   [
+    0.075,
+    26
+   ],
+   [
+    0.0001,
+    51
+   ]
+  ],
+  "last_hit": {
+   "rewards": [
+    [
+     "currency_uridium",
+     777
+    ],
+    [
+     "resource_collectable_infiltrator-fragment",
+     777
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     777
+    ]
+   ],
+   "title": "title_worldboss_kill_june2026"
+  },
+  "box": {
+   "type": "DREADFYRE_HARBINGER_BOX",
+   "lifetime_sec": 60,
+   "buffs": [
+    "hp",
+    "speed",
+    "shield",
+    "improvement"
+   ]
+  },
+  "part": "resource_collectable_infiltrator-fragment",
+  "fragment_honor": 1,
+  "_source": "world_boss_2025.json: resmî SSS 2025/2026 (EN, TR), darkorbitwiki, istemcinin metinleri ve game.xml; tools/buyuk_icerikler.py",
+  "_adaptation": "NPC values and attack damages are not in the source (the research's single-player suggestions, s=1); HP scales with the player's power (power); tier thresholds are multiples of the Fortress's HP in the fight; ranking is virtual (from the removed HP share); Guardian shields are additive (4 active = invulnerable)."
+ },
+ "mimesis": {
+  "event": "mimesis_mutiny",
+  "maps": {
+   "1": 433,
+   "2": 436,
+   "3": 430
+  },
+  "entries": [
+   "X-1",
+   "X-8"
+  ],
+  "portal_design": 1,
+  "tooltip": "ttip_jumpgate_escort",
+  "key": "resource_key_access-escort",
+  "key_max": 100,
+  "hours": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23
+  ],
+  "entry_sec": 300,
+  "duration_sec": 2700,
+  "ship": {
+   "name": "-=[ EM Freighter ]=-",
+   "model": "277",
+   "npc_id": 240,
+   "speed": 100,
+   "protection_radius": 1200,
+   "min_hp": 2000000,
+   "endure_sec": 240
+  },
+  "route": [
+   [
+    2500,
+    6550
+   ],
+   [
+    6500,
+    3300
+   ],
+   [
+    10500,
+    9500
+   ],
+   [
+    14500,
+    3600
+   ],
+   [
+    18500,
+    9200
+   ],
+   [
+    19000,
+    6550
+   ]
+  ],
+  "waves": {
+   "start": [
+    [
+     "mm_assailant",
+     3
+    ],
+    [
+     "mm_raider",
+     3
+    ]
+   ],
+   "waypoints": [
+    [
+     [
+      "mm_assailant",
+      6
+     ],
+     [
+      "mm_raider",
+      4
+     ]
+    ],
+    [
+     [
+      "mm_raider",
+      4
+     ],
+     [
+      "mm_medic",
+      2
+     ],
+     [
+      "mm_hardy",
+      2
+     ],
+     [
+      "mm_turret",
+      2
+     ]
+    ],
+    [
+     [
+      "mm_piercing",
+      2
+     ],
+     [
+      "mm_hounding",
+      2
+     ],
+     [
+      "mm_sniper",
+      1
+     ],
+     [
+      "mm_medic",
+      2
+     ],
+     [
+      "mm_inspirit",
+      1
+     ]
+    ],
+    [
+     [
+      "mm_obscured",
+      1
+     ],
+     [
+      "mm_mirror",
+      1
+     ],
+     [
+      "mm_assailant",
+      4
+     ]
+    ]
+   ],
+   "beacon": [
+    [
+     "mm_marker",
+     1
+    ],
+    [
+     "mm_turret",
+     2
+    ]
+   ],
+   "route": [
+    [
+     "mm_assailant",
+     1
+    ],
+    [
+     "mm_raider",
+     1
+    ]
+   ],
+   "route_sec": 60
+  },
+  "single_player": {
+   "hp": 0.3,
+   "damage": 0.25
+  },
+  "kinds": {
+   "mm_assailant": {
+    "name": "-=[ Assailant Mimesis ]=-",
+    "model": "286",
+    "npc_id": 242,
+    "hp": 900000,
+    "shield": 600000,
+    "damage": 9500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 102400,
+     "honor": 512,
+     "credits": 512000,
+     "uridium": 300
+    },
+    "cargo": {},
+    "points": 20,
+    "byte": 4,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_ASSAILANT_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       2
+      ]
+     ],
+     "contents": []
+    }
+   },
+   "mm_raider": {
+    "name": "-=[ Raider Mimesis ]=-",
+    "model": "285",
+    "npc_id": 241,
+    "hp": 900000,
+    "shield": 600000,
+    "damage": 9500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 102400,
+     "honor": 512,
+     "credits": 512000,
+     "uridium": 300
+    },
+    "cargo": {},
+    "points": 20,
+    "byte": 4,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_RAIDER_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       2
+      ]
+     ],
+     "contents": []
+    }
+   },
+   "mm_medic": {
+    "name": "-=[ Medic Mimesis ]=-",
+    "model": "287",
+    "npc_id": 243,
+    "hp": 2450000,
+    "shield": 1625000,
+    "damage": 15500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 204800,
+     "honor": 1024,
+     "credits": 1024000,
+     "uridium": 1250
+    },
+    "cargo": {},
+    "points": 85,
+    "byte": 17,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_MEDIC_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       8
+      ]
+     ],
+     "contents": []
+    }
+   },
+   "mm_inspirit": {
+    "name": "-=[ Inspirit Mimesis ]=-",
+    "model": "289",
+    "npc_id": 286,
+    "hp": 2800000,
+    "shield": 1750000,
+    "damage": 15500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 204800,
+     "honor": 1024,
+     "credits": 1024000,
+     "uridium": 1250
+    },
+    "cargo": {},
+    "points": 85,
+    "byte": 0
+   },
+   "mm_hardy": {
+    "name": "-=[ Hardy Mimesis ]=-",
+    "model": "288",
+    "npc_id": 244,
+    "hp": 3000000,
+    "shield": 6000000,
+    "damage": 0,
+    "speed": 300,
+    "aggressive": false,
+    "reward": {
+     "ep": 204800,
+     "honor": 1024,
+     "credits": 1024000,
+     "uridium": 1500
+    },
+    "cargo": {},
+    "points": 100,
+    "byte": 20,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_HARDY_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       10
+      ]
+     ],
+     "contents": []
+    }
+   },
+   "mm_piercing": {
+    "name": "-=[ Piercing Mimesis ]=-",
+    "model": "289",
+    "npc_id": 245,
+    "hp": 5250000,
+    "shield": 3500000,
+    "damage": 25500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 409600,
+     "honor": 2048,
+     "credits": 2048000,
+     "uridium": 1700
+    },
+    "cargo": {},
+    "points": 350,
+    "byte": 70,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_MINI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        35,
+        70
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_hounding": {
+    "name": "-=[ Hounding Mimesis ]=-",
+    "model": "291",
+    "npc_id": 247,
+    "hp": 5250000,
+    "shield": 3500000,
+    "damage": 25500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 409600,
+     "honor": 2048,
+     "credits": 2048000,
+     "uridium": 1700
+    },
+    "cargo": {},
+    "points": 350,
+    "byte": 70,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_MINI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        35,
+        70
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_sniper": {
+    "name": "-=[ Sniper Mimesis ]=-",
+    "model": "293",
+    "npc_id": 250,
+    "hp": 5250000,
+    "shield": 3500000,
+    "damage": 28500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 409600,
+     "honor": 2048,
+     "credits": 2048000,
+     "uridium": 1700
+    },
+    "cargo": {},
+    "points": 350,
+    "byte": 70,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_MINI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        35,
+        70
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_obscured": {
+    "name": "-=[ Obscured Mimesis ]=-",
+    "model": "290",
+    "npc_id": 246,
+    "hp": 4200000,
+    "shield": 2800000,
+    "damage": 12000,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 819200,
+     "honor": 4096,
+     "credits": 4096000,
+     "uridium": 2200
+    },
+    "cargo": {},
+    "points": 450,
+    "byte": 90,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        45,
+        90
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_mirror": {
+    "name": "-=[ Mirror Mimesis ]=-",
+    "model": "292",
+    "npc_id": 248,
+    "hp": 3000000,
+    "shield": 2000000,
+    "damage": 12500,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 819200,
+     "honor": 4096,
+     "credits": 4096000,
+     "uridium": 2200
+    },
+    "cargo": {},
+    "points": 450,
+    "byte": 90,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        45,
+        90
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_marker": {
+    "name": "-=[ Marker Mimesis ]=-",
+    "model": "294",
+    "npc_id": 251,
+    "hp": 6750000,
+    "shield": 4500000,
+    "damage": 30000,
+    "speed": 300,
+    "aggressive": true,
+    "reward": {
+     "ep": 819200,
+     "honor": 4096,
+     "credits": 4096000,
+     "uridium": 2200
+    },
+    "cargo": {},
+    "points": 450,
+    "byte": 90,
+    "box": {
+     "probability": 1.0,
+     "lifetime_sec": 600,
+     "mod": "one_of",
+     "type": "MIMESIS_AI_BOSS_BOX",
+     "guaranteed": [
+      [
+       "resource_collectable_byte-remnant",
+       [
+        45,
+        90
+       ]
+      ]
+     ],
+     "contents": [
+      [
+       "ammunition_laser_emaa-20",
+       [
+        100,
+        300
+       ],
+       30
+      ],
+      [
+       "resource_extra-energy",
+       [
+        20,
+        60
+       ],
+       20
+      ],
+      [
+       "resource_logfile",
+       [
+        2,
+        6
+       ],
+       20
+      ],
+      [
+       "ammunition_rocket_plt-2021",
+       [
+        50,
+        150
+       ],
+       15
+      ],
+      [
+       "ammunition_rocketlauncher_sar-02",
+       [
+        20,
+        60
+       ],
+       10
+      ],
+      [
+       "ammunition_specialammo_sr-5",
+       [
+        50,
+        150
+       ],
+       10
+      ],
+      [
+       "ship_disruptor_design_disruptor-tyrannos",
+       1,
+       1
+      ]
+     ]
+    }
+   },
+   "mm_turret": {
+    "name": "-=[ Mimesis Turret ]=-",
+    "model": "349",
+    "npc_id": 287,
+    "hp": 2100000,
+    "shield": 0,
+    "damage": 6000,
+    "speed": 0,
+    "aggressive": true,
+    "reward": {
+     "ep": 0,
+     "honor": 0,
+     "credits": 0,
+     "uridium": 0
+    },
+    "cargo": {},
+    "points": 50,
+    "byte": 0
+   }
+  },
+  "waypoint_points": 400,
+  "arrival_bonus": 3000,
+  "trip_tiers": [
+   {
+    "from_": 1000,
+    "e": 1699,
+    "rewards": [
+     [
+      "resource_collectable_byte-remnant",
+      20
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1800
+     ]
+    ]
+   },
+   {
+    "from_": 1700,
+    "e": 2899,
+    "rewards": [
+     [
+      "resource_collectable_byte-remnant",
+      30
+     ],
+     [
+      "ammunition_rocket_plt-2026",
+      800
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1800
+     ]
+    ]
+   },
+   {
+    "from_": 2900,
+    "e": 4799,
+    "rewards": [
+     [
+      "resource_collectable_byte-remnant",
+      50
+     ],
+     [
+      "ammunition_specialammo_pld-8",
+      160
+     ],
+     [
+      "ammunition_rocket_plt-2026",
+      800
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1800
+     ]
+    ]
+   },
+   {
+    "from_": 4800,
+    "e": 7999,
+    "rewards": [
+     [
+      "resource_collectable_byte-remnant",
+      90
+     ],
+     [
+      "ammunition_rocketlauncher_sar-02",
+      200
+     ],
+     [
+      "ammunition_specialammo_pld-8",
+      160
+     ],
+     [
+      "ammunition_rocket_plt-2026",
+      800
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1800
+     ]
+    ]
+   },
+   {
+    "from_": 8000,
+    "e": null,
+    "rewards": [
+     [
+      "resource_collectable_byte-remnant",
+      120
+     ],
+     [
+      "resource_extra-energy",
+      10
+     ],
+     [
+      "ammunition_rocketlauncher_sar-02",
+      200
+     ],
+     [
+      "ammunition_specialammo_pld-8",
+      160
+     ],
+     [
+      "ammunition_rocket_plt-2026",
+      800
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1800
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      100
+     ]
+    ]
+   }
+  ],
+  "ranking": [
+   {
+    "from_": 1,
+    "e": 1,
+    "rewards": [
+     [
+      "ship_retiarus-plus_design_retiarus-plus-asimov",
+      1
+     ],
+     [
+      "currency_uridium",
+      1500000
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      500
+     ],
+     [
+      "resource_ore_seprom",
+      100000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      400000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      40000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      15000
+     ],
+     [
+      "resource_collectable_indoctrineoil",
+      40
+     ]
+    ],
+    "title": "title_mimesisMutiny202603-points-1"
+   },
+   {
+    "from_": 2,
+    "e": 2,
+    "rewards": [
+     [
+      "ship_retiarus-plus_design_retiarus-plus-asimov",
+      1
+     ],
+     [
+      "currency_uridium",
+      800000
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      350
+     ],
+     [
+      "resource_ore_seprom",
+      75000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      300000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      30000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      10000
+     ],
+     [
+      "resource_collectable_indoctrineoil",
+      10
+     ]
+    ],
+    "title": "title_mimesisMutiny202603-points-2"
+   },
+   {
+    "from_": 3,
+    "e": 3,
+    "rewards": [
+     [
+      "ship_retiarus-plus_design_retiarus-plus-asimov",
+      1
+     ],
+     [
+      "currency_uridium",
+      500000
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      350
+     ],
+     [
+      "resource_ore_seprom",
+      50000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      150000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      15000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      7000
+     ]
+    ],
+    "title": "title_mimesisMutiny202603-points-2"
+   },
+   {
+    "from_": 4,
+    "e": 5,
+    "rewards": [
+     [
+      "ship_retiarus-plus_design_retiarus-plus-asimov",
+      1
+     ],
+     [
+      "currency_uridium",
+      250000
+     ],
+     [
+      "ammunition_specialammo_sr-5",
+      250
+     ],
+     [
+      "resource_ore_seprom",
+      35000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      100000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      10000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      3500
+     ]
+    ],
+    "title": "title_mimesisMutiny202603-points-2"
+   },
+   {
+    "from_": 6,
+    "e": 10,
+    "rewards": [
+     [
+      "ship_retiarus-plus_design_retiarus-plus-asimov",
+      1
+     ],
+     [
+      "currency_uridium",
+      75000
+     ],
+     [
+      "resource_ore_seprom",
+      30000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      75000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      9000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      2000
+     ]
+    ],
+    "title": "title_mimesisMutiny202603-points-2"
+   },
+   {
+    "from_": 11,
+    "e": 25,
+    "rewards": [
+     [
+      "currency_uridium",
+      50000
+     ],
+     [
+      "resource_ore_seprom",
+      25000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      50000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      8000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "from_": 26,
+    "e": 50,
+    "rewards": [
+     [
+      "currency_uridium",
+      35000
+     ],
+     [
+      "resource_ore_seprom",
+      20000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      25000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      5000
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      1500
+     ]
+    ],
+    "title": null
+   },
+   {
+    "from_": 51,
+    "e": 100,
+    "rewards": [
+     [
+      "currency_uridium",
+      25000
+     ],
+     [
+      "resource_ore_seprom",
+      20000
+     ],
+     [
+      "ammunition_laser_ucb-100",
+      20000
+     ],
+     [
+      "ammunition_laser_rsb-75",
+      2500
+     ],
+     [
+      "ammunition_laser_emaa-20",
+      750
+     ]
+    ],
+    "title": null
+   }
+  ],
+  "best_trip_count": 10,
+  "chest": {
+   "probability": 0.3,
+   "effects": [
+    {
+     "name": "Heal",
+     "probability": 0.25,
+     "type": "hp",
+     "hp": 120000
+    },
+    {
+     "name": "Flux",
+     "probability": 0.1,
+     "type": "speed",
+     "duration_sec": 15,
+     "speed": 0.1
+    },
+    {
+     "name": "Heal Field",
+     "probability": 0.25,
+     "type": "hp_field",
+     "hp": 50000,
+     "radius": 500
+    },
+    {
+     "name": "Frost Field",
+     "probability": 0.1,
+     "type": "tech",
+     "tech": "tech_frost-field"
+    },
+    {
+     "name": "Revenge",
+     "probability": 0.1,
+     "type": "skill",
+     "skill": "ability_berserker_rvg",
+     "duration_sec": 10
+    },
+    {
+     "name": "Shield",
+     "probability": 0.15,
+     "type": "shield",
+     "shield": 80000
+    },
+    {
+     "name": "Assimilate",
+     "probability": 0.05,
+     "type": "skill",
+     "skill": "ability_orcus_assimilate",
+     "duration_sec": 10
+    }
+   ]
+  },
+  "key_drop": {
+   "pm_hexormimesis": 0.03,
+   "pm_reflectormimesis": 0.5
+  },
+  "key_uridium": 5000,
+  "_source": "mimesis_mutiny.json: official FAQ 2020-2026, darkorbitwiki (Mimesis types, boxes/mimesis-box, galaxy-gates/mimesis-mutiny-gate: Mimesis Chest), the client's texts and game.xml; tools/major_content.py",
+  "_adaptation": "The route (4 points + beacon), waves and points are not in the source (the research's suggestions); single-player: waves scale with the player's power (World Boss scale): HP x0.3 x power, damage x0.25 x power (0.5-1.5); the EM Freighter's HP is enough to withstand 240 s of fire from the strongest wave (at least 2,000,000); ranking is virtual (player 1st); company maps: MMO 433, EIC 436, VRU 430 (each company's first Escort map); Byte Remnant goes directly to the type's reward (extra_reward; mimesis._register) and to the box; box quantities, weights and the MINI_BOSS / BOSS mapping are not in the source (normal box: half of the type's Byte reward; elite box: between half and all of it + one row); buff draw in mimesis_chest.py."
+ },
+ "kristallon_apotheosis": {
+  "event": "kristallon_apotheosis",
+  "map": 510,
+  "entries": [
+   "1-1",
+   "2-1",
+   "3-1"
+  ],
+  "portal_design": 307,
+  "windows": [
+   [
+    "08:00",
+    "10:00"
+   ],
+   [
+    "14:00",
+    "16:00"
+   ],
+   [
+    "20:00",
+    "22:00"
+   ]
+  ],
+  "days": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "target_points": 1000,
+  "collecting": {
+   "X-2": [
+    [
+     "event_icy",
+     10,
+     4
+    ],
+    [
+     "79",
+     20,
+     2
+    ]
+   ],
+   "X-3": [
+    [
+     "event_icy",
+     10,
+     4
+    ],
+    [
+     "79",
+     20,
+     2
+    ]
+   ],
+   "X-4": [
+    [
+     "79",
+     20,
+     4
+    ],
+    [
+     "35",
+     40,
+     1
+    ]
+   ],
+   "X-5": [
+    [
+     "79",
+     20,
+     4
+    ],
+    [
+     "35",
+     40,
+     1
+    ]
+   ],
+   "X-6": [
+    [
+     "79",
+     40,
+     4
+    ],
+    [
+     "35",
+     80,
+     1
+    ]
+   ],
+   "X-7": [
+    [
+     "79",
+     40,
+     4
+    ],
+    [
+     "35",
+     80,
+     1
+    ]
+   ],
+   "X-8": [
+    [
+     "79",
+     50,
+     4
+    ],
+    [
+     "35",
+     100,
+     1
+    ]
+   ]
+  },
+  "power": {
+   "X-2": 0.25,
+   "X-3": 0.3,
+   "X-4": 0.45,
+   "X-5": 0.5,
+   "X-6": 0.7,
+   "X-7": 0.8,
+   "X-8": 1.0
+  },
+  "renew_sec": 15,
+  "cooldown_sec": 30,
+  "combat_sec": 1800,
+  "closing_sec": 120,
+  "boss": {
+   "name": "-=[ Emperor Kristallon ]=-",
+   "model": "EMPEROR_KRISTALLON_BOSS_2",
+   "npc_id": 518,
+   "hp": 12000000,
+   "shield": 6000000,
+   "damage": 18000,
+   "speed": 160,
+   "aggressive": true,
+   "reward": {
+    "ep": 1500000,
+    "honor": 12000,
+    "credits": 3000000,
+    "uridium": 3000
+   },
+   "cargo": {}
+  },
+  "level_multiplier": 0.15,
+  "phases": [
+   1.0,
+   0.66,
+   0.33
+  ],
+  "attacks": {
+   "rift": {
+    "interval_sec": 15,
+    "warning_sec": 4.1,
+    "width": 300,
+    "length": 7000,
+    "damage_max_hp_ratio": 0.2
+   },
+   "ice": {
+    "interval_sec": 20,
+    "warning_sec": 2.2,
+    "radius": 1500,
+    "damage_max_hp_ratio": 0.12,
+    "slow": [
+     0.5,
+     4
+    ]
+   },
+   "radiation": {
+    "interval_sec": 25,
+    "warning_sec": 6,
+    "safe_radius": 900,
+    "damage_max_hp_ratio": 0.3
+   }
+  },
+  "participation": [
+   [
+    [
+     "currency_uridium",
+     500
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     2000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     200
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     200
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     1000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     2500
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     300
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     250
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     1500
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     3000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     400
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     600
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     2000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     3500
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     500
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     650
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     3000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     4000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     700
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     750
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     4000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     4500
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     700
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     750
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     5000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     5000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     800
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     800
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     6000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     6000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     900
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     850
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     7000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     7000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     1000
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     900
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     8000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     8000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     1500
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     950
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     9000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     9000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     1750
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     1000
+    ]
+   ],
+   [
+    [
+     "currency_uridium",
+     10000
+    ],
+    [
+     "ammunition_laser_ucb-100",
+     10000
+    ],
+    [
+     "ammunition_rocketlauncher_ubr-100",
+     2000
+    ],
+    [
+     "ammunition_laser_rsb-75",
+     2000
+    ]
+   ]
+  ],
+  "participation_threshold": 0.01,
+  "defeats": [
+   [
+    "equipment_weapon_laser_lf-4",
+    1,
+    1.6493
+   ],
+   [
+    "equipment_weapon_laser_lf-4-md",
+    1,
+    1.6493
+   ],
+   [
+    "equipment_weapon_laser_lf-4-hp",
+    1,
+    1.6493
+   ],
+   [
+    "equipment_weapon_laser_lf-4-pd",
+    1,
+    1.6493
+   ],
+   [
+    "equipment_weapon_laser_lf-5",
+    1,
+    1.6493
+   ],
+   [
+    "equipment_weapon_rocketlauncher_hst-2",
+    1,
+    8.5866
+   ],
+   [
+    "equipment_weapon_cannon_c-helios",
+    1,
+    8.5866
+   ],
+   [
+    "equipment_weapon_cannon_uc-helios",
+    1,
+    1.8293
+   ],
+   [
+    "equipment_weapon_cannon_r-helios",
+    1,
+    0.5498
+   ],
+   [
+    "equipment_cannon_shield_mr-t01",
+    1,
+    21.9312
+   ],
+   [
+    "equipment_cannon_shield_mr-t02",
+    1,
+    10.9656
+   ],
+   [
+    "equipment_cannon_shield_mr-t03",
+    1,
+    5.4878
+   ],
+   [
+    "ammunition_laser_mcb-50",
+    3000,
+    5.4878
+   ],
+   [
+    "ammunition_slug_ths-d01",
+    200,
+    5.4878
+   ],
+   [
+    "ammunition_spool_gsp-30",
+    500,
+    5.4878
+   ],
+   [
+    "ammunition_rocketlauncher_hstrm-01",
+    2000,
+    5.4878
+   ],
+   [
+    "equipment_weapon_drive_igd-l01",
+    1,
+    0.4098
+   ],
+   [
+    "equipment_lens_gl-chron",
+    1,
+    0.4898
+   ],
+   [
+    "resource_collectable_diametrion",
+    3,
+    10.9656
+   ]
+  ],
+  "box": {
+   "type": "APOTHEOSIS",
+   "count": 20,
+   "lifetime_sec": 900
+  },
+  "last_hit": {
+   "title": "title_kristallon_apotheosis_last_hit",
+   "rewards": [
+    [
+     "resource_booty-key-apotheosis",
+     1
+    ]
+   ]
+  },
+  "ranking": [
+   {
+    "from_": 1,
+    "e": 1,
+    "title": "title_kristallon_apotheosis_rank1",
+    "rewards": [
+     [
+      "resource_collectable_axion-beam-regulator",
+      300
+     ],
+     [
+      "resource_booty-key-apotheosis",
+      10
+     ]
+    ]
+   },
+   {
+    "from_": 2,
+    "e": 3,
+    "title": "title_kristallon_apotheosis_rank2",
+    "rewards": [
+     [
+      "resource_collectable_axion-beam-regulator",
+      200
+     ],
+     [
+      "resource_booty-key-apotheosis",
+      5
+     ]
+    ]
+   },
+   {
+    "from_": 4,
+    "e": 10,
+    "title": "title_kristallon_apotheosis_rank3",
+    "rewards": [
+     [
+      "resource_collectable_axion-beam-regulator",
+      100
+     ],
+     [
+      "resource_booty-key-apotheosis",
+      3
+     ]
+    ]
+   }
+  ],
+  "virtual_rank": [
+   [
+    3,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    1,
+    4
+   ]
+  ],
+  "_source": "board-en 130459 (FAQ Kristallon Apotheosis); client 1.1.115 (window apotheosis, map 510, portal 307, VisualModifier 158 ice, 159 rift, 160 radiation guide); tools/version_115.py; defeat probabilities and weekly limits from the official server recording (2026-10-25)",
+  "_adaptation": "Single-player: the server-wide collection goal is the player's own points (1000); collection aliens per map 4 + 1-2 (copies of Icy, Kristallon, Boss Kristallon, their power is the map's 'power'), respawn in 15 s. The boss's HP, damage and the timing, area and damage of attacks are an adaptation (HP by the player's power, world_boss.scale; +15% per level); phases at 66% and 33%. Weekly rank in single-player from the week's defeat count: 3+ 1st, 2 2nd, 1 4th (rewards when it resets on Sunday). The participation reward is given once the damage dealt exceeds 1% of the boss's HP. The boss comes 30 s after the portal opens (it was 5 min: the boss map stayed empty and looked broken, player report 2026-11-02; no wait in the wiki or the FAQ).",
+  "weekly_limit": {
+   "participation": 3,
+   "defeats": 3,
+   "last_hit": 18
+  }
+ }
+}

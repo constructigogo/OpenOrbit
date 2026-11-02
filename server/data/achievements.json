@@ -1,0 +1,7425 @@
+{
+ "_source": "Client's achievement XMLs (tools/achievements.py). levels: condition class, operator/value or set (CheckSet items, match ALL), event (achievementEvent), parameters, inner (inner conditions), stored (store), reset_on_death (resetOnDeath); points, title, reward (actions); grade: if it differs from the XML's grade order (win line 0|A|ACG|<achievement>_<grade>). titles: title key -> id (recorded ones are kept, the rest start from 1000).",
+ "achievements": {
+  "achievement_seasonpass_202307": {
+   "group": "SEASONPASS_Q2",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q2",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202307_1"
+    }
+   ]
+  },
+  "achievement_seasonpass_202311": {
+   "group": "SEASONPASS_Q3",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q3",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202311_1"
+    }
+   ]
+  },
+  "achievement_seasonpass_202402": {
+   "group": "SEASONPASS_Q4",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q4",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202402_1"
+    }
+   ]
+  },
+  "achievement_seasonpass_202405": {
+   "group": "SEASONPASS_Q5",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q5",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202405_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q5",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202405_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202408": {
+   "group": "SEASONPASS_Q6",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q6",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202408_1"
+    },
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q6",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202408_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202411": {
+   "group": "SEASONPASS_Q7",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q7",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202411_1"
+    },
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q7",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202411_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202502": {
+   "group": "SEASONPASS_Q8",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q8",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202502_1"
+    },
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q8",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202502_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202505": {
+   "group": "SEASONPASS_Q9",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q9",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202505_1"
+    },
+    {
+     "class_name": "Level",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q9",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202505_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202508": {
+   "group": "SEASONPASS_Q10",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q10",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202508_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q10",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202508_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202511": {
+   "group": "SEASONPASS_Q11",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q11",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202511_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q11",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202511_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202602": {
+   "group": "SEASONPASS_Q12",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q12",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202602_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q12",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202602_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202605": {
+   "group": "SEASONPASS_Q13",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q13",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202605_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q13",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202605_2"
+    }
+   ]
+  },
+  "achievement_seasonpass_202608": {
+   "group": "SEASONPASS_Q14",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "incident": "SEASONPASS_Q14",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202608_1"
+    },
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 80,
+     "incident": "SEASONPASS_Q14",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_202608_2"
+    }
+   ]
+  },
+  "achievement_misc_3d": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Uses3D",
+     "operator": ">",
+     "value": 0,
+     "incident": "USES_3D",
+     "title": "title_achievement_multi-dimensional-pilot",
+     "points": 20
+    }
+   ]
+  },
+  "achievement_destroy_aliens": {
+   "group": "DESTROY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 250,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "title": "title_achievement_destroy_aliens-1",
+     "points": 25
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "title": "title_achievement_destroy_aliens-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_collect_ammunition-box": {
+   "group": "COLLECT",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AssetCollect",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "COLLECT",
+     "parameters": {
+      "assetType": [
+       "LASER"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_collect_ammunition-shop": {
+   "group": "COLLECT",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Buy",
+     "operator": ">=",
+     "value": 100000,
+     "parameters": {
+      "ammo": [
+       {
+        "type": "*"
+       }
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_event_summer2014_assaulter": {
+   "group": "EVENT_SUMMER_2014",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "116"
+      ]
+     },
+     "title": "title_achievement_event_summer2014_assaulter",
+     "points": 400,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_battle-for-influence-legend": {
+   "group": "EVENT_BATTLE_FOR_INFLUENCE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 3,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_battle-for-influence-points"
+      ]
+     },
+     "title": "title_achievement_event_battle-for-influence-legend",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_battle-for-influence-points": {
+   "group": "EVENT_BATTLE_FOR_INFLUENCE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "INFLUENCE_GAINED",
+     "points": 5
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "INFLUENCE_GAINED",
+     "title": "title_achievement_event_battle-for-influence-points-1",
+     "points": 10
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 20000,
+     "incident": "INFLUENCE_GAINED",
+     "title": "title_achievement_event_battle-for-influence-points-2",
+     "points": 20
+    }
+   ]
+  },
+  "achievement_event_battle-for-influence-quests": {
+   "group": "EVENT_BATTLE_FOR_INFLUENCE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "512001",
+      "512002",
+      "512003",
+      "512004",
+      "512005",
+      "512006",
+      "512007",
+      "512008",
+      "512009",
+      "512010",
+      "512011"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "title": "title_achievement_event_battle-for-influence-quests",
+     "points": 15,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_social_beacon-keeper": {
+   "group": "SOCIAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EquipItem",
+     "parameters": {
+      "item": [
+       "drone_designs_beacon"
+      ]
+     },
+     "points": 50,
+     "title": "title_achievement_beacon-keeper",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_collect_bonusboxes": {
+   "group": "COLLECT",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 100,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ]
+     },
+     "title": "title_achievement_collect_bonusboxes-1",
+     "points": 25
+    },
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ]
+     },
+     "title": "title_achievement_collect_bonusboxes-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_pet_bonusboxes": {
+   "group": "PET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 500,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "BONUS_BOX"
+      ],
+      "avatar": [
+       "PET"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_misc_booster-event": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "BoosterTypeUsage",
+     "set": [
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18"
+     ],
+     "matches": "ALL",
+     "incident": "USED",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_misc_booster": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "BoosterTypeUsage",
+     "set": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10"
+     ],
+     "matches": "ALL",
+     "incident": "USED",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_factory_build-techs": {
+   "group": "FACTORY",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TechFactory",
+     "stored": false,
+     "operator": ">=",
+     "value": 3,
+     "points": 25
+    }
+   ]
+  },
+  "achievement_event_summer2014_builders-guild": {
+   "group": "EVENT_SUMMER_2014",
+   "enabled": true,
+   "event": "DominationEvent",
+   "levels": [
+    {
+     "class_name": "BuildClanBattleStationModule",
+     "incident": "CBS_MODULE_INSTALLED",
+     "parameters": {
+      "validMap": [
+       "13",
+       "14",
+       "15"
+      ]
+     },
+     "title": "title_achievement_event_summer2014_builders-guild",
+     "points": 100,
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_destroy_centuryfalcon": {
+   "group": "DESTROY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "120"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_factory_chaindestroyer": {
+   "group": "FACTORY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ChainImpulse",
+     "stored": false,
+     "operator": ">=",
+     "value": 5,
+     "incident": "DESTROY",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_social_clan-create": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ClanCreate",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "points": 10
+    }
+   ]
+  },
+  "achievement_social_clan-join": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ClanJoin",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "points": 5
+    }
+   ]
+  },
+  "achievement_social_clan-member": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ClanMember",
+     "stored": false,
+     "operator": ">=",
+     "value": 5,
+     "points": 10
+    },
+    {
+     "class_name": "ClanMember",
+     "stored": false,
+     "operator": ">=",
+     "value": 25,
+     "points": 25
+    },
+    {
+     "class_name": "ClanMember",
+     "stored": false,
+     "operator": ">=",
+     "value": 50,
+     "title": "title_achievement_social_clan-member",
+     "points": 50
+    }
+   ]
+  },
+  "achievement_misc_legacy_cosmicadmiral": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "title": "title_achievement_misc_legacy_cosmicadmiral"
+    }
+   ]
+  },
+  "achievement_collect_credits": {
+   "group": "COLLECT",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "CREDITS"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "CREDITS"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 7500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "CREDITS"
+      ]
+     },
+     "title": "title_achievement_collect_credits-1",
+     "points": 25
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 15500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "CREDITS"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 25500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "CREDITS"
+      ]
+     },
+     "title": "title_achievement_collect_credits-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_social_dailylogin": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Login",
+     "operator": ">=",
+     "value": 15,
+     "points": 5
+    }
+   ]
+  },
+  "achievement_damagedealer": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Damage",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "CAUSED",
+     "points": 5
+    },
+    {
+     "class_name": "Damage",
+     "operator": ">=",
+     "value": 250000000,
+     "incident": "CAUSED",
+     "points": 10
+    },
+    {
+     "class_name": "Damage",
+     "operator": ">=",
+     "value": 1000000000,
+     "incident": "CAUSED",
+     "title": "title_achievement_damagedealer-1",
+     "points": 25
+    },
+    {
+     "class_name": "Damage",
+     "operator": ">=",
+     "value": 10000000000,
+     "incident": "CAUSED",
+     "points": 50
+    },
+    {
+     "class_name": "Damage",
+     "operator": ">=",
+     "value": 15000000000,
+     "incident": "CAUSED",
+     "title": "title_achievement_damagedealer-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_demaner-hunt": {
+   "group": "EVENT_DEMANER_HUNT",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 5,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "DEMANER_FREIGHTER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "DEMANER_FREIGHTER"
+      ]
+     },
+     "points": 10,
+     "title": "title_achievement_event_demaner_hunt_2"
+    },
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "DEMANER_FREIGHTER"
+      ]
+     },
+     "points": 15,
+     "title": "title_achievement_event_demaner_hunt_3"
+    },
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "DEMANER_FREIGHTER"
+      ]
+     },
+     "points": 25,
+     "title": "title_achievement_event_demaner_hunt_4"
+    }
+   ]
+  },
+  "achievement_misc_destroy-admin": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DestroyAdmin",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_misc_destroy-npc-all-types": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "NpcTypeDestroyed",
+     "set": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38"
+     ],
+     "matches": "ALL",
+     "incident": "DESTROY",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_misc_destroy-npc-radiation": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ]
+     },
+     "ic": [
+      {
+       "class_name": "InRadiation"
+      }
+     ],
+     "points": 5
+    }
+   ]
+  },
+  "achievement_misc_destroy-player-deathless": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "reset_on_death": true,
+     "operator": ">=",
+     "value": 20,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_misc_destroy-player-mines": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DestroyedByAmmunitionType",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ],
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_misc_destroy-player-shiptype": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DestroyedByShipType",
+     "set": [
+      "3",
+      "5",
+      "6",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13"
+     ],
+     "matches": "ALL",
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_pvp_destroy-player-timed": {
+   "group": "PVP",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 2,
+     "incident": "DESTROY",
+     "parameters": {
+      "timeLimit": [
+       {
+        "unit": "SECONDS",
+        "time": "10"
+       }
+      ],
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 5,
+     "incident": "DESTROY",
+     "parameters": {
+      "timeLimit": [
+       {
+        "unit": "SECONDS",
+        "time": "30"
+       }
+      ],
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_pvp_destroy-player-timed-1",
+     "points": 25,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_pvp_destroy-player": {
+   "group": "PVP",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 10,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 500,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_pvp_destroy-player-1",
+     "points": 25
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_pvp_destroy-player-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_misc_destroy-shiptype": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DestroyedShipType",
+     "set": [
+      "3",
+      "5",
+      "6",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13"
+     ],
+     "matches": "ALL",
+     "incident": "DESTROY",
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_misc_destroyed-by-radiation": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Destruction",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROYED",
+     "parameters": {
+      "reason": [
+       "RADIATION"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_misc_destroyed-by-streuner": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "KilledByAvatarType",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROYED",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "1"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_discover_distance": {
+   "group": "DISCOVER",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Distance",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "DISTANCE",
+     "points": 5
+    },
+    {
+     "class_name": "Distance",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "DISTANCE",
+     "points": 10
+    },
+    {
+     "class_name": "Distance",
+     "operator": ">=",
+     "value": 10000000,
+     "incident": "DISTANCE",
+     "points": 25
+    },
+    {
+     "class_name": "Distance",
+     "operator": ">=",
+     "value": 100000000,
+     "incident": "DISTANCE",
+     "title": "title_achievement_discover_distance-2",
+     "points": 50
+    }
+   ]
+  },
+  "achievement_event_domination-attack": {
+   "group": "EVENT_DOMINATION",
+   "enabled": true,
+   "event": "DominationEvent",
+   "levels": [
+    {
+     "class_name": "DominationBeaconTakeover",
+     "incident": "DOMINATION_BEACON_TAKEOVER_ASSIST_ALL",
+     "operator": ">=",
+     "value": 10,
+     "points": 5
+    },
+    {
+     "class_name": "DominationBeaconTakeover",
+     "incident": "DOMINATION_BEACON_TAKEOVER_ASSIST_ALL",
+     "operator": ">=",
+     "value": 100,
+     "points": 20,
+     "title": "title_achievement_event_domination-4"
+    }
+   ]
+  },
+  "achievement_event_domination-military": {
+   "group": "EVENT_DOMINATION",
+   "enabled": true,
+   "event": "DominationEvent",
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "511001",
+      "511002",
+      "511003",
+      "511004",
+      "511005",
+      "511006",
+      "511007",
+      "511008",
+      "511009",
+      "511010",
+      "511011"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 25,
+     "title": "title_achievement_event_domination-2"
+    }
+   ]
+  },
+  "achievement_event_domination-quest-cubikon-gravekeeper": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "122000"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_domination_reoccurring-cubikon-gravekeeper"
+    }
+   ]
+  },
+  "achievement_event_domination-quest-hidden-hunter": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "122005"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_domination_reoccurring-hidden-hunter"
+    }
+   ]
+  },
+  "achievement_event_domination-quest-immoveable-object": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "122004"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_domination_reoccurring-immoveable-object"
+    }
+   ]
+  },
+  "achievement_event_domination-quest-lord-of-dead": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "122006"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_domination_reoccurring-lord-of-dead"
+    }
+   ]
+  },
+  "achievement_event_domination-quest-unstoppable-force": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "122003"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_domination_reoccurring-unstoppable-force"
+    }
+   ]
+  },
+  "achievement_event_domination-space": {
+   "group": "EVENT_DOMINATION",
+   "enabled": true,
+   "event": "DominationEvent",
+   "levels": [
+    {
+     "class_name": "LaserDamage",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "DAMAGING",
+     "parameters": {
+      "npctype": [
+       "DEMANER_FREIGHTER"
+      ]
+     },
+     "points": 10,
+     "title": "title_achievement_event_domination-3"
+    }
+   ]
+  },
+  "achievement_event_domination-triumph": {
+   "group": "EVENT_DOMINATION",
+   "enabled": true,
+   "event": "DominationEvent",
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 2,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_domination-attack"
+      ]
+     },
+     "points": 35,
+     "title": "title_achievement_event_domination-1"
+    }
+   ]
+  },
+  "achievement_event_summer2014_dominator": {
+   "group": "EVENT_SUMMER_2014",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DominationTakeover",
+     "incident": "DOMINATION_TAKEOVER",
+     "title": "title_achievement_event_summer2014_dominator",
+     "points": 500,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_ability_double-minimap-reveal": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 75,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DOUBLE_MINIMAP"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 275,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DOUBLE_MINIMAP"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DOUBLE_MINIMAP"
+      ]
+     },
+     "title": "title_achievement_ability_double-minimap-reveal-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DOUBLE_MINIMAP"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DOUBLE_MINIMAP"
+      ]
+     },
+     "title": "title_achievement_ability_double-minimap-reveal-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_ability_draw-fire": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 150,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DRAW_FIRE"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 350,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DRAW_FIRE"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 800,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DRAW_FIRE"
+      ]
+     },
+     "title": "title_achievement_ability_draw-fire-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1600,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DRAW_FIRE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3400,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "DRAW_FIRE"
+      ]
+     },
+     "title": "title_achievement_ability_draw-fire-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_easter-eggs-galaxy-gate-firework": {
+   "group": "EVENT_SECRET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EggTriggerCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "EGG_TRIGGER",
+     "parameters": {
+      "eggTriggerType": [
+       "GALAXY_GATE_FIREWORK"
+      ]
+     },
+     "title": "title_achievement_event_easter-eggs-galaxy-gate-firework",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_easter-eggs-going-round-the-map": {
+   "group": "EVENT_SECRET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EggTriggerCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "EGG_TRIGGER",
+     "parameters": {
+      "eggTriggerType": [
+       "GOING_ROUND_THE_MAP"
+      ]
+     },
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_easter-eggs-minimap-ping": {
+   "group": "EVENT_SECRET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EggTriggerCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "EGG_TRIGGER",
+     "parameters": {
+      "eggTriggerType": [
+       "MINIMAP_PING"
+      ]
+     },
+     "title": "title_achievement_event_easter-eggs-minimap-ping",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_easter-eggs-rainbow-laser": {
+   "group": "EVENT_SECRET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EggTriggerCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "EGG_TRIGGER",
+     "parameters": {
+      "eggTriggerType": [
+       "RAINBOW_LASER"
+      ]
+     },
+     "title": "title_achievement_event_easter-eggs-rainbow-laser",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_empyrian": {
+   "group": "EVENT_EMPYRIAN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 200,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "554",
+       "555",
+       "562",
+       "581",
+       "588",
+       "594",
+       "606",
+       "631",
+       "637"
+      ]
+     },
+     "points": 40,
+     "title": "title_achievement_event_empyrian_1"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 500,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "554",
+       "555",
+       "562",
+       "581",
+       "588",
+       "594",
+       "606",
+       "631",
+       "637"
+      ]
+     },
+     "points": 75,
+     "title": "title_achievement_event_empyrian_2"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "554",
+       "555",
+       "562",
+       "581",
+       "588",
+       "594",
+       "606",
+       "631",
+       "637"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_empyrian_3"
+    }
+   ]
+  },
+  "achievement_pet_equip-aiprotocol": {
+   "group": "PET",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 6,
+     "parameters": {
+      "petprotocol": [
+       {
+        "type": "*"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_pet_equip-gear": {
+   "group": "PET",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 6,
+     "parameters": {
+      "petgear": [
+       {
+        "type": "GEAR"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_discover_equip-generator-shield": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "parameters": {
+      "generator": [
+       {
+        "type": "SHIELD"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_discover_equip-generator-speed": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "parameters": {
+      "generator": [
+       {
+        "type": "G3N_6900"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_discover_equip-laser": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "parameters": {
+      "weapon": [
+       {
+        "type": "LF3"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_pet_equip-pet": {
+   "group": "PET",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "points": 25
+    }
+   ]
+  },
+  "achievement_discover_equip-shipdesign": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "parameters": {
+      "ship": [
+       {
+        "type": "DESIGN"
+       }
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_discover_equip-shipdesigns": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Equipment",
+     "operator": ">=",
+     "value": 5,
+     "parameters": {
+      "ship": [
+       {
+        "type": "DESIGN"
+       }
+      ]
+     },
+     "points": 25
+    }
+   ]
+  },
+  "achievement_event_eternalgate-champion": {
+   "group": "EVENT_ETERNALGATE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_eternalgate-champion",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_eternalgate-kill": {
+   "group": "EVENT_ETERNALGATE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "254"
+      ]
+     },
+     "points": 50
+    }
+   ]
+  },
+  "achievement_event_eternalgate-waves": {
+   "group": "EVENT_ETERNALGATE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ClearGalaxyGateWave",
+     "operator": ">=",
+     "value": 42,
+     "incident": "CLEAR_GALAXY_GATE_WAVE",
+     "parameters": {
+      "galaxyGateType": [
+       "ETERNAL_GATE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "ClearGalaxyGateWave",
+     "operator": ">=",
+     "value": 100,
+     "incident": "CLEAR_GALAXY_GATE_WAVE",
+     "parameters": {
+      "galaxyGateType": [
+       "ETERNAL_GATE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "ClearGalaxyGateWave",
+     "operator": ">=",
+     "value": 200,
+     "incident": "CLEAR_GALAXY_GATE_WAVE",
+     "parameters": {
+      "galaxyGateType": [
+       "ETERNAL_GATE"
+      ]
+     },
+     "points": 100
+    }
+   ]
+  },
+  "achievement_experience": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "EXPERIENCE"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "EXPERIENCE"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 100000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "EXPERIENCE"
+      ]
+     },
+     "title": "title_achievement_experience-1",
+     "points": 25
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 1000000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "EXPERIENCE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 10000000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "EXPERIENCE"
+      ]
+     },
+     "title": "title_achievement_experience-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_discover_extras": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Extras",
+     "operator": ">=",
+     "value": 10,
+     "points": 5
+    }
+   ]
+  },
+  "achievement_drone_formation-change": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DroneFormationChange",
+     "operator": ">=",
+     "value": 100,
+     "incident": "USED",
+     "points": 5
+    },
+    {
+     "class_name": "DroneFormationChange",
+     "operator": ">=",
+     "value": 500,
+     "incident": "USED",
+     "points": 10
+    },
+    {
+     "class_name": "DroneFormationChange",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "USED",
+     "title": "title_achievement_drone_formation-change-1",
+     "points": 25
+    },
+    {
+     "class_name": "DroneFormationChange",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "USED",
+     "points": 50
+    },
+    {
+     "class_name": "DroneFormationChange",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "USED",
+     "title": "title_achievement_drone_formation-change-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_drone_formation-drones": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DroneFormationDroneAmount",
+     "stored": false,
+     "operator": ">=",
+     "value": 6,
+     "incident": "USED",
+     "points": 5
+    },
+    {
+     "class_name": "DroneFormationDroneAmount",
+     "stored": false,
+     "operator": ">=",
+     "value": 10,
+     "incident": "USED",
+     "points": 10
+    }
+   ]
+  },
+  "achievement_ability_fortify": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "FORTIFY"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "FORTIFY"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 800,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "FORTIFY"
+      ]
+     },
+     "title": "title_achievement_ability_fortify-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1700,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "FORTIFY"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "FORTIFY"
+      ]
+     },
+     "title": "title_achievement_ability_fortify-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_social_friend-invites": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "FriendInvite",
+     "operator": ">=",
+     "value": 1,
+     "points": 10
+    },
+    {
+     "class_name": "FriendInvite",
+     "operator": ">=",
+     "value": 25,
+     "title": "title_achievement_social_friend-invites",
+     "points": 50
+    }
+   ]
+  },
+  "achievement_social_friendinvites": {
+   "group": "SOCIAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "FriendInvites",
+     "operator": ">=",
+     "value": 5,
+     "points": 50,
+     "title": "title_achievement_social_friendinvites-1"
+    },
+    {
+     "class_name": "FriendInvites",
+     "operator": ">=",
+     "value": 10,
+     "points": 200,
+     "title": "title_achievement_social_friendinvites-2"
+    },
+    {
+     "class_name": "FriendInvites",
+     "operator": ">=",
+     "value": 25,
+     "points": 500,
+     "title": "title_achievement_social_friendinvites-3"
+    }
+   ]
+  },
+  "achievement_social_friendlist-member": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "FriendMember",
+     "stored": false,
+     "operator": ">=",
+     "value": 20,
+     "points": 10
+    }
+   ]
+  },
+  "achievement_social_friendlist": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Friends",
+     "operator": ">=",
+     "value": 1,
+     "points": 5
+    },
+    {
+     "class_name": "Friends",
+     "operator": ">=",
+     "value": 20,
+     "points": 10
+    }
+   ]
+  },
+  "achievement_misc_legacy_galacticfleetadmiral": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "title": "title_achievement_misc_legacy_galacticfleetadmiral"
+    }
+   ]
+  },
+  "achievement_misc_galaxy-gate-streuner": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "GalaxyGateDone",
+     "incident": "GALAXY_GATE",
+     "parameters": {
+      "galaxyGateType": [
+       "STREUNER_GATE"
+      ]
+     },
+     "points": 100
+    }
+   ]
+  },
+  "null": {
+   "group": null,
+   "enabled": false,
+   "event": null,
+   "levels": []
+  },
+  "achievement_dispatch_gate": {
+   "group": "DISPATCH",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 5,
+     "incident": "DISPATCH_GATE",
+     "points": 5
+    },
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DISPATCH_GATE",
+     "points": 10
+    },
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DISPATCH_GATE",
+     "points": 25,
+     "title": "title_achievement_dispatch_gate_3"
+    }
+   ]
+  },
+  "achievement_gatejumps": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Gatejumps",
+     "operator": ">=",
+     "value": 500,
+     "incident": "JUMP",
+     "points": 5
+    },
+    {
+     "class_name": "Gatejumps",
+     "operator": ">=",
+     "value": 5000,
+     "incident": "JUMP",
+     "points": 10
+    },
+    {
+     "class_name": "Gatejumps",
+     "operator": ">=",
+     "value": 12500,
+     "incident": "JUMP",
+     "title": "title_achievement_gatejumps",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_event_gauntletofplutus-champion": {
+   "group": "EVENT_GAUNTLETOFPLUTUS",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_gauntletofplutus-champion",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_gauntletofplutus-kill-plutus": {
+   "group": "EVENT_GAUNTLETOFPLUTUS",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "218"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 10,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "218"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 30,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "218"
+      ]
+     },
+     "title": "title_achievement_event_gauntletofplutus-kill-plutus-30",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_gauntletofplutus-luck": {
+   "group": "EVENT_GAUNTLETOFPLUTUS",
+   "enabled": true,
+   "event": "GauntletOfPlutus",
+   "levels": [
+    {
+     "class_name": "Currency",
+     "stored": false,
+     "operator": "==",
+     "value": 4999999,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "title": "title_achievement_event_gauntletofplutus-luck",
+     "points": 50
+    }
+   ]
+  },
+  "achievement_event_gauntletofplutus-score": {
+   "group": "EVENT_GAUNTLETOFPLUTUS",
+   "enabled": true,
+   "event": "GauntletOfPlutus",
+   "levels": [
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 1000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "GauntletOfPlutus"
+      ]
+     },
+     "points": 25
+    },
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 5000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "GauntletOfPlutus"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 10000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "GauntletOfPlutus"
+      ]
+     },
+     "points": 100
+    }
+   ]
+  },
+  "achievement_drone_gold-champion": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EquipItem",
+     "parameters": {
+      "item": [
+       "drone_designs_champion"
+      ]
+     },
+     "points": 20,
+     "title": "title_goalrush-2024-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_social_group-founder": {
+   "group": "SOCIAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "GroupFounder",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "GROUP",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_social_group-friend": {
+   "group": "SOCIAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "GroupWithFriend",
+     "operator": ">=",
+     "value": 600,
+     "incident": "TIME",
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_social_group-playtime": {
+   "group": "SOCIAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "GroupMember",
+     "operator": ">=",
+     "value": 3000,
+     "incident": "TIME",
+     "points": 10,
+     "grade": 2
+    },
+    {
+     "class_name": "GroupMember",
+     "operator": ">=",
+     "value": 6000,
+     "incident": "TIME",
+     "points": 25,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_event_halloween-assist-jelly-fish": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 4,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "108"
+      ]
+     },
+     "points": 100,
+     "title": "title_pumpkin-warrior"
+    }
+   ]
+  },
+  "achievement_event_halloween-curcubinator": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 900,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "109"
+      ]
+     },
+     "points": 100,
+     "title": "title_curcubinator-1"
+    }
+   ]
+  },
+  "achievement_event_halloween-kill-ghost-bosses": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": "GhostBosses",
+   "levels": [
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "BOSS_STREUNER",
+       "BOSS_LORDAKIA",
+       "BOSS_MORDON",
+       "BOSS_SAIMON",
+       "BOSS_DEVOLARIUM",
+       "BOSS_SIBELONIT",
+       "BOSS_SIBELON",
+       "BOSS_LORDAKIUM",
+       "BOSS_KRISTALLIN",
+       "BOSS_KRISTALLON",
+       "BOSS_StreuneR",
+       "BOSS_KUCURBIUM",
+       "BOSS_CURCUBITOR",
+       "BOSS_FRIGHTFUL_CURCUBITOR"
+      ]
+     },
+     "points": 5,
+     "title": "title_ghost-bosses-1"
+    },
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "BOSS_STREUNER",
+       "BOSS_LORDAKIA",
+       "BOSS_MORDON",
+       "BOSS_SAIMON",
+       "BOSS_DEVOLARIUM",
+       "BOSS_SIBELONIT",
+       "BOSS_SIBELON",
+       "BOSS_LORDAKIUM",
+       "BOSS_KRISTALLIN",
+       "BOSS_KRISTALLON",
+       "BOSS_StreuneR",
+       "BOSS_KUCURBIUM",
+       "BOSS_CURCUBITOR",
+       "BOSS_FRIGHTFUL_CURCUBITOR"
+      ]
+     },
+     "points": 10,
+     "title": "title_ghost-bosses-2"
+    },
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "BOSS_STREUNER",
+       "BOSS_LORDAKIA",
+       "BOSS_MORDON",
+       "BOSS_SAIMON",
+       "BOSS_DEVOLARIUM",
+       "BOSS_SIBELONIT",
+       "BOSS_SIBELON",
+       "BOSS_LORDAKIUM",
+       "BOSS_KRISTALLIN",
+       "BOSS_KRISTALLON",
+       "BOSS_StreuneR",
+       "BOSS_KUCURBIUM",
+       "BOSS_CURCUBITOR",
+       "BOSS_FRIGHTFUL_CURCUBITOR"
+      ]
+     },
+     "points": 20,
+     "title": "title_ghost-bosses-3"
+    }
+   ]
+  },
+  "achievement_event_halloween-pumpkinator": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 600,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "MINI_PUMPKIN"
+      ]
+     },
+     "points": 100,
+     "title": "title_pumpkinator-1"
+    }
+   ]
+  },
+  "achievement_event_halloween-sweet-tooth": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": "CandyCargo",
+   "levels": [
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 2000,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "FROM_SHIP"
+      ]
+     },
+     "points": 20
+    }
+   ]
+  },
+  "achievement_event_halloween2015-challenge": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_halloween2015-challenge",
+     "points": 300
+    }
+   ]
+  },
+  "achievement_event_halloween2015-kill-drones": {
+   "group": "EVENT_HALLOWEEN",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 4,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "151"
+      ]
+     },
+     "title": "title_achievement_event_halloween2015-kill-drones",
+     "points": 300
+    }
+   ]
+  },
+  "achievement_ability_healing-beam": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_BEAM"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 600,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_BEAM"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_BEAM"
+      ]
+     },
+     "title": "title_achievement_ability_healing-beam-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_BEAM"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 8000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_BEAM"
+      ]
+     },
+     "title": "title_achievement_ability_healing-beam-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_ability_healing-pod": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 400,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_POD"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_POD"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_POD"
+      ]
+     },
+     "title": "title_achievement_ability_healing-pod-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 5000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_POD"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "HEALING_POD"
+      ]
+     },
+     "title": "title_achievement_ability_healing-pod-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_discover_homemaps": {
+   "group": "DISCOVER",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DiscoverMaps",
+     "set": [
+      "1",
+      "5",
+      "9"
+     ],
+     "matches": "ALL",
+     "incident": "JUMP",
+     "parameters": {
+      "mapType": [
+       "HOME"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_honor": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "HONOUR"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 250000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "HONOUR"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 450000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "HONOUR"
+      ]
+     },
+     "title": "title_achievement_honor-1",
+     "points": 25
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "HONOUR"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 2500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "HONOUR"
+      ]
+     },
+     "title": "title_achievement_honor-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_misc_jackpot": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_misc_jackpot-1",
+     "points": 100,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_pet_kamikaze": {
+   "group": "PET",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Kamikaze",
+     "operator": ">=",
+     "value": 10,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_lasershots": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 50000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "LASER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 500000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "LASER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 2250000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "LASER"
+      ]
+     },
+     "title": "title_achievement_lasershots-1",
+     "points": 25
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 12500000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "LASER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 45000000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "LASER"
+      ]
+     },
+     "title": "title_achievement_lasershots-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_misc_lasershow": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "LaserTypeUsage",
+     "set": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+     ],
+     "matches": "ALL",
+     "incident": "USED",
+     "parameters": {
+      "timeLimit": [
+       {
+        "unit": "SECONDS",
+        "time": "60"
+       }
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_discover_maps": {
+   "group": "DISCOVER",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DiscoverMaps",
+     "set": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29"
+     ],
+     "matches": "ALL",
+     "incident": "JUMP",
+     "parameters": {
+      "mapType": [
+       "*"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_ability_mark-target": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 250,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "MARK_TARGET",
+       "NEUTRALIZING_MARKER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 600,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "MARK_TARGET",
+       "NEUTRALIZING_MARKER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1600,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "MARK_TARGET",
+       "NEUTRALIZING_MARKER"
+      ]
+     },
+     "title": "title_achievement_ability_mark-target-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "MARK_TARGET",
+       "NEUTRALIZING_MARKER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 7000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "MARK_TARGET",
+       "NEUTRALIZING_MARKER"
+      ]
+     },
+     "title": "title_achievement_ability_mark-target-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_skylab_maxout": {
+   "group": "SKYLAB",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Skylab",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "points": 10
+    }
+   ]
+  },
+  "achievement_event_summer2014_militant": {
+   "group": "EVENT_SUMMER_2014",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DominationBeaconTakeover",
+     "incident": "DOMINATION_BEACON_TAKEOVER",
+     "title": "title_achievement_event_summer2014_militant",
+     "points": 50,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_misc_mines-trigger-deathless": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TriggerMine",
+     "reset_on_death": true,
+     "operator": ">=",
+     "value": 10,
+     "incident": "CAUSED",
+     "parameters": {
+      "timeLimit": [
+       {
+        "unit": "SECONDS",
+        "time": "10"
+       }
+      ],
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_mines": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 100,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 500,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "title": "title_achievement_mines-1",
+     "points": 25
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 5000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "MINE"
+      ]
+     },
+     "title": "title_achievement_mines-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_monthlyranking-general": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "points": 50
+    },
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "operator": ">=",
+     "value": 12,
+     "points": 500
+    }
+   ]
+  },
+  "achievement_monthlyranking-pilot": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "operator": ">=",
+     "value": 5,
+     "points": 50
+    },
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "operator": ">=",
+     "value": 12,
+     "points": 500
+    }
+   ]
+  },
+  "achievement_event_mwg-kills": {
+   "group": "EVENT_MERCENARY_WAR_GAME",
+   "enabled": true,
+   "event": "MercenaryWarGame",
+   "levels": [
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 500,
+     "incident": "EVENT_KILLS",
+     "parameters": {
+      "event": [
+       "MercenaryWarGame"
+      ]
+     },
+     "title": "title_achievement_event_mwg-merc-ethereal",
+     "points": 200
+    }
+   ]
+  },
+  "achievement_event_mwg-score": {
+   "group": "EVENT_MERCENARY_WAR_GAME",
+   "enabled": true,
+   "event": "MercenaryWarGame",
+   "levels": [
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 5000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "MercenaryWarGame"
+      ]
+     },
+     "title": "title_achievement_event_mwg-merc-elite",
+     "points": 25
+    },
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 15000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "MercenaryWarGame"
+      ]
+     },
+     "title": "title_achievement_event_mwg-merc-legionnaire",
+     "points": 50
+    },
+    {
+     "class_name": "EventScore",
+     "stored": false,
+     "operator": ">=",
+     "value": 30000,
+     "incident": "EVENT_SCORE",
+     "parameters": {
+      "event": [
+       "MercenaryWarGame"
+      ]
+     },
+     "title": "title_achievement_event_mwg-merc-contractor_first",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_drone_normal-champion-25": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EquipItem",
+     "parameters": {
+      "item": [
+       "drone_designs_champion"
+      ]
+     },
+     "points": 10,
+     "title": "title_goalrush-2025",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_drone_normal-champion-26": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EquipItem",
+     "parameters": {
+      "item": [
+       "drone_designs_champion"
+      ]
+     },
+     "points": 10,
+     "title": "title_goalrush-2026",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_drone_normal-champion": {
+   "group": "DRONE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "EquipItem",
+     "parameters": {
+      "item": [
+       "drone_designs_champion"
+      ]
+     },
+     "points": 10,
+     "title": "title_goalrush-2024-2",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_misc_one-hit-wonder": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "OneHitWonder",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "points": 25,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_misc_petkiller": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PetKiller",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "PET"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_petlevel": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 5,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PET"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 10,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PET"
+      ]
+     },
+     "title": "title_achievement_petlevel-1",
+     "points": 10
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PET"
+      ]
+     },
+     "title": "title_achievement_petlevel-2",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_event_plague-cure-players": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 10,
+     "incident": "PLAGUE_CURE",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 50,
+     "incident": "PLAGUE_CURE",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "title": "title_achievement_event_plague-cure-players-2",
+     "points": 15
+    },
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 100,
+     "incident": "PLAGUE_CURE",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "title": "title_achievement_event_plague-cure-players-3",
+     "points": 30
+    }
+   ]
+  },
+  "achievement_event_plague-cure-self": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "PLAGUE_CURE",
+     "parameters": {
+      "plagueActionType": [
+       "SELF"
+      ]
+     },
+     "points": 5,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-getinfected": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 1,
+     "incident": "PLAGUE_INFECT",
+     "parameters": {
+      "plagueActionType": [
+       "SELF"
+      ]
+     },
+     "points": 5,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-infect-players": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 10,
+     "incident": "PLAGUE_INFECT",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 50,
+     "incident": "PLAGUE_INFECT",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "title": "title_achievement_event_plague-infect-players-2",
+     "points": 15
+    },
+    {
+     "class_name": "PlagueActionCount",
+     "operator": ">=",
+     "value": 100,
+     "incident": "PLAGUE_INFECT",
+     "parameters": {
+      "plagueActionType": [
+       "OTHER"
+      ]
+     },
+     "title": "title_achievement_event_plague-infect-players-3",
+     "points": 30
+    }
+   ]
+  },
+  "achievement_event_plague-kill-boss": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "122"
+      ]
+     },
+     "title": "title_achievement_event_plague-kill-boss",
+     "points": 15,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-kill-minions": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "123"
+      ]
+     },
+     "title": "title_achievement_event_plague-kill-minions",
+     "points": 15,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-meta-healthy": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 5,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_plague-cure-self"
+      ]
+     },
+     "title": "title_achievement_event_plague-meta-healthy",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-meta-infected": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 5,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_plague-getinfected"
+      ]
+     },
+     "title": "title_achievement_event_plague-meta-infected",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-quests-healthy": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "512033",
+      "512034",
+      "512035",
+      "512036",
+      "512037",
+      "512038",
+      "512039",
+      "512040",
+      "512041",
+      "512042"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "title": "title_achievement_event_plague-quests-healthy",
+     "points": 20,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_plague-quests-infected": {
+   "group": "EVENT_PLAGUE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "512028",
+      "512029",
+      "512030",
+      "512031",
+      "512032"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "title": "title_achievement_event_plague-quests-infected",
+     "points": 15,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_player-cloaked": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlayerCloaked",
+     "operator": ">=",
+     "value": 60,
+     "incident": "TIME",
+     "points": 5
+    },
+    {
+     "class_name": "PlayerCloaked",
+     "operator": ">=",
+     "value": 300,
+     "incident": "TIME",
+     "points": 10
+    },
+    {
+     "class_name": "PlayerCloaked",
+     "operator": ">=",
+     "value": 600,
+     "incident": "TIME",
+     "title": "title_achievement_player-cloaked",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_playerlevel": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 5,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 10,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 15,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_playerlevel-1",
+     "points": 25
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 20,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Level",
+     "stored": false,
+     "operator": ">=",
+     "value": 25,
+     "incident": "LEVEL",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_playerlevel-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_playtime-enemymap": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PlaytimeOnEnemyMap",
+     "operator": ">=",
+     "value": 360,
+     "incident": "TIME",
+     "parameters": {
+      "map": [
+       {
+        "type": "ENEMY"
+       }
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "PlaytimeOnEnemyMap",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "TIME",
+     "parameters": {
+      "map": [
+       {
+        "type": "ENEMY"
+       }
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "PlaytimeOnEnemyMap",
+     "operator": ">=",
+     "value": 12500,
+     "incident": "TIME",
+     "parameters": {
+      "map": [
+       {
+        "type": "ENEMY"
+       }
+      ]
+     },
+     "title": "title_achievement_playtime-enemymap",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_playtime-pvpmap": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MapTypeCheck",
+     "operator": ">=",
+     "value": 360,
+     "incident": "TIME",
+     "parameters": {
+      "mapType": [
+       "PVP"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "MapTypeCheck",
+     "operator": ">=",
+     "value": 1250,
+     "incident": "TIME",
+     "parameters": {
+      "mapType": [
+       "PVP"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "MapTypeCheck",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "TIME",
+     "parameters": {
+      "mapType": [
+       "PVP"
+      ]
+     },
+     "title": "title_achievement_playtime-pvpmap",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_playtime": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 2000,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 35000,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_playtime-1",
+     "points": 25
+    },
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 65000,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 125000,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "title": "title_achievement_playtime-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_pet_playtime": {
+   "group": "PET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Playtime",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "TIME",
+     "parameters": {
+      "avatar": [
+       "PET"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_social_profile-likes": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Profile",
+     "stored": false,
+     "operator": ">=",
+     "value": 25,
+     "parameters": {
+      "property": [
+       {
+        "type": "LIKE"
+       }
+      ]
+     },
+     "points": 25
+    }
+   ]
+  },
+  "achievement_social_profile-views": {
+   "group": "SOCIAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Profile",
+     "stored": false,
+     "operator": ">=",
+     "value": 25,
+     "parameters": {
+      "property": [
+       {
+        "type": "VIEW"
+       }
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Profile",
+     "stored": false,
+     "operator": ">=",
+     "value": 100,
+     "parameters": {
+      "property": [
+       {
+        "type": "VIEW"
+       }
+      ]
+     },
+     "points": 25
+    }
+   ]
+  },
+  "achievement_pet_prometium": {
+   "group": "PET",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "CollectResource",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "COLLECT",
+     "parameters": {
+      "resourceType": [
+       "PROMETIUM"
+      ],
+      "avatar": [
+       "PET"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_prosperous-gg": {
+   "group": "EVENT_PROSPEROUS",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "CollectPackage",
+     "operator": ">=",
+     "value": 1,
+     "incident": "COLLECT",
+     "parameters": {
+      "packageId": [
+       "package_event_reward-prosperous-alphabetagamma-sub"
+      ]
+     },
+     "points": 0,
+     "title": "title_achievement_event_prosperous-gg_1"
+    }
+   ]
+  },
+  "achievement_event_prosperous": {
+   "group": "EVENT_PROSPEROUS",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 200,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "522",
+       "523",
+       "524"
+      ]
+     },
+     "points": 40,
+     "title": "title_achievement_event_prosperous_1"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 500,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "522",
+       "523",
+       "524"
+      ]
+     },
+     "points": 75,
+     "title": "title_achievement_event_prosperous_2"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "522",
+       "523",
+       "524"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_prosperous_3"
+    }
+   ]
+  },
+  "achievement_ability_protect": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 300,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "PROTECT"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 700,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "PROTECT"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1800,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "PROTECT"
+      ]
+     },
+     "title": "title_achievement_ability_protect-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "PROTECT"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 6500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "PROTECT"
+      ]
+     },
+     "title": "title_achievement_ability_protect-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_seasonpass_q1": {
+   "group": "SEASONPASS_Q1",
+   "enabled": true,
+   "event": "SeasonPass",
+   "levels": [
+    {
+     "class_name": "LevelAbsolute",
+     "operator": ">=",
+     "value": 50,
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 40,
+     "title": "title_seasonpass_q1_1"
+    }
+   ]
+  },
+  "achievement_quest_quests-deathless": {
+   "group": "QUEST",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestDeathless",
+     "reset_on_death": true,
+     "operator": ">=",
+     "value": 10,
+     "incident": "QUEST",
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_quest_quests": {
+   "group": "QUEST",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Quest",
+     "operator": ">=",
+     "value": 5,
+     "incident": "QUEST",
+     "points": 5
+    },
+    {
+     "class_name": "Quest",
+     "operator": ">=",
+     "value": 20,
+     "incident": "QUEST",
+     "points": 10
+    },
+    {
+     "class_name": "Quest",
+     "operator": ">=",
+     "value": 50,
+     "incident": "QUEST",
+     "title": "title_achievement_quest_quests-1",
+     "points": 25
+    },
+    {
+     "class_name": "Quest",
+     "operator": ">=",
+     "value": 75,
+     "incident": "QUEST",
+     "points": 50
+    },
+    {
+     "class_name": "Quest",
+     "operator": ">=",
+     "value": 100,
+     "incident": "QUEST",
+     "title": "title_achievement_quest_quests-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_worldboss_recoverhp-202506": {
+   "group": "EVENT_PUBLIC_WORLD_BOSS",
+   "enabled": true,
+   "event": "PublicWorldBoss",
+   "levels": [
+    {
+     "class_name": "PublicWorldBossCondition",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "PUBLIC_WORLD_BOSS_2025",
+     "points": 10,
+     "title": "title_worldboss_recoverhp_june2025"
+    }
+   ]
+  },
+  "achievement_worldboss_recoverhp-202606": {
+   "group": "EVENT_PUBLIC_WORLD_BOSS",
+   "enabled": true,
+   "event": "PublicWorldBoss",
+   "levels": [
+    {
+     "class_name": "PublicWorldBossCondition",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "PUBLIC_WORLD_BOSS_2026",
+     "points": 10,
+     "title": "title_worldboss_recoverhp_june2026"
+    }
+   ]
+  },
+  "achievement_dispatch_retriever": {
+   "group": "DISPATCH",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 5,
+     "incident": "DISPATCH_RETRIEVER",
+     "points": 5
+    },
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 25,
+     "incident": "DISPATCH_RETRIEVER",
+     "points": 10
+    },
+    {
+     "class_name": "Dispatch",
+     "operator": ">=",
+     "value": 50,
+     "incident": "DISPATCH_RETRIEVER",
+     "points": 25,
+     "title": "title_achievement_dispatch_retriever_3"
+    }
+   ]
+  },
+  "achievement_skylab_robot-boost": {
+   "group": "SKYLAB",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "SkylabRobot",
+     "operator": ">=",
+     "value": 12,
+     "points": 5
+    }
+   ]
+  },
+  "achievement_rocketshots": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "ROCKET_LAUNCHER"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 2000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "ROCKET_LAUNCHER"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 10000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "ROCKET_LAUNCHER"
+      ]
+     },
+     "title": "title_achievement_rocketshots-1",
+     "points": 25
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 25000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "ROCKET_LAUNCHER"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AmmoShots",
+     "operator": ">=",
+     "value": 50000,
+     "incident": "SHOOT",
+     "parameters": {
+      "weaponType": [
+       "ROCKET_LAUNCHER"
+      ]
+     },
+     "title": "title_achievement_rocketshots-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_destroy_sae-saboteur": {
+   "group": "DESTROY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 30,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "553"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "553"
+      ]
+     },
+     "points": 15
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 300,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "553"
+      ]
+     },
+     "points": 20
+    }
+   ]
+  },
+  "achievement_trainingarena_season-bronze": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 600,
+     "title": "title_achievement_trainingarena_season-bronze",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_trainingarena_season-elite": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 400,
+     "title": "title_achievement_trainingarena_season-elite",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_trainingarena_season-gold": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 1000,
+     "title": "title_achievement_trainingarena_season-gold",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_trainingarena_season-silver": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 800,
+     "title": "title_achievement_trainingarena_season-silver",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_trainingarena_season-veteran": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 200,
+     "title": "title_achievement_trainingarena_season-veteran",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_trainingarena_season-warrior": {
+   "group": "TRAINING_ARENA",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "points": 100,
+     "title": "title_achievement_trainingarena_season-warrior",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_skylab_seprom": {
+   "group": "SKYLAB",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Skylab",
+     "operator": ">=",
+     "value": 100000,
+     "parameters": {
+      "ore": [
+       {
+        "type": "SEPROM"
+       }
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_ability_shield-recharge": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "SHIELD_RECHARGE"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 600,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "SHIELD_RECHARGE"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "SHIELD_RECHARGE"
+      ]
+     },
+     "title": "title_achievement_ability_shield-recharge-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "SHIELD_RECHARGE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 8000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "SHIELD_RECHARGE"
+      ]
+     },
+     "title": "title_achievement_ability_shield-recharge-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_discover_shipdesigns": {
+   "group": "DISCOVER",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "ShipDesignCollect",
+     "stored": false,
+     "operator": ">=",
+     "value": 10,
+     "incident": "COLLECT",
+     "parameters": {
+      "shipDesignType": [
+       "AMBER"
+      ]
+     },
+     "points": 50
+    }
+   ]
+  },
+  "achievement_misc_skill-harmony": {
+   "group": "FACTORY",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "SkillDesign",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "CAUSED",
+     "parameters": {
+      "type": [
+       "INSTANT_HEAL"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_misc_softie": {
+   "group": "MISC",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "PetKiller",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROYED",
+     "parameters": {
+      "avatar": [
+       "PLAYER"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-champion-3",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-collectionmarathon-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-collectionmarathon-champion-1",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-collectionmarathon": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 500,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3100"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 650,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3100"
+      ]
+     },
+     "points": 50,
+     "grade": 4
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 800,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3100"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-completebronze": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 3,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_solarclash-2012-orbitrace"
+      ]
+     },
+     "title": "title_achievement_event_solarclash-2012-completebronze-1",
+     "points": 100,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-completegold": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 5,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_solarclash-2012-orbitrace"
+      ]
+     },
+     "title": "title_achievement_event_solarclash-2012-completegold-3",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-completesilver": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "MetaAchievement",
+     "operator": ">=",
+     "value": 4,
+     "incident": "METAACHIEVED",
+     "parameters": {
+      "achievementId": [
+       "achievement_event_solarclash-2012-orbitrace"
+      ]
+     },
+     "title": "title_achievement_event_solarclash-2012-completesilver-2",
+     "points": 100,
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-hsg-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-hsg-champion-1",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-hsg": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 2500,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "13337"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 7500,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "13337"
+      ]
+     },
+     "points": 50,
+     "grade": 4
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 9000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "13337"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-orbitrace-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-orbitrace-champion-1",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-orbitrace": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 360000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3098"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 330000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3098"
+      ]
+     },
+     "points": 50,
+     "grade": 4
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 300000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3098"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-targetshooting-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-targetshooting-champion-1",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-targetshooting": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 125,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3082"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 180,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3082"
+      ]
+     },
+     "points": 50,
+     "grade": 4
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": ">=",
+     "value": 225,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3082"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-triathlon-champion": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_solarclash-2012-triathlon-champion-1",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_solarclash-2012-triathlon": {
+   "group": "EVENT_SOLARCLASH_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 1200000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3130"
+      ]
+     },
+     "points": 25,
+     "grade": 3
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 1020000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3130"
+      ]
+     },
+     "points": 50,
+     "grade": 4
+    },
+    {
+     "class_name": "QuestRating",
+     "stored": false,
+     "operator": "<",
+     "value": 900000,
+     "incident": "QUESTRATING",
+     "parameters": {
+      "trackedConditionId": [
+       "3130"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight-2012-champion": {
+   "group": "EVENT_SPRING_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_springfight-2012-champion",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight-2012-eic": {
+   "group": "EVENT_SPRING_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_springfight-2012-eic",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight-2012-hunter": {
+   "group": "EVENT_SPRING_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_springfight-2012-hunter",
+     "points": 50,
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_event_springfight-2012-mmo": {
+   "group": "EVENT_SPRING_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_springfight-2012-mmo",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight-2012-vru": {
+   "group": "EVENT_SPRING_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "IgnoredCondition",
+     "stored": false,
+     "title": "title_achievement_event_springfight-2012-vru",
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight-2014-influence-battle": {
+   "group": "EVENT_SPRINGFIGHT_2014",
+   "enabled": true,
+   "event": "SpringFight2014Achievement",
+   "levels": [
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "INFLUENCE_GAINED",
+     "title": "title_achievement_event_springfight-2014-influence-battle-1",
+     "points": 5
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 15000,
+     "incident": "INFLUENCE_GAINED",
+     "points": 10
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 20000,
+     "incident": "INFLUENCE_GAINED",
+     "title": "title_achievement_event_springfight-2014-influence-battle-2",
+     "points": 10
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 50000,
+     "incident": "INFLUENCE_GAINED",
+     "points": 15
+    },
+    {
+     "class_name": "Influence",
+     "operator": ">=",
+     "value": 150000,
+     "incident": "INFLUENCE_GAINED",
+     "title": "title_achievement_event_springfight-2014-influence-battle-3",
+     "points": 20
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-high-eic": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_springfight2013-eic-2",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-high-mmo": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_springfight2013-mmo-2",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-high-vru": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_springfight2013-vru-2",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-low-eic": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 50,
+     "title": "title_achievement_event_springfight2013-eic-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-low-mmo": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 50,
+     "title": "title_achievement_event_springfight2013-mmo-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_springfight2013-quests-low-vru": {
+   "group": "EVENT_SPRINGFIGHT_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "incident": "QUEST",
+     "points": 50,
+     "title": "title_achievement_event_springfight2013-vru-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_misc_legacy_starbornecommander": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "title": "title_achievement_misc_legacy_starbornecommander"
+    }
+   ]
+  },
+  "achievement_misc_legacy_stellarcaptain": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": null,
+     "title": "title_achievement_misc_legacy_stellarcaptain"
+    }
+   ]
+  },
+  "achievement_event_summer-mutation": {
+   "group": "EVENT_SUMMER_MUTATION",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 200,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "240",
+       "241",
+       "390",
+       "540"
+      ]
+     },
+     "points": 40,
+     "title": "title_achievement_event_summer-mutation_1"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 500,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "240",
+       "241",
+       "390",
+       "540"
+      ]
+     },
+     "points": 75,
+     "title": "title_achievement_event_summer-mutation_2"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "240",
+       "241",
+       "390",
+       "540"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_summer-mutation_3"
+    }
+   ]
+  },
+  "achievement_event_summerevent-2013-humanitys-hero": {
+   "group": "EVENT_SUMMER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "1340",
+      "1341",
+      "1342",
+      "1343",
+      "1344",
+      "1345",
+      "1346",
+      "1347",
+      "1348",
+      "1349",
+      "1350",
+      "1351",
+      "1352"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_summerevent-2013-humanitys-hero-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_summerevent-2013-humanitys-savior": {
+   "group": "EVENT_SUMMER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "1320",
+      "1321",
+      "1322",
+      "1323",
+      "1324",
+      "1325",
+      "1326",
+      "1327",
+      "1328",
+      "1329",
+      "1330",
+      "1331",
+      "1332",
+      "1333",
+      "1334"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 50,
+     "title": "title_achievement_summerevent-2013-humanitys-savior-1",
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_event_summerevent-2013-space-regiment": {
+   "group": "EVENT_SUMMER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "1360",
+      "1361",
+      "1362",
+      "1363",
+      "1364",
+      "1365",
+      "1366",
+      "1367",
+      "1368",
+      "1369",
+      "1370",
+      "1371",
+      "1372",
+      "1373",
+      "1374"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_summerevent-2013-space-regiment-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_summerevent-2013-war-veteran": {
+   "group": "EVENT_SUMMER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "1300",
+      "1301",
+      "1302",
+      "1303",
+      "1304",
+      "1305",
+      "1306",
+      "1307",
+      "1308",
+      "1309",
+      "1310",
+      "1311"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_summerevent-2013-war-veteran-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_synk-kill": {
+   "group": "EVENT_FROZENLABYRINTH",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "228"
+      ]
+     },
+     "title": "title_achievement_event_synk-kill",
+     "points": 50
+    }
+   ]
+  },
+  "achievement_worldboss_takedamage-202506": {
+   "group": "EVENT_PUBLIC_WORLD_BOSS",
+   "enabled": true,
+   "event": "PublicWorldBoss",
+   "levels": [
+    {
+     "class_name": "PublicWorldBossCondition",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "PUBLIC_WORLD_BOSS_2025",
+     "points": 10,
+     "title": "title_worldboss_takedamage_june2025"
+    }
+   ]
+  },
+  "achievement_worldboss_takedamage-202606": {
+   "group": "EVENT_PUBLIC_WORLD_BOSS",
+   "enabled": true,
+   "event": "PublicWorldBoss",
+   "levels": [
+    {
+     "class_name": "PublicWorldBossCondition",
+     "operator": ">=",
+     "value": 5000000,
+     "incident": "PUBLIC_WORLD_BOSS_2026",
+     "points": 10,
+     "title": "title_worldboss_takedamage_june2026"
+    }
+   ]
+  },
+  "achievement_teamdeathmatch-kills": {
+   "group": "DESTROY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TeamDeathMatchKill",
+     "operator": ">=",
+     "value": 200,
+     "incident": "DESTROY",
+     "title": "title_teamdeathmatch_kills-1",
+     "points": 5
+    },
+    {
+     "class_name": "TeamDeathMatchKill",
+     "operator": ">=",
+     "value": 500,
+     "incident": "DESTROY",
+     "title": "title_teamdeathmatch_kills-2",
+     "points": 10
+    },
+    {
+     "class_name": "TeamDeathMatchKill",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "DESTROY",
+     "title": "title_teamdeathmatch_kills-3",
+     "points": 25
+    }
+   ]
+  },
+  "achievement_factory_tech-usage": {
+   "group": "FACTORY",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TechUsage",
+     "operator": ">=",
+     "value": 100,
+     "incident": "USED",
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_test-dummy": {
+   "group": "GENERAL",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TutorialFinished",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "TUTORIAL",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_thanksgiving-mutate-turkeys": {
+   "group": "EVENT_THANKSGIVING",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 200,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "120"
+      ]
+     },
+     "points": 40,
+     "title": "title_master-roaster"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 500,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "120"
+      ]
+     },
+     "points": 75,
+     "title": "title_master-roaster-2"
+    },
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 1000,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "120"
+      ]
+     },
+     "points": 100,
+     "title": "title_master-roaster-3"
+    }
+   ]
+  },
+  "achievement_skylab_transport": {
+   "group": "SKYLAB",
+   "enabled": false,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "SkylabTransport",
+     "operator": ">=",
+     "value": 1000,
+     "points": 5
+    }
+   ]
+  },
+  "achievement_ability_travel-mode": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 200,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "TRAVEL_MODE"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "TRAVEL_MODE"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 800,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "TRAVEL_MODE"
+      ]
+     },
+     "title": "title_achievement_ability_travel-mode-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1700,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "TRAVEL_MODE"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 2500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "TRAVEL_MODE"
+      ]
+     },
+     "title": "title_achievement_ability_travel-mode-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_tutorial-finished": {
+   "group": "GENERAL",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "TutorialFinished",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "TUTORIAL",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_ability_ultimate-cloaking": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 150,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_CLOAKING"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_CLOAKING"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1250,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_CLOAKING"
+      ]
+     },
+     "title": "title_achievement_ability_ultimate-cloaking-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_CLOAKING"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 7500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_CLOAKING"
+      ]
+     },
+     "title": "title_achievement_ability_ultimate-cloaking-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_ability_ultimate-emp": {
+   "group": "ABILITY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 100,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_EMP",
+       "JAMX_CREED"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 250,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_EMP",
+       "JAMX_CREED"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 800,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_EMP",
+       "JAMX_CREED"
+      ]
+     },
+     "title": "title_achievement_ability_ultimate-emp-1",
+     "points": 25
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 1500,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_EMP",
+       "JAMX_CREED"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "AbilityType",
+     "operator": ">=",
+     "value": 3000,
+     "incident": "USED",
+     "parameters": {
+      "abilityType": [
+       "ULTIMATE_EMP",
+       "JAMX_CREED"
+      ]
+     },
+     "title": "title_achievement_ability_ultimate-emp-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_collect_uridium": {
+   "group": "COLLECT",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 100000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 330000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "points": 10
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "title": "title_achievement_collect_uridium-1",
+     "points": 25
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 1000000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "points": 50
+    },
+    {
+     "class_name": "Currency",
+     "operator": ">=",
+     "value": 2500000,
+     "incident": "COLLECT",
+     "parameters": {
+      "currencyType": [
+       "URIDIUM"
+      ]
+     },
+     "title": "title_achievement_collect_uridium-2",
+     "points": 100
+    }
+   ]
+  },
+  "achievement_event_valentine": {
+   "group": "EVENT_VALENTINE",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "BuildRecipe",
+     "operator": ">=",
+     "value": 142,
+     "incident": "BUILD",
+     "parameters": {
+      "recipeId": [
+       "recipe_blueprint-fwx-com-multiple-valentine"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_valentine_1"
+    }
+   ],
+   "period_reset": "immortal_union",
+   "_period_zero": "Official Turkish forum (Immortal Union FAQ): craft FWX-COM 142 times within a single Immortal Union event; progress does not carry over to the next event"
+  },
+  "achievement_destroy_venerable-battleray": {
+   "group": "DESTROY",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 5,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "121"
+      ]
+     },
+     "points": 5
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 25,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "121"
+      ]
+     },
+     "points": 15,
+     "title": "title_achievement_venerable-battleray-2"
+    },
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 50,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "121"
+      ]
+     },
+     "points": 20,
+     "title": "title_achievement_venerable-battleray-3"
+    }
+   ]
+  },
+  "achievement_misc_whizzed": {
+   "group": "MISC",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DesignMutation",
+     "set": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "50",
+      "52",
+      "53",
+      "71",
+      "73",
+      "75",
+      "76",
+      "77",
+      "78",
+      "79",
+      "81",
+      "83"
+     ],
+     "matches": "ALL",
+     "incident": "AFFECTED_BY",
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_wildpet-kill-wildpet1": {
+   "group": "EVENT_WILDPET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "130"
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_event_wildpet-kill-wildpet10": {
+   "group": "EVENT_WILDPET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "operator": ">=",
+     "value": 100,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "139"
+      ]
+     },
+     "points": 10
+    }
+   ]
+  },
+  "achievement_event_wildpet-kill-wildpetboss": {
+   "group": "EVENT_WILDPET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "NPCSelectionKill",
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "npcType": [
+       "WILDPET_BOSS_HARD",
+       "WILDPET_BOSS_EASY"
+      ]
+     },
+     "points": 25
+    }
+   ]
+  },
+  "achievement_event_wildpet-quests-high": {
+   "group": "EVENT_WILDPET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "514085",
+      "514086",
+      "514087",
+      "514088",
+      "514089",
+      "514090",
+      "514091",
+      "514092",
+      "514093",
+      "514094",
+      "514095",
+      "514096",
+      "514097",
+      "514098"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 15
+    }
+   ]
+  },
+  "achievement_event_wildpet-quests-low": {
+   "group": "EVENT_WILDPET",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "505071",
+      "505072",
+      "505073",
+      "505074",
+      "505075",
+      "505076",
+      "505077",
+      "505078",
+      "505079",
+      "505080",
+      "505081",
+      "505082",
+      "505083",
+      "505084"
+     ],
+     "matches": "ALL",
+     "incident": "QUEST",
+     "points": 10
+    }
+   ]
+  },
+  "achievement_event_summer2014_wingman": {
+   "group": "EVENT_SUMMER_2014",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "DominationBeaconTakeover",
+     "incident": "DOMINATION_BEACON_TAKEOVER_ASSIST",
+     "title": "title_achievement_event_summer2014_wingman",
+     "points": 25,
+     "grade": 3
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-birthdaygate": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011",
+   "levels": [
+    {
+     "class_name": "GalaxyGateDone",
+     "operator": ">=",
+     "value": 1,
+     "incident": "GALAXY_GATE",
+     "parameters": {
+      "galaxyGateType": [
+       "BIRTHDAY"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-crazysanta": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011_CrazySanta",
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "74"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-giftboxes": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011_GiftBoxes",
+   "levels": [
+    {
+     "class_name": "Collect",
+     "operator": ">=",
+     "value": 250,
+     "incident": "COLLECT",
+     "parameters": {
+      "boxType": [
+       "GIFT_BOXES"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-icemeteoroid": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011_IceMeteroids",
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "54"
+      ]
+     },
+     "points": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-quests": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011_Quests",
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "1120",
+      "1121",
+      "1122",
+      "1123",
+      "1128",
+      "1130",
+      "1131",
+      "1133",
+      "1139",
+      "1142",
+      "1145",
+      "1148",
+      "1151",
+      "1153",
+      "1155",
+      "1157",
+      "1158",
+      "1159",
+      "1160",
+      "1162",
+      "1163",
+      "1165",
+      "1166",
+      "1167",
+      "1168",
+      "1169",
+      "1170",
+      "1172",
+      "1177",
+      "1178",
+      "1179",
+      "1181",
+      "1184",
+      "1185"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 5,
+     "reward": "package_event_reward-winterquests"
+    }
+   ]
+  },
+  "achievement_event_winterevent2011-supericemeteoroid": {
+   "group": "EVENT_WINTER_2011",
+   "enabled": true,
+   "event": "WinterEvent2011_IceMeteroids",
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": false,
+     "operator": ">=",
+     "value": 1,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "55"
+      ]
+     },
+     "points": 10,
+     "grade": 2
+    }
+   ]
+  },
+  "achievement_event_winterevent2012-birthdaygate": {
+   "group": "EVENT_WINTER_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "GalaxyGateDone",
+     "operator": ">=",
+     "value": 1,
+     "incident": "GALAXY_GATE",
+     "parameters": {
+      "galaxyGateType": [
+       "BIRTHDAY"
+      ]
+     },
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2012-calendar": {
+   "group": "EVENT_WINTER_2012",
+   "enabled": true,
+   "event": "WinterEvent2012",
+   "levels": [
+    {
+     "class_name": null,
+     "points": 100,
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2012-quests-high": {
+   "group": "EVENT_WINTER_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "103400",
+      "103600",
+      "103800",
+      "104000",
+      "104200",
+      "104400",
+      "104600",
+      "104800",
+      "105000",
+      "105200",
+      "105400",
+      "105600",
+      "105800",
+      "106000",
+      "106200",
+      "106420",
+      "106600",
+      "106800",
+      "107000",
+      "107200",
+      "107400",
+      "107600",
+      "107800",
+      "108000",
+      "108200",
+      "108400",
+      "108600",
+      "108800",
+      "109000",
+      "109200",
+      "109400"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_winterevent2012-full-pull-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2012-quests-low": {
+   "group": "EVENT_WINTER_2012",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "103300",
+      "103500",
+      "103700",
+      "103900",
+      "104100",
+      "104300",
+      "104500",
+      "104700",
+      "104900",
+      "105100",
+      "105300",
+      "105500",
+      "105700",
+      "105900",
+      "106100",
+      "106320",
+      "106500",
+      "106700",
+      "106900",
+      "107100",
+      "107300",
+      "107500",
+      "107700",
+      "107900",
+      "108100",
+      "108300",
+      "108500",
+      "108700",
+      "108900",
+      "109100",
+      "109300"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_winterevent2012-the-whole-ten-yards-1",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2013-frostlord": {
+   "group": "EVENT_SEASON_WINTER",
+   "enabled": true,
+   "event": "SnowManMutation",
+   "levels": [
+    {
+     "class_name": "DesignMutationCount",
+     "operator": ">=",
+     "value": 20,
+     "incident": "CAUSED",
+     "parameters": {
+      "mutatedDesignId": [
+       "121"
+      ]
+     },
+     "points": 50,
+     "title": "title_achievement_event_winterevent2013-frostlord",
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_event_winterevent2013-ice-breaker": {
+   "group": "EVENT_SEASON_WINTER",
+   "enabled": true,
+   "event": "IceMeteroids",
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 10,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "54"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_winterevent2013-ice-breaker",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2013-quests-31": {
+   "group": "EVENT_WINTER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "21034",
+      "21036",
+      "21038",
+      "21040",
+      "21042",
+      "21044",
+      "21046",
+      "21048",
+      "21050",
+      "21052",
+      "21054",
+      "21056",
+      "21058",
+      "21060",
+      "21062",
+      "21064",
+      "21066",
+      "21068",
+      "21070",
+      "21072",
+      "21074",
+      "21076",
+      "21078",
+      "21080",
+      "21082",
+      "21084",
+      "21086",
+      "21088",
+      "21090",
+      "21092",
+      "21094",
+      "21033",
+      "21035",
+      "21037",
+      "21039",
+      "21041",
+      "21043",
+      "21045",
+      "21047",
+      "21049",
+      "21051",
+      "21053",
+      "21055",
+      "21057",
+      "21059",
+      "21061",
+      "21063",
+      "21065",
+      "21067",
+      "21069",
+      "21071",
+      "21073",
+      "21075",
+      "21077",
+      "21079",
+      "21081",
+      "21083",
+      "21085",
+      "21087",
+      "21089",
+      "21091",
+      "21093"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 100,
+     "title": "title_achievement_event_winterevent2013-quests-31",
+     "grade": 4
+    }
+   ]
+  },
+  "achievement_event_winterevent2013-quests-62": {
+   "group": "EVENT_WINTER_2013",
+   "enabled": true,
+   "event": null,
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "21034",
+      "21036",
+      "21038",
+      "21040",
+      "21042",
+      "21044",
+      "21046",
+      "21048",
+      "21050",
+      "21052",
+      "21054",
+      "21056",
+      "21058",
+      "21060",
+      "21062",
+      "21064",
+      "21066",
+      "21068",
+      "21070",
+      "21072",
+      "21074",
+      "21076",
+      "21078",
+      "21080",
+      "21082",
+      "21084",
+      "21086",
+      "21088",
+      "21090",
+      "21092",
+      "21094",
+      "21033",
+      "21035",
+      "21037",
+      "21039",
+      "21041",
+      "21043",
+      "21045",
+      "21047",
+      "21049",
+      "21051",
+      "21053",
+      "21055",
+      "21057",
+      "21059",
+      "21061",
+      "21063",
+      "21065",
+      "21067",
+      "21069",
+      "21071",
+      "21073",
+      "21075",
+      "21077",
+      "21079",
+      "21081",
+      "21083",
+      "21085",
+      "21087",
+      "21089",
+      "21091",
+      "21093"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 200,
+     "title": "title_achievement_event_winterevent2013-quests-62",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2013-space-grinch": {
+   "group": "EVENT_SEASON_WINTER",
+   "enabled": true,
+   "event": "CrazySanta",
+   "levels": [
+    {
+     "class_name": "AvatarTypeKill",
+     "stored": true,
+     "operator": ">=",
+     "value": 10,
+     "incident": "DESTROY",
+     "parameters": {
+      "avatar": [
+       "NPC"
+      ],
+      "id": [
+       "74"
+      ]
+     },
+     "points": 100,
+     "title": "title_achievement_event_winterevent2013-space-grinch",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2014-quests-3014": {
+   "group": "EVENT_WINTER_2014",
+   "enabled": true,
+   "event": "Breach",
+   "levels": [
+    {
+     "class_name": null,
+     "points": 300,
+     "title": "title_achievement_event_winterevent2014-quests-3014",
+     "grade": 5
+    }
+   ]
+  },
+  "achievement_event_winterevent2014-the-melter": {
+   "group": "EVENT_SEASON_WINTER",
+   "enabled": true,
+   "event": "Breach",
+   "levels": [
+    {
+     "class_name": "QuestSelection",
+     "set": [
+      "506027",
+      "516027"
+     ],
+     "matches": "ATLEAST",
+     "incident": "QUEST",
+     "points": 1500,
+     "title": "title_achievement_event_winterevent2014-the-melter",
+     "grade": 5
+    }
+   ]
+  }
+ },
+ "titles": {
+  "title_achievement_ability_double-minimap-reveal-1": 1000,
+  "title_achievement_ability_double-minimap-reveal-2": 1001,
+  "title_achievement_ability_draw-fire-1": 1002,
+  "title_achievement_ability_draw-fire-2": 1003,
+  "title_achievement_ability_fortify-1": 1004,
+  "title_achievement_ability_fortify-2": 1005,
+  "title_achievement_ability_healing-beam-1": 1006,
+  "title_achievement_ability_healing-beam-2": 1007,
+  "title_achievement_ability_healing-pod-1": 1008,
+  "title_achievement_ability_healing-pod-2": 1009,
+  "title_achievement_ability_mark-target-1": 1010,
+  "title_achievement_ability_mark-target-2": 1011,
+  "title_achievement_ability_protect-1": 1012,
+  "title_achievement_ability_protect-2": 1013,
+  "title_achievement_ability_shield-recharge-1": 1014,
+  "title_achievement_ability_shield-recharge-2": 1015,
+  "title_achievement_ability_travel-mode-1": 1016,
+  "title_achievement_ability_travel-mode-2": 1017,
+  "title_achievement_ability_ultimate-cloaking-1": 1018,
+  "title_achievement_ability_ultimate-cloaking-2": 1019,
+  "title_achievement_ability_ultimate-emp-1": 1020,
+  "title_achievement_ability_ultimate-emp-2": 1021,
+  "title_achievement_beacon-keeper": 1022,
+  "title_achievement_collect_bonusboxes-1": 1023,
+  "title_achievement_collect_bonusboxes-2": 1024,
+  "title_achievement_collect_credits-1": 325,
+  "title_achievement_collect_credits-2": 1025,
+  "title_achievement_collect_uridium-1": 1026,
+  "title_achievement_collect_uridium-2": 1027,
+  "title_achievement_damagedealer-1": 1028,
+  "title_achievement_damagedealer-2": 1029,
+  "title_achievement_destroy_aliens-1": 1030,
+  "title_achievement_destroy_aliens-2": 1031,
+  "title_achievement_discover_distance-2": 1032,
+  "title_achievement_dispatch_gate_3": 1033,
+  "title_achievement_dispatch_retriever_3": 1034,
+  "title_achievement_drone_formation-change-1": 1035,
+  "title_achievement_drone_formation-change-2": 1036,
+  "title_achievement_event_battle-for-influence-legend": 1037,
+  "title_achievement_event_battle-for-influence-points-1": 1038,
+  "title_achievement_event_battle-for-influence-points-2": 1039,
+  "title_achievement_event_battle-for-influence-quests": 1040,
+  "title_achievement_event_demaner_hunt_2": 1041,
+  "title_achievement_event_demaner_hunt_3": 1042,
+  "title_achievement_event_demaner_hunt_4": 1043,
+  "title_achievement_event_domination-1": 1044,
+  "title_achievement_event_domination-2": 1045,
+  "title_achievement_event_domination-3": 1046,
+  "title_achievement_event_domination-4": 1047,
+  "title_achievement_event_domination_reoccurring-cubikon-gravekeeper": 1048,
+  "title_achievement_event_domination_reoccurring-hidden-hunter": 1049,
+  "title_achievement_event_domination_reoccurring-immoveable-object": 1050,
+  "title_achievement_event_domination_reoccurring-lord-of-dead": 1051,
+  "title_achievement_event_domination_reoccurring-unstoppable-force": 1052,
+  "title_achievement_event_easter-eggs-galaxy-gate-firework": 1053,
+  "title_achievement_event_easter-eggs-minimap-ping": 1054,
+  "title_achievement_event_easter-eggs-rainbow-laser": 1055,
+  "title_achievement_event_empyrian_1": 1056,
+  "title_achievement_event_empyrian_2": 1057,
+  "title_achievement_event_empyrian_3": 1058,
+  "title_achievement_event_eternalgate-champion": 1059,
+  "title_achievement_event_gauntletofplutus-champion": 1060,
+  "title_achievement_event_gauntletofplutus-kill-plutus-30": 1061,
+  "title_achievement_event_gauntletofplutus-luck": 1062,
+  "title_achievement_event_halloween2015-challenge": 1063,
+  "title_achievement_event_halloween2015-kill-drones": 1064,
+  "title_achievement_event_mwg-merc-contractor_first": 1065,
+  "title_achievement_event_mwg-merc-elite": 1066,
+  "title_achievement_event_mwg-merc-ethereal": 1067,
+  "title_achievement_event_mwg-merc-legionnaire": 1068,
+  "title_achievement_event_plague-cure-players-2": 1069,
+  "title_achievement_event_plague-cure-players-3": 1070,
+  "title_achievement_event_plague-infect-players-2": 1071,
+  "title_achievement_event_plague-infect-players-3": 1072,
+  "title_achievement_event_plague-kill-boss": 1073,
+  "title_achievement_event_plague-kill-minions": 1074,
+  "title_achievement_event_plague-meta-healthy": 1075,
+  "title_achievement_event_plague-meta-infected": 1076,
+  "title_achievement_event_plague-quests-healthy": 1077,
+  "title_achievement_event_plague-quests-infected": 1078,
+  "title_achievement_event_prosperous-gg_1": 1079,
+  "title_achievement_event_prosperous_1": 1080,
+  "title_achievement_event_prosperous_2": 1081,
+  "title_achievement_event_prosperous_3": 1082,
+  "title_achievement_event_solarclash-2012-champion-3": 1083,
+  "title_achievement_event_solarclash-2012-collectionmarathon-champion-1": 1084,
+  "title_achievement_event_solarclash-2012-completebronze-1": 1085,
+  "title_achievement_event_solarclash-2012-completegold-3": 1086,
+  "title_achievement_event_solarclash-2012-completesilver-2": 1087,
+  "title_achievement_event_solarclash-2012-hsg-champion-1": 1088,
+  "title_achievement_event_solarclash-2012-orbitrace-champion-1": 1089,
+  "title_achievement_event_solarclash-2012-targetshooting-champion-1": 1090,
+  "title_achievement_event_solarclash-2012-triathlon-champion-1": 1091,
+  "title_achievement_event_springfight-2012-champion": 1092,
+  "title_achievement_event_springfight-2012-eic": 1093,
+  "title_achievement_event_springfight-2012-hunter": 1094,
+  "title_achievement_event_springfight-2012-mmo": 1095,
+  "title_achievement_event_springfight-2012-vru": 1096,
+  "title_achievement_event_springfight-2014-influence-battle-1": 1097,
+  "title_achievement_event_springfight-2014-influence-battle-2": 1098,
+  "title_achievement_event_springfight-2014-influence-battle-3": 1099,
+  "title_achievement_event_springfight2013-eic-1": 1100,
+  "title_achievement_event_springfight2013-eic-2": 1101,
+  "title_achievement_event_springfight2013-mmo-1": 1102,
+  "title_achievement_event_springfight2013-mmo-2": 1103,
+  "title_achievement_event_springfight2013-vru-1": 1104,
+  "title_achievement_event_springfight2013-vru-2": 1105,
+  "title_achievement_event_summer-mutation_1": 1106,
+  "title_achievement_event_summer-mutation_2": 1107,
+  "title_achievement_event_summer-mutation_3": 1108,
+  "title_achievement_event_summer2014_assaulter": 1109,
+  "title_achievement_event_summer2014_builders-guild": 1110,
+  "title_achievement_event_summer2014_dominator": 1111,
+  "title_achievement_event_summer2014_militant": 1112,
+  "title_achievement_event_summer2014_wingman": 1113,
+  "title_achievement_event_synk-kill": 1114,
+  "title_achievement_event_valentine_1": 1115,
+  "title_achievement_event_winterevent2012-full-pull-1": 1116,
+  "title_achievement_event_winterevent2012-the-whole-ten-yards-1": 1117,
+  "title_achievement_event_winterevent2013-frostlord": 1118,
+  "title_achievement_event_winterevent2013-ice-breaker": 1119,
+  "title_achievement_event_winterevent2013-quests-31": 1120,
+  "title_achievement_event_winterevent2013-quests-62": 1121,
+  "title_achievement_event_winterevent2013-space-grinch": 1122,
+  "title_achievement_event_winterevent2014-quests-3014": 1123,
+  "title_achievement_event_winterevent2014-the-melter": 1124,
+  "title_achievement_experience-1": 304,
+  "title_achievement_experience-2": 1125,
+  "title_achievement_gatejumps": 1126,
+  "title_achievement_honor-1": 1127,
+  "title_achievement_honor-2": 1128,
+  "title_achievement_lasershots-1": 1129,
+  "title_achievement_lasershots-2": 1130,
+  "title_achievement_mines-1": 1131,
+  "title_achievement_mines-2": 1132,
+  "title_achievement_misc_jackpot-1": 1133,
+  "title_achievement_misc_legacy_cosmicadmiral": 1134,
+  "title_achievement_misc_legacy_galacticfleetadmiral": 1135,
+  "title_achievement_misc_legacy_starbornecommander": 1136,
+  "title_achievement_misc_legacy_stellarcaptain": 1137,
+  "title_achievement_multi-dimensional-pilot": 1138,
+  "title_achievement_petlevel-1": 1139,
+  "title_achievement_petlevel-2": 1140,
+  "title_achievement_player-cloaked": 1141,
+  "title_achievement_playerlevel-1": 1142,
+  "title_achievement_playerlevel-2": 1143,
+  "title_achievement_playtime-1": 1144,
+  "title_achievement_playtime-2": 1145,
+  "title_achievement_playtime-enemymap": 1146,
+  "title_achievement_playtime-pvpmap": 1147,
+  "title_achievement_pvp_destroy-player-1": 1148,
+  "title_achievement_pvp_destroy-player-2": 1149,
+  "title_achievement_pvp_destroy-player-timed-1": 1150,
+  "title_achievement_quest_quests-1": 1151,
+  "title_achievement_quest_quests-2": 1152,
+  "title_achievement_rocketshots-1": 1153,
+  "title_achievement_rocketshots-2": 1154,
+  "title_achievement_social_clan-member": 1155,
+  "title_achievement_social_friend-invites": 1156,
+  "title_achievement_social_friendinvites-1": 1157,
+  "title_achievement_social_friendinvites-2": 1158,
+  "title_achievement_social_friendinvites-3": 1159,
+  "title_achievement_summerevent-2013-humanitys-hero-1": 1160,
+  "title_achievement_summerevent-2013-humanitys-savior-1": 1161,
+  "title_achievement_summerevent-2013-space-regiment-1": 1162,
+  "title_achievement_summerevent-2013-war-veteran-1": 1163,
+  "title_achievement_trainingarena_season-bronze": 1164,
+  "title_achievement_trainingarena_season-elite": 1165,
+  "title_achievement_trainingarena_season-gold": 1166,
+  "title_achievement_trainingarena_season-silver": 1167,
+  "title_achievement_trainingarena_season-veteran": 1168,
+  "title_achievement_trainingarena_season-warrior": 1169,
+  "title_achievement_venerable-battleray-2": 1170,
+  "title_achievement_venerable-battleray-3": 1171,
+  "title_curcubinator-1": 1172,
+  "title_ghost-bosses-1": 1173,
+  "title_ghost-bosses-2": 1174,
+  "title_ghost-bosses-3": 1175,
+  "title_goalrush-2024-1": 1176,
+  "title_goalrush-2024-2": 1177,
+  "title_goalrush-2025": 1178,
+  "title_goalrush-2026": 1179,
+  "title_master-roaster": 1180,
+  "title_master-roaster-2": 1181,
+  "title_master-roaster-3": 1182,
+  "title_pumpkin-warrior": 1183,
+  "title_pumpkinator-1": 1184,
+  "title_seasonpass_202307_1": 1185,
+  "title_seasonpass_202311_1": 1186,
+  "title_seasonpass_202402_1": 1187,
+  "title_seasonpass_202405_1": 1188,
+  "title_seasonpass_202405_2": 1189,
+  "title_seasonpass_202408_1": 1190,
+  "title_seasonpass_202408_2": 1191,
+  "title_seasonpass_202411_1": 1192,
+  "title_seasonpass_202411_2": 1193,
+  "title_seasonpass_202502_1": 1194,
+  "title_seasonpass_202502_2": 1195,
+  "title_seasonpass_202505_1": 1196,
+  "title_seasonpass_202505_2": 1197,
+  "title_seasonpass_202508_1": 1198,
+  "title_seasonpass_202508_2": 1199,
+  "title_seasonpass_202511_1": 1200,
+  "title_seasonpass_202511_2": 1201,
+  "title_seasonpass_202602_1": 1202,
+  "title_seasonpass_202602_2": 1203,
+  "title_seasonpass_202605_1": 1204,
+  "title_seasonpass_202605_2": 1205,
+  "title_seasonpass_202608_1": 1206,
+  "title_seasonpass_202608_2": 1207,
+  "title_seasonpass_q1_1": 1208,
+  "title_teamdeathmatch_kills-1": 1209,
+  "title_teamdeathmatch_kills-2": 1210,
+  "title_teamdeathmatch_kills-3": 1211,
+  "title_worldboss_recoverhp_june2025": 1212,
+  "title_worldboss_recoverhp_june2026": 1213,
+  "title_worldboss_takedamage_june2025": 1214,
+  "title_worldboss_takedamage_june2026": 1215
+ }
+}

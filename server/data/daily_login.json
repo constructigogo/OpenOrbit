@@ -1,0 +1,1313 @@
+{
+ "_source": "The client's rewards.xml (daily login calendar; tools/daily_login.py). 25 rewards each month; one is claimed per real day (day = the number of rewards claimed that month), starts over when the month changes. The Premium reward is also given in single-player (the client shows PREMIUM). In booster rewards the quantity is in hours (wiki: daily reward boosters such as 5 hours), the time runs while in the game.",
+ "months": {
+  "1": [
+   {
+    "item": "resource_high-frequency-cable",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "booster_cd-dlb",
+    "count": 5
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 150,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 20
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 150
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_blacklight-shard",
+    "count": 500
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 250
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 200
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 200,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 5000
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b03",
+    "count": 1,
+    "premium": {
+     "item": "equipment_weapon_laser_lf-4-pd",
+     "count": 1
+    }
+   }
+  ],
+  "2": [
+   {
+    "item": "booster_ep-dlb",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 75
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 15
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 5
+   },
+   {
+    "item": "booster_p-ep-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_nano-case",
+    "count": 1
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 350
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 100
+   },
+   {
+    "item": "resource_ore_seprom",
+    "count": 1000
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 15
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 250,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 400
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_mindfire-cerebrum",
+    "count": 150
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_quickcoupon",
+    "count": 5
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-md",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_kyhalon",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "resource_collectable_salvage-core",
+    "count": 80,
+    "premium": {
+     "item": "resource_shop-discount-week-1",
+     "count": 1
+    }
+   }
+  ],
+  "3": [
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 1
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 150,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "resource_jumpvoucher",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_blacklight-shard",
+    "count": 500,
+    "special": true
+   },
+   {
+    "item": "resource_jumpvoucher",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 200
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 30,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_tetrathrin",
+    "count": 75
+   },
+   {
+    "item": "booster_dmg-h01",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-pd",
+    "count": 1,
+    "premium": {
+     "item": "equipment_weapon_laser_lf-4",
+     "count": 1
+    }
+   }
+  ],
+  "4": [
+   {
+    "item": "booster_ep-dlb",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 350
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_salvage-core",
+    "count": 30
+   },
+   {
+    "item": "booster_cd-dlb",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "resource_high-frequency-cable",
+    "count": 1
+   },
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 2000
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "booster_p-ep-b01",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 250
+   },
+   {
+    "item": "resource_collectable_mindfire-cerebrum",
+    "count": 50
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 2000
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "booster_dmg-pvp01",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_tetrathrin",
+    "count": 75
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-hp",
+    "count": 1,
+    "premium": {
+     "item": "equipment_generator_shield_sg3n-px01",
+     "count": 1
+    }
+   }
+  ],
+  "5": [
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 1000
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_nano-case",
+    "count": 1
+   },
+   {
+    "item": "booster_cd-dlb",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "ammunition_mine_acm-01",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "resource_high-frequency-cable",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_quickcoupon",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 300
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 100,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 150
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 1
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 2000
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-md",
+    "count": 1,
+    "premium": {
+     "item": "resource_collectable_indoctrine-accelerator",
+     "count": 50
+    }
+   }
+  ],
+  "6": [
+   {
+    "item": "booster_ep-dlb",
+    "count": 3
+   },
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 1000
+   },
+   {
+    "item": "booster_p-ep-b01",
+    "count": 5
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_salvage-core",
+    "count": 20
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 2000
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 15
+   },
+   {
+    "item": "resource_collectable_blacklight-shard",
+    "count": 500,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 150
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_kyhalon",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-pd",
+    "count": 1,
+    "premium": {
+     "item": "resource_shop-discount-week-1",
+     "count": 1
+    }
+   }
+  ],
+  "7": [
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 75
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 1
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_mindfire-cerebrum",
+    "count": 150,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "resource_jumpvoucher",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 350
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "ammunition_mine_acm-01",
+    "count": 50
+   },
+   {
+    "item": "resource_collectable_salvage-core",
+    "count": 40,
+    "special": true
+   },
+   {
+    "item": "resource_jumpvoucher",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 1
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 200
+   },
+   {
+    "item": "resource_nano-case",
+    "count": 2
+   },
+   {
+    "item": "equipment_weapon_laser_lf-p01",
+    "count": 2
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_tetrathrin",
+    "count": 75
+   },
+   {
+    "item": "booster_dmg-h01",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4-hp",
+    "count": 1,
+    "premium": {
+     "item": "equipment_generator_shield_sg3n-p01",
+     "count": 1
+    }
+   }
+  ],
+  "8": [
+   {
+    "item": "booster_ep-dlb",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_high-frequency-cable",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 150,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "resource_collectable_quickcoupon",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 350
+   },
+   {
+    "item": "resource_ore_seprom",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 15
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 2,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 400
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 150
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "resource_booty-key",
+    "count": 5
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 2000
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "booster_dmg-pvp01",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_tetrathrin",
+    "count": 75
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b03",
+    "count": 1,
+    "premium": {
+     "item": "equipment_weapon_laser_lf-px01",
+     "count": 1
+    }
+   }
+  ],
+  "9": [
+   {
+    "item": "resource_high-frequency-cable",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "booster_cd-dlb",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 100
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 20,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "ammunition_mine_acm-01",
+    "count": 50
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 350
+   },
+   {
+    "item": "resource_booty-key",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 300
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 150
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_mindfire-cerebrum",
+    "count": 100
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 1
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 5000
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_weapon_laser_lf-p01",
+    "count": 1,
+    "premium": {
+     "item": "equipment_weapon_laser_lf-4-hp",
+     "count": 1
+    }
+   }
+  ],
+  "10": [
+   {
+    "item": "booster_ep-dlb",
+    "count": 3
+   },
+   {
+    "item": "ammunition_specialammo_wiz-x",
+    "count": 20
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 15
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "ammunition_mine_acm-01",
+    "count": 30
+   },
+   {
+    "item": "resource_nano-case",
+    "count": 1
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 20,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "equipment_generator_shield_fs-03",
+    "count": 1
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "resource_collectable_kyhalon",
+    "count": 12
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 15
+   },
+   {
+    "item": "resource_collectable_blacklight-shard",
+    "count": 500,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 500
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 450
+   },
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 2000
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 50
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_kyhalon",
+    "count": 40
+   },
+   {
+    "item": "drone_designs_bat-red",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 15
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-p01",
+    "count": 1,
+    "premium": {
+     "item": "resource_shop-discount-week-1",
+     "count": 1
+    }
+   }
+  ],
+  "11": [
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 20
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b02",
+    "count": 1
+   },
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_permit-plus",
+    "count": 2,
+    "special": true
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 50
+   },
+   {
+    "item": "resource_jumpvoucher",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 200
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "ammunition_laser_rsb-75",
+    "count": 1500
+   },
+   {
+    "item": "resource_collectable_quickcoupon",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_salvage-core",
+    "count": 40,
+    "special": true
+   },
+   {
+    "item": "resource_extra-energy",
+    "count": 40
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 150
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_booty-key",
+    "count": 5
+   },
+   {
+    "item": "resource_nano-case",
+    "count": 2
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 30
+   },
+   {
+    "item": "equipment_weapon_laser_lf-4",
+    "count": 1,
+    "special": true
+   },
+   {
+    "item": "ammunition_mine_acm-01",
+    "count": 80
+   },
+   {
+    "item": "booster_dmg-h01",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 20
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-b03",
+    "count": 1,
+    "premium": {
+     "item": "equipment_weapon_laser_lf-4-md",
+     "count": 1
+    }
+   }
+  ],
+  "12": [
+   {
+    "item": "booster_hp-dlb",
+    "count": 4
+   },
+   {
+    "item": "ammunition_laser_ucb-100",
+    "count": 1000
+   },
+   {
+    "item": "resource_collectable_permit",
+    "count": 3
+   },
+   {
+    "item": "booster_npc-b01",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_blacklight-trace",
+    "count": 200
+   },
+   {
+    "item": "resource_collectable_schism",
+    "count": 25
+   },
+   {
+    "item": "resource_collectable_eternal-fragment",
+    "count": 150,
+    "special": true
+   },
+   {
+    "item": "booster_cd-dlb",
+    "count": 5
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 5000
+   },
+   {
+    "item": "booster_shd-dlb",
+    "count": 6
+   },
+   {
+    "item": "resource_collectable_quickcoupon",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_axion-beam-regulator",
+    "count": 100
+   },
+   {
+    "item": "resource_collectable_darksilver-coin",
+    "count": 3
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10,
+    "special": true
+   },
+   {
+    "item": "equipment_generator_shield_sg3n-p01",
+    "count": 1
+   },
+   {
+    "item": "resource_booty-key",
+    "count": 5
+   },
+   {
+    "item": "resource_collectable_rinusk",
+    "count": 3500
+   },
+   {
+    "item": "resource_collectable_indoctrine-accelerator",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_indoctrineoil",
+    "count": 30
+   },
+   {
+    "item": "booster_hon-b02",
+    "count": 8
+   },
+   {
+    "item": "resource_collectable_blacklight-shard",
+    "count": 600,
+    "special": true
+   },
+   {
+    "item": "ammunition_laser_a-bl",
+    "count": 5000
+   },
+   {
+    "item": "booster_dmg-b02",
+    "count": 10
+   },
+   {
+    "item": "resource_collectable_diametrion",
+    "count": 30
+   },
+   {
+    "item": "pet_designs_pet-cyborg-frost",
+    "count": 1,
+    "premium": {
+     "item": "ship_pusat-plus_design_pusat-plus-frost",
+     "count": 1
+    }
+   }
+  ]
+ }
+}

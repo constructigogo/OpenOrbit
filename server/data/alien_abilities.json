@@ -1,0 +1,688 @@
+{
+ "_description": "Alien abilities (roadmap Phase 4; applied by alien.py and world.py). The key is the client's npcId (npc.json npc_id, gates.json npc_id): the same alien comes with the same ability on the map and in the gate. Source belgeler/wiki/aliens.md (wiki); where the wiki gives no numbers, see the '_adaptation' note. Fields: summon_on_hit {type, count, max_count, cooldown_sec, first_cooldown_sec (on the first hit after calm_sec (15) without being hit, the summon happens this long afterwards), calm_sec, interval_sec (the swarm comes out in succession at this interval), guard {radius: [min, max], leash (if absent, max + firing range)} (summoned ones roam around the summoner; also while attacking, keeping the player within their range; if the player is farther from the summoner than the leash, they stop chasing)}, regeneration {hp_sec, shield_per_sec, cooldown_sec}, spawn_on_death [{type, count}], invulnerable_while_summons_live, repair_while_summons_alive {hp_sec}, anger {attacker, duration_sec, damage_multiplier, extra_summon, repair_hp_per_sec}, summon_at_hp_threshold [{ratio, type, count}], cloak_breaker {range}, slowing_shots {speed | ratio, sec, range}, multi_target {hp_ratio}, rocket {damage, cooldown_sec, launcher, count, type (old rocket id; 1 if absent)}, singularity {damage_per_sec, maximum, duration_sec, range, cooldown_sec, visual (vortex; present if absent)}, explode_on_contact {damage, radius}, disappear {damage, fake, distance, explosion, explosion_radius, fake_lifetime_sec, hp_sec, shield_per_sec}, sticky_bomb {damage, interval_sec, delay_sec, group}, speed_skill {speed, shield_ratio}, capsules {count, interval_sec, collect_ms, harvest_distance, hp, shield, damage}, summons_scatter_on_death {lifetime_sec}, kamikaze_threshold {ratio, wait_sec, approach_sec, radius, damage_hp_ratio}, reverse_controls {shield_ratio | hp_ratio, sec}. improvement {hp_sec | hp_ratio, cooldown_sec, range, target [name fragments; if absent, every alien]} (repairs the hull of nearby aliens, not itself), follow {target (name fragment), radius [min, max]} (roams around that alien in the guard pattern), periodic_summon {cooldown_sec, summons [{type, count, max_count}]} (summons even if not hit while fighting), drop_mine {mine, hp_ratio, cooldown_sec, max_count, target, radius [min, max]} (while its HP is below hp_ratio and it is fighting, it drops a mine: at the alien's position, or around the player if target is true; it does not drop a new one while max_count mines are alive), periodic_emp {cooldown_sec, range}, death_beam {damage, interval_sec, distance} (while fighting, when the player is farther than distance from the Overlord, damage once every interval_sec), emp_on_shield_down (bool: EMP every time the shield runs out), critical_emp {hp_ratio} (once), reverse_shot {sec, cooldown_sec} (a laser that hits reverses the controls), player_speed {extra, hp_ratio} (speed equal to the player's; if hp_ratio is present, only at that HP), explode_on_contact.at_edge (the remaining share of the damage at the edge of the explosion radius; full on contact), sticky_bomb.damage can be [min, max]. Top-level \"low_hp\": low-HP escape and parking of map strays (alien.low_health; ratio, return_ratio, edge_margin, regeneration, range_boost).",
+ "skills": {
+  "13": {
+   "_name": "Cubikon",
+   "summon_on_hit": {
+    "type": "81",
+    "count": 20,
+    "max_count": 30,
+    "cooldown_sec": 4,
+    "first_cooldown_sec": 5.4,
+    "interval_sec": 1,
+    "group": [
+     2,
+     3
+    ],
+    "spawn_range": [
+     100,
+     2650
+    ],
+    "swarm_visual": true,
+    "guard": {
+     "radius": [
+      250,
+      750
+     ],
+     "leash": 1600,
+     "_return": "Player report 2026-10-28: in the real game the Protegits do not return when the attack is dropped, they fight the player until the Cubikon dies (no drop-off time); only the leash (the player being very far from the Cubikon) makes them stop chasing",
+     "hit_and_run": {
+      "nearby": [
+       150,
+       320
+      ],
+      "far": [
+       450,
+       850
+      ],
+      "near_sec": [
+       1,
+       2.5
+      ],
+      "far_sec": [
+       0.8,
+       2.5
+      ]
+     }
+    }
+   },
+   "regeneration": {
+    "hp_sec": 125000,
+    "shield_per_sec": 0,
+    "cooldown_sec": 10
+   },
+   "_source": "aliens.md: releases Protegits when hit (30x Protegit in the table), up to 125,000 HP per second when not attacked; fandom: Protegits come out immediately in swarms of 20-30, when the Cubikon dies they roam without chasing anyone and then disappear",
+   "_adaptation": "25 Protegits per summon (max 30), 4 s cooldown; the swarm comes out in groups of 2-3 per second within 500-1100 units of the player (from a bit farther, just outside the screen); at the start of the summon ShipSpawnChildSwarmCommand opens the Cubikon (client SpawnChildrenEffect, animator npc_cubikon open; user report and video 2026-10-27); they come out 3 s after the first hit (user report 2026-10-25: they used to come out immediately on the first shot); regeneration after 10 s without being hit; when the Cubikon dies the Protegits roam for 10-20 s and disappear (user report 2026-10-25: at most 20 s; those of other Cubikons are unaffected). While attacking, Protegits hit and run: they come within 150-320 units of the player, for 1-2.5 s (one or two shots), move away to 450-850 units (keep firing if in range), approach again after 0.8-2.5 s; each one on its own side, scattered (user report 2026-10-27; previously they all clustered right on top of the player); when not attacking they roam within 250-750 units of the Cubikon; if the player is farther than 1,600 units from the Cubikon they stop chasing and roam around the Cubikon (user report 2026-10-25: they used to chase the player very far away); official server recording 2026-10-27: 20 Protegits 5.4 s after the first hit (0|n|s|<Cubikon>|20|<ids>), spawning within 100-2,650 units (median ~1,500) of the Cubikon and the player; count, first cooldown and spawn radius follow this (the grouping stays against getting stuck)",
+   "summons_scatter_on_death": {
+    "lifetime_sec": [
+     10,
+     20
+    ]
+   }
+  },
+  "8": {
+   "_name": "Lordakium",
+   "spawn_on_death": [
+    {
+     "type": "npc173",
+     "count": 3
+    }
+   ],
+   "_source": "aliens.md (Lordakium Spore): Lordakium 3 spor"
+  },
+  "21": {
+   "_name": "Boss Lordakium",
+   "spawn_on_death": [
+    {
+     "type": "npc173",
+     "count": 4
+    }
+   ],
+   "_source": "aliens.md: Boss Lordakium 4 spor"
+  },
+  "35": {
+   "_name": "Uber Lordakium",
+   "spawn_on_death": [
+    {
+     "type": "npc173",
+     "count": 5
+    }
+   ],
+   "_source": "aliens.md: Uber Lordakium 5 spor"
+  },
+  "62": {
+   "_name": "Battleray",
+   "summon_on_hit": {
+    "type": "111",
+    "count": 7,
+    "max_count": 7,
+    "cooldown_sec": 15
+   },
+   "invulnerable_while_summons_live": true,
+   "repair_while_summons_alive": {
+    "hp_sec": 600
+   },
+   "anger": {
+    "attacker": 2,
+    "duration_sec": 10,
+    "damage_multiplier": 1.5,
+    "extra_summon": 2,
+    "repair_hp_per_sec": 30000,
+    "laser_color": 6
+   },
+   "_source": "aliens.md: summons Interceptors; while those it summoned are alive, instant shield (ISH) and 600 repair per second; two or more attackers (a P.E.T. counts as 10) enrage it: RSB-75 instead of UCB-100, more Interceptors, 30,000 repair",
+   "_adaptation": "7 Interceptors per summon (official Turkish forum 1885: 7 per player) (fandom: Deadly Battleray summons \"fewer\", at most 2), 15 s cooldown; anger with attackers from the last 10 s; RSB-75/UCB-100 = x1.5 damage"
+  },
+  "167": {
+   "_name": "Uber Battleray",
+   "summon_on_hit": {
+    "type": "257",
+    "count": 2,
+    "max_count": 2,
+    "cooldown_sec": 15
+   },
+   "invulnerable_while_summons_live": true,
+   "repair_while_summons_alive": {
+    "hp_sec": 600
+   },
+   "anger": {
+    "attacker": 2,
+    "duration_sec": 10,
+    "damage_multiplier": 1.5,
+    "extra_summon": 2,
+    "repair_hp_per_sec": 30000,
+    "laser_color": 6
+   },
+   "_adaptation": "the wiki does not list abilities: Battleray's",
+   "_source": "fandom: summons Uber Interceptor (aggressive)"
+  },
+  "121": {
+   "_name": "Deadly Battleray",
+   "summon_on_hit": {
+    "type": "111",
+    "count": 2,
+    "max_count": 2,
+    "cooldown_sec": 20
+   },
+   "anger": {
+    "attacker": 3,
+    "duration_sec": 10,
+    "extra_summon": 5
+   },
+   "_source": "aliens.md: defends with Interceptors, at most two unless more than two players attack",
+   "_adaptation": "20 s cooldown; anger: with three attackers (the player, the P.E.T. and one more player; here, if attacker is set to 2, the player and the P.E.T. suffice) up to 7 Interceptors (same as Battleray's)"
+  },
+  "177": {
+   "_name": "Invoke XVI",
+   "summon_at_hp_threshold": [
+    {
+     "ratio": 0.75,
+     "type": "213",
+     "count": 8
+    }
+   ],
+   "_source": "aliens.md: immobile; after losing some HP it summons 8 Impulse II",
+   "_adaptation": "at 75% HP, once"
+  },
+  "178": {
+   "_name": "Mindfire Behemoth",
+   "cloak_breaker": {
+    "range": 1500
+   },
+   "slowing_shots": {
+    "ratio": 0.5,
+    "sec": 3
+   },
+   "multi_target": {
+    "hp_ratio": 0.25
+   },
+   "_source": "aliens.md: instantly makes nearby cloaked pilots visible; slowing shots like Saboteur; multiple targets at critical HP; fandom: after losing 50% of its HP, 4 Attend IX",
+   "_adaptation": "cloak-breaking 1,500 units; slowdown 50%, 3 s; multiple targets at 25% HP (the player and the P.E.T.). Shock wave (+/- signed pilots) needs multiple players: with bot players.",
+   "summon_at_hp_threshold": [
+    {
+     "type": "217",
+     "ratio": 0.5,
+     "count": 4
+    }
+   ]
+  },
+  "11": {
+   "_name": "StreuneR",
+   "rocket": {
+    "damage": 3000,
+    "cooldown_sec": 6
+   },
+   "_source": "aliens.md: azami hasar 1.000 lazer / 3.000 roket",
+   "_adaptation": "6 sn'de bir roket"
+  },
+  "61": {
+   "_name": "Annihilator",
+   "rocket": {
+    "damage": 12000,
+    "cooldown_sec": 5,
+    "launcher": true,
+    "count": 3
+   },
+   "_source": "aliens.md: 15,000 / +12,000 rocket launcher",
+   "_adaptation": "fandom (Hellstorm): loads 3 rockets in 5 s, salvo totals 12,000"
+  },
+  "166": {
+   "_name": "Uber Annihilator",
+   "rocket": {
+    "damage": 12000,
+    "cooldown_sec": 5,
+    "launcher": true,
+    "count": 3
+   },
+   "_source": "aliens.md: 90,000 / +12,000 rocket launcher"
+  },
+  "60": {
+   "_name": "Saboteur",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "_adaptation": "like Barb's slowdown orb",
+   "_source": "fandom (Saboteur, Slowdown Orb): sets speed to 120, 5 s, range ~300, does not stack"
+  },
+  "165": {
+   "_name": "Uber Saboteur",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "_adaptation": "Saboteur's"
+  },
+  "283": {
+   "_name": "Barb",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "_source": "aliens.md: Slowdown Orb lowers speed to 120 for 5 s, refreshes but does not stack, range ~300, removes EMP"
+  },
+  "281": {
+   "_name": "The Stinger",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "singularity": {
+    "damage_per_sec": 20000,
+    "maximum": 300000,
+    "duration_sec": 15,
+    "range": 800,
+    "cooldown_sec": 30
+   },
+   "_source": "aliens.md: Slowdown Orb; Pirate Singularity does 20,000 per second to its target, up to 300,000, 15 s, range 800, cooldown 30 s"
+  },
+  "114": {
+   "_name": "Emperor Lordakium",
+   "disappear": {
+    "damage": 1280000,
+    "fake": 2,
+    "distance": 1500,
+    "explosion": 60000,
+    "explosion_radius": 500,
+    "fake_lifetime_sec": 90,
+    "hp_sec": 40000,
+    "shield_per_sec": 40000
+   },
+   "_source": "aliens.md: disappears after losing ~1,280,000 HP and reappears with two fake Lordakiums; the fakes have 1 HP and explode heavily when hit; refills HP and shield while the real one is being searched for",
+   "_adaptation": "explosion 60,000 damage, 500 units; fakes disappear after 90 s; while hidden 40,000 HP and shield per second; no disappearing on reaching the map edge; the real one and the fakes appear within 1,500 units of the player, in separate directions (sight 1,800; previously they went 2,500 away and were not visible, player report 2026-10-30)"
+  },
+  "115": {
+   "_name": "Emperor Kristallon",
+   "sticky_bomb": {
+    "damage": 300000,
+    "interval_sec": 30,
+    "delay_sec": 2,
+    "group": 4
+   },
+   "_source": "aliens.md: sticky bomb of 300,000 damage about every 30 s, players standing nearby share it",
+   "_adaptation": "single-player: the damage is divided by Hades' smallest group (4) (75,000). Static charge (+/- polarity pilots) needs multiple players: with bot players."
+  },
+  "108": {
+   "_name": "Boss Curcubitor",
+   "reverse_controls": {
+    "hp_ratio": 0.5,
+    "sec": 5
+   },
+   "sticky_bomb": {
+    "damage": 120000,
+    "interval_sec": 30,
+    "delay_sec": 10,
+    "group": 1
+   },
+   "_source": "darkorbitwiki aliens/boss-curcubitor: reverses the controls of a ship hit by the red halo; sticky bomb on the green halo (10 s countdown, up to 120k damage)",
+   "_adaptation": "ring colors keep changing in the source: reverse controls once at half HP for 5 s, bomb every 30 s (like Emperor Kristallon)"
+  },
+  "113": {
+   "_name": "Emperor Sibelon",
+   "speed_skill": {
+    "speed": 380,
+    "shield_ratio": 0.1
+   },
+   "capsules": {
+    "count": 3,
+    "interval_sec": 15,
+    "collect_ms": 3000,
+    "harvest_distance": 150,
+    "hp": 0.1,
+    "shield": 0.1,
+    "damage": 0.1
+   },
+   "_source": "aliens.md: as its shield runs out its speed rises to ~380; power-up capsules appear on the map: HP (~10% HP), SHD (~10% shield), DMG (its damage rises ~10%, the players' falls ~10%)",
+   "_adaptation": "when the shield drops below 10%; a capsule every 15 s, up to 3; the Emperor goes to the nearest capsule and collects it in 3 s; if the player passes within 150 units of the capsule, the capsule disappears"
+  },
+  "128": {
+   "_name": "Gygerim Overlord",
+   "death_beam": {
+    "damage": 60000,
+    "interval_sec": 2,
+    "distance": 1500
+   },
+   "_source": "darkorbitwiki aliens/gygerim-overlord: Death Ray, the beams come from outside the map, damage depends on distance to the Overlord; when far enough, an average of 60,000 damage every 2 s",
+   "_adaptation": "no distance-dependent damage curve in the source: when the player is farther than 1,500 units from the Overlord (laser 700, rocket 900, Overlord's range 1,000), every 2 s 60,000 x 80-120%; no beam when close. The Overlord of Quarantine Zone and Compromising Invasion (npc_id 128) is the same"
+  },
+  "260": {
+   "_name": "Agatus",
+   "drop_mine": {
+    "mine": "ammunition_mine_acm-01",
+    "hp_ratio": 0.5,
+    "cooldown_sec": 15,
+    "max_count": 4
+   },
+   "_source": "aliens.md agatus_x3..x8: \"drops ACM-1 mines at 50% health\"",
+   "_adaptation": "while fighting with HP below 50%, ACM-1 at the alien's position every 15 s; at most 4 mines at a time (no number in the source). The Spinel summoning is in events.json agatus.boss"
+  },
+  "266": {
+   "_name": "Strokelight Barrage",
+   "rocket": {
+    "damage": 300000,
+    "cooldown_sec": 30
+   },
+   "drop_mine": {
+    "mine": "ammunition_mine_acm-01",
+    "hp_ratio": 0.2,
+    "cooldown_sec": 20,
+    "max_count": 3,
+    "target": true,
+    "radius": [
+     250,
+     500
+    ]
+   },
+   "_source": "aliens.md: max damage laser 20,000 / rocket 300,000; fandom (Strokelight Barrage): can summon Abide I and Steadfast III; at low HP creates ACM-1 around its target (fandom ACM-1)",
+   "_adaptation": "a rocket every 30 s; while fighting, even if not hit, 2 Abide I and 1 Steadfast III every 25 s (at most 4 and 2 alive; numbers not in the source); when HP is below 20% (low HP), ACM-1 within 250-500 units of the player every 20 s, at most 3 mines (numbers not in the source)",
+   "periodic_summon": {
+    "cooldown_sec": 25,
+    "summons": [
+     {
+      "type": "npc268",
+      "count": 2,
+      "max_count": 4
+     },
+     {
+      "type": "npc269",
+      "count": 1,
+      "max_count": 2
+     }
+    ]
+   }
+  },
+  "235": {
+   "_name": "Cloning Mimesis",
+   "summon_on_hit": {
+    "type": "event_cloned_mimesis",
+    "count": 3,
+    "max_count": 3,
+    "cooldown_sec": 30
+   },
+   "_source": "aliens.md: creates 3 clones (Cloned Mimesis), the clones do nothing",
+   "_adaptation": "when hit, at most 3 clones, 30 s cooldown"
+  },
+  "237": {
+   "_name": "Terror Mimesis",
+   "summon_at_hp_threshold": [
+    {
+     "ratio": 0.5,
+     "type": "event_kamikaze_mimesis",
+     "count": 5
+    }
+   ],
+   "_source": "aliens.md: at 50% HP summons 5 Kamikaze Mimesis"
+  },
+  "238": {
+   "_name": "Kamikaze Mimesis",
+   "explode_on_contact": {
+    "damage": 20000,
+    "radius": 500
+   },
+   "_source": "aliens.md: does not fire lasers, explodes when it nears your ship (20,000 bomb damage)",
+   "_adaptation": "explosion distance 500, comes without a reward"
+  },
+  "239": {
+   "_name": "Reflector Mimesis",
+   "singularity": {
+    "damage_per_sec": 10000,
+    "maximum": 100000,
+    "duration_sec": 10,
+    "range": 800,
+    "cooldown_sec": 30,
+    "visual": false
+   },
+   "_source": "aliens.md: laser and radiation damage (10,000 per second for 10 s)",
+   "_adaptation": "range 800, 30 s cooldown; the singularity's vortex is not shown"
+  },
+  "38": {
+   "_name": "Uber StreuneR",
+   "rocket": {
+    "damage": 4000,
+    "cooldown_sec": 6,
+    "type": 3
+   },
+   "_source": "fandom: PLT-2021 roketi, 4.000 hasar",
+   "_adaptation": "every 6 s (StreuneR's)"
+  },
+  "59": {
+   "_name": "Barracuda",
+   "kamikaze_threshold": {
+    "ratio": 0.2,
+    "wait_sec": 5,
+    "approach_sec": 5,
+    "radius": 500,
+    "damage_hp_ratio": 1.0
+   },
+   "_source": "fandom (Kamikaze): when its HP drops to 20% it glows red, stands still for 5 s, then approaches the target and tries again; if in range it explodes with area damage according to its remaining HP",
+   "_adaptation": "explosion radius 500, damage equal to remaining HP; approach 5 s"
+  },
+  "164": {
+   "_name": "Uber Barracuda",
+   "kamikaze_threshold": {
+    "ratio": 0.2,
+    "wait_sec": 5,
+    "approach_sec": 5,
+    "radius": 500,
+    "damage_hp_ratio": 1.0
+   },
+   "_source": "fandom: Barracuda's abilities"
+  },
+  "24": {
+   "_name": "Boss StreuneR",
+   "reverse_controls": {
+    "shield_ratio": 0,
+    "sec": 5
+   },
+   "_source": "fandom: reverses the ship's direction when its shield runs out",
+   "_adaptation": "5 sn (Boss Saimon'unki), bir kez"
+  },
+  "17": {
+   "_name": "Boss Saimon",
+   "reverse_controls": {
+    "hp_ratio": 0.25,
+    "sec": 5
+   },
+   "_source": "fandom: when its HP is low, reverses movement for 5 s (like Boss StreuneR)",
+   "_adaptation": "low HP 25%, once"
+  },
+  "148": {
+   "_name": "Streuner Turret",
+   "reverse_shot": {
+    "sec": 4,
+    "cooldown_sec": 8
+   },
+   "_source": "fandom (Streuner Turret): its beam reverses the player's controls (effect taken from Boss StreuneR)",
+   "_adaptation": "4 s reversal with an 8 s cooldown (duration and cooldown not in the source; Boss StreuneR's is 5 s, once)"
+  },
+  "149": {
+   "_name": "Streuner Specialist",
+   "improvement": {
+    "hp_sec": 6000,
+    "cooldown_sec": 3,
+    "range": 1500,
+    "target": [
+     "streuner soldier"
+    ]
+   },
+   "_source": "fandom (Streuner Specialist, Healing Wave): every 3 s repairs the hull of the other Streuners by 6,000; does not repair itself, the other Specialist's wave repairs it; official Turkish forum 127494: \"only repairs Streuner Soldiers\"",
+   "_adaptation": "the wave's range is 1,500 units (not in the source)"
+  },
+  "153": {
+   "_name": "Aider Streuner",
+   "improvement": {
+    "hp_sec": 150,
+    "cooldown_sec": 3,
+    "range": 1000
+   },
+   "follow": {
+    "target": "recruit streuner",
+    "radius": [
+     150,
+     450
+    ]
+   },
+   "_source": "darkorbitwiki (Aider Streuner) and fandom (Streuner Metammorphosis: \"Aider Streuners will follow Recruit Streuners and will also heal other aliens near it\"; the Specialist's wave is similar to the Aider's)",
+   "_adaptation": "150 in 3 s (10% of its own HP), range 1,000, to every nearby alien; roams 150-450 units around the Recruit Streuner (no number in the source)"
+  },
+  "158": {
+   "_name": "Streuner Rocketeer",
+   "periodic_summon": {
+    "cooldown_sec": 8,
+    "summons": [
+     {
+      "type": "seeker_rocket",
+      "count": 1,
+      "max_count": 2
+     }
+    ]
+   },
+   "_source": "fandom (Streuner Rocketeer, Seeker Rocket): summons Seeker Rocket (attacks only with it); darkorbitwiki Kuiper Gate",
+   "_adaptation": "every 8 s, at most 2 rockets alive (no number in the source). The behavior.rocket (3000 damage) and laser damage on the Rocketeer of the Kuiper gate must be removed together with this ability (gates.json, tools/gates.py: gate flow)"
+  },
+  "159": {
+   "_name": "Seeker Rocket",
+   "explode_on_contact": {
+    "damage": 6000,
+    "radius": 500,
+    "at_edge": 0.5
+   },
+   "player_speed": {
+    "extra": 20
+   },
+   "_source": "fandom (Seeker Rocket): speed is the player's + 20; on nearing the player it explodes with 6,000 area damage, the damage depends on the distance at the moment of explosion; can be shot down",
+   "_adaptation": "explosion distance 500; damage 6,000 on contact, half (3,000) at 500 units"
+  },
+  "243": {
+   "_name": "Medic Mimesis",
+   "improvement": {
+    "hp_ratio": 0.05,
+    "cooldown_sec": 3,
+    "range": 1500,
+    "target": [
+     "mimesis"
+    ]
+   },
+   "_source": "darkorbitwiki (Medic Mimesis, Mimesis Mutiny): heals nearby Mimesis aliens",
+   "_adaptation": "5% of the target's max HP every 3 s, range 1,500 (no number in the source)"
+  },
+  "246": {
+   "_name": "Obscured Mimesis",
+   "emp_on_shield_down": true,
+   "_source": "darkorbitwiki (Obscured Mimesis): when it loses its shield it unleashes an EMP pulse",
+   "_adaptation": "the EMP resets the player's target, ends cloaking and jams the minimap for 5 s (like EMP-01's effect on the player)"
+  },
+  "248": {
+   "_name": "Mirror Mimesis",
+   "summon_on_hit": {
+    "type": "event_mirror_clone",
+    "count": 2,
+    "max_count": 4,
+    "cooldown_sec": 20
+   },
+   "_source": "darkorbitwiki (Mirror Mimesis): creates weak clones of itself in battle",
+   "_adaptation": "when hit 2 clones, at most 4, 20 s cooldown; clone 10% HP/shield, 20% damage, no reward (event_mirror_clone: tools/event_aliens.py)"
+  },
+  "251": {
+   "_name": "Marker Mimesis",
+   "sticky_bomb": {
+    "damage": [
+     100000,
+     300000
+    ],
+    "interval_sec": 30,
+    "delay_sec": 2,
+    "group": 1
+   },
+   "_source": "darkorbitwiki (Marker Mimesis): a bomb that sticks to the ship, 100-300 thousand damage",
+   "_adaptation": "every 30 s, with a 2 s delay (like Emperor Kristallon's sticky bomb); the damage is random within the range for each bomb"
+  },
+  "285": {
+   "_name": "Spookfish",
+   "critical_emp": {
+    "hp_ratio": 0.2
+   },
+   "_source": "fandom (Spookfish): kritik canda EMP-01 salar (Saimon gibi)",
+   "_adaptation": "kritik can %20, bir kez"
+  },
+  "300": {
+   "_name": "Hitac Underboss",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "periodic_emp": {
+    "cooldown_sec": 30,
+    "range": 800
+   },
+   "_source": "darkorbitwiki (Hitac Underboss): uses slowdown and EMP Impulse",
+   "_adaptation": "slowdown like Saboteur's orb (speed 120, 5 s, range 300); EMP Impulse while fighting at 800 units every 30 s (no number in the source)"
+  },
+  "46": {
+   "_name": "Hooligan",
+   "player_speed": {
+    "hp_ratio": 0.2
+   },
+   "_source": "fandom (Hooligan, Critical Health): at critical HP its speed is matched to the player's",
+   "_adaptation": "critical HP 20%; Hooligan does not flee (low_hp), fights at the same speed as the player"
+  },
+  "147": {
+   "_name": "Streuner Emperor",
+   "periodic_summon": {
+    "cooldown_sec": 30,
+    "summons": [
+     {
+      "type": "gg_streuner_3_0",
+      "count": 1,
+      "max_count": 1
+     }
+    ]
+   },
+   "rocket": {
+    "damage": 4000,
+    "cooldown_sec": 8
+   },
+   "_source": "Official Turkish forum 127494 (Kuiper): \"A certain time after Streuner Emperor starts fighting you, it spawns a Streuner Turret. It also fires a SAR-02 rocket at you.\"",
+   "_adaptation": "Turret every 30 s, at most 1 at a time (Kuiper IV's Turret type gg_streuner_3_0); SAR-02 salvo of 4,000 damage every 8 s (no number in the source)"
+  },
+  "150": {
+   "_name": "Streuner Soldier",
+   "rocket": {
+    "damage": 2000,
+    "cooldown_sec": 6
+   },
+   "_source": "Official Turkish forum 127494 (Kuiper): \"Streuner Soldier ... also fires rockets normally along with the laser.\"",
+   "_adaptation": "2,000 every 6 s (in the range of StreuneR's 1,000-3,000; no number in the source)"
+  },
+  "120": {
+   "_name": "Century Falcon",
+   "regeneration": {
+    "hp_sec": 120000,
+    "shield_per_sec": 0,
+    "cooldown_sec": 10
+   },
+   "_source": "Official Turkish forum 126411 (LoW): Century Falcon repairs itself while taking no damage",
+   "_adaptation": "10 s after not being hit, 1% of max HP per second (12,000,000 x 0.01; no number in the source)"
+  },
+  "53": {
+   "_name": "Uber Protegit",
+   "slowing_shots": {
+    "speed": 120,
+    "sec": 5,
+    "range": 300
+   },
+   "_source": "Official Turkish forum 127347 (??? map): Uber Protegits slow down",
+   "_adaptation": "Saboteur's slowing shot (speed 120, 5 s, range 300)"
+  }
+ },
+ "capsule_types": [
+  "hp",
+  "shield",
+  "damage"
+ ],
+ "low_hp": {
+  "_description": "Low HP of map strays (alien.low_health, world.think): an alien whose HP drops below ratio flees to the edge/corner point opposite the player (fires if in range), stops on arrival and regenerates (after cooldown_sec without being hit, hp_ratio_per_sec of max HP per second, shield_ratio_per_sec of the shield; does not fire), and returns to normal behavior once regenerated to return_ratio. Those that do not flee: gate/mode/event aliens, summoned ones, immobile ones, motherships and special bosses (npc.json combat.respawn_special), pirate maps (5-X), Barracuda (kamikaze_threshold) and Hooligan (player_speed). range_boost: for types whose name fragment matches, the firing range while fleeing rises to a multiplier times its normal value.",
+  "ratio": 0.2,
+  "return_ratio": 1.0,
+  "edge_margin": 700,
+  "regeneration": {
+   "hp_ratio_per_sec": 0.01,
+   "shield_ratio_per_sec": 0.05,
+   "cooldown_sec": 5
+  },
+  "range_boost": {
+   "multiplier": 1.2,
+   "name": [
+    "kristallon",
+    "kristallin"
+   ]
+  },
+  "_source": "fandom (Low health, Parking, Critical Health): generally below 20% the alien flees to fixed points at the edge of the map and keeps firing while fleeing; at critical HP it goes to the corner of the map opposite the player, stops there and regenerates its shield/HP, can be hit and does not fire back; Kristallon's and Kristallin's range rarely increases at low HP; motherships (Cubikon, Ice Meteoroid) and pirates do not flee; Barracuda explodes",
+  "_adaptation": "escape points: the four corners of the map and the four edge midpoints (700 units inside), the one farthest from the player; regeneration 1% HP and 5% shield per second (no number in the source) and return once fully restored; range increase x1.2 (no number in the source); event aliens do not flee since they run on their own flow (boss duration, quota); Hooligan does not flee because at critical HP its speed is matched to the player's (threat)"
+ }
+}

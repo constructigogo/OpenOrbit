@@ -1,0 +1,1758 @@
+{
+ "_source": "tools/ranks.py: alien and ship points from the official server's Hall of Fame point details (game data), ranks and formula from belgeler/wiki/progression.md (wiki).",
+ "npc_points": {
+  "1": {
+   "name": "-=[ Streuner ]=-",
+   "points": 0
+  },
+  "2": {
+   "name": "-=[ Lordakia ]=-",
+   "points": 0
+  },
+  "3": {
+   "name": "-=[ Devolarium ]=-",
+   "points": 4
+  },
+  "4": {
+   "name": "-=[ Mordon ]=-",
+   "points": 2
+  },
+  "5": {
+   "name": "-=[ Sibelon ]=-",
+   "points": 5
+  },
+  "6": {
+   "name": "-=[ Saimon ]=-",
+   "points": 2
+  },
+  "7": {
+   "name": "-=[ Sibelonit ]=-",
+   "points": 3
+  },
+  "8": {
+   "name": "-=[ Lordakium ]=-",
+   "points": 6
+  },
+  "9": {
+   "name": "-=[ Kristallin ]=-",
+   "points": 3
+  },
+  "10": {
+   "name": "-=[ Kristallon ]=-",
+   "points": 8
+  },
+  "11": {
+   "name": "-=[ StreuneR ]=-",
+   "points": 2
+  },
+  "12": {
+   "name": "-=[ Protegit ]=-",
+   "points": 3
+  },
+  "13": {
+   "name": "-=[ Cubikon ]=-",
+   "points": 10
+  },
+  "14": {
+   "name": "..::{ Boss Streuner }::..",
+   "points": 4
+  },
+  "15": {
+   "name": "..::{ Boss Lordakia }::..",
+   "points": 4
+  },
+  "16": {
+   "name": "..::{ Boss Mordon }::..",
+   "points": 8
+  },
+  "17": {
+   "name": "..::{ Boss Saimon }::..",
+   "points": 8
+  },
+  "18": {
+   "name": "..::{ Boss Devolarium }::..",
+   "points": 16
+  },
+  "19": {
+   "name": "..::{ Boss Sibelonit }::..",
+   "points": 12
+  },
+  "20": {
+   "name": "..::{ Boss Sibelon }::..",
+   "points": 20
+  },
+  "21": {
+   "name": "..::{ Boss Lordakium }::...",
+   "points": 24
+  },
+  "22": {
+   "name": "..::{ Boss Kristallin }::..",
+   "points": 12
+  },
+  "23": {
+   "name": "..::{ Boss Kristallon }::..",
+   "points": 32
+  },
+  "24": {
+   "name": "..::{ Boss StreuneR }::..",
+   "points": 8
+  },
+  "25": {
+   "name": "{{{ ::: UFO ::: }}}",
+   "points": 48
+  },
+  "26": {
+   "name": "-=[ UFONIT ]=-",
+   "points": 3
+  },
+  "28": {
+   "name": "( UberStreuner )",
+   "points": 8
+  },
+  "29": {
+   "name": "( UberLordakia )",
+   "points": 8
+  },
+  "30": {
+   "name": "( UberMordon )",
+   "points": 16
+  },
+  "31": {
+   "name": "( UberSaimon )",
+   "points": 16
+  },
+  "32": {
+   "name": "( UberDevolarium )",
+   "points": 32
+  },
+  "33": {
+   "name": "( UberSibelonit )",
+   "points": 24
+  },
+  "34": {
+   "name": "( UberSibelon )",
+   "points": 40
+  },
+  "35": {
+   "name": "( UberLordakium )",
+   "points": 48
+  },
+  "36": {
+   "name": "( UberKristallin )",
+   "points": 24
+  },
+  "37": {
+   "name": "( UberKristallon )",
+   "points": 64
+  },
+  "38": {
+   "name": "( UberStreuneR )",
+   "points": 16
+  },
+  "39": {
+   "name": "-={ demaNeR }=-",
+   "points": 16
+  },
+  "40": {
+   "name": "<=< Kucurbium >=>",
+   "points": 32
+  },
+  "41": {
+   "name": "<=< BossKucurbium >=>",
+   "points": 128
+  },
+  "42": {
+   "name": "-=[ Vagrant ]=-",
+   "points": 1
+  },
+  "43": {
+   "name": "-=[ Marauder ]=-",
+   "points": 2
+  },
+  "44": {
+   "name": "-=[ Outcast ]=-",
+   "points": 4
+  },
+  "45": {
+   "name": "-=[ Corsair ]=-",
+   "points": 8
+  },
+  "46": {
+   "name": "-=[ Hooligan ]=-",
+   "points": 16
+  },
+  "47": {
+   "name": "-=[ Ravager ]=-",
+   "points": 32
+  },
+  "48": {
+   "name": "-=[ Convict ]=-",
+   "points": 32
+  },
+  "49": {
+   "name": "GG-=[ Century Falcon ]=-",
+   "points": 128
+  },
+  "54": {
+   "name": "<=< Ice Meteoroid >=>",
+   "points": 32
+  },
+  "55": {
+   "name": "<=< Super Ice Meteoroid >=>",
+   "points": 128
+  },
+  "56": {
+   "name": "<=< Icy >=>",
+   "points": 3
+  },
+  "58": {
+   "name": "-=[ Interceptor ]=-",
+   "points": 1
+  },
+  "59": {
+   "name": "-=[ Barracuda ]=-",
+   "points": 2
+  },
+  "60": {
+   "name": "-=[ Saboteur ]=-",
+   "points": 4
+  },
+  "61": {
+   "name": "-=[ Annihilator ]=-",
+   "points": 6
+  },
+  "62": {
+   "name": "-=[ Battleray ]=-",
+   "points": 16
+  },
+  "63": {
+   "name": "-=[ Infernal ]=-",
+   "points": 4
+  },
+  "64": {
+   "name": "-=[ Scorcher ]=-",
+   "points": 8
+  },
+  "65": {
+   "name": "-=[ Melter ]=-",
+   "points": 16
+  },
+  "66": {
+   "name": "-=[ Devourer ]=-",
+   "points": 255
+  },
+  "67": {
+   "name": "GG-=[ Vagrant ]=-",
+   "points": 1
+  },
+  "68": {
+   "name": "GG-=[ Marauder ]=-",
+   "points": 2
+  },
+  "69": {
+   "name": "GG-=[ Outcast ]=-",
+   "points": 4
+  },
+  "70": {
+   "name": "GG-=[ Corsair ]=-",
+   "points": 8
+  },
+  "71": {
+   "name": "GG-=[ Hooligan ]=-",
+   "points": 16
+  },
+  "72": {
+   "name": "GG-=[ Ravager ]=-",
+   "points": 32
+  },
+  "73": {
+   "name": "GG-=[ Convict ]=-",
+   "points": 32
+  },
+  "77": {
+   "name": "GG-=[ Saturn Phoenix ]=-",
+   "points": 1
+  },
+  "78": {
+   "name": "GG-=[ Saturn Yamato ]=-",
+   "points": 2
+  },
+  "79": {
+   "name": "GG-=[ Saturn Defcom ]=-",
+   "points": 6
+  },
+  "80": {
+   "name": "GG-=[ Saturn Liberator ]=-",
+   "points": 6
+  },
+  "81": {
+   "name": "GG-=[ Saturn Nostromo ]=-",
+   "points": 12
+  },
+  "82": {
+   "name": "GG-=[ Saturn Piranha ]=-",
+   "points": 12
+  },
+  "83": {
+   "name": "GG-=[ Saturn Bigboy ]=-",
+   "points": 14
+  },
+  "84": {
+   "name": "GG-=[ Saturn Vengeance ]=-",
+   "points": 16
+  },
+  "85": {
+   "name": "GG-=[ Saturn Goliath ]=-",
+   "points": 20
+  },
+  "86": {
+   "name": "GG-=[ Saturn Leonov ]=-",
+   "points": 4
+  },
+  "87": {
+   "name": "GG-=[ Saturn Venom ]=-",
+   "points": 20
+  },
+  "88": {
+   "name": "GG-=[ Saturn Sentinel ]=-",
+   "points": 20
+  },
+  "89": {
+   "name": "GG-=[ Saturn Spectrum ]=-",
+   "points": 20
+  },
+  "90": {
+   "name": "GG-=[ Saturn Diminisher ]=-",
+   "points": 20
+  },
+  "91": {
+   "name": "GG-=[ Saturn Solace ]=-",
+   "points": 20
+  },
+  "92": {
+   "name": "GG-=[ Saturn Revenge ]=-",
+   "points": 16
+  },
+  "93": {
+   "name": "GG-=[ Saturn Lightning ]=-",
+   "points": 16
+  },
+  "94": {
+   "name": "GG-=[ Saturn Avenger ]=-",
+   "points": 16
+  },
+  "95": {
+   "name": "GG-=[ Saturn Bastion ]=-",
+   "points": 20
+  },
+  "96": {
+   "name": "GG-=[ Saturn Enforcer ]=-",
+   "points": 20
+  },
+  "97": {
+   "name": "GG-=[ Saturn Spearhead ]=-",
+   "points": 10
+  },
+  "98": {
+   "name": "GG-=[ Saturn Citadel ]=-",
+   "points": 40
+  },
+  "99": {
+   "name": "GG-=[ Saturn Aegis ]=-",
+   "points": 25
+  },
+  "100": {
+   "name": "GG-=[ Saturn Crimson ]=-",
+   "points": 20
+  },
+  "101": {
+   "name": "GG-=[ Saturn Jade ]=-",
+   "points": 20
+  },
+  "102": {
+   "name": "GG-=[ Saturn Sapphire ]=-",
+   "points": 20
+  },
+  "103": {
+   "name": "GG-=[ Evil You ]=-",
+   "points": 20
+  },
+  "104": {
+   "name": "GG-=[ Evil Iris ]=-",
+   "points": 3
+  },
+  "105": {
+   "name": "-=[ Hitac-Minion 2.0 ]=-",
+   "points": 80
+  },
+  "106": {
+   "name": "-=[ Hitac 2.0 ]=-",
+   "points": 350
+  },
+  "111": {
+   "name": "-=[ Protekid ]=-",
+   "points": 3
+  },
+  "112": {
+   "name": "-=[ Cubikid ]=-",
+   "points": 10
+  },
+  "113": {
+   "name": "-=[ Emperor Sibelon ]=-",
+   "points": 256
+  },
+  "114": {
+   "name": "-=[ Emperor Lordakium ]=-",
+   "points": 384
+  },
+  "115": {
+   "name": "-=[ Emperor Kristallon ]=-",
+   "points": 560
+  },
+  "116": {
+   "name": "-={ demaNeR Freighter }=-",
+   "points": 1200
+  },
+  "117": {
+   "name": "-={ demaNeR Escort }=-",
+   "points": 30
+  },
+  "118": {
+   "name": "-=[ Skoll ]=-",
+   "points": 560
+  },
+  "119": {
+   "name": "<=< Skoll\\'s Icy >=>",
+   "points": 3
+  },
+  "120": {
+   "name": "-=[ Century Falcon ]=-",
+   "points": 385
+  },
+  "121": {
+   "name": "-=[ Deadly Battleray ]=-",
+   "points": 24
+  },
+  "123": {
+   "name": "<=< Gygerthrall >=>",
+   "points": 3
+  },
+  "124": {
+   "name": "-={ Group demaNeR Freighter }=-",
+   "points": 1200
+  },
+  "125": {
+   "name": "-=[ I-Hitac ]=-",
+   "points": 1200
+  },
+  "126": {
+   "name": "-=[ I-Egg ]=-",
+   "points": 0
+  },
+  "127": {
+   "name": "-=[ I-Gygerthrall ]=-",
+   "points": 2
+  },
+  "129": {
+   "name": "<=< Gygerthrall >=>",
+   "points": 3
+  },
+  "130": {
+   "name": "-=[P.E.T. Scout]=-",
+   "points": 0
+  },
+  "131": {
+   "name": "-=[P.E.T. Decoy]=-",
+   "points": 2
+  },
+  "132": {
+   "name": "-=[P.E.T. Raider]=-",
+   "points": 3
+  },
+  "133": {
+   "name": "-=[P.E.T. Mercenary]=-",
+   "points": 3
+  },
+  "134": {
+   "name": "-=[P.E.T. Medic]=-",
+   "points": 4
+  },
+  "135": {
+   "name": "-=[P.E.T. Soldier]=-",
+   "points": 5
+  },
+  "136": {
+   "name": "-=[P.E.T. Engineer]=-",
+   "points": 5
+  },
+  "137": {
+   "name": "-=[P.E.T. Vanguard]=-",
+   "points": 6
+  },
+  "138": {
+   "name": "-=[P.E.T. Infiltrator]=-",
+   "points": 7
+  },
+  "139": {
+   "name": "-=[P.E.T. Destroyer]=-",
+   "points": 8
+  },
+  "140": {
+   "name": "-=[P.E.T. Commander]=-",
+   "points": 9
+  },
+  "141": {
+   "name": "-=[P.E.T. Stalker]=-",
+   "points": 10
+  },
+  "142": {
+   "name": "-=[P.E.T. Berserker]=-",
+   "points": 11
+  },
+  "143": {
+   "name": "-=[P.E.T. Pack Leader]=-",
+   "points": 12
+  },
+  "144": {
+   "name": "-=[P.E.T. Veteran]=-",
+   "points": 13
+  },
+  "145": {
+   "name": "-=[P.E.T. Alpha]=-",
+   "points": 25
+  },
+  "146": {
+   "name": "-=[P.E.T. Alpha]=-",
+   "points": 15
+  },
+  "147": {
+   "name": "-=[ Streuner Emperor ]=-",
+   "points": 18
+  },
+  "148": {
+   "name": "-=[ Streuner Turret ]=-",
+   "points": 1
+  },
+  "149": {
+   "name": "-=[ Streuner Specialist ]=-",
+   "points": 1
+  },
+  "150": {
+   "name": "-=[ Streuner Soldier ]=-",
+   "points": 4
+  },
+  "151": {
+   "name": "-=[ Demon Drone ]=-",
+   "points": 0
+  },
+  "152": {
+   "name": "-=[ Recruit Streuner ]=-",
+   "points": 1
+  },
+  "153": {
+   "name": "-=[ Aider Streuner ]=-",
+   "points": 1
+  },
+  "154": {
+   "name": "<=< Plagued Gygerthrall >=>",
+   "points": 3
+  },
+  "155": {
+   "name": "<=< Blighted Gygerthrall >=>",
+   "points": 4
+  },
+  "156": {
+   "name": "-=[ Viral Kristallon ]=-",
+   "points": 10
+  },
+  "157": {
+   "name": "<=< Viral Gygerthrall >=>",
+   "points": 4
+  },
+  "158": {
+   "name": "-=[ Streuner Rocketeer ]=-",
+   "points": 1
+  },
+  "159": {
+   "name": "-=[ Seeker Rocket ]=-",
+   "points": 0
+  },
+  "160": {
+   "name": "-=[ Blighted Kristallon ]=-",
+   "points": 10
+  },
+  "161": {
+   "name": "-=[ Plagued Kristallin ]=-",
+   "points": 3
+  },
+  "162": {
+   "name": "-=[ Plague Rocket ]=-",
+   "points": 0
+  },
+  "163": {
+   "name": "( Uber Interceptor )",
+   "points": 4
+  },
+  "164": {
+   "name": "( Uber Barracuda )",
+   "points": 8
+  },
+  "165": {
+   "name": "( Uber Saboteur )",
+   "points": 16
+  },
+  "166": {
+   "name": "( Uber Annihilator )",
+   "points": 24
+  },
+  "167": {
+   "name": "( Uber Battleray )",
+   "points": 50
+  },
+  "169": {
+   "name": "-={ Demaner Corsair }=-",
+   "points": 5
+  },
+  "171": {
+   "name": "-={ demaNeR Freighter }=-",
+   "points": 1200
+  },
+  "172": {
+   "name": "-=[ Unidentified ]=-",
+   "points": 2000
+  },
+  "173": {
+   "name": "* Lordakium Spore *",
+   "points": 1
+  },
+  "174": {
+   "name": "\\\\ Purpose XXI //",
+   "points": 5
+  },
+  "175": {
+   "name": "\\\\ Impulse II //",
+   "points": 5
+  },
+  "176": {
+   "name": "\\\\ Attend IX //",
+   "points": 10
+  },
+  "177": {
+   "name": "\\\\ Invoke XVI //",
+   "points": 15
+  },
+  "178": {
+   "name": "\\\\ Mindfire Behemoth //",
+   "points": 30
+  },
+  "179": {
+   "name": "\\\\ Urge IV //",
+   "points": 550
+  },
+  "180": {
+   "name": "\\\\ Attitude XIII //",
+   "points": 550
+  },
+  "181": {
+   "name": "\\\\ Capital I //",
+   "points": 550
+  },
+  "182": {
+   "name": "\\\\ Regard CXI //",
+   "points": 1100
+  },
+  "183": {
+   "name": "\\\\ Observe X //",
+   "points": 1100
+  },
+  "184": {
+   "name": "\\\\ Find VII //",
+   "points": 1100
+  },
+  "200": {
+   "name": "-=[ Saimon Aberration ]=-",
+   "points": 6
+  },
+  "201": {
+   "name": "-=[ Boss Saimon Aberration ]=-",
+   "points": 12
+  },
+  "202": {
+   "name": "-=[ Mordon Aberration ]=-",
+   "points": 18
+  },
+  "203": {
+   "name": "-={ Boss Mordon Aberration }=-",
+   "points": 30
+  },
+  "204": {
+   "name": "-={ Devolarium Aberration }=-",
+   "points": 45
+  },
+  "205": {
+   "name": "-={ Kristallin Oddity }=-",
+   "points": 40
+  },
+  "206": {
+   "name": "-={ Boss Kristallin Oddity }=-",
+   "points": 80
+  },
+  "207": {
+   "name": "-={ Kristallon Oddity }=-",
+   "points": 120
+  },
+  "208": {
+   "name": "-={ Boss Kristallon Oddity }=-",
+   "points": 200
+  },
+  "209": {
+   "name": "-={ UberKristallon Oddity }=-",
+   "points": 300
+  },
+  "210": {
+   "name": "..::{ Awakened Lordakium }::..",
+   "points": 280
+  },
+  "211": {
+   "name": "..::{ Awakened Overlord }::..",
+   "points": 520
+  },
+  "212": {
+   "name": "..::{ Awakened Devourer }::..",
+   "points": 800
+  },
+  "213": {
+   "name": "=^(Cote Lo)^=",
+   "points": 2
+  },
+  "214": {
+   "name": "=^(Kodkod)^=",
+   "points": 5
+  },
+  "215": {
+   "name": "=^(Aura Dun Jig)^=",
+   "points": 8
+  },
+  "216": {
+   "name": "=^(Lac Lion)^=",
+   "points": 12
+  },
+  "217": {
+   "name": "=^(Natal Nap)^=",
+   "points": 30
+  },
+  "218": {
+   "name": "=^(Plutus)^=",
+   "points": 750
+  },
+  "219": {
+   "name": "-=[ Warhead ]=-",
+   "points": 0
+  },
+  "220": {
+   "name": "-=[ Turret ]=-",
+   "points": 0
+  },
+  "221": {
+   "name": "-x-[ Frozen Icy ]-x-",
+   "points": 2
+  },
+  "222": {
+   "name": "-x-[ Frozen Kristallin ]-x-",
+   "points": 3
+  },
+  "223": {
+   "name": "-x-[ Frozen Kristallon ]-x-",
+   "points": 4
+  },
+  "224": {
+   "name": "-x-[ Frozen Boss Kristallin ]-x-",
+   "points": 12
+  },
+  "225": {
+   "name": "-x-[ Frozen Boss Kristallon ]-x-",
+   "points": 24
+  },
+  "226": {
+   "name": "-x-[ Frozen Meteoroid ]-x-",
+   "points": 32
+  },
+  "227": {
+   "name": "-x-[ Frozen Super Meteoroid ]-x-",
+   "points": 128
+  },
+  "228": {
+   "name": "-x-[ Synk ]-x-",
+   "points": 32
+  },
+  "229": {
+   "name": "xX[ Chaos Protegit ]Xx",
+   "points": 3
+  },
+  "230": {
+   "name": ">={ Lanatum }=<",
+   "points": 0
+  },
+  "233": {
+   "name": "-=[ Hexor M1mesis ]=-",
+   "points": 1
+  },
+  "234": {
+   "name": "-=[ Raging Mimes1s ]=-",
+   "points": 1
+  },
+  "235": {
+   "name": "-=[ Cloning Mim3sis ]=-",
+   "points": 1
+  },
+  "236": {
+   "name": "-=[ Cloned Mim3sis ]=-",
+   "points": 0
+  },
+  "237": {
+   "name": "-=[ Terror Mime5is ]=-",
+   "points": 2
+  },
+  "238": {
+   "name": "-=[ Kamikaze Mime5is ]=-",
+   "points": 0
+  },
+  "239": {
+   "name": "-=[ Reflector Mimesi5 ]=-",
+   "points": 4
+  },
+  "241": {
+   "name": "-=[ Raider Mimes1s ]=-",
+   "points": 1
+  },
+  "242": {
+   "name": "-=[ Assailant M1mesis ]=-",
+   "points": 1
+  },
+  "243": {
+   "name": "-=[ Medic Mim3sis ]=-",
+   "points": 1
+  },
+  "244": {
+   "name": "-=[ Hardy Mime5is ]=-",
+   "points": 1
+  },
+  "245": {
+   "name": "-=[ Piercing Mimesi5 ]=-",
+   "points": 2
+  },
+  "246": {
+   "name": "-=[ Obscured M1mes1s ]=-",
+   "points": 4
+  },
+  "247": {
+   "name": "-=[ Hounding Mim3si5 ]=-",
+   "points": 2
+  },
+  "248": {
+   "name": "-=[ Mirror M1m3si5 ]=-",
+   "points": 4
+  },
+  "249": {
+   "name": "-=[ Mirror M1m3si5 ]=-",
+   "points": 0
+  },
+  "250": {
+   "name": "-=[ Sniper M1mesi5 ]=-",
+   "points": 2
+  },
+  "251": {
+   "name": "-=[ Marker Mim3si5 ]=-",
+   "points": 4
+  },
+  "252": {
+   "name": "~=( Troublemaker Cyborg )=~",
+   "points": 10
+  },
+  "253": {
+   "name": "~=( Cowering Cyborg )=~",
+   "points": 3
+  },
+  "254": {
+   "name": "~=( Phasing Cyborg )=~",
+   "points": 750
+  },
+  "255": {
+   "name": "~=( Demolition Cyborg )=~",
+   "points": 10
+  },
+  "256": {
+   "name": "~=( Shielded Cyborg )=~",
+   "points": 5
+  },
+  "257": {
+   "name": "~=( Singularity Cyborg )=~",
+   "points": 15
+  },
+  "258": {
+   "name": "-=[ Warhead ]=-",
+   "points": 0
+  },
+  "261": {
+   "name": "-=[ Hitac 2.5 ]=-",
+   "points": 175
+  },
+  "262": {
+   "name": "-=[ Revenant Slender ]=-",
+   "points": 22
+  },
+  "263": {
+   "name": "-=[ Hitac-Minion 2.5 ]=-",
+   "points": 40
+  },
+  "266": {
+   "name": "\\\\ Strokelight Barrage //",
+   "points": 25
+  },
+  "267": {
+   "name": "-=[ Barrage Seeker Rocket ]=-",
+   "points": 0
+  },
+  "268": {
+   "name": "\\\\ Abide I //",
+   "points": 5
+  },
+  "269": {
+   "name": "\\\\ Steadfast III //",
+   "points": 5
+  },
+  "271": {
+   "name": "-={ Saturn Spearhead }=-",
+   "points": 27
+  },
+  "272": {
+   "name": "-={ Saturn Aegis }=-",
+   "points": 152
+  },
+  "273": {
+   "name": "-={ Saturn Citadel }=-",
+   "points": 2860
+  },
+  "274": {
+   "name": "-={ Saturn Goliath }=-",
+   "points": 102
+  },
+  "275": {
+   "name": "-={ Saturn Spectrum }=-",
+   "points": 600
+  },
+  "276": {
+   "name": "-={ Saturn Sentinel }=-",
+   "points": 483
+  },
+  "277": {
+   "name": "-={ Saturn Solace }=-",
+   "points": 591
+  },
+  "278": {
+   "name": "-={ Saturn Venom }=-",
+   "points": 160
+  },
+  "279": {
+   "name": "-={ Saturn Diminisher }=-",
+   "points": 217
+  },
+  "280": {
+   "name": "-=[ Skoll ]=-",
+   "points": 560
+  },
+  "281": {
+   "name": "-=[: The Stinger :]=-",
+   "points": 512
+  },
+  "282": {
+   "name": "-=[: Pike :]=-",
+   "points": 128
+  },
+  "283": {
+   "name": "-=[: Barb :]=-",
+   "points": 64
+  },
+  "284": {
+   "name": "-=[: Lanternfish :]=-",
+   "points": 40
+  },
+  "285": {
+   "name": "-=[: Spookfish :]=-",
+   "points": 25
+  },
+  "286": {
+   "name": "-=[ Inspirit M1mesi5 ]=-",
+   "points": 1
+  },
+  "287": {
+   "name": "-=[ Mim3si5 Turret ]=-",
+   "points": 0
+  },
+  "288": {
+   "name": "-=[ Sheer Chaos Interceptor ]=-",
+   "points": 4
+  },
+  "289": {
+   "name": "-=[ Sheer Chaos Annihilator ]=-",
+   "points": 24
+  },
+  "291": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "292": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "293": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "294": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "295": {
+   "name": "-=[ Volatile Energy Reserves ]=-",
+   "points": 0
+  },
+  "296": {
+   "name": "-=[ Slow Field ]=-",
+   "points": 0
+  },
+  "297": {
+   "name": "-=[ Warhead ]=-",
+   "points": 0
+  },
+  "298": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "299": {
+   "name": "-=[ Hitac-Underling ]=-",
+   "points": 1
+  },
+  "300": {
+   "name": "-=[ Hitac-Underboss ]=-",
+   "points": 1
+  },
+  "301": {
+   "name": "-=[ Lethal Field ]=-",
+   "points": 0
+  },
+  "401": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "402": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "403": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "404": {
+   "name": "-=[ Sunder Star ]=-",
+   "points": 0
+  },
+  "408": {
+   "name": "-=[ Streuner ]=-",
+   "points": 0
+  },
+  "409": {
+   "name": "-=[ Saimon ]=-",
+   "points": 1
+  },
+  "410": {
+   "name": "-=[ Reflector Mimesi5 ]=-",
+   "points": 1
+  },
+  "411": {
+   "name": "-=[ Sibelonit ]=-",
+   "points": 1
+  },
+  "412": {
+   "name": "..::{ Boss Sibelonit }::..",
+   "points": 1
+  },
+  "413": {
+   "name": "<=< Boss Kucurbium >=>",
+   "points": 1
+  },
+  "414": {
+   "name": "-=[ Kristallin ]=-",
+   "points": 1
+  },
+  "415": {
+   "name": "..::{ Boss Mordon }::..",
+   "points": 1
+  },
+  "416": {
+   "name": "..::{ Boss Saimon }::..",
+   "points": 1
+  },
+  "417": {
+   "name": "-=[ Devolarium ]=-",
+   "points": 1
+  },
+  "418": {
+   "name": "-=[ Emperor Sibelon ]=-",
+   "points": 1
+  },
+  "419": {
+   "name": "..::{ Boss Lordakium }::...",
+   "points": 1
+  },
+  "420": {
+   "name": "-=[ Recruit Streuner ]=-",
+   "points": 1
+  },
+  "421": {
+   "name": "\\\\ Find VII //",
+   "points": 1
+  },
+  "422": {
+   "name": "-=[ Hexor M1mesis ]=-",
+   "points": 1
+  },
+  "423": {
+   "name": "\\\\ Abide I //",
+   "points": 1
+  },
+  "425": {
+   "name": "-=[ Mim3si5 Turret ]=-",
+   "points": 0
+  },
+  "426": {
+   "name": "-=[ Kristallon ]=-",
+   "points": 1
+  },
+  "427": {
+   "name": "-=[ Convict ]=-",
+   "points": 1
+  },
+  "428": {
+   "name": "..::{ Boss Kristallin }::..",
+   "points": 1
+  },
+  "501": {
+   "name": "-=[ Dreadfyre Fortress ]=-",
+   "points": 0
+  },
+  "502": {
+   "name": "-=[ Dreadfyre Guardian ]=-",
+   "points": 0
+  },
+  "503": {
+   "name": "-=[ Dreadfyre Harbinger ]=-",
+   "points": 0
+  },
+  "510": {
+   "name": "..::{ Chronospire }::..",
+   "points": 4
+  },
+  "511": {
+   "name": "-=[ Veil Stalker ]=-",
+   "points": 1
+  },
+  "512": {
+   "name": "..::{ Pyrospire }::..",
+   "points": 4
+  },
+  "513": {
+   "name": "-=[ Magma Stalker ]=-",
+   "points": 1
+  },
+  "514": {
+   "name": "..::{ Vinespire }::..",
+   "points": 4
+  },
+  "515": {
+   "name": "-=[ Spore Stalker ]=-",
+   "points": 1
+  },
+  "516": {
+   "name": "..::{ Boss Voidmare }::..",
+   "points": 8
+  },
+  "551": {
+   "name": "-=[ Interceptor ]=-",
+   "points": 1
+  },
+  "552": {
+   "name": "-=[ Barracuda ]=-",
+   "points": 2
+  },
+  "553": {
+   "name": "-=[ Saboteur ]=-",
+   "points": 4
+  },
+  "554": {
+   "name": "-=[ Deadly Battleray ]=-",
+   "points": 24
+  },
+  "999": {
+   "name": "-=[ Hit Target ]=-",
+   "points": 0
+  }
+ },
+ "ship_points": {
+  "ship_phoenix": {
+   "name": "Phoenix",
+   "points": 1
+  },
+  "ship_yamato": {
+   "name": "Yamato",
+   "points": 2
+  },
+  "ship_leonov": {
+   "name": "Leonov",
+   "points": 4
+  },
+  "ship_defcom": {
+   "name": "Defcom",
+   "points": 6
+  },
+  "ship_liberator": {
+   "name": "Liberator",
+   "points": 8
+  },
+  "ship_piranha": {
+   "name": "Piranha",
+   "points": 12
+  },
+  "ship_nostromo": {
+   "name": "Nostromo",
+   "points": 13
+  },
+  "ship_bigboy": {
+   "name": "Bigboy",
+   "points": 14
+  },
+  "ship_vengeance": {
+   "name": "Vengeance",
+   "points": 16
+  },
+  "ship_goliath": {
+   "name": "Goliath",
+   "points": 20
+  },
+  "ship_spearhead": {
+   "name": "Spearhead",
+   "points": 10
+  },
+  "ship_citadel": {
+   "name": "Citadel",
+   "points": 40
+  },
+  "ship_aegis": {
+   "name": "Aegis",
+   "points": 25
+  },
+  "ship_n-diplomat": {
+   "name": "N-Diplomat",
+   "points": 13
+  },
+  "ship_n-envoy": {
+   "name": "N-Envoy",
+   "points": 13
+  },
+  "ship_n-ambassador": {
+   "name": "N-Ambassador",
+   "points": 13
+  },
+  "ship_bb-solemn": {
+   "name": "BB-Solemn",
+   "points": 14
+  },
+  "ship_v-adept": {
+   "name": "V-Adept",
+   "points": 16
+  },
+  "ship_v-avenger": {
+   "name": "V-Avenger",
+   "points": 16
+  },
+  "ship_v-corsair": {
+   "name": "V-Corsair",
+   "points": 16
+  },
+  "ship_v-revenge": {
+   "name": "V-Revenge",
+   "points": 16
+  },
+  "ship_v-lightning": {
+   "name": "V-Lightning",
+   "points": 16
+  },
+  "ship_pusat": {
+   "name": "Pusat",
+   "points": 16
+  },
+  "ship_g-saturn": {
+   "name": "G-Saturn",
+   "points": 20
+  },
+  "ship_g-referee": {
+   "name": "Referee",
+   "points": 20
+  },
+  "ship_g-ignite": {
+   "name": "G-Ignite",
+   "points": 20
+  },
+  "ship_g-kick": {
+   "name": "G-Kick",
+   "points": 20
+  },
+  "ship_g-goal": {
+   "name": "G-Goal",
+   "points": 20
+  },
+  "ship_g-surgeon": {
+   "name": "G-Surgeon",
+   "points": 20
+  },
+  "ship_g-bastion": {
+   "name": "G-Bastion",
+   "points": 20
+  },
+  "ship_g-centaur": {
+   "name": "G-Centaur",
+   "points": 20
+  },
+  "ship_g-enforcer": {
+   "name": "G-Enforcer",
+   "points": 20
+  },
+  "ship_g-exalted": {
+   "name": "G-Exalted",
+   "points": 20
+  },
+  "ship_g-veteran": {
+   "name": "G-Veteran",
+   "points": 20
+  },
+  "ship_g-peacemaker": {
+   "name": "G-Peacemaker",
+   "points": 20
+  },
+  "ship_g-sovereign": {
+   "name": "G-Sovereign",
+   "points": 20
+  },
+  "ship_g-vanquisher": {
+   "name": "G-Vanquisher",
+   "points": 20
+  },
+  "ship_g-champion": {
+   "name": "G-Champion",
+   "points": 20
+  },
+  "ship_g-admin-cloak": {
+   "name": "G-Admin Cloak",
+   "points": 10
+  },
+  "ship_diminisher": {
+   "name": "Diminisher",
+   "points": 20
+  },
+  "ship_sentinel": {
+   "name": "Sentinel",
+   "points": 20
+  },
+  "ship_solace": {
+   "name": "Solace",
+   "points": 20
+  },
+  "ship_spectrum": {
+   "name": "Spectrum",
+   "points": 20
+  },
+  "ship_venom": {
+   "name": "Venom",
+   "points": 20
+  },
+  "ship_s-veteran": {
+   "name": "S-Veteran",
+   "points": 10
+  },
+  "ship_s-elite": {
+   "name": "S-Elite",
+   "points": 10
+  },
+  "ship_c-veteran": {
+   "name": "C-Veteran",
+   "points": 40
+  },
+  "ship_c-elite": {
+   "name": "C-Elite",
+   "points": 40
+  },
+  "ship_a-veteran": {
+   "name": "A-Veteran",
+   "points": 25
+  },
+  "ship_a-elite": {
+   "name": "A-Elite",
+   "points": 25
+  },
+  "ship_tartarus": {
+   "name": "Tartarus",
+   "points": 25
+  },
+  "ship_mimesis": {
+   "name": "Mimesis",
+   "points": 20
+  },
+  "ship_goliath-x": {
+   "name": "Goliath-X",
+   "points": 20
+  },
+  "ship_yamato-ronin": {
+   "name": "Yamato Ronin",
+   "points": 2
+  },
+  "ship_defcom-raven": {
+   "name": "Defcom Raven",
+   "points": 6
+  },
+  "ship_cyborg": {
+   "name": "Cyborg",
+   "points": 20
+  },
+  "ship_hammerclaw": {
+   "name": "Hammerclaw",
+   "points": 20
+  },
+  "ship_centurion": {
+   "name": "Centurion",
+   "points": 20
+  },
+  "ship_hecate": {
+   "name": "Hecate",
+   "points": 20
+  },
+  "ship_disruptor": {
+   "name": "Disruptor",
+   "points": 20
+  },
+  "ship_berserker": {
+   "name": "Berserker",
+   "points": 20
+  },
+  "ship_zephyr": {
+   "name": "Zephyr",
+   "points": 20
+  },
+  "ship_solaris": {
+   "name": "Solaris",
+   "points": 20
+  },
+  "ship_keres": {
+   "name": "Keres",
+   "points": 20
+  },
+  "ship_retiarus": {
+   "name": "Retiarus",
+   "points": 20
+  },
+  "ship_orcus": {
+   "name": "Orcus",
+   "points": 20
+  },
+  "ship_holo": {
+   "name": "Holo",
+   "points": 20
+  },
+  "ship_goliath-plus": {
+   "name": "Goliath Plus",
+   "points": 20
+  },
+  "ship_citadel-plus": {
+   "name": "Citadel Plus",
+   "points": 20
+  },
+  "ship_liberator-plus": {
+   "name": "Liberator Plus",
+   "points": 20
+  },
+  "ship_solace-plus": {
+   "name": "Solace Plus",
+   "points": 20
+  },
+  "ship_solaris-plus": {
+   "name": "Solaris Plus",
+   "points": 20
+  },
+  "ship_pusat-plus": {
+   "name": "Pusat Plus",
+   "points": 16
+  },
+  "ship_hecate-plus": {
+   "name": "Hecate Plus",
+   "points": 20
+  },
+  "ship_hammerclaw-plus": {
+   "name": "Hammerclaw Plus",
+   "points": 20
+  },
+  "ship_spearhead-plus": {
+   "name": "Spearhead Plus",
+   "points": 10
+  },
+  "ship_tempest": {
+   "name": "Tempest",
+   "points": 20
+  },
+  "ship_tartarus-plus": {
+   "name": "Tartarus Plus",
+   "points": 10
+  },
+  "ship_basilisk": {
+   "name": "Basilisk",
+   "points": 20
+  },
+  "ship_spectrum-plus": {
+   "name": "Spectrum Plus",
+   "points": 20
+  },
+  "ship_paladin": {
+   "name": "Paladin",
+   "points": 20
+  },
+  "ship_retiarus-plus": {
+   "name": "Retiarus Plus",
+   "points": 20
+  },
+  "ship_hyperion": {
+   "name": "Hyperion",
+   "points": 20
+  }
+ },
+ "ranks": [
+  {
+   "rank": 1,
+   "name": "Basic Space Pilot",
+   "type": "percentOfCompany",
+   "value": 20.0
+  },
+  {
+   "rank": 2,
+   "name": "Space Pilot",
+   "type": "percentOfCompany",
+   "value": 12.9
+  },
+  {
+   "rank": 3,
+   "name": "Chief Space Pilot",
+   "type": "percentOfCompany",
+   "value": 10.0
+  },
+  {
+   "rank": 4,
+   "name": "Basic Sergeant",
+   "type": "percentOfCompany",
+   "value": 9.0
+  },
+  {
+   "rank": 5,
+   "name": "Sergeant",
+   "type": "percentOfCompany",
+   "value": 8.0
+  },
+  {
+   "rank": 6,
+   "name": "Chief Sergeant",
+   "type": "percentOfCompany",
+   "value": 7.0
+  },
+  {
+   "rank": 7,
+   "name": "Basic Lieutenant",
+   "type": "percentOfCompany",
+   "value": 6.0
+  },
+  {
+   "rank": 8,
+   "name": "Lieutenant",
+   "type": "percentOfCompany",
+   "value": 5.0
+  },
+  {
+   "rank": 9,
+   "name": "Chief Lieutenant",
+   "type": "percentOfCompany",
+   "value": 4.5
+  },
+  {
+   "rank": 10,
+   "name": "Basic Captain",
+   "type": "percentOfCompany",
+   "value": 4.0
+  },
+  {
+   "rank": 11,
+   "name": "Captain",
+   "type": "percentOfCompany",
+   "value": 3.5
+  },
+  {
+   "rank": 12,
+   "name": "Chief Captain",
+   "type": "percentOfCompany",
+   "value": 3.0
+  },
+  {
+   "rank": 13,
+   "name": "Basic Major",
+   "type": "percentOfCompany",
+   "value": 2.5
+  },
+  {
+   "rank": 14,
+   "name": "Major",
+   "type": "percentOfCompany",
+   "value": 2.0
+  },
+  {
+   "rank": 15,
+   "name": "Chief Major",
+   "type": "percentOfCompany",
+   "value": 1.5
+  },
+  {
+   "rank": 16,
+   "name": "Basic Colonel",
+   "type": "percentOfCompany",
+   "value": 1.0
+  },
+  {
+   "rank": 17,
+   "name": "Colonel",
+   "type": "fixedPlayersPerCompany",
+   "value": 20
+  },
+  {
+   "rank": 18,
+   "name": "Chief Colonel",
+   "type": "fixedPlayersPerCompany",
+   "value": 5
+  },
+  {
+   "rank": 19,
+   "name": "Basic General",
+   "type": "fixedPlayersPerCompany",
+   "value": 3
+  },
+  {
+   "rank": 20,
+   "name": "General",
+   "type": "fixedPlayersPerCompany",
+   "value": 2
+  },
+  {
+   "rank": 21,
+   "name": "Chief General",
+   "type": "fixedPlayersPerCompany",
+   "value": 1
+  }
+ ],
+ "ship_type": {
+  "ship_a-elite": 12,
+  "ship_a-veteran": 12,
+  "ship_aegis": 12,
+  "ship_bb-solemn": 9,
+  "ship_bigboy": 9,
+  "ship_c-elite": 11,
+  "ship_c-veteran": 11,
+  "ship_citadel": 11,
+  "ship_defcom": 4,
+  "ship_defcom-raven": 4,
+  "ship_diminisher": 10,
+  "ship_g-bastion": 10,
+  "ship_g-centaur": 10,
+  "ship_g-champion": 10,
+  "ship_g-enforcer": 10,
+  "ship_g-exalted": 10,
+  "ship_g-goal": 10,
+  "ship_g-ignite": 10,
+  "ship_g-kick": 10,
+  "ship_g-peacemaker": 10,
+  "ship_g-referee": 10,
+  "ship_g-sovereign": 10,
+  "ship_g-vanquisher": 10,
+  "ship_g-veteran": 10,
+  "ship_goliath": 10,
+  "ship_leonov": 3,
+  "ship_liberator": 5,
+  "ship_n-ambassador": 7,
+  "ship_nostromo": 7,
+  "ship_phoenix": 1,
+  "ship_piranha": 6,
+  "ship_pusat": 8,
+  "ship_s-elite": 13,
+  "ship_s-veteran": 13,
+  "ship_sentinel": 0,
+  "ship_solace": 10,
+  "ship_spearhead": 13,
+  "ship_spectrum": 10,
+  "ship_tartarus": 10,
+  "ship_v-adept": 8,
+  "ship_v-avenger": 8,
+  "ship_v-corsair": 8,
+  "ship_v-lightning": 8,
+  "ship_v-revenge": 8,
+  "ship_vengeance": 8,
+  "ship_venom": 10,
+  "ship_yamato": 2,
+  "ship_yamato-ronin": 2
+ },
+ "_ship_type": "ship type in the rank formula: the client's game.xml shipId (Phoenix 1 ... Goliath 10, Citadel 11, Aegis 12, Spearhead 13); designs and derivatives use the base ship's id (recording: Liberator 5 -> 5,000 points). Those whose base is not a classic ship (Tartarus ...) 10 (adaptation)",
+ "formula": {
+  "ep": 1e-05,
+  "honor": 0.01,
+  "player": 3,
+  "level": 100,
+  "day": 6,
+  "ship": 1000,
+  "npc": 0.5,
+  "quest": 100,
+  "friendly": -100,
+  "death_by_enemy": -4,
+  "death_by_radiation": -8,
+  "phoenix": -2
+ },
+ "thresholds": [
+  0,
+  3000,
+  6000,
+  10000,
+  15000,
+  20000,
+  27000,
+  35000,
+  45000,
+  57000,
+  70000,
+  85000,
+  100000,
+  120000,
+  145000,
+  175000,
+  210000,
+  260000,
+  330000,
+  420000,
+  550000
+ ],
+ "_thresholds": "single-player adaptation: in the real game the rank is given every day by position among the players in the company (Chief General 1 person ... Basic Space Pilot 20%). Since there are no other players in the company, the rank is derived from these thresholds of rank points (for rank N at least thresholds[N-1]); when bot players arrive (Phase 11) the real ranking can be restored",
+ "outlaw": {
+  "honor": -500,
+  "icon": 5000,
+  "_note": "honor -500 and below: icon 5000 on the ship (only the icon in the client; that it is Outlaw is an inference). In single-player honor does not go negative (with PvP, Phase 11)"
+ },
+ "_ship_type_forum": "A ship not in the table and not classic is 0 (real recording: Sentinel 0); Goliath 10 (official forum 127585)"
+}

@@ -1,203 +1,203 @@
 {
- "_aciklama": "Clan Battle Station -> server/data/cbs.json (yol haritası Ö5).",
- "_kaynak": "Resmî DarkOrbit FR CBS FAQ (modüller, 2023-01-05), DE CBS FAQ (2019-04-06), RU CBS FAQ (2020-10-25; 2017 dengelemesi): board-fr.darkorbit.com/threads/lexique-2-0-station-de-combat-de-clan.133912, board-de.darkorbit.com/threads/faq-clan-battlestations-cbs.2972, board-ru.darkorbit.com/threads/klanovye-boevye-stancii-kbs-faq.1453, board-en.darkorbit.com/threads/clan-battle-station-faq.819.",
- "_uyarlama": "Silah hasarı/canı/menzili/isabeti, Hull/REPM/booster canları ve booster azami %3-10 değerleri resmî FAQ değerleri; can/hasar seviye başına +%2 (L16 = L1 x 1,30). Deflector birikim hızı seviye başına tabanın +%1'i (120 dk/sa -> L16 138 dk/sa; prime time x5). Deflector modülünün ayrı 1.040.000 can değeri kaynakta doğrulanmamış yerel değerdir. Sayısal atış aralıkları (lazer 1,5/2,5/3 sn, roket 4 sn), onarım hızı, kurulum süresi (50 sn), deflector birikimi (48 sa), acil onarım bedeli (500 U), modül yıkma ödülleri, prime time 18:00-21:00 ve uzaylı baskınları tek oyunculu uyarlamadır. Sanal rakip modül canı/hasarı varsayılan olarak tam değerdedir (çarpan 1,0); önceden 0,2/0,05 idi. Mevcut kayıtların hasarlı modül canı otomatik doldurulmaz.",
- "asteroitler": [
+ "_description": "Clan Battle Station -> server/data/cbs.json (roadmap Ö5).",
+ "_source": "Official DarkOrbit FR CBS FAQ (modules, 2023-01-05), DE CBS FAQ (2019-04-06), RU CBS FAQ (2020-10-25; 2017 balancing): board-fr.darkorbit.com/threads/lexique-2-0-station-de-combat-de-clan.133912, board-de.darkorbit.com/threads/faq-clan-battlestations-cbs.2972, board-ru.darkorbit.com/threads/klanovye-boevye-stancii-kbs-faq.1453, board-en.darkorbit.com/threads/clan-battle-station-faq.819.",
+ "_adaptation": "Weapon damage/HP/range/accuracy, Hull/REPM/booster HP and the booster maximum 3-10% values are the official FAQ values; HP/damage +2% per level (L16 = L1 x 1.30). Deflector accumulation rate is +1% of the base per level (120 min/h -> L16 138 min/h; prime time x5). The Deflector module's separate 1,040,000 HP value is a local value not verified in the source. Numeric fire intervals (laser 1.5/2.5/3 s, rocket 4 s), repair speed, installation time (50 s), deflector accumulation (48 h), emergency repair cost (500 U), module demolition rewards, prime time 18:00-21:00 and alien raids are single-player adaptation. Virtual rival module HP/damage is at full value by default (multiplier 1.0); it used to be 0.2/0.05. Damaged module HP in existing saves is not refilled automatically.",
+ "asteroids": [
   {
-   "kimlik": 1,
-   "ad": "Aries",
-   "harita": 3,
-   "x_yuzde": 50.59048,
-   "y_yuzde": 18.64885,
-   "ad_anahtari": "battleStation_name_1"
+   "uid": 1,
+   "name": "Aries",
+   "map": 3,
+   "x_percent": 50.59048,
+   "y_percent": 18.64885,
+   "name_key": "battleStation_name_1"
   },
   {
-   "kimlik": 2,
-   "ad": "Balzar",
-   "harita": 4,
-   "x_yuzde": 21.3,
-   "y_yuzde": 70.33588,
-   "ad_anahtari": "battleStation_name_2"
+   "uid": 2,
+   "name": "Balzar",
+   "map": 4,
+   "x_percent": 21.3,
+   "y_percent": 70.33588,
+   "name_key": "battleStation_name_2"
   },
   {
-   "kimlik": 3,
-   "ad": "Cetus",
-   "harita": 17,
-   "x_yuzde": 82.07143,
-   "y_yuzde": 19.46565,
-   "ad_anahtari": "battleStation_name_3"
+   "uid": 3,
+   "name": "Cetus",
+   "map": 17,
+   "x_percent": 82.07143,
+   "y_percent": 19.46565,
+   "name_key": "battleStation_name_3"
   },
   {
-   "kimlik": 4,
-   "ad": "Draco",
-   "harita": 18,
-   "x_yuzde": 47.69524,
-   "y_yuzde": 47.66412,
-   "ad_anahtari": "battleStation_name_4"
+   "uid": 4,
+   "name": "Draco",
+   "map": 18,
+   "x_percent": 47.69524,
+   "y_percent": 47.66412,
+   "name_key": "battleStation_name_4"
   },
   {
-   "kimlik": 5,
-   "ad": "Equleus",
-   "harita": 19,
-   "x_yuzde": 47.78571,
-   "y_yuzde": 55.41985,
-   "ad_anahtari": "battleStation_name_5"
+   "uid": 5,
+   "name": "Equleus",
+   "map": 19,
+   "x_percent": 47.78571,
+   "y_percent": 55.41985,
+   "name_key": "battleStation_name_5"
   },
   {
-   "kimlik": 6,
-   "ad": "Fornax",
-   "harita": 7,
-   "x_yuzde": 50.59048,
-   "y_yuzde": 18.64885,
-   "ad_anahtari": "battleStation_name_6"
+   "uid": 6,
+   "name": "Fornax",
+   "map": 7,
+   "x_percent": 50.59048,
+   "y_percent": 18.64885,
+   "name_key": "battleStation_name_6"
   },
   {
-   "kimlik": 7,
-   "ad": "Gemini",
-   "harita": 8,
-   "x_yuzde": 77.07619,
-   "y_yuzde": 65.56489,
-   "ad_anahtari": "battleStation_name_7"
+   "uid": 7,
+   "name": "Gemini",
+   "map": 8,
+   "x_percent": 77.07619,
+   "y_percent": 65.56489,
+   "name_key": "battleStation_name_7"
   },
   {
-   "kimlik": 8,
-   "ad": "Hydra",
-   "harita": 21,
-   "x_yuzde": 49.84286,
-   "y_yuzde": 68.99237,
-   "ad_anahtari": "battleStation_name_8"
+   "uid": 8,
+   "name": "Hydra",
+   "map": 21,
+   "x_percent": 49.84286,
+   "y_percent": 68.99237,
+   "name_key": "battleStation_name_8"
   },
   {
-   "kimlik": 9,
-   "ad": "Indus",
-   "harita": 22,
-   "x_yuzde": 41,
-   "y_yuzde": 47,
-   "ad_anahtari": "battleStation_name_9"
+   "uid": 9,
+   "name": "Indus",
+   "map": 22,
+   "x_percent": 41,
+   "y_percent": 47,
+   "name_key": "battleStation_name_9"
   },
   {
-   "kimlik": 10,
-   "ad": "Julius",
-   "harita": 23,
-   "x_yuzde": 49.84286,
-   "y_yuzde": 44.67939,
-   "ad_anahtari": "battleStation_name_10"
+   "uid": 10,
+   "name": "Julius",
+   "map": 23,
+   "x_percent": 49.84286,
+   "y_percent": 44.67939,
+   "name_key": "battleStation_name_10"
   },
   {
-   "kimlik": 11,
-   "ad": "Kepler",
-   "harita": 11,
-   "x_yuzde": 50.59048,
-   "y_yuzde": 18.64885,
-   "ad_anahtari": "battleStation_name_11"
+   "uid": 11,
+   "name": "Kepler",
+   "map": 11,
+   "x_percent": 50.59048,
+   "y_percent": 18.64885,
+   "name_key": "battleStation_name_11"
   },
   {
-   "kimlik": 12,
-   "ad": "Lynx",
-   "harita": 12,
-   "x_yuzde": 22.28095,
-   "y_yuzde": 68.69466,
-   "ad_anahtari": "battleStation_name_12"
+   "uid": 12,
+   "name": "Lynx",
+   "map": 12,
+   "x_percent": 22.28095,
+   "y_percent": 68.69466,
+   "name_key": "battleStation_name_12"
   },
   {
-   "kimlik": 13,
-   "ad": "Mensa",
-   "harita": 25,
-   "x_yuzde": 51.52381,
-   "y_yuzde": 69.14504,
-   "ad_anahtari": "battleStation_name_13"
+   "uid": 13,
+   "name": "Mensa",
+   "map": 25,
+   "x_percent": 51.52381,
+   "y_percent": 69.14504,
+   "name_key": "battleStation_name_13"
   },
   {
-   "kimlik": 14,
-   "ad": "Nashira",
-   "harita": 26,
-   "x_yuzde": 46.66667,
-   "y_yuzde": 63.47328,
-   "ad_anahtari": "battleStation_name_14"
+   "uid": 14,
+   "name": "Nashira",
+   "map": 26,
+   "x_percent": 46.66667,
+   "y_percent": 63.47328,
+   "name_key": "battleStation_name_14"
   },
   {
-   "kimlik": 15,
-   "ad": "Orion",
-   "harita": 27,
-   "x_yuzde": 50.02857,
-   "y_yuzde": 35.72519,
-   "ad_anahtari": "battleStation_name_15"
+   "uid": 15,
+   "name": "Orion",
+   "map": 27,
+   "x_percent": 50.02857,
+   "y_percent": 35.72519,
+   "name_key": "battleStation_name_15"
   },
   {
-   "kimlik": 16,
-   "ad": "Volan",
-   "harita": 13,
-   "x_yuzde": 47.97143,
-   "y_yuzde": 43.63359,
-   "ad_anahtari": "battleStation_name_16"
+   "uid": 16,
+   "name": "Volan",
+   "map": 13,
+   "x_percent": 47.97143,
+   "y_percent": 43.63359,
+   "name_key": "battleStation_name_16"
   },
   {
-   "kimlik": 17,
-   "ad": "Wican",
-   "harita": 14,
-   "x_yuzde": 54.60476,
-   "y_yuzde": 44.9771,
-   "ad_anahtari": "battleStation_name_17"
+   "uid": 17,
+   "name": "Wican",
+   "map": 14,
+   "x_percent": 54.60476,
+   "y_percent": 44.9771,
+   "name_key": "battleStation_name_17"
   },
   {
-   "kimlik": 18,
-   "ad": "Xenitor",
-   "harita": 15,
-   "x_yuzde": 42.18095,
-   "y_yuzde": 46.16794,
-   "ad_anahtari": "battleStation_name_18"
+   "uid": 18,
+   "name": "Xenitor",
+   "map": 15,
+   "x_percent": 42.18095,
+   "y_percent": 46.16794,
+   "name_key": "battleStation_name_18"
   },
   {
-   "kimlik": 19,
-   "ad": "Yukian",
-   "harita": 16,
-   "x_yuzde": 21.55714,
-   "y_yuzde": 22.6374,
-   "ad_anahtari": "battleStation_name_19"
+   "uid": 19,
+   "name": "Yukian",
+   "map": 16,
+   "x_percent": 21.55714,
+   "y_percent": 22.6374,
+   "name_key": "battleStation_name_19"
   },
   {
-   "kimlik": 20,
-   "ad": "Zerpan",
-   "harita": 29,
-   "x_yuzde": 28.65714,
-   "y_yuzde": 21.44275,
-   "ad_anahtari": "battleStation_name_20"
+   "uid": 20,
+   "name": "Zerpan",
+   "map": 29,
+   "x_percent": 28.65714,
+   "y_percent": 21.44275,
+   "name_key": "battleStation_name_20"
   },
   {
-   "kimlik": 21,
-   "ad": "Adnomis",
-   "harita": 306,
-   "x_yuzde": 52,
-   "y_yuzde": 53,
-   "ad_anahtari": "battleStation_name_21"
+   "uid": 21,
+   "name": "Adnomis",
+   "map": 306,
+   "x_percent": 52,
+   "y_percent": 53,
+   "name_key": "battleStation_name_21"
   },
   {
-   "kimlik": 22,
-   "ad": "Kardlatot",
-   "harita": 307,
-   "x_yuzde": 61.02381,
-   "y_yuzde": 64.45038,
-   "ad_anahtari": "battleStation_name_22"
+   "uid": 22,
+   "name": "Kardlatot",
+   "map": 307,
+   "x_percent": 61.02381,
+   "y_percent": 64.45038,
+   "name_key": "battleStation_name_22"
   },
   {
-   "kimlik": 23,
-   "ad": "Detea Ay",
-   "harita": 308,
-   "x_yuzde": 56,
-   "y_yuzde": 88,
-   "ad_anahtari": "battleStation_name_23"
+   "uid": 23,
+   "name": "Detea Ay",
+   "map": 308,
+   "x_percent": 56,
+   "y_percent": 88,
+   "name_key": "battleStation_name_23"
   }
  ],
- "moduller": {
+ "modules": {
   "module_hulm-1": {
-   "ad": "Hull Module",
-   "kod": "HULM-1",
-   "tur": 2,
-   "kategori": "hull",
-   "merkez": true,
-   "en_cok": 1,
-   "tasarim": 0,
-   "can": [
+   "name": "Hull Module",
+   "code": "HULM-1",
+   "type": 2,
+   "category": "hull",
+   "center": true,
+   "max_count": 1,
+   "design": 0,
+   "hp": [
     5850000,
     5967000,
     6084000,
@@ -217,14 +217,14 @@
    ]
   },
   "module_defm-1": {
-   "ad": "Deflector Module",
-   "kod": "DEFM-1",
-   "tur": 3,
-   "kategori": "deflector",
-   "merkez": true,
-   "en_cok": 1,
-   "tasarim": 0,
-   "can": [
+   "name": "Deflector Module",
+   "code": "DEFM-1",
+   "type": 3,
+   "category": "deflector",
+   "center": true,
+   "max_count": 1,
+   "design": 0,
+   "hp": [
     1040000,
     1060800,
     1081600,
@@ -244,14 +244,14 @@
    ]
   },
   "module_repm-1": {
-   "ad": "Repair Module",
-   "kod": "REPM-1",
-   "tur": 4,
-   "kategori": "engineering_bay",
-   "merkez": false,
-   "en_cok": 1,
-   "tasarim": 3,
-   "can": [
+   "name": "Repair Module",
+   "code": "REPM-1",
+   "type": 4,
+   "category": "engineering_bay",
+   "center": false,
+   "max_count": 1,
+   "design": 3,
+   "hp": [
     1040000,
     1060800,
     1081600,
@@ -269,7 +269,7 @@
     1331200,
     1352000
    ],
-   "onarim_sn": [
+   "repair_sec": [
     2600,
     2652,
     2704,
@@ -289,14 +289,14 @@
    ]
   },
   "module_ltm-lr": {
-   "ad": "LR Laser Module",
-   "kod": "LTM-LR",
-   "tur": 7,
-   "kategori": "lasers",
-   "merkez": false,
-   "en_cok": 8,
-   "tasarim": 4,
-   "can": [
+   "name": "LR Laser Module",
+   "code": "LTM-LR",
+   "type": 7,
+   "category": "lasers",
+   "center": false,
+   "max_count": 8,
+   "design": 4,
+   "hp": [
     1560000,
     1591200,
     1622400,
@@ -314,8 +314,8 @@
     1996800,
     2028000
    ],
-   "silah": "lazer",
-   "hasar": [
+   "weapon": "laser",
+   "damage": [
     59850,
     61047,
     62244,
@@ -333,19 +333,19 @@
     76608,
     77805
    ],
-   "menzil": 590,
-   "aralik_sn": 1.5,
-   "isabet": 0.9
+   "range": 590,
+   "interval_sec": 1.5,
+   "hit": 0.9
   },
   "module_ltm-mr": {
-   "ad": "MR Laser Module",
-   "kod": "LTM-MR",
-   "tur": 6,
-   "kategori": "lasers",
-   "merkez": false,
-   "en_cok": 8,
-   "tasarim": 5,
-   "can": [
+   "name": "MR Laser Module",
+   "code": "LTM-MR",
+   "type": 6,
+   "category": "lasers",
+   "center": false,
+   "max_count": 8,
+   "design": 5,
+   "hp": [
     1560000,
     1591200,
     1622400,
@@ -363,8 +363,8 @@
     1996800,
     2028000
    ],
-   "silah": "lazer",
-   "hasar": [
+   "weapon": "laser",
+   "damage": [
     48450,
     49419,
     50388,
@@ -382,19 +382,19 @@
     62016,
     62985
    ],
-   "menzil": 650,
-   "aralik_sn": 2.5,
-   "isabet": 0.7
+   "range": 650,
+   "interval_sec": 2.5,
+   "hit": 0.7
   },
   "module_ltm-hr": {
-   "ad": "HR Laser Module",
-   "kod": "LTM-HR",
-   "tur": 5,
-   "kategori": "lasers",
-   "merkez": false,
-   "en_cok": 8,
-   "tasarim": 6,
-   "can": [
+   "name": "HR Laser Module",
+   "code": "LTM-HR",
+   "type": 5,
+   "category": "lasers",
+   "center": false,
+   "max_count": 8,
+   "design": 6,
+   "hp": [
     1560000,
     1591200,
     1622400,
@@ -412,8 +412,8 @@
     1996800,
     2028000
    ],
-   "silah": "lazer",
-   "hasar": [
+   "weapon": "laser",
+   "damage": [
     28500,
     29070,
     29640,
@@ -431,19 +431,19 @@
     36480,
     37050
    ],
-   "menzil": 720,
-   "aralik_sn": 3.0,
-   "isabet": 0.6
+   "range": 720,
+   "interval_sec": 3.0,
+   "hit": 0.6
   },
   "module_ram-la": {
-   "ad": "LA Rocket Module",
-   "kod": "RAM-LA",
-   "tur": 9,
-   "kategori": "rockets",
-   "merkez": false,
-   "en_cok": 8,
-   "tasarim": 7,
-   "can": [
+   "name": "LA Rocket Module",
+   "code": "RAM-LA",
+   "type": 9,
+   "category": "rockets",
+   "center": false,
+   "max_count": 8,
+   "design": 7,
+   "hp": [
     1560000,
     1591200,
     1622400,
@@ -461,8 +461,8 @@
     1996800,
     2028000
    ],
-   "silah": "roket",
-   "hasar": [
+   "weapon": "rocket",
+   "damage": [
     85500,
     87210,
     88920,
@@ -480,19 +480,19 @@
     109440,
     111150
    ],
-   "menzil": 900,
-   "aralik_sn": 4,
-   "isabet": 0.5
+   "range": 900,
+   "interval_sec": 4,
+   "hit": 0.5
   },
   "module_ram-ma": {
-   "ad": "MA Rocket Module",
-   "kod": "RAM-MA",
-   "tur": 8,
-   "kategori": "rockets",
-   "merkez": false,
-   "en_cok": 8,
-   "tasarim": 8,
-   "can": [
+   "name": "MA Rocket Module",
+   "code": "RAM-MA",
+   "type": 8,
+   "category": "rockets",
+   "center": false,
+   "max_count": 8,
+   "design": 8,
+   "hp": [
     1560000,
     1591200,
     1622400,
@@ -510,8 +510,8 @@
     1996800,
     2028000
    ],
-   "silah": "roket",
-   "hasar": [
+   "weapon": "rocket",
+   "damage": [
     71250,
     72675,
     74100,
@@ -529,19 +529,19 @@
     91200,
     92625
    ],
-   "menzil": 780,
-   "aralik_sn": 4,
-   "isabet": 0.7
+   "range": 780,
+   "interval_sec": 4,
+   "hit": 0.7
   },
   "module_honm-1": {
-   "ad": "Honor Booster Module",
-   "kod": "HONM-1",
-   "tur": 10,
-   "kategori": "boosters",
-   "merkez": false,
-   "en_cok": 1,
-   "tasarim": 9,
-   "can": [
+   "name": "Honor Booster Module",
+   "code": "HONM-1",
+   "type": 10,
+   "category": "boosters",
+   "center": false,
+   "max_count": 1,
+   "design": 9,
+   "hp": [
     1040000,
     1060800,
     1081600,
@@ -559,8 +559,8 @@
     1331200,
     1352000
    ],
-   "booster": "onur",
-   "booster_yuzde": [
+   "booster": "honor",
+   "booster_percent": [
     3.0,
     3.47,
     3.93,
@@ -580,14 +580,14 @@
    ]
   },
   "module_dmgm-1": {
-   "ad": "Damage Booster Module",
-   "kod": "DMGM-1",
-   "tur": 11,
-   "kategori": "boosters",
-   "merkez": false,
-   "en_cok": 1,
-   "tasarim": 10,
-   "can": [
+   "name": "Damage Booster Module",
+   "code": "DMGM-1",
+   "type": 11,
+   "category": "boosters",
+   "center": false,
+   "max_count": 1,
+   "design": 10,
+   "hp": [
     1040000,
     1060800,
     1081600,
@@ -605,8 +605,8 @@
     1331200,
     1352000
    ],
-   "booster": "hasar",
-   "booster_yuzde": [
+   "booster": "damage",
+   "booster_percent": [
     3.0,
     3.47,
     3.93,
@@ -626,14 +626,14 @@
    ]
   },
   "module_xpm-1": {
-   "ad": "Experience Booster Module",
-   "kod": "XPM-1",
-   "tur": 12,
-   "kategori": "boosters",
-   "merkez": false,
-   "en_cok": 1,
-   "tasarim": 11,
-   "can": [
+   "name": "Experience Booster Module",
+   "code": "XPM-1",
+   "type": 12,
+   "category": "boosters",
+   "center": false,
+   "max_count": 1,
+   "design": 11,
+   "hp": [
     1040000,
     1060800,
     1081600,
@@ -652,7 +652,7 @@
     1352000
    ],
    "booster": "ep",
-   "booster_yuzde": [
+   "booster_percent": [
     3.0,
     3.47,
     3.93,
@@ -672,70 +672,70 @@
    ]
   }
  },
- "kalkan_orani": 0.8,
- "kurma_dk": [
+ "shield_ratio": 0.8,
+ "build_min": [
   5,
   60,
   5
  ],
- "deflector_dk": [
+ "deflector_min": [
   30,
   480,
   30
  ],
- "deflector_azami_sn": 172800,
- "deflector_hiz": {
+ "deflector_max_sec": 172800,
+ "deflector_speed": {
   "normal": 120,
   "prime_time": 600
  },
- "deflector_bitince_dk": 120,
- "kurulunca_kapali_dk": 30,
- "kurulum_sn": 50,
- "degistirme_sn": 240,
- "menzil": 600,
- "acil_onarim": {
-  "bedel": 500,
-  "can_sn": 7500,
-  "sure_sn": 1200
+ "deflector_end_off_min": 120,
+ "on_build_off_min": 30,
+ "install_sec": 50,
+ "swap_sec": 240,
+ "range": 600,
+ "emergency_repair": {
+  "charge": 500,
+  "hp_sec": 7500,
+  "duration_sec": 1200
  },
- "pasif_onarim": {
-  "can_sn": 260,
-  "gecikme_sn": 30
+ "passive_repair": {
+  "hp_sec": 260,
+  "delay_sec": 30
  },
  "booster": {
-  "baslangic": 1.0,
-  "buyume_sa": 20,
-  "tavan": 0.5
+  "start": 1.0,
+  "growth_hours": 20,
+  "cap": 0.5
  },
  "prime_time": [
   "18:00",
   "21:00"
  ],
- "maden_carpani": 1.1,
- "yikma_odulu": {
-  "taban": {
-   "roket": 1000,
-   "lazer": 800,
-   "diger": 500
+ "ore_multiplier": 1.1,
+ "demolish_reward": {
+  "base": {
+   "rocket": 1000,
+   "laser": 800,
+   "other": 500
   },
-  "seviye_basina": 107,
-  "merkez": {
-   "uridyum": 5000,
-   "kredi": 50000
+  "per_level": 107,
+  "center": {
+   "uridium": 5000,
+   "credits": 50000
   }
  },
- "onarim_bedeli": {
-  "can_basina_U": 0.001,
-  "en_az": 100
+ "repair_cost": {
+  "per_hp_U": 0.001,
+  "min_value": 100
  },
- "baskin": {
-  "saat_basina": 2,
-  "ara_dk": 20,
-  "adet": [
+ "raid": {
+  "per_hour": 2,
+  "interval_min": 20,
+  "count": [
    6,
    12
   ],
-  "turler": {
+  "kinds": {
    "X-3": [
     "76",
     "78"
@@ -789,17 +789,17 @@
     "113"
    ]
   },
-  "menzil": 1500,
-  "sure_sn": 90,
-  "hasar_orani": 0.25
+  "range": 1500,
+  "duration_sec": 90,
+  "damage_ratio": 0.25
  },
- "rakip": {
-  "sure_sa": [
+ "rival": {
+  "duration_hours": [
    6,
    24
   ],
-  "olasilik": 0.5,
-  "klanlar": [
+  "probability": 0.5,
+  "clans": [
    "Nova Raiders",
    "Iron Veil",
    "Starfall",
@@ -811,15 +811,15 @@
    "Eclipse Order",
    "Astral Wolves"
   ],
-  "deflector_prime_disinda": true,
-  "can_carpani": 1.0,
-  "hasar_carpani": 1.0
+  "deflector_outside_prime": true,
+  "hp_multiplier": 1.0,
+  "damage_multiplier": 1.0
  },
- "kurulunca_deflector_dk": 1440,
- "_forum_127469": "Resmî Türk forumu 127469 (KSİ SSS): acil tamir 20 dakika x 7.500 dp/s; yeni kurulan istasyonda deflektör açık ve 1440 dakika yüklü (kurulunca_kapali_dk artık kullanılmıyor)",
- "bot_klan": {
-  "_uyarlama": "Bot klanlarının istasyonu (bot/klan_us.py): modüller klan kasasından krediyle alınır (oyunda Assembly'de kaynakla üretilir; fiyatlar uyarlama: tam takım yaklaşık 10 M, kurulmuş istasyonun seviye yükseltmesi fiyat x seviye_carpani x yeni seviye, L15'e dek modül başına ~30 M: tam seviye istasyon nadir). Yıkılan modülün onarımı fiyatın onarim_orani'ı; yükseltme klan başına yukseltme_sn'de bir; kurma süresi kurma_dk aralığında (oyuncunun 5-60 dakikası içinde); saldırıda savunma çağrısı savunma_sn'de bir.",
-  "fiyat": {
+ "on_build_deflector_min": 1440,
+ "_forum_127469": "Official Turkish forum 127469 (CBS FAQ): emergency repair 20 minutes x 7,500 HP/s; a newly built station has the deflector on and charged for 1440 minutes (on_build_off_min is no longer used)",
+ "bot_clan": {
+  "_adaptation": "Bot clans' station (bot/clan_stations.py): modules are bought with credits from the clan treasury (in the game they are produced in Assembly with resources; prices are adaptation: a full set about 10 M, upgrading the level of an established station costs price x level_multiplier x new level, up to L15 about 30 M per module: a full-level station is rare). Repair of a destroyed module costs repair_ratio of the price; upgrade once per clan every upgrade_sec; build time within build_min (within the player's 5-60 minutes); defense call during an attack once every defense_sec.",
+  "price": {
    "module_hulm-1": 1600000,
    "module_defm-1": 1400000,
    "module_repm-1": 1000000,
@@ -832,13 +832,13 @@
    "module_xpm-1": 1100000,
    "module_dmgm-1": 1100000
   },
-  "seviye_carpani": 0.35,
-  "onarim_orani": 0.4,
-  "yukseltme_sn": 3600,
-  "kurma_dk": [
+  "level_multiplier": 0.35,
+  "repair_ratio": 0.4,
+  "upgrade_sec": 3600,
+  "build_min": [
    5,
    30
   ],
-  "savunma_sn": 1800
+  "defense_sec": 1800
  }
 }
