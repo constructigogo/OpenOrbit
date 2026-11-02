@@ -130,6 +130,10 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
   - Kiting: `npc.json` (each alien type's `name`, `speed`, `range` and `aggressive`, and the `combat` constants
     `laser_range`, `npc_range`, `npc_fixed_range`) and `items.json` (`lasers`: each laser's `range`). A missing file or key
     reads as empty or the default.
+  - Per-alien settings (the Plan tab's Kill, Ammo and Use SAB per alien): `npc.json` `maps.<id>.npc[].tip` -> `types.<tip>.name`
+    (the aliens listed for a map, keyed by the full decorated name `world.py` sends as `userName`) and `items.json`
+    `laser_ammo` keys (the Ammo list; SAB-50 and the `spacecup_group-*` ammo left out). The reference generator reads the
+    single-line `AUTO_AMMO = [...]` in `server/world.py` with a regex (no import): keep it one line.
   - The `CLIENT_HASH = '<32 hex>'` line in `server/protocol.py` and the `SUPPORTED = '<x.y.z>'` line in
     `server/panel/client.py`, both read with a regex: keep them single-line string assignments.
   - `server/data/protocols/version.txt`: the local client version is `client.supported()` rebuilt in C#.
@@ -146,11 +150,23 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     `world.py` (it re-plans once a second while farther than `min(450, keep + 150)`, flying to `keep` from the hero turned
     by its spread, `near` and `keep` scaled by `min(1, multiplier('npc_range'))`; it fires while the hero is inside its
     range; its damage is flushed at the next whole second, a rocket's lands about 0.8 s after launch), and
-    `alien.low_health`'s flee (a low-health alien flies to the edge or corner point farthest from the hero, then parks).
+    `alien.low_health`'s flee (a low-health alien flies to the edge or corner point farthest from the hero, then parks);
+    the ammo rules: `world.menu_action` (an `ammunition_laser_*` select with `actionType` 0 only selects, `1` can start a
+    quick-slot attack; it is ignored for the item already selected or a count of 0, and answered by `MenuItemStatusCommand`
+    for the old and the new item), `world.ammo_out`/`other_ammo` (with `autoChangeAmmo`, on by default, the server switches
+    by itself in `AUTO_AMMO` order, then the other laser ammo by name; otherwise `0|W|L|0|1` with other ammo in hand, bare
+    `0|W|L` with none) and `player_profile.use_ammo` (a salvo spends one per ship and drone laser, so a count above 0 but
+    short of that passes the select yet can't fire; the bot then gives that ammo up until the next map load). SAB-50
+    (`laser_ammo` `multiplier` 0) does no hull damage: the bot never falls back onto it.
   - Protocol fields the C# port parses for kiting: `AttributeShipSpeedUpdateCommand.newSpeed` (the hero's speed),
     `AttackLaserRunCommand` `attackerId`/`targetId` and `AttackHitCommand`'s attacker and victim (who shoots the hero, and
     from how far), and the legacy rocket-launch line `0|v|<launcher>|<target>|...` (`alien.py`). Changing that line's
     field order silently stops the bot's reach learning.
+  - For the ammo: the `MenuItemStatusCommand`s nested in the login's `MenuInitializationCommand` (`patch_template` fills
+    them) and the later `MenuItemStatusCommand`s, fields `menuItemId`, `selected` and `counterValue` of the
+    `ammunition_laser_*` items, and the legacy `0|W|L|0|1` / `0|W|L` lines. It sends `MenuActionRequest {menuItemId,
+    actionType: 0, sourceType: 1}` to select a laser ammo, and once more on a normal stop to select the save's join-time
+    ammo again (`selected.laser` is saved in the profile).
 - **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `map_links`,
   `settings`, `lasers` and `quest` and loads `server/panel/client.py` by path, with `server/` and `server/panel/` on
   `sys.path`. `quest` and `client` reach `paths.py`, so the generator disables `save_migration.ensure` and sets
@@ -174,7 +190,7 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
 - **Save format (v3):**
   - `profile.json`: `pilot.{userName, level, factionId, userId, ep}`, `ship.typeId`, `position.mapId`, `equipment.laser`
     and `drone_equipment` (`[[level, [loot ids]]]`: the kiter's laser range), `gates.voucher`, `quests.{active, done,
-    period}`.
+    period}`, `selected.laser` (the join-time laser ammo, until the server's menu says).
   - `slot.json`: `name`.
   - `backups/auto_YYYYmmdd_HHMMSS.json` backups and `backups/notes.json`.
   - `panel.json`: `active_save`, `backup_count`.
