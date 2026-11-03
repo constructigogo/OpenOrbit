@@ -185,6 +185,10 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     `GalaxyGateBuilderGateLifeLostCommand {gateId, livesLeft}`, `GalaxyGateBuilderGateCompleteCommand`,
     `JumpgateCreateCommand`/`JumpGateRemoveCommand` (the portals come and go with the waves) and the VisualModifier 33 of a
     shielded alien. It jumps with `JumpRequest` through the gate portals, and its X-1 portal exists only after the prepare.
+  - Map zones (the Map tab's live map, Work and Avoid zones and pathfinding): `ShipCreateCommand.factionId` (a ship's company:
+    same as the hero's is an ally, else an enemy, every alien an enemy), plus the map sizes (`map_links.map_size`) and the gate
+    positions it already reads. The zones are OrbitBot's own (`state/bots.json`); nothing is sent for them, and every move is
+    still a plain `MoveRequest`.
 - **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `map_links`,
   `settings`, `lasers` and `quest` and loads `server/panel/client.py` by path, with `server/` and `server/panel/` on
   `sys.path`. `quest` and `client` reach `paths.py`, so the generator disables `save_migration.ensure` and sets
