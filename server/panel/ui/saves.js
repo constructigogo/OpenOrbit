@@ -88,7 +88,7 @@ function saveMenu(k, ev) {
     { label: T('Add / edit note'), ic: 'note', fn: async () => { const v = await promptBox(T('Save note'), T('Note'), k.not_, { multiline: true }); if (v != null) act(() => api('/api/saves/note', { id: k.id, note: v })).then(renderSaves); } },
     { label: T('Copy'), ic: 'copy', fn: async () => { const v = await promptBox(T('Copy save'), T('Name of the new save'), T('{0} (copy)', k.name)); if (v != null) act(() => api('/api/saves/copy', { id: k.id, name: v }), T('Copied.')).then(renderSaves); } },
     { label: T('Export (.zip)…'), ic: 'download', fn: () => act(() => api('/api/saves/export', { id: k.id, with_backups: true }), x => x.cancelled ? T('Cancelled.') : T('Exported: {0}', x.route)) },
-    { label: T('Open folder'), ic: 'folder', fn: () => act(() => api('/api/open_folder', { ne: 'record', id: k.id })) },
+    { label: T('Open folder'), ic: 'folder', fn: () => act(() => api('/api/open_folder', { what: 'record', id: k.id })) },
     '-',
     { label: T('Delete'), ic: 'trash', danger: true, disabled: k.in_use, fn: async () => {
       if (await confirmBox(T('Delete the save?'), T('"{0}" ({1}) goes to the trash; you can restore it at the bottom of the Saves page.', k.name, k.pilot), { ok: T('Delete'), danger: true }))
@@ -231,7 +231,11 @@ async function seApply(...ops) {
   SE.busy = true; document.body.classList.add('se-busy');
   const v = await act(() => api('/api/editor/apply', { id: SE.slot, ops }));
   SE.busy = false; document.body.classList.remove('se-busy');
-  if (v && SE.slot) { SE.v = v; seRender(); return true; }
+  if (v && SE.slot) {
+    SE.v = v; seRender();
+    if (!v.discarded) return true;
+    toast(T('The save changed after it was opened in the editor (the game was played or a backup restored): the old draft was discarded.'), 'info', 7000);
+  }
   return false;
 }
 

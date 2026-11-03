@@ -20,9 +20,11 @@ import math, random, time
 
 import world as WD
 import map_links as H
+import map_layout as ML
 from legacy_protocol import legacy
 from . import catalog as K
 from . import abstract_sim as S
+from . import playstyle as PL
 from . import appearance as GR
 from . import society as T
 from . import manager as MGR
@@ -33,7 +35,8 @@ LASER_RANGE = WD.COMBAT['laser_range']
 COMBAT_SEC = 8.0                                 # regenerates this long after the last damage
 REGEN_RATE = 0.02                               # outside combat, the share of max HP+shield per second
 JUMP_SEC = H.JUMP_DELAY_SEC
-ARRIVAL_SEC = 10.0                 # a jumping bot that is hulled within this time spawns at the arrival portal (it has flown off afterwards)
+TAKEOFF_SEC = 4.0                  # typical wait after arriving on a map before setting off (BotShip.takeoff's mode)
+WANDER = 3000                      # a grinding bot that has flown farther than this since it arrived can be anywhere on the map
 COMBAT_INTERVAL = WD.COMBAT['laser_interval_sec']
 
 
@@ -145,8 +148,8 @@ def tick(w, now):
             b.body = None                                # a ship deleted from outside (debugging, a crashed world): so the bot does not freeze
         if uid in var or count >= limit or b.body is not None:
             continue
-        x, yy = spawn_point(w, b)
-        n = BotShip(b, x, yy, now)
+        x, yy, since = spawn_point(w, b, now)
+        n = BotShip(b, x, yy, since)                     # its takeoff wait counts from its arrival, not from the player's
         resume(n, now)
         if b.__dict__.pop('in_place_repair', None):       # repair on the spot: 10% of HP, no shield, 10 s protection (like the player's)
             n.hp, n.shield = max(1, int(n.hp * K.ITEMS['death_screen']['in_place_hp_ratio'])), 0
@@ -208,24 +211,40 @@ def gate_tick(w, now, y):
         w.send(msgs)
 
 
-def spawn_point(w, b):
-    arrival = getattr(b, 'arrival', None)
-    b.arrival = None
-    # only one that just jumped spawns at the portal: those that jumped while the player was away and stayed abstract all came out of the portal together when the player arrived
-    # (player report: waiting at the portal on 2-1 and moving to 2-2, 10-20 bots came out of the portal at the same time as the player)
-    if arrival is not None and time.time() - arrival[1] < ARRIVAL_SEC:
-        gx, gy = H.arrival(arrival[0], int(w.map_id), b.company)
-        a, r = random.uniform(0, 2 * math.pi), random.uniform(80, 280)      # scattered around the portal (not on top of each other)
-        return int(gx + math.cos(a) * r), int(gy + math.sin(a) * r)
+def spawn_point(w, b, now=None):
+    """Where the bot's ship appears -> (x, y, since); since: when it came onto the map (its takeoff wait counts from there).
+    A known position (it was a ship on this map, portal repair) stays. Otherwise it came onto the map while abstract (portal jump, death at
+    the station, login) and is where it would be after the time since: at the arrival portal or the station just after, later on its way
+    to the next portal of its route or, when grinding, anywhere on the map. Before, it was always at the station or portal as if it had just
+    arrived (player reports: 2026-10-31 bots came out of the portal with the player; 2026-11-03 on 2-1 the 20-30 bots that had arrived
+    while the player was away waited at the station and all flew to the bottom-left portal at once when the player came)."""
+    now = now or time.time()
+    arrival, b.arrival = getattr(b, 'arrival', None), None
     x, y = b.k.get('x') or 0, b.k.get('y') or 0
     if 300 < x < w.map_w - 300 and 300 < y < w.map_h - 300:
-        return int(x), int(y)
+        return int(x), int(y), now
+    src, since = arrival or (None, now)
     s = w.station
-    if s and s.get('type') == b.company:          # newly entered or returned to base: around its own station (like the real game)
-        a, r = random.uniform(0, 2 * math.pi), random.uniform(250, 1300)
-        return (int(max(400, min(w.map_w - 400, s['posX'] + math.cos(a) * r))),
-                int(max(400, min(w.map_h - 400, s['posY'] + math.sin(a) * r))))
-    return w.random_spot()
+    if src is not None:
+        (ox, oy), scatter = H.arrival(src, int(w.map_id), b.company), (80, 280)
+    elif arrival is not None and s and s.get('type') == b.company:
+        (ox, oy), scatter = (s['posX'], s['posY']), (250, 1300)
+    else:                                                # unknown since when (server start: in the middle of its session)
+        x, y = w.random_spot()
+        return x, y, since
+    flown = max(0.0, now - since - TAKEOFF_SEC) * b.value()['speed'] * 0.8      # routes curve, it lingers at boxes
+    a, r = random.uniform(0, 2 * math.pi), random.uniform(*scatter)
+    g = next((g for g in H.gates(w.map_id, b.company) if g['target'] == b.en_route[0]), None) if b.en_route else None
+    if g is not None:                                    # on its way to the next portal (it jumps when its abstract time comes)
+        f = min(0.85, flown / max(1.0, math.hypot(g['x'] - ox, g['y'] - oy)))
+        ox, oy = ox + (g['x'] - ox) * f, oy + (g['y'] - oy) * f
+    elif flown > WANDER:
+        x, y = w.random_spot()
+        return x, y, since
+    else:
+        r += flown
+    return (int(max(400, min(w.map_w - 400, ox + math.cos(a) * r))),
+            int(max(400, min(w.map_h - 400, oy + math.sin(a) * r))), since)
 
 
 CARRY = ('last_damage', 'immune_until', 'leech_end', 'rocket_ready', 'salvo_ready', 'mine_ready')
@@ -257,6 +276,9 @@ def remove(w, n):
     if b.body is n:
         b.body = None
     b.last_abstract = time.time()
+    g = next((g for g in H.gates(w.map_id, b.company) if g['target'] == b.en_route[0]), None) if b.en_route else None
+    if g is not None:              # left mid-route (the player left the map): the abstract jump waits for the rest of the flight to the portal
+        b.en_route_time = time.time() + math.hypot(g['x'] - x, g['y'] - y) / max(1.0, b.value()['speed'])
     return w.remove_npc(n) + ([('AttackAbortLaserCommand', {'uid': n.id})] if n.fire else [])
 
 
@@ -740,8 +762,8 @@ def hit_npc(w, n, m, dmg, now, atype, once=(), shield=False, ammo=None):
     _broadcast(w, msgs, n.id, m.id)
     if m.hp <= 0:
         kill_npc(w, m, n, now)
-    elif m.bot_target is None and not m.engaged and m.d['damage'] > 0:
-        m.bot_target = n.id                     # the alien turns on the bot
+    elif m.bot_target is None and m.d['damage'] > 0:
+        m.bot_target = n.id                     # the alien turns on the bot (if it fights the player too: the nearer one, npc_to_bot)
         m.next_think = now
 
 
@@ -896,28 +918,65 @@ def can_attack_bot(w, n, m, now):
 
 
 # ------------------------------------------------------------------------------------------------------------ the alien's reply to the bot
+def notice_bot(w, m, now, hero_dist):
+    """An aggressive alien notices a bot ship within its notice distance that is nearer than the player (hero_dist; inf if the player cannot be
+    attacked) and turns on it (npc_to_bot) -> did it. Before, only the player's distance was checked: aliens attacked bots only when hit."""
+    if now < m.bot_scan:
+        return False
+    m.bot_scan = now + 1.0
+    mx, my = m.mover.pos(now)
+    reach = min(hero_dist, m.d.get('notice_distance', WD.COMBAT['npc_notice_distance']) * WD.SET.multiplier('npc_notice'))
+    best = None
+    for t in list(w.npcs.values()):
+        if t.bot is None or not t.alive:
+            continue
+        tx, ty = t.mover.pos(now)
+        d = math.hypot(tx - mx, ty - my)
+        if d < reach and (best is None or d < best[0]) and not _in_peace(w, tx, ty, t.bot):
+            best = (d, t)
+    if best is None:
+        return False
+    m.bot_target, m.next_think = best[1].id, now
+    return True
+
+
+def fighting(w, n):
+    """The bot is fighting: its target is a living ship on the map (an alien or a bot; world.hero_fighting for the pilot)."""
+    t = w.npcs.get(n.target)
+    return t is not None and t.alive
+
+
 def npc_to_bot(w, m, now):
-    """The alien the bot hit turns on the bot (if it is not fighting the player): chases and fires -> handled or not (the rest of think is skipped)."""
+    """The alien the bot hit (or noticed: notice_bot) turns on the bot: chases and fires -> handled or not (the rest of think is skipped). If it
+    fights the player too, the nearer of the two (player report 2026-11-02: aliens almost never attacked bots, a bot's hit was ignored while
+    the alien was after the player, and an alien that got to the player dropped the bot for good)."""
     t = w.npcs.get(m.bot_target)
-    if m.engaged or t is None or not t.alive or t.bot is None:
+    if t is None or not t.alive or t.bot is None:
         m.bot_target = None
         return False
-    if now < m.next_think and now < m.next_shot:
-        return True
     tx, ty = t.mover.pos(now)
     mx, my = m.mover.pos(now)
     dist = math.hypot(tx - mx, ty - my)
+    if m.engaged:
+        hx, hy = w.hero_pos(now)
+        if not w.hero_dead and math.hypot(hx - mx, hy - my) <= dist:
+            return False                        # the player is nearer: the bot stays in mind for later
+        m.engaged = False                       # the bot is nearer: the laser on the player stops
+        w.alien_ceasefire(m)
+    if _in_peace(w, tx, ty, t.bot) and not fighting(w, t):
+        # safe zone (the zones that protect this bot: its company's): the player's rule (world.npc_retaliating): the zone is void only
+        # while the bot keeps fighting there; a bot that is not fighting (fled, ceased fire) is let go by every alien after it, at once
+        # (checked before the wait for the next think: test_bot_safe failed when its second call fell inside that wait)
+        m.bot_target = None
+        w.alien_ceasefire(m)
+        w.stop_npc_motion(m, now)
+        return False
+    if now < m.next_think and now < m.next_shot:
+        return True
     post = w.ward_of(m)
     if dist > 2500 or (post and w.leashed(m, post, tx, ty, now)):
         # a guard (Cubikon's Protegits) does not chase the bot away from its summoner all the way to the portal: the same as the player's leash (world.leashed)
         m.bot_target = None
-        return False
-    if w.in_peace(tx, ty) and t.id not in m.attackers:
-        # safe zone: the player's rule (world.npc_retaliating), it enters only after an alien the bot hit; summoned
-        # helpers were rushing into the zone and firing
-        m.bot_target = None
-        w.alien_ceasefire(m)
-        w.stop_npc_motion(m, now)
         return False
     if now >= m.next_think:
         m.next_think = now + 1.0
@@ -954,8 +1013,12 @@ def think(w, n, now):
         n.hp = min(d['hp'], n.hp + d['hp'] * max(k, b.k['personality']['reaction_sec'] / rep if rep else 0))     # repair robot
     nx, ny = n.mover.pos(now)
     b.k['x'], b.k['y'] = int(nx), int(ny)
+    if b.__dict__.get('exit_request') and now < b.session_end:
+        b.exit_request = b.logout_ready = None           # the session was extended / the bot came back online: stale request
     if b.__dict__.get('exit_request') and not any(now - t < 6 for t in n.attacker.values()):
         return go_logout(w, n, now)                     # session over: flies to the station or portal and leaves there
+    if getattr(n, 'shelter', None) is not None and sheltering(w, n, now, d):
+        return                                           # fled: no box, goal or fight until it has recovered in its shelter
     if (n.target is None and not any(now - t < 6 for t in n.attacker.values()) and not b.en_route
             and (b.target is None or b.target.name != 'gate') and collect_box(w, n, now)):
         return                                           # picks up a box on its route (on every job; when not fighting)
@@ -966,10 +1029,10 @@ def think(w, n, now):
     from . import active_items as AC
     if AC.combat(w, n, now, d, ratio, attackers):         # Insta-Shield, Backup Shields, Battle Repair, Smart Bomb, Energy Leech
         ratio = (n.hp + n.shield) / max(1, d['hp'] + d['shield'])
-    # 1) danger: HP is low and it is being hit -> flee
+    # 1) danger: HP is low and it is being hit -> flee (to a shelter; it keeps fleeing there until it has recovered: sheltering)
     in_gate = is_gate_world(w)
-    if attackers and ratio < 0.18 + 0.32 * (1 - b.o('risk')) and not in_gate:
-        return flee(w, n, now)
+    if attackers and ratio < 0.18 + 0.32 * (1 - b.o('risk')) + PL.flee_shift(b) and not in_gate and flee(w, n, now):
+        return                                           # (survival skill: unaware pilots flee late; cowards early, kamikazes hardly)
     # 2) portal yolunda
     if b.en_route and not attackers and not in_gate:
         return portala(w, n, now)
@@ -983,8 +1046,8 @@ def think(w, n, now):
             n.target = u                                  # an alien hit: retaliate
         else:
             opponent = _power(w, u)
-            if opponent / max(0.5, d['power']) > 1.3 + b.o('risk') + 0.5 * b.mood['anger'] and ratio < 0.9:
-                return flee(w, n, now)
+            if opponent / max(0.5, d['power']) > 1.3 + b.o('risk') + 0.5 * b.mood['anger'] and ratio < 0.9 and flee(w, n, now):
+                return
             n.target = u
             b.memory.event(_name(w, u), 'insult', now, multiplier=0.3)
     # 4) PvP opportunity
@@ -1036,11 +1099,14 @@ def approach(w, n, pos, now):
     """Combat distance to the target: within laser range, close or far depending on personality; circles lightly around the target."""
     nx, ny = n.mover.pos(now)
     dist = math.hypot(pos[0] - nx, pos[1] - ny)
-    wanted = 280 + 300 * (1 - n.bot.o('aggression'))
+    pl = PL.profile(n.bot)
+    wanted = (280 + 300 * (1 - n.bot.o('aggression'))) * pl['range']         # its own preferred distance (playstyle.py)
+    pvp = n.target in w.npcs and w.npcs[n.target].bot is not None or n.target not in w.npcs
+    sk = PL.skill(n.bot, 'pvp' if pvp else 'combat')
     if dist > wanted + 120 or dist < 120:
         a = math.atan2(ny - pos[1], nx - pos[0]) + random.uniform(-0.5, 0.5)
         _go_to(w, n, pos[0] + math.cos(a) * wanted, pos[1] + math.sin(a) * wanted, now)
-    elif n.mover.t1 <= now and random.random() < 0.25 + 0.4 * n.bot.o('aggression'):
+    elif n.mover.t1 <= now and random.random() < (0.12 + 0.6 * pl['orbit']) * (0.55 + 0.9 * sk):     # skilled pilots keep moving
         # in range: circles around the target (a real player fires while circling, not standing still); the direction is fixed by the bot's temperament
         direction = n.__dict__.setdefault('orbit_direction', random.choice((-1, 1)))
         a = math.atan2(ny - pos[1], nx - pos[0]) + direction * random.uniform(0.25, 0.6)
@@ -1135,9 +1201,35 @@ def call_defense(w, n, uid, now):
         m.intent_time = now
 
 
+SHELTER_RESUME = 0.9            # a fled bot leaves its shelter at this HP+shield ratio (recover's "full")
+SHELTER_HIT_SEC = 3.0           # still hit this recently inside a portal's zone: it jumps
+
+
+def shelters(w, b):
+    """The zones that protect this bot ship on this map, (x, y, radius): its company's station, its company's portals and the layout's safe
+    zones; the same zones as world.in_pvp_peace for its company (none on an enemy company's map or a war map)."""
+    out = []
+    s = w.home_station(b.company)
+    if s:
+        out.append((s['posX'], s['posY'], s['peaceRadius']))
+    r = ML.gate_peace_radius(w.map_id, H.GATE_PEACE_RADIUS)
+    out += [(g['x'], g['y'], r) for g in w.peace_gates(b.company)]
+    return out + [tuple(z) for z in ML.safe_zones(w.map_id)]
+
+
+def _exits(w, b):
+    """The portals it can jump through to escape (free, to a map it may enter)."""
+    return [g for g in H.gates(w.map_id, b.company) if not g.get('fee') and g['target'] in K.MAPS
+            and K.can_enter(g['target'], b.company, b.level)]
+
+
 def flee(w, n, now):
-    """Flee: to the nearest portal (or to the station if at its own base); on arrival it jumps and leaves the map. While fleeing from the player it
-    drops a mine behind (if in stock and the cooldown is over; not in a safe zone or on starting maps)."""
+    """Flee like a pilot does: stop fighting and go to the nearest zone that protects it (shelters). There the aliens let go of a ship that is
+    not fighting (npc_to_bot) and players cannot attack it; it stays and recovers (sheltering) and goes on with its job. It escapes through a
+    portal only when no zone protects it on this map (an enemy company's or a war map) or when it is still being hit inside a portal's zone;
+    simple mode bots do not change maps. While fleeing from a player it drops a mine behind (not in a safe zone or on starting maps).
+    User report 2026-11-03: it used to head for a portal and jump even on its own map, where the portal's zone already protects it.
+    -> is it fleeing (False: nowhere to go, no zone and no portal it may enter: cornered, it fights back)."""
     b = n.bot
     n.target = None
     nx, ny = n.mover.pos(now)
@@ -1147,25 +1239,55 @@ def flee(w, n, now):
         if b.o('risk') < 0.6:
             AC.cloak(w, n, now)                         # cloaking CPU
         drop_mine(w, n, nx, ny, now)
-    gs = [g for g in H.gates(w.map_id, b.company) if not g.get('fee') and g['target'] in K.MAPS
-          and K.can_enter(g['target'], b.company, b.level)]
-    s = w.station
-    if s and s.get('type') == b.company:
-        sx, sy = s['posX'], s['posY']
-        if not gs or math.hypot(sx - nx, sy - ny) < min(math.hypot(g['x'] - nx, g['y'] - ny) for g in gs):
-            _go_to(w, n, sx, sy, now)
-            return
-    if not gs:
-        return
-    g = min(gs, key=lambda g: math.hypot(g['x'] - nx, g['y'] - ny))
     y = MGR.ACTIVE
-    if y is not None and y.mode == 'simple':
-        _go_to(w, n, g['x'] + random.uniform(-200, 200), g['y'] + random.uniform(-200, 200), now)    # simple: to the portal's safe zone
-        return
+    jumps = y is None or y.mode != 'simple'
+    sh = getattr(n, 'shelter', None)
+    if sh is None:
+        zones = shelters(w, b)
+        sh = n.shelter = min(zones, key=lambda z: math.hypot(z[0] - nx, z[1] - ny) - z[2]) if zones else 'portal'
+        b.event('fled', map=H.name(w.map_id))
+    if sh != 'portal':
+        cx, cy, r = sh
+        d = math.hypot(nx - cx, ny - cy)
+        if d > r * 0.8:
+            k = r * 0.5 / max(1.0, d)
+            _go_to(w, n, cx + (nx - cx) * k, cy + (ny - cy) * k, now)      # straight in, on its near side
+            return True
+        gate = next((g for g in _exits(w, b) if (g['x'], g['y']) == (cx, cy)), None)
+        if not (jumps and gate and now - n.last_damage < SHELTER_HIT_SEC):
+            return True                                              # in the shelter: waits (the hits stop, it recovers)
+        sh = n.shelter = 'portal'                                    # still hit inside a portal's zone: jumps like a pilot would
+        b.en_route = [gate['target']]
+    gs = _exits(w, b)
+    if not gs:
+        n.shelter = None
+        return False
+    g = min(gs, key=lambda g: math.hypot(g['x'] - nx, g['y'] - ny))
+    if not jumps:
+        _go_to(w, n, g['x'] + random.uniform(-200, 200), g['y'] + random.uniform(-200, 200), now)    # simple: no zone protects it here
+        return True
     if not b.en_route or b.en_route[0] != g['target']:
         b.en_route = [g['target']]
-        b.event('fled', map=H.name(w.map_id))
     portala(w, n, now, urgent=True)
+    return True
+
+
+def sheltering(w, n, now, d):
+    """A fled bot (n.shelter) keeps fleeing until it has recovered (SHELTER_RESUME) and nobody hits it: a heal over the flee threshold
+    (Backup Shields, Battle Repair) or a pause in the hits no longer turns it back on the aliens (user report 2026-11-03) -> handled."""
+    if is_gate_world(w):
+        n.shelter = None
+        return False
+    attackers = [u for u, t in n.attacker.items() if now - t < 6]
+    ratio = (n.hp + n.shield) / max(1, d['hp'] + d['shield'])
+    if attackers:
+        from . import active_items as AC
+        if AC.combat(w, n, now, d, ratio, attackers):     # Insta-Shield, Backup Shields, Battle Repair … while fleeing too
+            ratio = (n.hp + n.shield) / max(1, d['hp'] + d['shield'])
+    if ratio >= SHELTER_RESUME and not attackers:
+        n.shelter = None
+        return False
+    return flee(w, n, now)
 
 
 def drop_mine(w, n, x, y, now):
@@ -1196,9 +1318,8 @@ def portala(w, n, now, urgent=False):
             target = b.en_route[-1]
             w.send(remove(w, n))
             with y.lock:
-                S.jump_to(b, target, y)
+                S.jump_to(b, target, y, time.time())
                 b.en_route = None
-                b.arrival = (int(w.map_id), time.time())
                 b.ist('jump_cpu')
             return
     g = next((g for g in H.gates(w.map_id, b.company) if g['target'] == b.en_route[0]), None)
@@ -1233,8 +1354,7 @@ def portala(w, n, now, urgent=False):
     w.send(remove(w, n))
     if y is not None:
         with y.lock:
-            S.jump_to(b, target, y)
-            b.arrival = (int(w.map_id), time.time())
+            S.jump_to(b, target, y, time.time())
             b.en_route_time = time.time() + S.jump_duration(b)
 
 
@@ -1271,6 +1391,7 @@ def go_hunt(w, n, now):
     types = _killable(b, w.map_id)
     wanted = b.plan.get('tip')
     rude = random.random() < 0.15 * b.o('aggression') * (1 - b.o('helpfulness'))
+    style = PL.profile(b)['target']                     # nearest / weakest (lowest HP) / richest (best reward) first
     en, best_score = None, 1e18
     for m in w.npcs.values():
         if m.bot is not None or not m.alive or m.d.get('friendly') or getattr(m, 'hidden', False):
@@ -1285,6 +1406,11 @@ def go_hunt(w, n, now):
             continue                                     # tagged by someone else: no gain
         mx, my = m.mover.pos(now)
         dd = math.hypot(mx - nx, my - ny) * (0.5 if m.tip == wanted else 1.0)
+        if style != 'nearest' and dd < 3500:
+            if style == 'weakest':
+                dd *= 0.4 + (m.hp + m.shield) / max(1.0, m.d.get('hp', 1) + m.d.get('shield', 0))
+            else:
+                dd /= 0.5 + min(3.0, (m.d.get('reward') or {}).get('ep', 0) / max(1.0, 400.0 * b.level))
         if dd < best_score:
             en, best_score = m, dd
     if en is not None and best_score < 3500:
@@ -1296,12 +1422,19 @@ def go_hunt(w, n, now):
         return                                           # started escorting: next thought to the leader's side
     patrol_point = getattr(n, 'patrol', None)
     if patrol_point is None or math.hypot(patrol_point[0] - nx, patrol_point[1] - ny) < 300:
-        if patrol_point is not None and random.random() < 0.4:
-            n.next_think = now + random.uniform(2, 6)    # arrived: looks around a bit
+        focus = PL.skill(b, 'focus')
+        if patrol_point is not None and random.random() < 0.25 + 0.4 * (1 - focus) + 0.3 * PL.has(b, 'afk'):
+            n.next_think = now + random.uniform(2, 6) * (1.6 - focus) * (3 if PL.has(b, 'afk') else 1)    # arrived: looks around a bit
             n.patrol = None
             return
-        a = random.uniform(0, 2 * math.pi)
-        r = random.uniform(2500, 6000)
+        roam = PL.profile(b)['roam']                    # wide roamer, local loops, or a camper around its own spot
+        lo, hi = {'wide': (4000, 9000), 'local': (1800, 4500), 'camper': (500, 1600)}[roam]
+        r = random.uniform(lo, hi)
+        if roam == 'camper':
+            home = n.__dict__.setdefault('camp', (nx, ny))
+            a = math.atan2(home[1] - ny, home[0] - nx) + random.uniform(-1.2, 1.2) if math.hypot(home[0] - nx, home[1] - ny) > hi else random.uniform(0, 2 * math.pi)
+        else:
+            a = random.uniform(0, 2 * math.pi)
         patrol_point = n.patrol = (max(600, min(w.map_w - 600, nx + math.cos(a) * r)), max(600, min(w.map_h - 600, ny + math.sin(a) * r)))
     _route(w, n, patrol_point[0], patrol_point[1], now, threshold=400)
 
@@ -1437,7 +1570,7 @@ def collect_box(w, n, now):
     nx, ny = n.mover.pos(now)
     own = ('b', n.id)
     decision = n.__dict__.setdefault('stealing', {})
-    en, best_score = None, 900.0
+    en, best_score = None, 900.0 * PL.box_factor(b) ** 0.7       # a box hunter sees boxes from far away (playstyle.py)
     for h, k in w.boxes.items():
         tip = k.get('tip')
         if k.get('event'):                                 # event box: keyless, everyone collects
@@ -1496,7 +1629,7 @@ def collect_box(w, n, now):
         n.next_think = now + random.uniform(0.3, 1.0)
         return True
     if k['tip'] in WD.CARGO_BOXES:                     # ores as many as fit; what does not fit stays in the box (like the player)
-        claimed = b.add_cargo(k.get('contents') or {})
+        claimed = b.add_cargo(k.get('contents') or {}, refine=True)
         remaining = {t: int(v) - claimed.get(int(t), 0) for t, v in (k.get('contents') or {}).items() if int(v) - claimed.get(int(t), 0) > 0}
         b.ist('cargo_box')
         owner_tag = k.get('owner_tag')
@@ -1578,7 +1711,8 @@ def recover(w, n, now, d):
     s = w.station
     nx, ny = n.mover.pos(now)
     if s and s.get('type') == b.company and math.hypot(s['posX'] - nx, s['posY'] - ny) < 4000:
-        return rest(w, n, now)
+        rest(w, n, now)
+        return True
     _stop(w, n, now)
     n.next_think = now + random.uniform(2, 4)
     return True

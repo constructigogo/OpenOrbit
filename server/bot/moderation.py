@@ -97,7 +97,7 @@ def moderate(y, name, msg, channel, now, rol='chatter'):
     delay = m.r.uniform(2, 8)
     if k['warning'] == 0:
         k['warning'], k['warning_time'] = 1, now
-        y.speak(m, channel, SPC.template(m, 'mod_uyari_' + rule, name=name), now=now + delay, priority=True)
+        y.speak(m, channel, SPC.template(m, 'mod_warning_' + rule, name=name), now=now + delay, priority=True)
         return 'warning'
     k['warning'] = 0
     k['mutes'] += 1
@@ -129,7 +129,7 @@ def remind_rules(y, now):
     """Every so often (45-90 min) a moderator reminds the rules in global."""
     if not is_open(y) or now < y.__dict__.get('_mod_reminder', 0):
         return
-    first = '_mod_hatirlat' not in y.__dict__
+    first = '_mod_reminder' not in y.__dict__
     y._mod_reminder = now + (600 if first else 2700 + 2700 * (hash(int(now)) % 100) / 100)
     if first:
         return

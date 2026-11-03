@@ -126,6 +126,10 @@ SCHEMA = [
                                                              "box become yours (bots in your group still share). Not for aliens fought together such as Cubikon, "
                                                              "Mindfire Behemoth and world bosses: there the reward is split between players and bots by damage "
                                                              "dealt, and the cargo box goes to the top damage dealer. Has no effect while alien tagging is off.", default=False),
+    _b('group_split', 'Shared rewards on group aliens', 'reward', 'Cubikon, Ice Meteoroids, Hitac and world bosses: the reward is split '
+                                                                  'between players and bots by damage dealt, and the cargo box goes to the '
+                                                                  'top damage dealer. If off, they follow the usual tagging rule: whoever '
+                                                                  'tags it gets everything (handy for levelling up a friend).', default=True),
     _b('cargo_ownership', 'Cargo box ownership', 'reward', "An alien's cargo box belongs to its owner only; others see it in blue (if the game's Settings > "
                                                            "Display option for other players' cargo boxes is on). Collecting the box of someone from your own "
                                                            "company costs honor: 10 for the first that day, twice as much each time. If off, anyone can collect "
@@ -145,6 +149,11 @@ SCHEMA = [
                                                                    "time (about 2 weeks in the real game).", lo=1, hi=60, default=14, unit='days', limit=365),
     _c('booster_power', 'Booster strength', 'progress', 'The bonus of boosters (damage, HP, shield, EP, honor …) and the cap of each type. x2: a 10% damage '
                                                         'booster gives 20%.', hi=10.0, limit=100.0),
+    _b('level_rank_threshold', 'Level Based Rank Threshold', 'progress', 'The old rank system: your rank cannot go above the one your rank points '
+                                                                         'reach on the threshold table, even when your place in the company is '
+                                                                         'higher (the same applies to bots). When off, only the place among the '
+                                                                         "company's pilots decides the rank, so the company's best pilot is Chief "
+                                                                         'General even at a low level. Without bots the thresholds always apply.'),
     # ---------------------------------------------------------------- world
     _c('box_abundance', 'Bonus box abundance', 'world', 'Number of bonus boxes on the maps (event boxes included).',
        apply_mode='map', hi=10.0, limit=100.0),
@@ -411,7 +420,7 @@ def write(path, values):
     """Write the settings atomically (panel). Values equal to the default are written too: the file is the user's choice."""
     d = clean(values)
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-    tmp = path + '.tmp'
+    tmp = '%s.%d.%d.tmp' % (path, os.getpid(), threading.get_ident())      # unique per writer: parallel writes must not share the file
     with open(tmp, 'w', encoding='utf8', newline='\n') as fh:
         json.dump(d, fh, ensure_ascii=False, indent=1)
     for k in range(6):                         # Windows: the game server reading it or a virus scanner can lock it for a moment

@@ -56,6 +56,7 @@ import llm_setup as LLMS     # noqa: E402  (language model of the Advanced bot m
 import discord_rp as DRP       # noqa: E402  (Discord Rich Presence)
 from bot import llm_provider as PRV  # noqa: E402  (the language model's provider: built-in or the user's choice)
 import locks as LCK            # noqa: E402  (save locks shared with OrbitBot)
+import pilot_panel as PP     # noqa: E402  (Auto Mode page; local feature)
 
 VERSION = '1.0'
 DISCORD = 'https://discord.com/invite/openorbit'   # community server (Panel page, README); permanent invite
@@ -315,6 +316,7 @@ def _dl_pct(st):
 
 
 _dialog_lock = threading.Lock()
+_settings_lock = threading.RLock()            # settings.json / templates read-modify-write sequences (ThreadingHTTPServer)
 
 
 def dialog(kind, **kw):
@@ -369,12 +371,29 @@ def _period_text(a, b, lang):
     return '%d%s %s – %d%s %s' % (da, '.' * (lang == 'de'), months[ma - 1], db, '.' * (lang == 'de'), months[mb - 1])
 
 
+def running_pass(vals, sel, now):
+    """The active save's running Battle Pass (event key, end, profile record) or None: same rule as battle_pass.BattlePass.kept (closed in
+    the panel stops; one started outside its calendar period runs only while the event is on by hand or its period comes)."""
+    import event_calendar as CAL
+    slot = SAV.active()
+    bp = (read_json(SAV.profile(slot), {}) if slot else {}).get('battle_pass') or {}
+    ev = bp.get('period', '').rsplit('-', 1)[0]
+    end = (bp.get('start') or 0) + vals.get('battle_pass_duration', SET.DEFAULTS['battle_pass_duration']) * 86400
+    if ev not in CAL.EVENTS or end <= now or sel.get(ev) == 'off':
+        return None
+    if sel.get(ev) != 'on' and CAL.period(ev, bp['start']) is None and CAL.period(ev, now) is None:
+        return None
+    return ev, end, bp
+
+
 def event_list():
     import event_calendar as CAL
     lang = D.current()
     now = time.time()
     t = datetime.datetime.fromtimestamp(now)
-    sel = game_settings().get('events') or {}
+    vals = game_settings()
+    sel = vals.get('events') or {}
+    run = running_pass(vals, sel, now)
     out = []
     for key, e in CAL.EVENTS.items():
         yearly = 'periods' in e
@@ -398,20 +417,137 @@ def event_list():
             best = next((s for s, f in spans if s > t), None)
             nxt = (best - t).days + 1 if best else None
         st = sel.get(key)
+        kept = bool(run) and run[0] == key and st != 'off'   # a running pass keeps its event open (event_calendar._on)
+        kinds = e.get('kinds', [])
+        features = [f for f, has in (('pass', 'BattlePass' in kinds), ('map', bool(e.get('map') or e.get('map_extra') or 'NpcEvent' in kinds)),
+                                     ('gate', 'gate_reward' in e), ('currency', 'currency' in e), ('decor', 'decor' in e)) if has]
+        category = ('weekly' if not yearly else 'pass' if 'pass' in features else 'map' if 'map' in features or 'decor' in features
+                    else 'special')
         out.append({'key': key, 'name': _(e.get('name', key)), 'type': 'yearly' if yearly else 'weekly', 'time': when,
+                    'category': category, 'features': features,
                     'in_calendar': per is not None, 'time_left_sec': int(per[1] - now) if per else None, 'next_day': nxt,
-                    'state': st, 'enabled': (st == 'on') if st else per is not None,
+                    'state': st, 'enabled': (st == 'on') if st else per is not None or kept,
+                    'pass_left_sec': int(run[1] - now) if kept and st != 'on' else None,
                     'description': _(EVENT_DESCRIPTIONS.get(key, '')),
                     'conflicting': sorted(_(CAL.EVENTS[j].get('name', j)) for j in CAL.CONFLICTS[key])})
-    # conflict (event_calendar.resolve): of those open at the same time, the one opened by hand stays, otherwise the one that started first
+    # conflict (event_calendar.resolve, _rank): of those open at the same time, the one opened by hand stays, then the one kept open by the
+    # Battle Pass, otherwise the one that started first
     rows = {x['key']: x for x in out}
     on = {k for k, x in rows.items() if x['enabled']}
-    keep = CAL.resolve(on, lambda k: (rows[k]['state'] != 'on', (CAL.period(k, now) or (0,))[0], k))
+    keep = CAL.resolve(on, lambda k: (0 if rows[k]['state'] == 'on' else 1 if run and run[0] == k else 2, (CAL.period(k, now) or (0,))[0], k))
     for k in on - keep:
         rows[k]['enabled'] = False
         rows[k]['suppressed_by'] = next(rows[j]['name'] for j in sorted(keep, key=lambda j: rows[j]['name']) if j in CAL.CONFLICTS[k])
     out.sort(key=lambda x: (x['type'] != 'yearly', not x['enabled'], x['name'].lower()))
     return out
+
+
+def pass_status(evs):
+    """The Events page's pass cards from the active save's profile (season.py, battle_pass.py): the running season and Battle Pass with the
+    seconds left; the Battle Pass also names the event with a pass that would start it now, or the next one by calendar."""
+    import event_appearances as EG
+    now, vals = time.time(), game_settings()
+    days = lambda k: vals.get(k, SET.DEFAULTS[k])
+    slot = SAV.active()
+    season = (read_json(SAV.profile(slot), {}) if slot else {}).get('season') or {}
+    s_end = season.get('start', 0) + days('season_duration') * 86400
+    out = {'season': {'name': EG.season(season['period'])['name'], 'left_sec': int(s_end - now)} if season.get('period') and s_end > now else None,
+           'season_days': days('season_duration'), 'pass_days': days('battle_pass_duration'), 'pass': None}
+    names = {e['key']: e for e in evs}
+    run = running_pass(vals, vals.get('events') or {}, now)
+    if run and run[0] in names:
+        out['pass'] = {'name': names[run[0]]['name'], 'left_sec': int(run[1] - now), 'bought': bool(run[2].get('purchased'))}
+    passes = [e for e in evs if e['category'] == 'pass']
+    out['pass_open'] = next((e['name'] for e in passes if e['enabled']), None)
+    soon = sorted((e for e in passes if e['next_day'] is not None and e['state'] != 'off'), key=lambda e: e['next_day'])
+    out['pass_next'] = {'name': soon[0]['name'], 'days': soon[0]['next_day']} if soon else None
+    return out
+
+
+def events_page(evs=None):
+    evs = event_list() if evs is None else evs
+    return {'events': evs, 'passes': pass_status(evs)}
+
+
+def seasons_api(switch=None):
+    """The Season Pass seasons of the active save (season.catalog); switch: play that season (the running one is paused; profile_tool
+    changes the save file after a 'before' backup). While the game uses the save the seasons can be seen (from the game when it runs on
+    this save) but not changed (user request 2026-11-03): busy. Missing banners are downloaded in the background (fetch_banners)."""
+    slot = SAV.active()
+    if not slot:
+        raise Error(_('No saves yet: create a new save on the Saves page.'))
+    days = str(game_settings().get('season_duration', SET.DEFAULTS['season_duration']))
+    busy = SAV.in_use(slot)
+    r = None
+    if MANAGER.running() and MANAGER.slot == slot:
+        try:
+            r = game_channel('/season')
+        except Error:                                 # not logged in yet: the save file
+            pass
+    r = r or SAV.run_tool('seasons', SAV.profile(slot), days)
+    if switch is not None:
+        row = next((s for s in r['seasons'] if s['id'] == switch), None)
+        if not row or row['state'] == 'running':
+            raise Error(_('Season not found.') if not row else _('This season is already running.'))
+        if row['state'] == 'finished':
+            raise Error(_('%s is over for this save: its time ran out.', row['name']))
+        if busy:
+            raise Error(_('Close the game first: the season can only be changed while the game is closed.'))
+        SAV.backup(slot, 'before', _('Before changing the season'))
+        r = SAV.run_tool('season', SAV.profile(slot), switch, days)
+        log('Season Pass: %s %s (%s)' % (r.get('how'), switch, row['name']))
+    BANNERS['names'] = {x['id']: x['banner'] for x in r['seasons'] if x.get('banner')}
+    out = season_banners()
+    for x in r['seasons']:
+        x['banner'] = out['banners'].get(x['id'])
+    return {'seasons': r['seasons'], 'max_level': r['max_level'], 'busy': busy, 'how': r.get('how'), 'banners_loading': out['loading']}
+
+
+def season_banner(name):
+    """A Season Pass banner in the CDN copy (server/cdn: web.py or fetch_banners) -> path (None if absent)."""
+    if not re.fullmatch(r'[\w.-]+\.jpg', name):
+        return None
+    p = os.path.join(SERVER, 'cdn', 'do_img', 'global', 'events', 'seasonPass', name)
+    return p if os.path.isfile(p) else None
+
+
+# The game server downloads a season's banner only when the game's Season Pass window asks for it (web.py cdn_fetch); the season picker
+# fetches the missing ones itself from the official CDN, in the background (user request 2026-11-03). A failed one is not retried while the
+# panel runs (no internet, not on the CDN).
+CDN_OFFICIAL = 'https://darkorbit-22.bpsecure.com/'
+BANNERS = {'names': {}, 'missing': set(), 'thread': None}
+
+
+def fetch_banners(names):
+    def run():
+        for n in names:
+            p = os.path.join(SERVER, 'cdn', 'do_img', 'global', 'events', 'seasonPass', n + '.jpg')
+            try:
+                with urlopen(Request(CDN_OFFICIAL + 'do_img/global/events/seasonPass/%s.jpg' % n, headers={'User-Agent': 'Mozilla/5.0'}),
+                             timeout=8) as r:
+                    data = r.read()
+            except Exception as e:
+                BANNERS['missing'].add(n)
+                log('season banner could not be downloaded: %s (%r)' % (n, e))
+                continue
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            with open(p + '.part', 'wb') as fh:
+                fh.write(data)
+            os.replace(p + '.part', p)
+    BANNERS['thread'] = threading.Thread(target=run, daemon=True)
+    BANNERS['thread'].start()
+
+
+def season_banners():
+    """Season -> banner address (None until it is in the CDN copy) and whether missing ones are still downloading; starts the download."""
+    names = BANNERS['names']
+    have = {sid: '/season_banner/%s.jpg' % n for sid, n in names.items() if season_banner(n + '.jpg')}
+    todo = [n for sid, n in names.items() if sid not in have and n not in BANNERS['missing']]
+    running = bool(BANNERS['thread'] and BANNERS['thread'].is_alive())
+    if todo and not running:
+        fetch_banners(todo)
+        running = True
+    return {'banners': have, 'loading': running}
 
 
 SESSION_NAMES = {'vortex': 'Vortex session', 'world_boss': 'Boss fight', 'kristallon': 'Apotheosis window',
@@ -462,6 +598,11 @@ def settings_summary(values):
 
 
 def set_events(body):
+    with _settings_lock:
+        return _set_events(body)
+
+
+def _set_events(body):
     vals = game_settings()
     ev = dict(vals.get('events') or {})
     import event_calendar as CAL
@@ -1325,6 +1466,9 @@ def world_post(path, b):
     if path == '/api/world/delete':
         did = b.get('id')
         WLD.remove(did)
+        pack = BT.world_pack(did)                   # a new world reusing the id must not inherit the bot pack
+        if pack:
+            BT.assign(pack, None)
         for k in SAV.list():                        # saves whose default is this world go back to standard
             if k.get('world') == did:
                 SAV.set_meta(k['id'], world=None)
@@ -1435,8 +1579,9 @@ def bot_post(path, b):
             if r.get('error'):
                 from bot import edit as ED
                 raise Error(BT.edit_error(ED.EditError(r['error'], r.get('area', ''))))
-            if 'traits' in value:
-                BT.bot_personality(pid, no, value['traits'])
+            from bot import edit as ED
+            if any(a in ED.ROSTER_FIELDS for a in value):
+                BT.bot_personality(pid, no, value)
             return dict(r, catalog=BT.edit_catalog(), live=True)
         return dict(BT.edit_bot(pid, no, value), catalog=BT.edit_catalog(), live=False)
     if path == '/api/bot/llm/provider':          # provider choice: built-in model, OpenAI, Claude ... (bot/llm_provider.py)
@@ -1528,6 +1673,8 @@ def supporters():
 
 
 def h_get(path, q):
+    if PP.handles(path):                            # Auto Mode (pilot_panel.py)
+        return PP.get(path, q)
     if path.startswith('/api/bot'):                 # Bots (bots.py)
         return bot_get(path, q)
     if path.startswith('/api/world'):               # World Editor (worlds.py)
@@ -1539,7 +1686,11 @@ def h_get(path, q):
     if path == '/api/settings':
         return api_settings()
     if path == '/api/events':
-        return event_list()
+        return events_page()
+    if path == '/api/seasons':
+        return seasons_api()
+    if path == '/api/season_banners':                # the picker asks again while banners download
+        return season_banners()
     if path == '/api/saves':
         return {'entries': SAV.list(), 'active': SAV.active(), 'trash': SAV.deleted(), 'companies': COMPANIES}
     if path == '/api/save_profile':
@@ -1624,6 +1775,8 @@ def h_get(path, q):
 def h_post(path, b):
     if migration_error() and path not in ('/api/close', '/api/update/check', '/api/update/install'):
         raise Error(migration_error())              # saves could not be migrated: no new save, setting ... is written (so it does not conflict on retry)
+    if PP.handles(path):                            # Auto Mode (pilot_panel.py)
+        return PP.post(path, b)
     if path.startswith('/api/bot/'):                # Bots (bots.py)
         return bot_post(path, b)
     if path.startswith('/api/world') or path == '/api/saves/world':      # World Editor (worlds.py)
@@ -1686,6 +1839,8 @@ def h_post(path, b):
             raise Error(_('This save is in use by OrbitBot: stop the bot first or pick another save.'))
         if MULTI.live():
             raise Error(_("The server can't be restarted while extra clients are open: close them first."))
+        if FRD.active():
+            raise Error(_("You are on a friend's server: leave it first."))
         friend_env = FRD.host_env() if MANAGER.running() and MANAGER.friend else None       # the mode is kept (Host, multi-client)
         multi = None if friend_env else (multi_env() if (MANAGER.running() and MANAGER.multi) or multi_wanted(slot) else None)
         MANAGER.stop_servers()
@@ -1724,11 +1879,12 @@ def h_post(path, b):
         return MANAGER.foreign_ports()
     # ---- game settings
     if path == '/api/settings':
-        vals = game_settings()
-        for k, v in (b.get('values') or {}).items():
-            if k in SET.BY_KEY:
-                vals[k] = v
-        SET.write(settings_file(), vals)
+        with _settings_lock:
+            vals = game_settings()
+            for k, v in (b.get('values') or {}).items():
+                if k in SET.BY_KEY:
+                    vals[k] = v
+            SET.write(settings_file(), vals)
         write_legacy_upgrade()
         return api_settings()
     if path == '/api/settings/copy':             # another save's settings (event choices included) to the active save
@@ -1740,11 +1896,12 @@ def h_post(path, b):
         write_legacy_upgrade()
         return api_settings()
     if path == '/api/settings/reset':
-        vals = game_settings()
-        keys = b.get('keys') or list(SET.BY_KEY)
-        for k in keys:
-            vals.pop(k, None)
-        SET.write(settings_file(), vals)
+        with _settings_lock:
+            vals = game_settings()
+            keys = b.get('keys') or list(SET.BY_KEY)
+            for k in keys:
+                vals.pop(k, None)
+            SET.write(settings_file(), vals)
         write_legacy_upgrade()
         return api_settings()
     if path == '/api/settings/presets':
@@ -1753,27 +1910,32 @@ def h_post(path, b):
         preset = SET.PRESETS.get(name, {}).get('values') if name in SET.PRESETS else (user.get(name) or {}).get('values')
         if preset is None:
             raise Error(_('Preset not found.'))
-        vals = {k: v for k, v in game_settings().items() if k not in SET.BY_KEY}     # event choices stay
-        vals.update(preset)
-        SET.write(settings_file(), vals)
+        with _settings_lock:
+            vals = {k: v for k, v in game_settings().items() if k not in SET.BY_KEY}     # event choices stay
+            vals.update(preset)
+            SET.write(settings_file(), vals)
         write_legacy_upgrade()
         return api_settings()
     if path == '/api/settings/save_template':
         name = (b.get('name') or '').strip()[:40]
         if not name:
             raise Error(_('Give the template a name.'))
-        user = read_json(TEMPLATES, {})
-        vals = {k: v for k, v in game_settings().items() if k in SET.BY_KEY and v != SET.DEFAULTS[k]}
-        user[name] = {'name': name, 'description': b.get('description') or _('Your own settings'), 'values': vals}
-        write_json(TEMPLATES, user)
+        with _settings_lock:
+            user = read_json(TEMPLATES, {})
+            vals = {k: v for k, v in game_settings().items() if k in SET.BY_KEY and v != SET.DEFAULTS[k]}
+            user[name] = {'name': name, 'description': b.get('description') or _('Your own settings'), 'values': vals}
+            write_json(TEMPLATES, user)
         return api_settings()
     if path == '/api/settings/delete_template':
-        user = read_json(TEMPLATES, {})
-        user.pop(b.get('name'), None)
-        write_json(TEMPLATES, user)
+        with _settings_lock:
+            user = read_json(TEMPLATES, {})
+            user.pop(b.get('name'), None)
+            write_json(TEMPLATES, user)
         return api_settings()
     if path == '/api/events':
-        return set_events(b)
+        return events_page(set_events(b))
+    if path == '/api/seasons':
+        return seasons_api(str(b.get('season') or ''))
     # ---- saves
     if path == '/api/saves/new':
         sid = SAV.create(b.get('name'), b.get('pilot'), b.get('company'), b.get('credits'), b.get('uridium'), b.get('level'), b.get('honor'),
@@ -2021,6 +2183,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {'panel': 'darkorbit', 'version': VERSION, 'pid': os.getpid()})
         if u.path.startswith('/api/'):
             return self._api(h_get, {k: v[0] for k, v in parse_qs(u.query).items()})
+        if u.path.startswith('/season_banner/'):
+            p = season_banner(u.path[len('/season_banner/'):])
+            if not p:
+                return self._send(404, b'none', 'text/plain')
+            return self._send(200, open(p, 'rb').read(), 'image/jpeg', {'Cache-Control': 'max-age=3600'})
         if u.path.startswith('/game_images/'):
             p = game_image(u.path[len('/game_images/'):])
             if not p:

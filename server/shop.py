@@ -208,6 +208,7 @@ REASONS = {
     'prerequisite': ('The prerequisites for the next level of this skill are not met.', 'Bu yeteneğin sonraki seviyesinin ön koşulları karşılanmıyor.'),
     'same_module': ('Only one module of each type (Damage, HP, Shield, Special) can be equipped on a ship.',
                    'Bir gemiye her türden (hasar, can, kalkan, özel) yalnız bir modül takılabilir.'),
+    'upgrading': ('This item is being upgraded. Collect the upgrade first.', 'Bu eşya yükseltiliyor; önce yükseltmeyi teslim al.'),
     'qfc_sale': ('Quantum Fluid Cores cannot be sold. You can recycle them in the Hyperforge (Assembly).',
                   "Quantum Fluid Core satılamaz; Hyperforge'da (Assembly) geri dönüştürebilirsin."),
     'rh_bond_duration': ('Returnees must bond with an active player within 24 hours of logging in.',
@@ -556,7 +557,8 @@ class Shop:
         self.log('   upgrade: part %d <- %s x%d (total %d)' % (item, ORES.get(t), n, ups[str(item)][1]))
         return ([('AttributeOreCountUpdateCommand', {'oreCountList': totals}), self.ore_pack([t]), self.lab_cmd()] + self.apply_stats()
                 + [legacy('0|A|STM|%s' % key)]
-                + (self.quest('ore_update', type=('LASER', 'ROCKET', 'SPEED', 'SHIELD')[item], ore=ORES.get(t)) if self.quest else []))
+                + (self.quest('ore_update', type=('LASER', 'ROCKET', 'SPEED', 'SHIELD')[item], ore=ORES.get(t), amount=n)
+                   if self.quest else []))
 
     def item_id(self, loot):
         return self.p.d['item_id'].get(loot) or self.tpl_ids.get(loot) or self.p.item_id(loot)
@@ -1375,7 +1377,9 @@ class Shop:
             # It used to give only as much as there was room: Assembly's 5,000 Seprom vanished in a full cargo (user report 2026-10-24)
             t = next(k for k, v in ORES.items() if v == loot)
             if n > 0:
-                msgs += [('AttributeOreCountUpdateCommand', {'oreCountList': self.p.add_ores({t: n})}), self.ore_pack([t])]
+                msgs += [('AttributeOreCountUpdateCommand', {'oreCountList': self.p.add_ores({t: n})}), self.ore_pack([t]),
+                         ('LMCollectResourcesCommand', dict(priorityMode=mod('LogMessengerPriorityModule', priorityModeValue=0),     # the log line
+                                                            contentList=[mod('OreCountModule', oreType=mod('OreTypeModule', typeValue=t), count=n)]))]
         elif loose_item(loot):     # drone / P.E.T. design, P.E.T. gear and protocol (gate, box, Assembly, Pass): into the inventory, fitted in the hangar
             for _ in range(n):
                 iid = self.p.new_item(loot, level if PETM.level_prices(loot) else 1)
@@ -1429,6 +1433,8 @@ class Shop:
             total = self.p.add_resource(loot, n)
             if loot.startswith('resource_'):
                 msgs += self.resource_msgs(loot, total, n)
+            elif design_base(loot):     # design of a ship not owned yet (pending_designs): the box gave nothing visible (player report 2026-11-03)
+                msgs.append(legacy('0|LM|ST|LOT|%s|%d' % (loot, n)))
             if loot in LOOT.KEYS and LOOT.key_line(self.p, LOOT.KEYS[loot]):         # loot key: HUD counter
                 msgs.append(legacy(LOOT.key_line(self.p, LOOT.KEYS[loot])))
             if hidden(loot):        # invisible in the inventory, no system reads it: this reward is lost (test_odul_yollari catches it)
@@ -1526,6 +1532,9 @@ class Shop:
                 if iid in equipped:
                     self.log('   no sale: %s is fitted' % loot)
                     return fail('equipped_sale')
+                if UPG.busy(self.p, iid):
+                    self.log('   no sale: %s is being upgraded' % loot)
+                    return fail('upgrading')
                 if loot.startswith(QF.PREFIX):                  # QFC is not sold, it is recycled at the Hyperforge (official FAQ)
                     self.log('   no sale: %s (QFC)' % loot)
                     return fail('qfc_sale')
@@ -1568,6 +1577,8 @@ class Shop:
         x = self.p.drone(f.get('droneId') or 0)
         if not x or DRONES[x['lootId']].get('single'):        # Apis/Zeus are not sold (no "sellable" in the client)
             return [('HangarShipSellDroneCommand', dict(resultId=0, errorMessage=stack_msg('eqt_error_generic'), drones=self.drone_views()))]
+        if UPG.busy(self.p, x['uid'], drone=True):
+            return [('HangarShipSellDroneCommand', dict(resultId=0, errorMessage=self.reason('upgrading'), drones=self.drone_views()))]
         info = DRONES[x['lootId']]
         n = sum(1 for y in self.p.d['drones'] if y['lootId'] == x['lootId'])
         amount = int(info['prices'][min(n, len(info['prices'])) - 1] * ITEMS['sale_ratio'])

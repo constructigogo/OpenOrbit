@@ -17,7 +17,8 @@ EVENT_WINDOWS = {'plutus': ('plutus',), 'frozen_labyrinth': ('labyrinth',), 'aga
                  'strikeAndExit': ('vortex_of_greed',), 'publicWorldBoss': ('world_boss',), 'payload_escort': ('mimesis_mutiny',),  # stage 4
                  'mileageMarket': ('mileage_market',), 'vipMerchantExchange': ('vip_merchant',),                            # stage 7
                  'preBlackFridaySales': ('pre_prometheus',), 'return_of_hero': ('return_of_hero',), 'returnee_login': (),
-                 'apotheosis': ('kristallon_apotheosis',), 'recallBattlePass': ('return_of_hero',)}                       # 1.1.115
+                 'apotheosis': ('kristallon_apotheosis',), 'recallBattlePass': ('return_of_hero',),                        # 1.1.115
+                 'battle_pass': ()}      # Objectives: while the save's pass runs (battle_pass.py; the session binds the hook), otherwise it opened empty
 # the 1.1.115 windows are not in the interface in the recording: added to the profile as a copy of the Return of Hero item (title, size from game.xml);
 # before opening a window the client looks up the menu item by name (FeatureMenuHelper.GetFeatureItemById)
 NEW_WINDOWS = {'apotheosis': ('title_kristallon_apotheosis', 728, 460), 'recallBattlePass': ('return_pass_name', 800, 440)}
@@ -188,6 +189,61 @@ def level_for(ep):
 DEFAULT_SHIP_INIT = dict(userId=1, userName='Pilot', typeId='ship_goliath', speed=300, shield=100000, shieldMax=100000, hitPoints=356000,
                          hitMax=356000, cargoSpace=0, cargoSpaceMax=1500, x=2000, y=2000, mapId=1, factionId=1, expansionStage=3, premium=True,
                          ep=100000, honourPoints=1000, level=12, credits=1000000, uridium=50000, dailyRank=1, refreshMap=True, modifier=[])
+
+
+def refine_ores(have, recipes):
+    """Auto-refining's outcome on {ore type: count} with recipes [(product, {input: count})] (world.auto_refine, bot cargo boxes): one unit
+    at a time in turn, so the shared Endurium is split between the two products and new Prometid/Duranium goes into Promerium.
+    -> (counts after refining, {product: units made})"""
+    have, made, more = dict(have), {}, True
+    while more:
+        more = False
+        for t, r in recipes:
+            if all(have.get(k, 0) >= v for k, v in r.items()):
+                for k, v in r.items():
+                    have[k] -= v
+                have[t] = have.get(t, 0) + 1
+                made[t] = made.get(t, 0) + 1
+                more = True
+    return have, made
+
+
+def cargo_take(cargo, want, capacity, recipes=()):
+    """How much of a cargo box to take: cargo {ore type: count} now, want {ore type: count} in the box, capacity the cargo area, recipes
+    auto-refining's (none: the setting is off) -> {ore type: count taken} that fits once refined. Not in key order: 1,500 Prometium filled
+    the cargo first and the Endurium/Terbium that would have refined it stayed on the ground (user report 2026-11-03). The largest equal
+    share of every ore that fits, then each type topped up while it still fits (twice: Endurium taken late lets more Prometium in).
+    Xenomit takes no space: all of it (it is also Promerium's input)."""
+    space = sorted(t for t in want if t in Profile.CARGO_ORES and want[t] > 0)
+    take = {t: n for t, n in want.items() if t not in Profile.CARGO_ORES}
+
+    def fits(extra):
+        have = dict(cargo)
+        for t, n in list(take.items()) + list(extra.items()):
+            have[t] = have.get(t, 0) + n
+        have = refine_ores(have, recipes)[0] if recipes else have
+        return sum(n for t, n in have.items() if t in Profile.CARGO_ORES) <= capacity
+
+    def largest(lo, hi, extra):
+        """The largest x in [lo, hi] with fits(extra(x)); lo fits. The space is not monotone (more Endurium can refine the Prometium
+        down), so only what was checked is taken."""
+        if fits(extra(hi)):
+            return hi
+        while hi - lo > 1:
+            mid = (lo + hi) // 2
+            lo, hi = (mid, hi) if fits(extra(mid)) else (lo, mid)
+        return lo
+
+    if not space or not fits({}):
+        return take
+    top = max(want[t] for t in space)
+    share = largest(0, top, lambda s: {t: want[t] * s // top for t in space})
+    got = {t: want[t] * share // top for t in space}
+    for _ in range(2):
+        for t in space:
+            got[t] = largest(got[t], want[t], lambda n: {**got, t: n})
+    take.update({t: n for t, n in got.items() if n > 0})
+    return take
 
 
 class Profile:
@@ -394,33 +450,37 @@ class Profile:
         with self.lock:
             if not (self.dirty or force):
                 return
-            os.makedirs(os.path.dirname(self.path), exist_ok=True)
-            # the world and the session write to the profile without a lock: if the dict's size changes while encoding ("dictionary changed size during
-            # iteration") it is retried; the file is written only when the text is complete
-            for k in range(5):
-                try:
-                    text = self._text()
-                    break
-                except RuntimeError:
-                    if k == 4:
-                        raise
-                    time.sleep(0.01)
-            tmp = self.path + '.tmp'
-            with open(tmp, 'w', encoding='utf8') as fp:
-                fp.write(text)
-                fp.flush()
-                os.fsync(fp.fileno())           # so that no half/empty profile is left in a power cut
-            # Windows: if the target file is open in another process at that moment (antivirus scanner, backup) os.replace gives "Access denied";
-            # it is retried a few times (live: a 10 s save error had dropped the session)
-            for k in range(6):
-                try:
-                    os.replace(tmp, self.path)
-                    break
-                except PermissionError:
-                    if k == 5:
-                        raise
-                    time.sleep(0.05 * (k + 1))
-            self.dirty = False
+            self.dirty = False                  # before the snapshot: a change flagged while writing stays flagged
+            try:
+                os.makedirs(os.path.dirname(self.path), exist_ok=True)
+                # the world and the session write to the profile without a lock: if the dict's size changes while encoding ("dictionary changed size during
+                # iteration") it is retried; the file is written only when the text is complete
+                for k in range(5):
+                    try:
+                        text = self._text()
+                        break
+                    except RuntimeError:
+                        if k == 4:
+                            raise
+                        time.sleep(0.01)
+                tmp = self.path + '.tmp'
+                with open(tmp, 'w', encoding='utf8') as fp:
+                    fp.write(text)
+                    fp.flush()
+                    os.fsync(fp.fileno())           # so that no half/empty profile is left in a power cut
+                # Windows: if the target file is open in another process at that moment (antivirus scanner, backup) os.replace gives "Access denied";
+                # it is retried a few times (live: a 10 s save error had dropped the session)
+                for k in range(6):
+                    try:
+                        os.replace(tmp, self.path)
+                        break
+                    except PermissionError:
+                        if k == 5:
+                            raise
+                        time.sleep(0.05 * (k + 1))
+            except BaseException:
+                self.dirty = True
+                raise
 
     # ---------------------------------------------------------------- generation
     @property
@@ -541,11 +601,12 @@ class Profile:
 
     # ---------------------------------------------------------------- in-game changes (world simulation)
     def gain(self, ep=0, honor=0, credits=0, uridium=0, reason=None, detail='', count=0):
-        """Adds the rewards -> new totals and level (EP table: data/levels.json). The clan's tax from an alien reward's credits goes to
-        the treasury (clan.tax; before the lock: the clan record's lock)."""
-        if credits > 0 and reason == 'bonus_abschussAlien' and self.d['pilot'].get('clanId'):
+        """Adds the rewards -> new totals and level (EP table: data/levels.json). The clan's tax from earned credits (clan.taxed: aliens,
+        players, ore, quests, gates, boxes) goes to the treasury (clan.tax; before the lock: the clan record's lock)."""
+        if credits > 0 and self.d['pilot'].get('clanId'):
             import clan as KL
-            credits -= KL.tax(self, credits)
+            if KL.taxed(reason):
+                credits -= KL.tax(self, credits)
         with self.lock:
             p = self.d['pilot']
             p['ep'] = p.get('ep', 0) + ep
@@ -643,14 +704,15 @@ class Profile:
     def ammo(self, loot_id):
         return self.d['ammunition'].get(loot_id, 0)
 
-    def use_ammo(self, loot_id, n=1, event=True):
-        """Spend n; None if short. event=False: the 'ammo' event is not emitted (the payment of inventory.spend emits its own 'spend' event)."""
+    def use_ammo(self, loot_id, n=1, event=True, paid=False):
+        """Spend n; None if short. event=False: the 'ammo' event is not emitted (the payment of inventory.spend emits its own 'spend' event).
+        paid=True: a cost (crafting ...), taken even with infinite ammo."""
         with self.lock:
             have = self.d['ammunition'].get(loot_id, 0)
             if have < n:
                 return None
             import settings as SET
-            used = 0 if SET.get('infinite_ammo') else n     # panel: infinite ammo (not consumed)
+            used = 0 if SET.get('infinite_ammo') and not paid else n     # panel: infinite ammo (not consumed)
             self.d['ammunition'][loot_id] = have - used
             self.dirty = True
         if event:
@@ -952,8 +1014,9 @@ class Profile:
         """A new ship (two empty configs) -> shipId. Ids are given after those in the recording."""
         with self.lock:
             g = self.d['ships']
-            sid = max(int(k) for k in g) + 1
-            hid = max(s['hangarId'] for s in g.values()) + 1
+            sid = max(self.d.get('next_ship', 0), max(int(k) for k in g) + 1)           # ids are never reused after a ship is removed
+            hid = max(self.d.get('next_hangar', 0), max(s['hangarId'] for s in g.values()) + 1)
+            self.d['next_ship'], self.d['next_hangar'] = sid + 1, hid + 1
             g[str(sid)] = {'lootId': loot_id, 'hangarId': hid, 'configs': {'1': {}, '2': {}}, 'active_config': 1, 'favorite': False,
                            'drone_config': {'1': {}, '2': {}}}
             self.dirty = True

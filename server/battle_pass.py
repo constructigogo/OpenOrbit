@@ -109,6 +109,13 @@ class BattlePass:
     def end(self):
         return self.st.get('start', 0) + duration()
 
+    def kept(self, ev, now):
+        """Whether the running pass keeps running: the pass of an event closed in the panel stops; a pass started outside its event's
+        calendar period (opened by hand, --event, all) runs only while the event stays forced open or its calendar period comes."""
+        if SET.event_state(ev) == 'off':
+            return False
+        return CAL.period(ev, self.st['start']) is not None or CAL.forced(ev) or CAL.period(ev, now) is not None
+
     def ensure(self, now=None):
         """The save's running pass (period name) or None: a running pass keeps running (and keeps its event open); otherwise the pass of an open event with a pass
         starts from day 1 (a finished pass of the same period does not restart)."""
@@ -119,7 +126,7 @@ class BattlePass:
             with self.p.lock:
                 st['start'] = now if event_key(now) == st['period'] else 1
                 self.p.dirty = True
-        if st.get('period') and now < self.end() and SET.event_state(ev) != 'off':      # the pass of an event closed in the panel stops
+        if st.get('period') and now < self.end() and self.kept(ev, now):
             CAL.PASS_RUNS[ev] = (st['start'], self.end())
             return st['period']
         CAL.PASS_RUNS.pop(ev, None)
@@ -251,6 +258,8 @@ class BattlePass:
         with self.p.lock:
             st['purchased'] = True
             self.p.dirty = True
+        if n > 1:
+            self.p.add_resource(PASS_ITEM, n - 1)                    # the remaining passes are in storage (for the next Battle Pass)
         if keys:
             self.p.add_resource(KEY, keys)
         msgs = self.ticket_rewards(st['collected'])                  # forum 154610: the ticket rewards of earlier targets too

@@ -631,7 +631,7 @@ class Items:
         if any(m['loot'] == loot and math.hypot(m['x'] - x, m['y'] - y) < M['stack_distance'] for m in mines):
             self.send([stm('msg_no_mine_stacking')])
             return
-        if len(mines) >= M['map_limit']:
+        if sum(1 for m in mines if not m.get('area')) >= M['map_limit']:      # 5-1/5-3 minefield mines do not count
             self.send([stm('msg_map_too_many_mine')])
             return
         p.use_ammo(loot, 1)
@@ -837,7 +837,7 @@ class Items:
             sh = min(n.shield, int(hp * n.d.get('shield_absorb', _N['combat']['npc_shield_absorb'])))
             hp = min(max(0, n.hp - 1), hp - sh)
         if sh or hp:
-            w.hit_npc(n.id, 0, ATTACK_MINE, split=(int(sh), int(hp)))
+            w.hit_npc(n.id, 0, ATTACK_MINE, split=(int(sh), int(hp)), reactive=True)       # laid earlier: not an attack (world.attacked)
         if not n.alive:
             return
         if 'slow' in cfg:
@@ -973,6 +973,7 @@ class Items:
                 n.next_shot = max(getattr(n, 'next_shot', 0), now + c['daze_sec'])
                 n.blocked = max(getattr(n, 'blocked', 0), now + c['daze_sec'])     # so the attacking type does not lock again at once
                 reset += 1
+        w.alien.hero_dots = [d_ for d_ in w.alien.hero_dots if not d_.get('emp')]     # forum 127094: EMP removes the Reflector's radiation
         if w.hero_effects.get('slow') or w.hero_effects.get('speed_limit'):
             w.hero_effects.remove('slow')                             # EMP removes slowdowns (aliens.md: Slowdown Orb)
             w.hero_effects.remove('speed_limit')
@@ -1171,6 +1172,7 @@ class Items:
                                 * SET.multiplier('rocket_cooldown'))                                               # panel
         p.ach('shot', weapon='ROCKET_LAUNCHER')
         self.launcher_cd = now + LAUNCHER_COOLDOWN            # recording (2026-10-27, 117 shots): exactly 3.0 s counter after a shot
+        w.attacked(now, LAUNCHER_COOLDOWN + ROCKET_FLIGHT)    # a miss too
         menu = S['launcher']['menu']
         self.send([('MenuItemTimerCommand', dict(activatable=False, timerState=mod('TimerStateModule', timerStateValue=2),
                                                  maxTime=int(LAUNCHER_COOLDOWN * 1000), time=int(LAUNCHER_COOLDOWN * 1000), menuItemId=menu))])
@@ -1222,6 +1224,7 @@ class Items:
         w.abilities.reveal()
         self.reveal()
         w.last_combat = now
+        w.attacked(now, ROCKET_FLIGHT)                        # a miss too
         w.stop_repair()
         p.ach('shot', weapon='ROCKET_LAUNCHER')
         hit = random.random() < w.rocket_hit(rocket)
@@ -1272,7 +1275,7 @@ class Items:
             elif pool and random.random() < r.get('look_chance', 1.0):              # during the event a 30% chance of an event design (wiki)
                 model = str(random.choice(pool))
             else:
-                model = str(random.choice(sorted(models - {int(n.model)})))
+                model = str(random.choice(sorted(models - {int(n.model) if str(n.model).isdigit() else None})))
             vis = lambda on: [('VisualModifierCommand', dict(userId=uid, modifier=25, attribute=0, additionalAttribute=model, count=0,
                                                              activated=on))]
             self.send(vis(True))
@@ -1393,7 +1396,7 @@ class Items:
             self.send([jcpu_list(p), vouchers_msg(p)])
         elif cmd == 'S' and len(parts) > 2 and parts[2].isdigit():
             m = int(parts[2])
-            ok = (has_ajp(p) and m != w.map_id and m in H.NAMES and jump_allowed('equipment_extra_cpu_ajp-01', m)
+            ok = (has_ajp(p) and m != int(w.map_id) and m in H.NAMES and jump_allowed('equipment_extra_cpu_ajp-01', m)
                   and jump_allowed('equipment_extra_cpu_ajp-01', w.map_id) and not ajp_locked(p, m))
             price = ajp_price(p, m, w.map_id) if m in H.NAMES else 0
             self.ajp_target = m if ok else None

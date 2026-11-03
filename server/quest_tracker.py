@@ -11,7 +11,7 @@ Condition types are the client's ConditionType enum (from the compiled code); th
   34 VISIT_MAP                                51 CARGO (cargo box)                            52 SELL_ORE ([old ore id])
   53 LEVEL (level)                            55 COLLECT_BONUS_BOX                            67 COLLECT_LOOT ([lootId ...])
   66 IN_CLAN (clan event)                     68 FINISH_STARTER_GATE (gate event, type=STARTER_GATE; Devolarium Attack gate)
-  72 USE_ORE_UPDATE ([LASER|ROCKET|SPEED|SHIELD, ORE]; upgrade in the laboratory: ore_update event)
+  72 USE_ORE_UPDATE ([LASER|ROCKET|SPEED|SHIELD, ORE]; upgrade in the laboratory: ore_update event; counts the ore loaded)
   80 FINISH_GALAXY_GATES ([count, name ..., map ...])   85 COLLECT_BUILT_RECIPE ([recipe]; Assembly)
   87 COMPLETED_OBJECTIVES (a finished Battle Pass quest)   89 SPEND_ITEM ([lootId])
   95 COMPLETE_SEASON_PASS_QUESTS ([2 season | 5 daily | 6 weekly])   96 LOGIN   100 RECHARGE_AMOUNT (single player: Uridium Bank)
@@ -84,6 +84,8 @@ def measure(c, kind, kw, map_id=None):
     if t == 23 and kind == 'loot' and kw.get('box'):         # [company, ship, alien, ?, ore]: the filters do not know the box's source
         ore = m[4] if len(m) > 4 else '0'
         return int(kw.get('amount', 0)) if not any(x not in ('', '0') for x in m[:3]) and ore in ('', '0', OLD_ORE.get(kw.get('loot'))) else 0
+    if t == 24 and kind == 'steal':                 # STEAL_CARGO: a cargo box of another pilot taken (World.take_box)
+        return 1
     if t == 27 and kind == 'kill' and kw.get('avatar', 'NPC') == 'NPC':
         return 1 if not m or str(kw.get('npc')) in m else 0
     if t == 29 and kind == 'damage':
@@ -114,7 +116,10 @@ def measure(c, kind, kw, map_id=None):
     if t == 68 and kind == 'gate':
         return 1 if kw.get('type') == 'STARTER_GATE' else 0
     if t == 72 and kind == 'ore_update':
-        return 1 if len(m) > 1 and m[0] == kw.get('type') and kw.get('ore') == 'resource_ore_' + m[1].lower() else 0
+        # the ore loaded, not the number of upgrades ("Upgrade your Rockets with Seprom (0/80)": 80 Seprom at once is 80/80)
+        if len(m) > 1 and m[0] == kw.get('type') and kw.get('ore') == 'resource_ore_' + m[1].lower():
+            return int(kw.get('amount', 1))
+        return 0
     if t == 80 and kind == 'gate':
         names = counted(m)
         return 1 if not names or str(kw.get('type', '')).replace('_GATE', '') in names else 0
@@ -144,13 +149,13 @@ def cond_update(cid, value, active, completed):
         'QuestConditionStateModule', currentValue=value, active=active, completed=completed)})
 
 
-def advance(p, root, vals, kind, kw, map_id=None, notify=True, fn=measure):
-    """Advances a quest's conditions with the event (values in vals, under the lock; fn: measurement, for main quests Quests.matches)
-    -> (messages, whether completed)."""
+def advance(p, root, vals, kind, kw, map_id=None, notify=True, fn=measure, only=None):
+    """Advances a quest's conditions with the event (values in vals, under the lock; fn: measurement, for main quests Quests.matches;
+    only: measure just these condition ids) -> (messages, whether completed)."""
     before = evaluate(root, vals)[0]
     changed = []
     for c in conditions(root):
-        if not before[c['id']][0]:
+        if not before[c['id']][0] or only is not None and c['id'] not in only:
             continue
         inc = fn(c, kind, kw, map_id)
         if not inc or not during_event(c):
@@ -179,6 +184,16 @@ def advance(p, root, vals, kind, kw, map_id=None, notify=True, fn=measure):
                 msgs.append(cond_update(c['id'], v, True, False))
             if moved:
                 msgs.append(cond_update(c['id'], v, *after[c['id']]))
+    # Conditions that just became active (the next step of an ordered quest) measure the current state once: "Travel to 1-2" while
+    # already on 1-2, "Reach level N" at that level. Only the woken conditions, so an already running map counter is not counted twice.
+    woke = {c['id'] for c in conditions(root) if after[c['id']][0] and not before[c['id']][0]}
+    if woke and not done:
+        state = [('level', {'value': p.d['pilot'].get('level', 1)})] + ([('map', {'map': map_id})] if map_id is not None else [])
+        for k, w in state:
+            more, done = advance(p, root, vals, k, w, map_id, notify, fn, woke)
+            msgs += more
+            if done:
+                break
     return msgs, done
 
 

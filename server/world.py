@@ -45,6 +45,7 @@ import tips as IP
 import shared_maps as OH
 import skill_tree as SKL
 import player_combat as PVP
+import player_profile as PF
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CFG = DATA.load('npc.json')
@@ -132,14 +133,17 @@ def tag_alien(n, who, now):
 
 
 def group_npc(n):
-    """An alien fought together (world bosses that drop a chest, like Cubikon, Mindfire Behemoth, Invoke XVI): when player_tag is on,
-    the tag does not pass, and the reward is split by damage dealt."""
-    return bool(n.d.get('chest') or n.d.get('boss') or 'Cubikon' in str(n.d.get('name', '')) or str(getattr(n, 'tip', '')).startswith('wb_'))
+    """An alien fought together (world bosses that drop a chest, like Mindfire Behemoth, Invoke XVI; npc.json shared: Cubikon, Ice
+    Meteoroids, Hitac): while the panel's group_split is on, the tag does not pass and the reward is split by damage dealt; when off it
+    is an ordinary alien (the tagger gets everything: levelling up a friend). Before, the split needed player_tag (off by default) and
+    did not cover the meteoroids and Hitac (player report 2026-11-02)."""
+    return bool(SET.get('group_split') and (n.d.get('shared') or n.d.get('chest') or n.d.get('boss')
+                                            or str(getattr(n, 'tip', '')).startswith('wb_')))
 
 
 def record_damage(n, who, dmg):
-    """The damage dealt to a group alien by who ('h', hero) or ('b', bot): reward sharing (tag_sharers). Only when tag and player_tag are on."""
-    if dmg > 0 and SET.get('tag') and SET.get('player_tag') and group_npc(n):
+    """The damage dealt to a group alien by who ('h', hero) or ('b', bot): reward sharing (tag_sharers)."""
+    if dmg > 0 and group_npc(n):
         d = n.__dict__.setdefault('damage_split', {})
         d[who] = d.get(who, 0) + dmg
 
@@ -152,6 +156,11 @@ def tag_owner(n, now):
 
 CARGO_BOXES = ('FROM_SHIP', 'CANDY_CARGO', 'TURKEY_CARGO')     # the alien's cargo box (CANDY_CARGO: in Halloween's CandyCargo, recording; TURKEY_CARGO: at Thanksgiving)
 AUTO_REFINE = (4, 5, 6)       # products of automatic refining (laboratory recipes, in this order): Prometid, Duranium, Promerium
+
+
+def refine_recipes():
+    """Automatic refining's recipes [(product, {input: count})] (player_profile.refine_ores / cargo_take)."""
+    return [(t, {int(k): v for k, v in ITEMS['lab']['recipes'][str(t)].items()}) for t in AUTO_REFINE]
 
 
 def attack_type(v):
@@ -214,6 +223,7 @@ class Mover:
 class NPC:
     bot = None                              # bot ship (bot/ship.BotShip): looks like a player, its mind is ship.think
     bot_target = None                        # the id of the bot ship this alien answers with (ship.npc_to_bot)
+    bot_scan = 0.0                           # next look for a bot ship nearby (aggressive alien: ship.notice_bot)
 
     def __init__(self, uid, tip, x, y, wave=False):
         self.id, self.tip, self.d = uid, tip, CFG['types'][tip]
@@ -250,6 +260,7 @@ class NPC:
         self.last_hit = 0.0                 # the moment it was last hit (out-of-combat regeneration)
         self.next_summon = 0.0
         self.next_regen = 0.0
+        self.next_shield_regen = 0.0        # the alien's own shield refill (World.npc_shield_regen)
         self.ab = {}                        # state of the abilities (alien.py: cooldowns, thresholds, vanishing, speed)
         self.attackers = {}                 # attacker -> last hit time (Battleray's rage)
         self.foe = None                     # the world that runs its AI on a shared map (shared_maps.Map.owners)
@@ -427,7 +438,7 @@ class World:
         self.gate_lives = None         # HP left when dying at a gate (the death screen's text)
         self.near_gate = None
         self.gate_peace = False        # in the safe zone around a portal (BeaconCommand.inPeaceArea)
-        self.peace_void = False        # an alien the player attacked in a safe zone is fighting them: the zone is void for them
+        self.peace_void = False        # the player keeps fighting in a safe zone with an alien after him: the zone is void for him
         self.entered = time.time()     # entering the map (in 4-5 the portal DMZ for a while)
         self.station_inside = None     # in the station zone (BeaconCommand.inStation); None: sent on the first step
         self.jumping = False
@@ -435,6 +446,7 @@ class World:
         self.repairing = False
         self.next_repair = 0.0
         self.last_combat = 0.0         # last shot or damage taken (the repair robot works out of combat)
+        self.attack_until = 0.0        # the pilot's last offensive action keeps him fighting until then (attacked; the safe zone's rule)
         self.last_pvp = 0.0            # last PvP shot fired at or taken from a player (player_combat.py; portal lock in 4-X)
         self.next_shield = 0.0
         self.next_form_shield = 0.0    # the formation's shield refill/drain (form_shield_tick)
@@ -609,7 +621,7 @@ class World:
             if self.running and not self.hero_dead and not self.jumping and self.on_jump:
                 self.jumping, self.attacking, self.target = True, False, None
                 self.send([('JumpInitiatedCommand', {'mapId': g['target'], 'gateId': g['gateId']})])
-                self.later(H.JUMP_DELAY_SEC, lambda: self.on_jump(g['target'], g))
+                self.later(H.JUMP_DELAY_SEC, lambda: self.hero_dead or self.on_jump(g['target'], g))
         self.later(delay, go)
 
     def schedule(self, delay, kind, value=None):
@@ -1068,6 +1080,12 @@ class World:
         """Whether this hero can see and collect the box (ownerless or their own)."""
         return b.get('owner') in (None, self.hid)
 
+    def pet_can_take(self, b):
+        """Whether the P.E.T.'s collector may take the box: not Vortex of Greed boxes (Ö4), booty boxes or someone else's cargo."""
+        if not self.own(b) or b.get('no_pet') or (b['tip'] in LOOT.BOXES and not b.get('event')):
+            return False
+        return not (b['tip'] in CARGO_BOXES and not self.own_tag(b.get('owner_tag')) and SET.get('cargo_ownership'))
+
     def cargo_hidden(self, b):
         """Someone else's cargo box and the player's "other players' cargo boxes" setting (displayPenaltyCargoboxes) is off: none is
         sent, the ones seen are removed (view loop). The client applies the setting only at the moment it is changed and still drew a
@@ -1151,7 +1169,9 @@ class World:
             m = {'npc': [], 'bonus_boxes': 0}     # let the loop run anyway: portals, repair, shield
         with self.lock:
             self.load_assets()            # before spawning: quest giver DMZs keep aliens from spawning there (zone_circles)
-            joined = bool(self.shared and self.shared.members)      # another player on the shared map: the aliens, boxes, ores are theirs too
+            joined = bool(self.shared and (self.shared.members or self.shared.starting))      # another player on the shared map: the aliens, boxes, ores are theirs too
+            if self.shared:
+                self.shared.starting.add(self)
             restored = joined or self.restore_state()
             for g in ([] if restored else m['npc']):
                 for _ in range(SET.count('npc_count', g['count'], 'map')):
@@ -1191,6 +1211,7 @@ class World:
         with self.lock:
             if self.shared:
                 self.shared.killer(self)
+                self.shared.starting.discard(self)
             self.check_gates(time.time())     # if it spawned at a portal, jumping should be possible right away
         RUNNING.add(self)
         threading.Thread(target=self.loop, daemon=True).start()
@@ -1204,6 +1225,9 @@ class World:
         BG.detach(self)                        # bot ships are not stored with the map state
         with self.lock:
             self.particle.clear()
+            for o in self.ores.values():           # a harvest cut short: the ore is free again (and stored)
+                if o.get('busy') == (self.hid or True):
+                    o['busy'] = False
         if self.shared is None:
             self.save_state()
         elif not self.shared_released:            # shared map: the last one to leave stores the state (WORLD_CACHE), the containers are emptied
@@ -1408,7 +1432,7 @@ class World:
                                                              hash=h)), legacy('0|A|STM|loadfull')] + self.p.hint(IP.FULL_CARGO))
                 self.log('   cargo full')
                 return
-            o['busy'] = True
+            o['busy'] = self.hid or True               # who harvests it: freed in stop() if the timer never runs
             self.send(pre + [self.beam_msg()])           # collection beam (recording: SLA right after HarvestRequest)
             self.later(ORE['harvest_sec'], lambda: self.finish_harvest(h))
 
@@ -1441,18 +1465,9 @@ class World:
         applied (H84); until 2026-10-18 it worked only when the cargo was full and without Promerium (user report). -> messages"""
         if not self.p.gameplay('autoRefinement'):
             return []
-        recipes = [(t, {int(k): v for k, v in ITEMS['lab']['recipes'][str(t)].items()}) for t in AUTO_REFINE]
-        have = {k: self.p.ore_count(k) for t, r in recipes for k in [t, *r]}
-        start, made, more = dict(have), {}, True
-        while more:                 # one unit at a time in turn: the shared Endurium is split between the two products, new Prometid/Duranium goes into Promerium
-            more = False
-            for t, r in recipes:
-                if all(have[k] >= v for k, v in r.items()):
-                    for k, v in r.items():
-                        have[k] -= v
-                    have[t] += 1
-                    made[t] = made.get(t, 0) + 1
-                    more = True
+        recipes = refine_recipes()
+        start = {k: self.p.ore_count(k) for t, r in recipes for k in [t, *r]}
+        have, made = PF.refine_ores(start, recipes)
         if not made:
             return []
         used = {k: start[k] - have[k] for k in have if have[k] < start[k]}
@@ -1644,9 +1659,9 @@ class World:
         s = self.station_at(hx, hy)
         inside = bool(s)
         ready = self.in_station(now)
-        # if the alien the player attacked is also hitting them in the safe zone, the zone does not apply to them: the "Demilitarized zone" text
-        # is not shown (player report 2026-10-28, real game)
-        void = any(n.alive and self.npc_retaliating(n) for n in self.npcs.values())
+        # if the player keeps fighting in the safe zone while an alien chases him, the zone does not apply to him: the "Demilitarized zone"
+        # text is not shown (player report 2026-10-28, real game)
+        void = any(n.alive and self.npc_retaliating(n, now) for n in self.npcs.values())
         if (gid == self.near_gate and peace == self.gate_peace and inside == self.station_inside and void == self.peace_void
                 and ready == getattr(self, 'equip_ready', None)):
             return
@@ -1711,7 +1726,7 @@ class World:
             self.send([('JumpInitiatedCommand', {'mapId': g['target'], 'gateId': g['gateId']})])
             self.log('   portal %d: %s -> %s jump started' % (g['gateId'], H.name(self.map_id), H.name(g['target'])))
             if self.on_jump:
-                self.later(H.JUMP_DELAY_SEC, lambda: self.on_jump(g['target'], g))
+                self.later(H.JUMP_DELAY_SEC, lambda: self.hero_dead or self.on_jump(g['target'], g))     # died in the countdown: no jump
             return True
 
     def resend(self):
@@ -1904,6 +1919,7 @@ class World:
                      * (1 + self.p.mods().get('rocket_cooldown', 0))                               # 3D Ring +%25, 3D Dome -%25, Demon -%5
                      * EX.rocket_factor(self.p) * SET.multiplier('rocket_cooldown'))                          # R0K-T01: halved; panel
             ms = self.abilities.rocket_ms(ms, now)                  # Rapid Fire (Tartarus)
+            self.attacked(now, ms / 1000 + COMBAT['rocket_flight_sec'])      # a miss too: fighting until the next rocket could fly
             self.rocket_ready = now + ms / 1000
             hit = random.random() < self.rocket_hit(rocket)
             self.send(self.ammo_msgs(rocket) + [self.rocket_msg(uid, hit, ITEMS['rockets'].get(rocket, {}).get('uid', 1)),
@@ -1974,32 +1990,31 @@ class World:
         collected by your P.E.T.")."""
         with self.lock:
             b = self.boxes.get(h)
-            if not b or not self.own(b) or (by_pet and b.get('no_pet')):      # the P.E.T. cannot collect Vortex of Greed boxes (Ö4)
+            if not b or not self.own(b) or (by_pet and not self.pet_can_take(b)):
                 return False
             foreign = b['tip'] in CARGO_BOXES and not self.own_tag(b.get('owner_tag')) and SET.get('cargo_ownership')
-            if foreign and by_pet:
-                return False                                # the P.E.T. does not collect someone else's cargo
             boost = 1 + (self.pet.proto('box') if by_pet and self.pet else 0)
             m = self.p.mods()          # pilot skills: Tractor Beam I/II (cargo/bonus box), Luck (bonus box uridium)
-            pre = []
+            pre, plan = [], {}
             cargo_box = b['tip'] in CARGO_BOXES
             if cargo_box:                                       # auto-refining first (if the setting is on): room is made
                 pre = self.auto_refine()
-            if cargo_box and self.p.cargo_free() < 1 and any(int(k) in self.p.CARGO_ORES for k in b['contents']):
-                self.send(pre + [legacy('0|A|STM|loadfull')] + self.p.hint(IP.FULL_CARGO))     # cargo full: the box stays in place
-                return False
+                mult = boost * (1 + m.get('cargo_box', 0))
+                want = {int(k): int(v * mult) for k, v in b['contents'].items()}
+                # what fits once auto-refined, in proportion (PF.cargo_take); the part that does not fit stays in the box (the box is not deleted)
+                plan = PF.cargo_take({o['oreType']['typeValue']: o['count'] for o in self.p.d['ores']}, want,
+                                     self.p.cargo_used() + self.p.cargo_free(), refine_recipes() if self.p.gameplay('autoRefinement') else ())
+                if any(t in self.p.CARGO_ORES for t in want) and not any(plan.get(t) for t in want if t in self.p.CARGO_ORES):
+                    self.send(pre + [legacy('0|A|STM|loadfull')] + self.p.hint(IP.FULL_CARGO))     # cargo full: the box stays in place
+                    return False
             if b['tip'] in LOOT.BOXES and not b.get('event'):
                 return False if by_pet else self.open_booty(h, b)
-            ores, left, free = {}, {}, self.p.cargo_free()
-            if cargo_box:                                   # ores are taken as much as fits in the cargo; the part that does not fit stays in the box (the box is not deleted)
-                mult = boost * (1 + m.get('cargo_box', 0))
+            ores, left = {}, {}
+            if cargo_box:
                 for k, v in sorted(b['contents'].items()):
-                    take = want = int(v * mult)
-                    if int(k) in self.p.CARGO_ORES:            # Xenomit takes no space: all of it is taken
-                        take = min(want, free)
-                        free -= take
-                        if take < want and v - math.ceil(take / mult - 1e-9) > 0:     # what was taken (base unit) is deducted from the box
-                            left[k] = v - math.ceil(take / mult - 1e-9)
+                    take = plan.get(int(k), 0)
+                    if take < want[int(k)] and v - math.ceil(take / mult - 1e-9) > 0:     # what was taken (base unit) is deducted from the box
+                        left[k] = v - math.ceil(take / mult - 1e-9)
                     if take > 0:
                         ores[int(k)] = take
             if left:
@@ -2011,6 +2026,7 @@ class World:
             if foreign and not b.get('stolen'):             # someone else's box: penalty once (on a partial take the box stays on the ground)
                 b['stolen'] = True
                 msgs += self.cargo_penalty(b['owner_tag'])
+                msgs += self.quest('steal')                  # "Steal cargo boxes from your opponents" (quest condition 24)
                 BG.on_box_taken(b['owner_tag'], self.p.d['pilot'].get('userName', ''))
             if cargo_box:
                 totals = self.p.add_ores(ores)
@@ -2252,10 +2268,11 @@ class World:
                                                             star=0, isNew=False, hangarId=0, extAttributes=[], inventoryItemAttributes=[])})
 
     def hit_npc(self, uid, dmg, atype, shield_only=False, attacker=None, hull_only=False, split=None, strike=False, cannon=0,
-                engage=True, source_asset=False, ammo=None):
+                engage=True, source_asset=False, ammo=None, reactive=False):
         """A hit by the hero (or the P.E.T.): the shield absorbs 70% of the damage (from the recording), the rest goes to HP. Ammo like SAB-50
         hits only the shield. split=(to the shield, to the hull): damage with a fixed ratio like a mine (no absorption). engage=False: the hitter is not
-        the player (the Clan Battle Station's satellites): the alien does not turn on the player. ammo: the laser's or rocket's ammo; if the type has
+        the player (the Clan Battle Station's satellites): the alien does not turn on the player. reactive: damage the pilot did not fire (a mine
+        laid earlier, reflected or mirrored damage): not an attack of his (attacked). ammo: the laser's or rocket's ammo; if the type has
         'ammo_only' only that ammo does damage (Referee-Bot: CBO-100 and CBR; the P.E.T., mines and abilities cannot hit it either)."""
         with self.lock:
             n = self.npcs.get(uid)
@@ -2303,6 +2320,7 @@ class World:
                     loss = min(int(n.shield), want)
                     taken = to_shield if loss >= want else int(round(loss / kh))
                     dmg, to_shield = dmg - taken + loss, loss
+            had = n.hp + n.shield
             n.shield -= to_shield
             n.hp = max(0, n.hp - (dmg - to_shield))
             floor = getattr(n, 'hp_floor', 0)                    # Ö4: Guardian "falls" at 1 HP (phase 1-3)
@@ -2311,16 +2329,17 @@ class World:
                 if getattr(n, 'at_floor', None):
                     n.at_floor(n)
             if dmg > 0 and getattr(n, 'damage_hook', None):      # Ö4: the fight's damage counter (progress rewards)
-                n.damage_hook(dmg)
-            if dmg > 0 and not attacker:
-                self.p.ach('damage', count=dmg, npc=n.d.get('npc_id'))
+                n.damage_hook(dmg if getattr(n, 'count_overkill', False) else max(0, int(had - n.hp - n.shield)))      # dealt damage, not the requested one (an indestructible tower counts it all)
+            if dmg > 0 and not attacker:                          # a player bot is a player: DAMAGE_PLAYERS quests, "don't damage players"
+                if n.bot is not None:
+                    self.p.ach('damage_player', count=dmg)
+                else:
+                    self.p.ach('damage', count=dmg, npc=n.d.get('npc_id'))
             # summoning and vanishing at an HP threshold (alien.py); reversed controls and EMPs answer only the pilot's own hit, not the P.E.T.'s or a
             # battle station's (a Boss Saimon hit by the base reversed the controls of a pilot who wasn't attacking it: player report 2026-11-02)
             self.alien.on_hit(n, dmg, attacker, now, to_player=engage and not attacker)
-            if engage and not attacker:                  # the pilot's own hit lets this NPC fight on inside a protected zone; the P.E.T.'s does not
-                if getattr(n, 'station_retaliation', None) is None:
-                    n.station_retaliation = {}
-                n.station_retaliation[self.hid] = now    # keep each player's permission on a shared NPC
+            if engage and not attacker and not reactive:
+                self.attacked(now)                       # his own hit (laser, rocket, ability, technology, cannon): he is fighting
             if engage:
                 tag_alien(n, ('h', self.hid), now)                # the first to fire tags (a miss too; the P.E.T.'s hit is also its owner's)
                 record_damage(n, ('h', self.hid), dmg)
@@ -2378,7 +2397,10 @@ class World:
             import event_points as OP
             return OP.add(self.p, loot.split(':', 1)[1], n, self.grant)
         cur = {'currency_credits': 'credits', 'currency_uridium': 'uridium', 'currency_experience': 'ep', 'currency_honour': 'honor'}
-        n = SET.amount(cur.get(loot, 'collecting'), n, source)                 # the panel's multipliers
+        if not LOOT.unique(loot):           # ships and designs stay at one: below x1 they rounded to 0 and the key bought nothing
+            m = SET.amount(cur.get(loot, 'collecting'), n, source)             # the panel's multipliers
+            # an opened box gives at least one item unless the multiplier is 0 (player report 2026-11-03: "sometimes we get nothing at all")
+            n = max(1, m) if source == 'box' and n > 0 and loot not in cur and SET.multiplier('collecting', source) > 0 else m
         if loot in cur:
             kw = {cur[loot]: n}
             return self.reward_msgs(self.p.gain(reason='collect_bonusbox', **kw), **kw)
@@ -3218,7 +3240,7 @@ class World:
         g = self.p.d['ship']
         now = time.time()
         if (not self.repair_rate() or self.hero_dead or g.get('hitPoints', 0) >= g.get('hitMax', 0)
-                or now - self.last_combat < ITEMS['regen_cooldown_sec']):
+                or now - self.last_combat < ITEMS['repair_cooldown_sec']):
             self.send([('UIItemRemoveHighlightCommand', self.repbot_highlight())])     # the failed-attempt reply in the recording
             return
         if not self.repairing:
@@ -3353,6 +3375,18 @@ class World:
         if (n.hp, n.shield) != (hp, sh) and self.target == n.id:
             self.send([self.selection(n)])
 
+    def npc_shield_regen(self, n, now):
+        """Every alien refills its shield by itself out of combat (COMBAT npc_shield_regen of the maximum per second); HP does not (player
+        report 2026-11-02: only Cubikon regenerated, and only its HP). In combat (chasing/attacking the player or a bot ship, or hit within
+        regen_cooldown_sec) it does not refill (user decision 2026-11-03)."""
+        if (now < n.next_shield_regen or n.engaged or n.bot_target is not None
+                or now - n.last_hit < ITEMS['regen_cooldown_sec']):
+            return
+        n.next_shield_regen = now + 1.0
+        n.shield = min(n.d['shield'], n.shield + max(1, int(n.d['shield'] * COMBAT.get('npc_shield_regen', 0.0025))))
+        if self.target == n.id:
+            self.send([self.selection(n)])
+
     def effect_stats_msgs(self, now=None):
         """Update the effect speed; re-time the ongoing flight toward the same target with the new speed, from where it is."""
         now = time.time() if now is None else now
@@ -3408,6 +3442,8 @@ class World:
                 n.effect.expired(now)
             if n.alive and 'regeneration' in n.behavior:
                 self.npc_regen(n, now)
+            if n.alive and n.bot is None and n.shield < n.d['shield']:
+                self.npc_shield_regen(n, now)
         expired = self.hero_effects.expired(now) if self.hero_effects.d else set()
         expired.update(kind for kind in self.items.mine_visuals if not self.hero_effects.get(kind, now))
         infection = getattr(self.p, '_infection_effect', None)
@@ -3433,14 +3469,14 @@ class World:
             if msgs:
                 self.send(msgs)
         if (EX.has(self.p, 'auto_repair') and not self.repairing and not self.hero_dead and g.get('hitPoints', 0) < g.get('hitMax', 0)
-                and now - self.last_combat >= ITEMS['regen_cooldown_sec'] and self.repair_rate()):
+                and now - self.last_combat >= ITEMS['repair_cooldown_sec'] and self.repair_rate()):
             self.start_repair()
         for loot, cfg in EX.props(self.p, 'auto_pickup'):
             kind = cfg['type']
             if now < self.auto_wait.get(kind, 0):
                 continue
             if kind == 'fuel':
-                if self.pet and self.pet.owned and self.pet.d['fuel'] < cfg['threshold']:
+                if self.pet and self.pet.owned and self.pet.active and self.pet.d['fuel'] < cfg['threshold']:
                     self.auto_wait[kind] = now + 10
                     self.pet.buy_fuel(cfg['count'])
                 continue
@@ -3475,7 +3511,7 @@ class World:
 
     def repair_tick(self, now):
         g = self.p.d['ship']
-        if self.hero_dead or now - self.last_combat < ITEMS['regen_cooldown_sec']:
+        if self.hero_dead or now - self.last_combat < ITEMS['repair_cooldown_sec']:
             self.stop_repair()
             return
         if now < self.next_repair:
@@ -3565,10 +3601,12 @@ class World:
         roll = random.random()
         if roll < aim * (1 - m.get('evasion', 0)):
             raw = n.d['damage'] * random.uniform(0.8, 1.0) * self.alien.laser_factor(n, now)      # recording: x0.8-1.0; rage, DMG capsule
+            if random.random() < n.d.get('double_chance', 0):
+                raw *= 2                         # Cloning Mimesis (forum 127094): 30-38K, sometimes doubled to 70K+
             dmg = int(raw * max(0.0, 1 + m.get('laser_taken', 0)))                              # Spectrum
             self.npc_hit_tick(n, dmg, now)
             if raw - dmg >= 1 and n.alive and SA.effect(self.p, 'reflect_laser', now):
-                self.hit_npc(n.id, int(raw - dmg), 1)  # Spectrum Plus Prismatic Reflecting: the reduced damage goes to the attacker
+                self.hit_npc(n.id, int(raw - dmg), 1, reactive=True)  # Spectrum Plus Prismatic Reflecting: the reduced damage goes to the attacker
             self.alien.after_shot(n, now, True)        # slowing shot (alien.py)
         else:
             self.last_combat = now
@@ -3590,7 +3628,8 @@ class World:
         if dmg > 0 and not self.hero_dead:
             self.send(self.hurt_hero(dmg, n, now=time.time()))
 
-    def hurt_hero(self, dmg, killer=None, atype=1, msgs=None, now=None, cause=None, source_player=None, shield_only=False, source_asset=False):
+    def hurt_hero(self, dmg, killer=None, atype=1, msgs=None, now=None, cause=None, source_player=None, shield_only=False, source_asset=False,
+                  inverse_absorb=False):
         """Damage to the player (the alien's laser, rocket, bomb, singularity, explosion): Fortify, Insta-Shield; the shield absorbs at the generators'
         ratio, the nano hull melts after the shield and before the hull; Anti-AI base; test invulnerability. -> messages
         (AttackHitCommand; if HP runs out, the death screen)."""
@@ -3608,7 +3647,7 @@ class World:
         if dmg and killer is not None and getattr(killer, 'alive', False):
             back = SA.effect(self.p, 'mirror', now) or self.hero_effects.ability('mirror', now)       # Berserker Revenge (Mimesis Chest's too): the damage returns to the attacker
             if back:
-                self.hit_npc(killer.id, int(raw * back), 1)
+                self.hit_npc(killer.id, int(raw * back), 1, reactive=True)
             heal = SA.effect(self.p, 'absorb_hp', now) or self.hero_effects.ability('absorb_hp', now)  # Orcus Assimilate (Mimesis Chest's too): the alien damage turns into HP
             if heal:
                 self.p.set_hull(hp=g.get('hitPoints', 0) + dmg * heal)
@@ -3623,6 +3662,8 @@ class World:
         absorption = self.p.d.get('shield_absorb', 0.8)
         if source_player:
             absorption = max(0.0, absorption - source_player.p.mods().get('shield_penetration', 0))
+        if inverse_absorb:
+            absorption = round(1 - absorption, 6)   # Kamikaze Mimesis (forum 127094): 80/20 shields take its blast 20/80
         to_shield = min(sh, dmg if shield_only else int(dmg * absorption))   # the shield generators' absorption ratio (esyalar.json)
         if shield_only:
             dmg = to_shield
@@ -3782,7 +3823,7 @@ class World:
 
     def hero_death(self, msgs, killer=None, cause=None, note=None, source_player=None):
         """The player died: explosion + death screen (KillScreenPostCommand). The player respawns when they pick a repair on the screen (kill_screen_repair)."""
-        self.hero_dead = True
+        self.hero_dead, self.jumping = True, False
         try:
             hx, hy = self.hero_pos()
             BG.witness(self, 'player_died', hx, hy, name=self.p.d['pilot'].get('userName', ''),
@@ -4042,7 +4083,6 @@ class World:
         if n.engaged and not self.hero_dead:
             self.send(self.combat_state(COMBAT_ESCAPED, now))        # "You escaped the attack."
         n.engaged = False
-        n.station_retaliation = {}
         n.flee = flee
         n.park = None
         n.next_think = now
@@ -4118,14 +4158,24 @@ class World:
         px, py = post.mover.pos(now)
         return math.hypot(hx - px, hy - py) > n.guard[1].get('leash', n.guard[1]['radius'][1] + self.npc_range(n))
 
-    def npc_retaliating(self, n):
-        """In a protected zone (station, portal, layout safe zone) only the NPC the pilot attacked in this encounter keeps fighting him."""
-        permissions = getattr(n, 'station_retaliation', None) or {}
-        when = permissions.get(self.hid)
-        if when is not None and when < max(self.entered, self.death_time):
-            permissions.pop(self.hid, None)     # a previous map visit or life grants no permission
+    def npc_retaliating(self, n, now=None):
+        """In a protected zone (station, portal, layout safe zone) the zone is void for a pilot who keeps fighting (hero_fighting): every
+        alien chasing him fights on. Once he stops attacking they all let go (user decision 2026-11-03; before, only the alien he had hit kept
+        fighting him, and that one for the whole encounter)."""
+        return bool(n.engaged and self.hero_fighting(now))
+
+    def attacked(self, now, reload_sec=0.0):
+        """The pilot's own offensive action: any hit of his on a ship (hit_npc), and the shots that can miss where they are fired (rocket,
+        launcher, special rocket, Particle Cannon and Drive, PvP rocket). He counts as fighting until that weapon could fire again, at least
+        out_of_combat_sec: one who keeps firing rockets fights on between two of them, one who stopped is let go after the window."""
+        self.attack_until = max(self.attack_until, now + max(ITEMS['out_of_combat_sec'], reload_sec + 1.0))
+
+    def hero_fighting(self, now=None):
+        """The pilot is fighting: his laser attack runs (not cancelled) or an offensive action of his is recent (attacked). The P.E.T.'s
+        fight is not his (forum: the P.E.T. does not take the aggro)."""
+        if self.hero_dead or self.jumping:
             return False
-        return bool(n.engaged and when is not None)
+        return self.attacking or (time.time() if now is None else now) < self.attack_until
 
     def hero_in_peace(self, hx, hy):
         """in_peace(hero): in the step's alien loop every alien asks about the same position, computed once per position."""
@@ -4159,7 +4209,7 @@ class World:
         hx, hy = self.hero_pos(now)
         nx, ny = n.mover.pos(now)
         dist = math.hypot(hx - nx, hy - ny)
-        retaliating = self.npc_retaliating(n)
+        retaliating = self.npc_retaliating(n, now)
         # protected zone (station, portal, layout safe zone): nobody attacks the pilot, except the alien he attacked (permission set in hit_npc)
         zoned = self.hero_in_peace(hx, hy) and not retaliating
         cloaked = self.abilities.cloaked(now) or self.items.cloaked()
@@ -4205,6 +4255,9 @@ class World:
         tied = bool(post) and self.leashed(n, post, hx, hy, now)       # guard: the player is far from its summoner
         if hunt and not n.engaged and not spared and now >= n.next_think:
             n.engaged = True                    # the player is reachable again (respawned, cloaking ended, EMP passed …)
+        if (not hunt and not n.engaged and not tied and self.aggressive(n) and not getattr(n, 'passive', False) and now >= n.blocked
+                and not self.in_peace(nx, ny) and BG.notice_bot(self, n, now, float('inf') if spared else dist)):
+            return                              # a bot ship nearer than the player: attacks it (from the next think: npc_to_bot)
         if (self.aggressive(n) and not getattr(n, 'passive', False) and not spared
                 and dist < n.d.get('notice_distance', COMBAT['npc_notice_distance']) * SET.multiplier('npc_notice')
                 and not self.in_peace(nx, ny)
@@ -4233,7 +4286,12 @@ class World:
                 # within the map: so an alien does not leave the map while the player is at the edge or outside the boundary (radiation)
                 tx = min(max(tx, 300), self.map_w - 300)
                 ty = min(max(ty, 300), self.map_h - 300)
-                follows = retaliating and self.hero_in_peace(hx, hy)      # the alien the pilot attacked follows him into the zone
+                # the pilot fights on in the zone: the chasing alien follows him in. An asteroid without a dockable station (empty,
+                # rival) is no safe zone: its circle only keeps roaming aliens out, a chasing one follows the pilot inside (player
+                # report 2026-11-03: aliens stopped at the edge and could all be shot from inside)
+                import cbs
+                follows = (retaliating and self.hero_in_peace(hx, hy)) or (
+                    not self.hero_in_peace(hx, hy) and any(math.hypot(hx - sx, hy - sy) <= r for sx, sy, r in cbs.exclusion_zones(self.map_id)))
                 if not hunt and not follows and (self.path_near_zone(nx, ny, tx, ty, allow_station=retaliating)
                                                  or (self.near_zone(tx, ty, 0) and not (retaliating and self.station_at(tx, ty)
                                                                                        and not self.near_gate_peace(tx, ty)))):
@@ -4342,8 +4400,9 @@ class World:
     def step(self, now):
         """One step of the loop (0.1 s; under the world lock): timers, view, aliens, boxes … The measuring tool
         (tools/performance.py) calls it without a thread."""
-        due = [t for t in self.timers if t[0] <= now]
-        self.timers = [t for t in self.timers if t[0] > now]
+        self.timers, timers = [], self.timers       # later() from a packet thread appends to one of the two lists, never lost
+        due = [t for t in timers if t[0] <= now]
+        self.timers.extend(t for t in timers if t[0] > now)
         for _, fn in due:
             try:                               # if one fails, the other timers in the same step must not be lost
                 fn()

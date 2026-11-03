@@ -186,7 +186,7 @@ function btLlmWarning(wizard = false) {
     h('b', null, T('Advanced mode can put a heavy load on your computer.')),
     h('div', null, T("The bots' chat and decisions come from the Qwen3 4B (Q4_K_M) language model running on your computer: about 2.5 GB download, 4 GB of free memory and a powerful CPU or graphics card required. The game may slow down on weak computers.")),
     h('div', { style: { marginTop: '6px' } }, T("If your computer can't handle it, pick a provider like OpenAI, Claude, Gemini or DeepSeek with your API key, or your own local LLM server (Ollama, LM Studio), on the Advanced tab; bots can then also speak their own languages.")),
-    h('div', { style: { marginTop: '6px' } }, T("If your computer can't handle it, Normal mode still gives a very advanced bot experience: bots still decide by personality, progress, found clans and chat using templates.")),
+    h('div', { style: { marginTop: '6px' } }, T("If your computer can't handle it, Normal mode still gives a very advanced bot experience: bots still decide by personality, progress, found clans and chat like real players: they read what you write, answer with real game knowledge and talk to each other.")),
     wizard ? h('div', { class: 'small muted', style: { marginTop: '6px' } }, T("You'll install and test the model from the Advanced tab after the pack is created.")) : null));
 }
 
@@ -529,8 +529,8 @@ function btChat(d) {
     btRow(T('Channel density'), T("Maximum bot lines per minute in global and company chat (so chat doesn't get flooded)."),
       btSlider(a.chat_min, v => btSetting('chat_min', v), { min: 0, max: 30, step: 1, fmt: v => T('{0}/min', v) })),
     h('div', { class: 'alert info' }, icon('info'), h('div', null, d.mode === 'advanced'
-      ? T("In Advanced mode, bots talk using the language model; if the model can't keep up, they fall back to template sentences.")
-      : T('In Normal mode, bots talk with template sentences based on the situation and their personality: they greet, write when they level up, and reply to calls for help and whispers.')))),
+      ? T("In Advanced mode, bots talk using the language model; if the model can't keep up, the Normal mode chat takes over.")
+      : T('In Normal mode, bots read what is written and answer like real players: game questions with real game knowledge, personal questions with their own lasting story, each in their own typing style. They also talk to each other, greet, and reply to calls for help and whispers.')))),
     btModeration(d));
 }
 
@@ -592,6 +592,16 @@ function btAgentTrace(b) {
 }
 const BT_PURPOSE = { promise: N('promise'), revenge: N('revenge'), thanks: N('thanks'), rivalry: N('rivalry'), curiosity: N('a question') };
 const BT_MOOD = { anger: N('Anger'), morale: N('Morale'), boredom: N('Boredom'), fatigue: N('Tiredness'), confidence: N('Confidence') };
+// Play style (bot/playstyle.py): skill domains, activities it enjoys, habits, spending
+const BT_SKILL = { combat: N('Alien combat'), pvp: N('PvP'), survival: N('Survival instinct'), economy: N('Money sense'), navigation: N('Map knowledge'),
+  focus: N('Focus') };
+const BT_LIKE = { grind: N('Grinding'), quest: N('Quests'), pvp: N('PvP'), gate: N('Gates and modes'), explore: N('Exploring maps'), social: N('Playing with others'),
+  rest: N('Hanging out'), trade: N('Ore trading'), collect: N('Box hunting') };
+const BT_QUIRK = { box_hunter: N('Box hunter'), map_loyal: N('Loyal to its map'), nomad: N('Nomad'), kamikaze: N('Kamikaze'), coward: N('Cautious to a fault'),
+  afk: N('Often AFK'), hoarder: N('Hoarder'), shopaholic: N('Shopaholic'), lone_wolf: N('Lone wolf'), ore_trader: N('Ore trader'),
+  weekend_warrior: N('Weekend player'), binge: N('Long binges'), short_sessions: N('Short sessions'), portal_camper: N('Portal camper') };
+const BT_SPEND = { saver: N('Saver'), balanced: N('Balanced'), spender: N('Spender'), impulsive: N('Impulsive') };
+const BT_WALLET = { none: N('Never pays'), small: N('Buys small uridium packs'), whale: N('Pays a lot') };
 const BT_GEAR = [['laser', N('Lasers'), 'laser'], ['shield', N('Shield generators'), 'gen'], ['speed', N('Speed generators'), 'gen'], ['drone', N('Drones')], ['extras', N('Extras'), 'extras']];
 const BT_STATS = { npc: N('Aliens killed'), player: N('Players killed'), death: N('Deaths'), box: N('Bonus box'), cargo_box: N('Cargo boxes'),
   box_stolen: N("Others' cargo boxes"), purchase: N('Purchases'), quest: N('Quests finished'), duration_sec: N('Time played'),
@@ -764,7 +774,45 @@ async function btBotDetail(no, tab = 'profile') {
     return [card(T('Traits'), 'brain', h('p', { class: 'desc' }, T('Set when the roster was generated; change it and the bot decides accordingly (aggressive bots lean to PvP, social ones to chat, thrifty ones to saving).')),
       h('div', { class: 'bt-personality' }, h('div', { class: 'bt-radar-box' }, r.svg), h('div', { class: 'bt-traits' }, Object.entries(BT_TRAIT).map(traitRow)))),
     v.exists ? card(T('Mood'), 'heart', h('p', { class: 'desc' }, T('Its current feelings: they settle back over time. An angry bot seeks revenge, a tired one logs off early.')),
-      h('div', { class: 'bt-traits two' }, Object.entries(BT_MOOD).map(moodRow))) : null];
+      h('div', { class: 'bt-traits two' }, Object.entries(BT_MOOD).map(moodRow))) : null, play()];
+  }
+
+  // ---- Play style: skill (now / ceiling), what it enjoys, habits, spending (bot/playstyle.py)
+  function play() {
+    const pl = v.play;
+    if (!pl) return null;
+    const skill = Object.assign({}, pl.skill, value.skill), talent = Object.assign({}, pl.talent, value.talent);
+    const likes = Object.assign({}, pl.likes, value.likes);
+    const skillRow = ([k, name_]) => {
+      const val = h('b', null, Math.round(skill[k] * 100) + ' / ' + Math.round(talent[k] * 100));
+      const show = () => { val.textContent = Math.round(skill[k] * 100) + ' / ' + Math.round(talent[k] * 100); };
+      return h('div', { class: 'bt-trait wide' }, h('span', null, T(name_)), val,
+        h('div', { class: 'bt-skill-pair' },
+          v.exists ? percent(skill[k], x => { skill[k] = x; show(); mapping('skill', k, x); }) : null,
+          percent(talent[k], x => { talent[k] = Math.max(.05, x); show(); mapping('talent', k, Math.max(.05, x)); }, 'bt-mood')));
+    };
+    const likeRow = ([k, name_]) => {
+      const val = h('b', null, '×' + likes[k].toFixed(2));
+      return h('div', { class: 'bt-trait wide' }, h('span', null, T(name_)), val,
+        percent(Math.min(1, likes[k] / 2.5), x => { likes[k] = Math.max(.15, x * 2.5); val.textContent = '×' + likes[k].toFixed(2); mapping('likes', k, likes[k]); }));
+    };
+    const spend = value.spend || pl.spend;
+    const chips = pl.quirks.length ? h('div', { class: 'row wrap', style: { gap: '6px' } }, pl.quirks.map(q => h('span', { class: 'chip' }, T(BT_QUIRK[q] || q))))
+      : h('span', { class: 'dim' }, '—');
+    const brk = pl.break_until > now;
+    return card(T('Play style'), 'gauge',
+      h('p', { class: 'desc' }, T('Everyone can do everything, but not everyone is good at everything. Skill grows with practice up to the ceiling (talent); what it enjoys steers its choices.')),
+      h('h3', { class: 'bt-sub' }, T('Skills (now / ceiling)')),
+      h('div', { class: 'bt-traits' }, Object.entries(BT_SKILL).map(skillRow)),
+      h('h3', { class: 'bt-sub' }, T('What it enjoys')),
+      h('div', { class: 'bt-traits two' }, Object.entries(BT_LIKE).map(likeRow)),
+      btRow(T('Habits'), null, chips),
+      btRow(T('Spending'), null, h('select', { class: 'input', disabled: lock, onchange: e => change('spend', e.target.value) },
+        Object.entries(BT_SPEND).map(([k, n]) => h('option', { value: k, selected: k === spend }, T(n))))),
+      btRow(T('Wallet'), null, h('span', null, T(BT_WALLET[pl.wallet] || pl.wallet))),
+      btRow(T('Motivation'), brk ? T('Taking a break until {0}.', new Date(pl.break_until * 1000).toLocaleString(LOC())) : null,
+        h('span', null, Math.round((value.motivation ?? pl.motivation) * 100))),
+      pl.daily_h ? btRow(T('Daily play time'), null, h('span', null, T('{0} hours at most', Math.round(pl.daily_h * 10) / 10))) : null);
   }
 
   // ---- Hangar: ship, equipment boxes, ammo, cargo
@@ -928,7 +976,7 @@ function btUsage(u) {
     h('div', null, T('{0} requests · {1} input tokens ({2}% cached) · {3} output tokens', fmtN(s.request || 0), fmtN(s.input || 0), pay, fmtN(s.output || 0))),
     h('div', { class: 'muted' }, [u.provider, u.cap ? T('Hourly limit: {0} / {1} requests', fmtN(s.request || 0), fmtN(u.cap)) : T('No hourly limit'),
       u.duration_min < 60 ? T('in the last {0} minutes', u.duration_min) : null].filter(Boolean).join(' · ')),
-    u.at_limit ? h('div', { style: { color: 'var(--warn)' } }, T('Limit reached: for now bots chat with templates and play by rules.')) : null);
+    u.at_limit ? h('div', { style: { color: 'var(--warn)' } }, T('Limit reached: for now bots chat as in Normal mode and play by rules.')) : null);
 }
 
 function btAdvanced(d) {
@@ -948,7 +996,7 @@ function btLlmCard(d) {
         btUsage(d.llm_usage)),
       btRow(T('Bots thinking at the same time'), T("The model's parallel slots: requests are processed in batches. Higher means more bots talk at once, but the computer is strained more."),
         btNumber(a.llm_batch, v => btSetting('llm_batch', v), { min: 1, max: 16 })),
-      btRow(T('Chat with model'), T('If off, bots talk with templates as in Normal mode; the model is only used for decisions.'), btKey(a.llm_chat, v => btSetting('llm_chat', v))),
+      btRow(T('Chat with model'), T('If off, bots talk as in Normal mode; the model is only used for decisions.'), btKey(a.llm_chat, v => btSetting('llm_chat', v))),
       btRow(T('Review decisions (minutes)'), T('Each bot consults the model about its situation this often, in minutes (0: never). Shorter is livelier but heavier.'),
         btNumber(a.llm_decision_min, v => btSetting('llm_decision_min', v), { min: 0, max: 120 })),
       // the tool loop only for providers other than the built-in model (bot/agent.py)
@@ -956,7 +1004,7 @@ function btLlmCard(d) {
         btKey(a.llm_agent, v => btSetting('llm_agent', v))),
       btRow(T('Max steps per thought'), T('How many times at most the model is asked in one thought (several tools each time). Most thoughts finish in 1-2 requests; a higher value means more requests.'),
         btNumber(a.llm_agent_steps, v => btSetting('llm_agent_steps', v), { min: 1, max: 10 })),
-      btRow(T('Hourly request limit'), T('At most this many requests per hour go to a provider other than the built-in model (chat, memories and decisions included; 0: no limit). At the limit bots chat with templates and play by rules; this caps spending.'),
+      btRow(T('Hourly request limit'), T('At most this many requests per hour go to a provider other than the built-in model (chat, memories and decisions included; 0: no limit). At the limit bots chat as in Normal mode and play by rules; this caps spending.'),
         btNumber(a.llm_hourly, v => btSetting('llm_hourly', v), { min: 0, max: 20000 }))));
 }
 
