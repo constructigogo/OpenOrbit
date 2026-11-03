@@ -167,11 +167,22 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     `ammunition_laser_*` items, and the legacy `0|W|L|0|1` / `0|W|L` lines. It sends `MenuActionRequest {menuItemId,
     actionType: 0, sourceType: 1}` to select a laser ammo, and once more on a normal stop to select the save's join-time
     ammo again (`selected.laser` is saved in the profile).
+  - Ship setup (the Plan tab's config and drone formation for roaming, fighting and fleeing): `items.json` `formations`
+    (`<loot>.id`, the protocol id), `formation_rules.<loot>.min_drones` and `combat_items.formation` (`cooldown_sec`,
+    `cooldown_group`). It switches config with the legacy `LegacyModule {message: "S|CFG|<n>|<heroId>"}`, without the session
+    key (`game.py` -> `shop.switch_config`), and reads `0|S|CFG|<n>` as the switch and `0|A|STM|config_change_failed_time` as
+    the refusal inside `CONFIG_COOLDOWN_SEC`. It changes formation with `MenuActionRequest {menuItemId: drone_formation_*,
+    actionType: 0, sourceType: 1}` and reads `DroneFormationChangeCommand {uid, selectedFormationId}` and the
+    `MenuItemCooldownGroupTimerCommand` of the formation group (`cooldownType.typeValue`, `timerState.timerStateValue` 2,
+    `maxTime` in ms). A refused formation is silent, so the bot itself never asks for one the save doesn't own or has too few
+    drones for. On a normal stop it switches back to the join-time config and formation.
 - **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `map_links`,
   `settings`, `lasers` and `quest` and loads `server/panel/client.py` by path, with `server/` and `server/panel/` on
   `sys.path`. `quest` and `client` reach `paths.py`, so the generator disables `save_migration.ensure` and sets
   `OO_SAVE_DIR`/`OO_LOG_DIR` to a temp dir first: keep `save_migration` importable on its own (stdlib, no OpenOrbit
-  imports) and the other modules free of import side effects beyond reading data files. After each upstream merge, rerun
+  imports) and the other modules free of import side effects beyond reading data files. It reads `server/shop.py`'s
+  `CONFIG_COOLDOWN_SEC = <number>` line with a regex (keep it a single-line number at the start of a line) and hashes
+  `shop.py` and `client_items.json` for the ship setup reference. After each upstream merge, rerun
   it in OrbitBot: failing reference tests there mean the C# port needs updating.
 - **HTTP on 8081:**
   - `/misafir/bilgi`: OrbitBot reads `protokol`, `guest`, `max_count`, `place`, `password` and `client`. It refuses to
@@ -190,7 +201,10 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
 - **Save format (v3):**
   - `profile.json`: `pilot.{userName, level, factionId, userId, ep}`, `ship.typeId`, `position.mapId`, `equipment.laser`
     and `drone_equipment` (`[[level, [loot ids]]]`: the kiter's laser range), `gates.voucher`, `quests.{active, done,
-    period}`, `selected.laser` (the join-time laser ammo, until the server's menu says).
+    period}`, `selected.laser` (the join-time laser ammo, until the server's menu says); for the ship setup `formations`
+    (owned), `formation` (protocol id), `drones` (counted), `items` (id -> loot id) and the active ship's `active_config`,
+    `configs.<n>.laser`/`extra` and `drone_config.<n>.<drone>` (lasers `equipment_weapon_laser_*`, repair robots
+    `equipment_extra_repbot_*`).
   - `slot.json`: `name`.
   - `backups/auto_YYYYmmdd_HHMMSS.json` backups and `backups/notes.json`.
   - `panel.json`: `active_save`, `backup_count`.
