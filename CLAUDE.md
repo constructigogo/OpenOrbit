@@ -176,6 +176,15 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     `MenuItemCooldownGroupTimerCommand` of the formation group (`cooldownType.typeValue`, `timerState.timerStateValue` 2,
     `maxTime` in ms). A refused formation is silent, so the bot itself never asks for one the save doesn't own or has too few
     drones for. On a normal stop it switches back to the join-time config and formation.
+  - Galaxy gates (the Gate tab runs the gates the user built): `data/gates.json` (each gate's `uid`, `part`, `hp`, waves, maps and
+    the `permanent`/`protected` aliens' display names), `galaxy_gates.py` (`PORTAL_BASE` with the entry `+ uid`, exit `+ 50` and
+    next `+ 100` portal ids, `NEXT_PORTAL`, the exit offset, `HOME_MAP`, `exit_wait_sec`, `VM_SHIELD`) and `world.py`
+    (`REPAIR_RAID_GATE`, `HADES_RESPAWN_SEC`, the Hades-only type 7 kill-screen option). It sends only
+    `GalaxyGateBuilderSetupGateRequest {gateId: uid}` (the free prepare) and never `MultiEnergy`, `BuyLife`, `Info`,
+    `GetGateParts` or `SaveSpinAmount`. It reads `GalaxyGateBuilderSetupGateCommand {id, errorCode, livesLeft}`,
+    `GalaxyGateBuilderGateLifeLostCommand {gateId, livesLeft}`, `GalaxyGateBuilderGateCompleteCommand`,
+    `JumpgateCreateCommand`/`JumpGateRemoveCommand` (the portals come and go with the waves) and the VisualModifier 33 of a
+    shielded alien. It jumps with `JumpRequest` through the gate portals, and its X-1 portal exists only after the prepare.
 - **Reference generator** `OrbitBot/tools/golden/make_golden.py` (`python -I`) imports `protocol`, `map_links`,
   `settings`, `lasers` and `quest` and loads `server/panel/client.py` by path, with `server/` and `server/panel/` on
   `sys.path`. `quest` and `client` reach `paths.py`, so the generator disables `save_migration.ensure` and sets
@@ -204,7 +213,8 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     period}`, `selected.laser` (the join-time laser ammo, until the server's menu says); for the ship setup `formations`
     (owned), `formation` (protocol id), `drones` (counted), `items` (id -> loot id) and the active ship's `active_config`,
     `configs.<n>.laser`/`extra` and `drone_config.<n>.<drone>` (lasers `equipment_weapon_laser_*`, repair robots
-    `equipment_extra_repbot_*`).
+    `equipment_extra_repbot_*`); for the gate runner `gates.gates.<key>` = `{parts, ready, wave, hp, ...}` (built when `len(parts)` >=
+  the gate's `part`; the `gates` section may be missing).
   - `slot.json`: `name`.
   - `backups/auto_YYYYmmdd_HHMMSS.json` backups and `backups/notes.json`.
   - `panel.json`: `active_save`, `backup_count`.
