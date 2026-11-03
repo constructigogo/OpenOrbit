@@ -214,7 +214,7 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     (owned), `formation` (protocol id), `drones` (counted), `items` (id -> loot id) and the active ship's `active_config`,
     `configs.<n>.laser`/`extra` and `drone_config.<n>.<drone>` (lasers `equipment_weapon_laser_*`, repair robots
     `equipment_extra_repbot_*`); for the gate runner `gates.gates.<key>` = `{parts, ready, wave, hp, ...}` (built when `len(parts)` >=
-  the gate's `part`; the `gates` section may be missing).
+    the gate's `part`; the `gates` section may be missing).
   - `slot.json`: `name`.
   - `backups/auto_YYYYmmdd_HHMMSS.json` backups and `backups/notes.json`.
   - `panel.json`: `active_save`, `backup_count`.
