@@ -66,7 +66,9 @@ const PIL_NOTES = [N('Started in {0} mode.'), N('Stopped.'), N('Stopped: {0}'), 
   N('Quest: {0} ({1}).'), N('No quest to play.'), N('Quest handed in: {0}.'), N('Quest taken: {0}.'), N('No quest to take here.'), N('Ship destroyed.'),
   N('Repaired at the base ({0}/{1}).'), N('Used {0}.'), N('Shield low: switched to config {0}.'), N('P.E.T. repaired ({0} U).'), N('P.E.T. launched.'),
   N('No route to {0}: staying here.'), N('Flying to {0}.'), N('Nothing left to do here: on to {0}.'),
-  N('{0}: {1}/{2} parts ({3} U spent on spins).')];
+  N('{0}: {1}/{2} parts ({3} U spent on spins).'), N('Shield low ({0} %): SAB-50 on the shielded aliens.'), N('Shield back to {0} %: normal ammo.'),
+  N("{0} is inside an immobile alien\'s zone: drawing it out."), N('{0} did not follow: out of the zone, another try.'),
+  N("{0} does not leave the immobile alien\'s zone: left alone for a while."), N("{0} is inside an immobile alien\'s zone: HP too low to draw it out.")];
 const PIL_QKIND = { q_kill: N('aliens to destroy'), q_visit: N('a map to visit'), q_giver: N('back to the quest giver'),
   q_point: N('a point to reach'), q_travel: N('a distance to fly'), q_stay: N('time to spend on a map'), q_boxes: N('bonus boxes to collect'),
   q_ore: N('ore to collect'), q_grind: N('any aliens to destroy'), q_gate: N('a galaxy gate'), q_pvp: N('enemy pilots'),
@@ -719,9 +721,10 @@ function pilDraw(now) {
     ctx.strokeStyle = 'rgba(185,199,218,.22)'; ctx.lineWidth = 1; ctx.setLineDash([2, 5]); ctx.stroke(); ctx.setLineDash([]);
   }
   if (hero.dest) {
-    const dx = X(hero.dest[0]), dy = Y(hero.dest[1]);
+    const way = hero.way && hero.way.length ? hero.way : [hero.dest];       // around walls: through the corners left, to the goal
+    const end = way[way.length - 1], dx = X(end[0]), dy = Y(end[1]);
     ctx.strokeStyle = 'rgba(64,223,255,.55)'; ctx.lineWidth = 1.25; ctx.setLineDash([5, 5]);
-    ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(dx, dy); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(hx, hy); for (const [x, y] of way) ctx.lineTo(X(x), Y(y)); ctx.stroke(); ctx.setLineDash([]);
     ctx.save(); ctx.translate(dx, dy); ctx.rotate(Math.PI / 4); ctx.strokeStyle = '#40dfff'; ctx.strokeRect(-3.5, -3.5, 7, 7); ctx.restore();
   }
   if (targetPos) {
@@ -1153,7 +1156,13 @@ PILC.push({ id: 'combat', tab: 'combat', order: 10, build: () => {
       pilCheck('defend', T('Defend the work map'),
         T('On the map the mode works on (hunting, mining, the quest), fight back against the aliens attacking the ship. Off: it ignores them and goes on.'))),
     h('p', { class: 'desc', style: { marginTop: '12px' } }, T('Fire RCB-140 / RSB-75 each time their 3 s cooldown ends (RCB-140 first), then go back to the normal ammo.')),
-    h('div', { class: 'row wrap', style: { gap: '14px' } }, slowCheck('ammunition_laser_rcb-140', 'RCB-140'), slowCheck('ammunition_laser_rsb-75', 'RSB-75')));
+    h('div', { class: 'row wrap', style: { gap: '14px' } }, slowCheck('ammunition_laser_rcb-140', 'RCB-140'), slowCheck('ammunition_laser_rsb-75', 'RSB-75')),
+    h('p', { class: 'desc', style: { marginTop: '12px' } },
+      T('Below the first shield threshold, fire SAB-50 at shielded aliens (your target first, else an attacker in range) until the shield is back to the second. Needs a shield and SAB-50 in stock.')),
+    h('div', { class: 'row wrap', style: { gap: '14px', alignItems: 'center' } },
+      h('label', { class: 'pil-check' }, h('input', { type: 'checkbox', checked: !!pilGet('sab.enabled'), onchange: e => pilSet('sab.enabled', e.target.checked) }),
+        gameIcon('ammunition_laser_sab-50', 20, null, 'ammo'), h('span', null, T('Use {0}', 'SAB-50')))),
+    pilFields(field(T('Shield below (%)'), pilNum('sab.start_pct', 0, 99, 1)), field(T('Until shield at (%)'), pilNum('sab.stop_pct', 1, 100, 1))));
 } });
 
 // ------------------------------------------------------------ Support

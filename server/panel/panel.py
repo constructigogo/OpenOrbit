@@ -92,7 +92,18 @@ EVENT_DESCRIPTIONS = {
     'snowman': 'New year Snowman window (WIZ-X).',
     'plutus': 'Gauntlet of Plutus gate (Easy X-1, Normal X-8; once a day).',
     'labyrinth': "Frozen Labyrinth: a 16-map maze from X-1, Labyrinth Keys and Synk.",
-    'galactic_strife': 'Battle Pass (objectives against aliens) and Arios and Neikos designs in the key exchange.',
+    'galactic_strife': ('Battle Pass and the key exchange (Arios and Neikos designs); PvP reputation on 4-1..4-4 against bot pilots '
+                        '(Reputation Fever, Flux and Mire crates, milestone rewards).'),
+    'sector_control': ('Sector Control at the beacon in the middle of X-1: the three companies (bot pilots) fight for 4 control points and tickets '
+                       '(SC-1 level 8-13, SC-2 14+); the last company with tickets wins the EP & Honor bonus.'),
+    'spaceball': ('Spaceball on 4-4: the companies (and bot pilots) shoot the ball to their own portal to X-5; a goal drops prize boxes there, the '
+                  "day's winner company gets bonuses the next day."),
+    'capture_the_beacon': ("Capture the Beacon on the X-2 maps: steal your company's beacon from an enemy X-2 and deliver it to your own X-2; enemy bot pilots "
+                           "raid yours; the hour's winner company gets +5% EP and Honor."),
+    'levelup_sale': 'Level Up Booster Packs in the shop (the real weekly rotation, Thursday to Monday).',
+    'subscription_sale': 'The best subscription offer in the shop (the real weekly rotation, Thursday to Monday).',
+    'team_deathmatch': ('Team Deathmatch at the X-1 battlemaster: matches of up to 8 against 8 with bot pilots of another company (TDM I level 8-13, '
+                        'TDM II 14+), 3 lives, 15 minutes or 100 points; the winning company gets +10% ore price, bonus box and EP for 24 hours.'),
     'birthday': 'Birthday Gate (X-1).',
     'empyrian': 'Empyrian boxes; keys come from Galaxy Gate rewards.',
     'prosperous': 'Prosperous boxes; keys come from Galaxy Gate rewards.',
@@ -673,12 +684,18 @@ def warnings(folder=False):
     elif c['old']:                                                  # a new version is out: updated with one click (/api/istemci/guncelle)
         dl, sup = DL.state(), IST.supported()
         run = bool(STATE.get('old_client')) and dl['running']
-        text = (_('Updating the game to version %s: %d%%. When it is done the old version is deleted and BepInEx is reinstalled.', sup, _dl_pct(dl))
-                 if run else _("DarkOrbit version %s is out and your client is %s: the game won't work properly unless you update. "
-                               'Update downloads and installs the new one and deletes the old one.', sup, c['version']))
+        if run:
+            text = _('Updating the game to version %s: %d%%. When it is done the old version is deleted and BepInEx is reinstalled.', sup, _dl_pct(dl))
+        elif c['compatible']:                                       # same protocol (IST.COMPATIBLE): plays, the update is only suggested
+            text = _('DarkOrbit version %s is out; your client %s still works. If you like, Update downloads and installs the new one and '
+                     'deletes the old one.', sup, c['version'])
+        else:
+            text = _("DarkOrbit version %s is out and your client is %s: the game won't work properly unless you update. "
+                     'Update downloads and installs the new one and deletes the old one.', sup, c['version'])
         if STATE.get('old_client') and dl['state'] == 'error':
             text += ' ' + dl['error']
-        out.append({'type': 'error', 'text': text, 'progress': _dl_pct(dl) if run else None, 'download': dl if run else None,
+        out.append({'type': 'warning' if c['compatible'] else 'error', 'text': text, 'progress': _dl_pct(dl) if run else None,
+                    'download': dl if run else None,
                     'page': 'client',
                     'action': {'text': _('Update'), 'api': '/api/client/update', 'running': run,
                               'running_text': _('Updating…')}})
@@ -2052,7 +2069,7 @@ def h_post(path, b):
         old = client_folder()
         if not IST.check(old)['old']:
             raise Error(_('The client is already up to date.'))
-        new_ = next((c['route'] for c in IST.candidates() if c['compatible']), None)
+        new_ = next((c['route'] for c in IST.candidates() if c['compatible'] and not c['old']), None)
         if new_:                                    # already on the computer
             CFG.update({'client_folder': new_})
             delete_old_client(old, new_)

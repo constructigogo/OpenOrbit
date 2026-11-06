@@ -141,8 +141,7 @@ def mine_based(loot):
 
 
 LAUNCHER_COOLDOWN = 3.0           # rocket launcher shot cooldown (sec)
-LAUNCHER_FIRST_DELAY = (0.75, 1.9)       # from the salvo to the first rocket's damage (sec)
-LAUNCHER_INTERVAL = 2.2            # between the damage of consecutive rockets (sec)
+LAUNCHER_HIT_DELAY = 1.9          # recording (2026-10-27, 94 salvos): the whole salvo lands as one hit 1.86-1.96 s after it (sec)
 
 
 def timer_msg(group, ms, cooling=True):
@@ -773,7 +772,7 @@ class Items:
             hit = any(not other.hero_dead and not other.jumping
                       and (other.hid != m['owner'] or (M.get('self_damage') and SET.get('own_mine')))
                       and math.hypot(*(a - b for a, b in zip(other.hero_pos(now), (m['x'], m['y'])))) <= M['trigger']
-                      and not other.in_pvp_peace(*other.hero_pos(now))
+                      and not (other.in_pvp_peace(*other.hero_pos(now)) and not other.hero_fighting(now))     # a fighting pilot has no DMZ
                       and not other.tech.mine_protected(now) for other in players)
             if not hit and m['owner'] == w.hid and M.get('npc_adaptation', False):
                 hit = any(n.alive and math.hypot(*(a - b for a, b in zip(n.mover.pos(now), (m['x'], m['y'])))) <= M['trigger']
@@ -814,7 +813,7 @@ class Items:
                 if other.hero_dead or other.jumping or (other.hid == owner and not self_hit):
                     continue
                 hx, hy = other.hero_pos(now)
-                if not other.in_pvp_peace(hx, hy) and math.hypot(hx - x, hy - y) <= radius:
+                if not (other.in_pvp_peace(hx, hy) and not other.hero_fighting(now)) and math.hypot(hx - x, hy - y) <= radius:
                     other.items.mine_hero(cfg, f, owner, now, source)
             return
         f = max(0.0, 1 + m.get('mine', 0)) if owner == w.hid else 1.0      # Turtle -7.5%, Detonation I/II; not Lance (forum 127433)
@@ -1202,12 +1201,9 @@ class Items:
                     self.send([('AttributeShieldUpdateCommand', {'shieldNow': int(g['shield']), 'shieldMax': g.get('shieldMax', 0)})])
             if share:
                 impact(uid, share, 0, **kw)
-        # recording (2026-10-27, ~100 salvos): the damage is a separate AttackHitCommand per rocket, consecutive rockets 2.18 s apart (2.1-2.24);
-        # the first damage 0.73-1.9 s after the salvo. Total damage the same: divided among the rockets, the remainder to the last.
-        first = random.uniform(LAUNCHER_FIRST_DELAY[0], LAUNCHER_FIRST_DELAY[1])
-        for i in range(cnt):
-            w.later(first + i * LAUNCHER_INTERVAL, lambda b=dmg // cnt + (dmg % cnt if i == cnt - 1 else 0),
-                    c=drain - drain // cnt * (cnt - 1) if i == cnt - 1 else drain // cnt: land(c, b))
+        # recording (2026-10-27, 94 ECO-10 salvos): one AttackHitCommand carries the whole salvo (5 rockets ~8.5k-14k) ~1.9 s after it;
+        # the ~2k hits 0.76 s / 2.2 s apart were normal rockets, not single Hellstorm rockets (user report 2026-11-05)
+        w.later(LAUNCHER_HIT_DELAY, lambda: land(drain, dmg))
 
     # ------------------------------------------------------------ special rockets
     def fire_special(self, rocket, n, now):

@@ -89,17 +89,40 @@ def appearance(w, n):
     x, y = n.mover.pos(time.time())
     T.profile(b)
     pl = b.profile.d['pilot']
+    n.shown_clan = (int(pl.get('clanId') or 0), shown_relation(w, b))      # relation_msgs: a later change goes as ClanRelationChangedCommand
     return ('ShipCreateCommand', dict(
         userId=n.id, typeId=GR.tip(b), expansionStage=n.d['spread'], userName=b.name, x=int(x), y=int(y),
         clanTag='CM' if b.__dict__.get('moderator') else pl.get('clanTag', ''),        # chat moderator (bot/moderation.py)
         factionId=b.company, clanId=int(pl.get('clanId') or 0), dailyRank=pl.get('dailyRank', 1), warnBox=False,
-        clanDiplomacy=WD.mod('ClanRelationModule', type=relation(w, b)), galaxyGatesDone=GR.rings(b), useSystemFont=False, npc=False,
+        clanDiplomacy=WD.mod('ClanRelationModule', type=shown_relation(w, b)), galaxyGatesDone=GR.rings(b), useSystemFont=False, npc=False,
         cloaked=False, motherShipId=0, positionIndex=0, designSet='', modifier=[],
         minimapStrategyModule=WD.mod('MinimapStrategyModule', minimapStrategy=0), specialNpcType=''))
 
 
 def extra_look(n):
     return GR.messages(n)
+
+
+def relation_msgs(w, n):
+    """The bot's clan or its relation to the player changed (diplomacy, joining/leaving a clan) while its ship is shown: the client's
+    ClanRelationChangedCommand recolours the ship in place (players' ships are rebuilt instead: shared_maps signature)."""
+    if 'shown_clan' not in n.__dict__ or n.id not in w.visible:
+        return []
+    pl = T.profile(n.bot).d['pilot']
+    now_ = (int(pl.get('clanId') or 0), shown_relation(w, n.bot))
+    if now_ == n.shown_clan:
+        return []
+    n.shown_clan = now_
+    return [('ClanRelationChangedCommand', dict(userId=n.id, clanId=now_[0], newRelation=WD.mod('ClanRelationModule', type=now_[1])))]
+
+
+def shown_relation(w, b):
+    """The relation drawn on the bot's ship (clan.shown_relation: own clan green)."""
+    try:
+        import clan as KL
+        return KL.shown_relation(w.p, T.profile(b))
+    except Exception:
+        return 0
 
 
 def relation(w, b):
@@ -132,6 +155,8 @@ def tick(w, now):
     for uid, n in var.items():
         if uid not in wanted:
             msgs += remove(w, n)
+        else:
+            msgs += relation_msgs(w, n)
     limit = y.setting('max_concrete', 40) or 9999
     count = len(var) - sum(1 for u in var if u not in wanted)
     if len(wanted) > limit:                             # if the limit is full: bots near you, with history with you, in your group first
@@ -178,12 +203,16 @@ def gate_tick(w, now, y):
     'gate_filler'; if off, there are no bots in the gate (as before)."""
     import group as GR
     wanted = {}
-    if y.permission('gate_filler') and not w.hero_dead:
+    roster = getattr(w, 'mode_bots', None)              # a mode's own bots (team_deathmatch.py): its roster, at its spawn
+    if roster is not None:
+        with y.lock:
+            wanted = roster(now)
+    elif y.permission('gate_filler') and not w.hero_dead:
         g = GR.group_of(w.hid)
         with y.lock:
             for b in y.bots:
                 if (g is not None and b.uid in g.members and b.online and b.dead_until <= now
-                        and (b.target is None or b.target.name not in ('gate', 'mod', 'duel'))):
+                        and (b.target is None or b.target.name not in ('gate', 'mod', 'duel', 'pvp_match'))):
                     wanted[b.uid] = b
     msgs = []
     for uid, n in [(u, n) for u, n in w.npcs.items() if n.bot is not None]:
@@ -192,6 +221,20 @@ def gate_tick(w, now, y):
     hx, hy = w.hero_pos(now)
     for uid, b in wanted.items():
         b.in_gate = now
+        if roster is not None:
+            if b.body is not None and (not b.body.alive or w.npcs.get(b.body.id) is not b.body):
+                b.body = None
+            if uid in w.npcs or b.body is not None:
+                continue
+            x, yy = w.mode_spawn(b)
+            n = BotShip(b, x, yy, now)
+            resume(n, now)
+            w.npcs[n.id] = n
+            b.body = n
+            hook = getattr(getattr(w, 'gate', None), 'on_bot_spawn', None)
+            if hook:
+                hook(n, now)
+            continue
         if b.target is None or b.target.name != 'group':
             from . import brain as BR
             BR.force(b, 'group', pay=2.0, duration=3600, now=now)
@@ -326,7 +369,7 @@ def _go_to(w, n, x, y, now, threshold=80):
     if h is not None and math.hypot(h[0] - x, h[1] - y) < threshold and n.mover.t1 > now:
         return
     n.movement = (x, y)
-    ms = n.mover.go(x, y, n.speed(), now)
+    ms = n.mover.go(x, y, n.speed() * n.effect.speed_factor(now), now)      # slowed (Mire Crate, a beacon carrier) or frozen
     w.send([('MoveCommand', dict(userId=n.id, x=int(x), y=int(y), timeToTarget=ms))])
 
 
@@ -396,11 +439,10 @@ def attack_error(w, n, now=None):
     b = n.bot
     if w.hero_dead or w.jumping or not n.alive:
         return [legacy('0|A|STM|msg_grp_attack_impossible')]
-    hx, hy = w.hero_pos(now)
     nx, ny = n.mover.pos(now)
-    if _in_peace(w, hx, hy) or _in_peace(w, nx, ny, b):
-        # safe zone: "Attack-Protected-Zone" (the client's peacearea; it used to say "Group members cannot be attacked", player
-        # report 2026-10-30)
+    if _in_peace(w, nx, ny, b) and not fighting(w, n, now) and not (w.attacking and w.target == n.id):
+        # only the bot's zone counts, void while it fights (aliens too) or flees from an attack begun outside (player_combat.protected);
+        # "Attack-Protected-Zone" (the client's peacearea; it used to say "Group members cannot be attacked", player report 2026-10-30)
         return [legacy('0|A|STM|peacearea')]
     pl = w.p.d['pilot']
     clan = int(pl.get('clanId') or 0)
@@ -408,6 +450,8 @@ def attack_error(w, n, now=None):
         return [legacy('0|A|STM|friendlyfire_disabled')]
     if relation(w, b) in (1, 2):
         return [legacy('0|A|STM|friendlyfire_disabled')]
+    if int(pl.get('factionId') or 0) == b.company and getattr(getattr(w, 'gate', None), 'team_mode', False):
+        return [legacy('0|A|STM|friendlyfire_disabled')]       # Team Deathmatch / Sector Control: no friendly fire (wiki)
     if int(pl.get('factionId') or 0) == b.company and relation(w, b) != 3 and not WD.SET.get('company_pvp'):
         return [legacy('0|A|STM|friendlyfire_disabled')]       # panel: attacking one's own company is off (except a clan at war)
     if int(pl.get('factionId') or 0) == b.company and H.company(w.map_id) == b.company and H.name(w.map_id).split('-')[-1] in ('1', '2'):
@@ -439,6 +483,10 @@ def was_killed(w, n):
     msgs = remove(w, n)
     if any(m[0] == 'ShipRemoveCommand' for m in msgs):
         msgs.insert(0, ('ShipDestroyedCommand', dict(destroyedUserId=n.id, explosionTypeId=0)))
+    hook = getattr(getattr(w, 'gate', None), 'bot_died', None) or getattr(getattr(w, 'mode_brain', None), 'bot_died', None)
+    handled = hook(w, n, w.hid) if hook else None          # a team mode: no abstract death; TDM gives no kill reward (Sector Control does)
+    if handled and handled != 'reward':
+        return msgs
     p = T.profile(b)
     p.d['ship']['hitPoints'] = 0
 
@@ -451,6 +499,8 @@ def was_killed(w, n):
     except Exception as e:
         w.log('   could not give the bot reward: %s' % e)
     name = w.p.d['pilot'].get('userName', '')
+    if handled:
+        return msgs
     if b.target is not None and b.target.name == 'duel':
         b.plan['finished'] = True                           # lost the duel
         b.k['intent'] = None
@@ -498,6 +548,9 @@ def bot_damage(w, t, dmg, source_id, now, killer_bot=None, npc=None):
     if w.target == t.id:
         msgs.append(w.selection(t))
     _broadcast(w, msgs, source_id, t.id)
+    hook = getattr(getattr(w, 'gate', None), 'bot_hit', None)
+    if hook:
+        hook(source_id, t.id, dmg)                        # Team Deathmatch's damage statistics
     if t.hp <= 0:
         bot_die(w, t, killer_bot, npc)
 
@@ -508,6 +561,9 @@ def bot_die(w, t, killer_bot=None, npc=None):
     if any(m[0] == 'ShipRemoveCommand' for m in msgs):
         msgs.insert(0, ('ShipDestroyedCommand', dict(destroyedUserId=t.id, explosionTypeId=0)))
     w.send(msgs)
+    hook = getattr(getattr(w, 'gate', None), 'bot_died', None) or getattr(getattr(w, 'mode_brain', None), 'bot_died', None)
+    if hook and hook(w, t, killer_bot.uid if killer_bot is not None else getattr(npc, 'id', None)):
+        return                                            # Team Deathmatch (team_deathmatch.py)
     y = MGR.ACTIVE
     if y is None:
         return
@@ -583,9 +639,10 @@ def _color(b, ammo=None):
     laser_colors = K.ITEMS['laser_colors']
     e = b.k['gear']
     c = ammo or e['ammunition']
+    full = laser_colors['full_set']
     lasers = [l for l, k in e['laser'].items() if k]
-    if len(lasers) == 1 and c in laser_colors['full_set'].get(lasers[0], {}):
-        return laser_colors['full_set'][lasers[0]][c]
+    if lasers and set(lasers) <= set(full['lasers']) and c in full['ammunition']:
+        return full['ammunition'][c]
     return laser_colors['ammunition'].get(c, 0)
 
 
@@ -629,6 +686,7 @@ def fire(w, n, now):
             _broadcast(w, [('AttackAbortLaserCommand', {'uid': n.id})], n.id)
         return
     n.fire = True
+    n.chase, n.attack_until = target, now + WD.ITEMS['out_of_combat_sec']        # its DMZ is void while it fights (fighting, _chasing)
     rocket(w, n, target, m, o, now)
     salvo(w, n, target, m, o, now)
     from . import active_items as AC, weapons as WP
@@ -643,7 +701,7 @@ def fire(w, n, now):
     if o is not None:
         msgs = [run]
         if landed:
-            dmg = _fire(n.bot, pvp=True, ammo=ammo)
+            dmg = int(_fire(n.bot, pvp=True, ammo=ammo) * (1 + n.__dict__.get('damage_bonus', 0)))     # Sector Control's underdog bonus
             AC.leech(n, dmg, n.bot.value()['hp'], now)
             msgs += o.hurt_hero(dmg, killer=n, cause=0, source_asset=True, now=now)
         else:
@@ -656,7 +714,7 @@ def fire(w, n, now):
     if not landed:
         _broadcast(w, [run, ('AttackMissedCommand', dict(attackType=WD.attack_type(1), targetUserId=target, skillColorId=0))], n.id, target)
         return
-    dmg = _fire(n.bot, pvp=m.bot is not None, ammo=ammo)
+    dmg = int(_fire(n.bot, pvp=m.bot is not None, ammo=ammo) * (1 + n.__dict__.get('damage_bonus', 0)))
     AC.leech(n, dmg, n.bot.value()['hp'], now)
     if m.bot is not None:
         _broadcast(w, [run], n.id, target)
@@ -755,7 +813,9 @@ def hit_npc(w, n, m, dmg, now, atype, once=(), shield=False, ammo=None):
         return
     who = ('h', w.hid) if is_helping(w, n, m, now) else ('b', n.id)
     WD.tag_alien(m, who, now)
-    WD.record_damage(m, who, dmg)                            # on a group alien the reward is split by damage (tag_sharers)
+    WD.record_damage(m, who, dmg)
+    if getattr(m, 'company_damage', None):
+        m.company_damage(n.bot.company, dmg)                       # the Spaceball: the damage of its company (spaceball.py)                            # on a group alien the reward is split by damage (tag_sharers)
     hit = ('AttackHitCommand', dict(attackType=WD.attack_type(atype), attackerId=n.id, victimId=m.id, victimHitpoints=int(m.hp),
                                     victimShield=int(m.shield), victimNanoHull=0, damage=dmg, skilled=False, strike=False, cannonType=0))
     msgs = list(once) + [hit] + ([w.selection(m)] if w.target == m.id and m.hp > 0 else [])
@@ -893,15 +953,14 @@ def can_attack_player(w, n, o, now):
     if o.hero_dead or o.jumping or o.hidden(now) or not o.running:
         return False
     import admin_mode as YM
+    import player_combat as OS
     from . import admin_warnings as AW
     if YM.mi(profile=o.p) or YM.spectator(o.p) or AW.active(n.bot, 'pvp', now):
         return False                                     # the manager is not attacked (wiki Administrator: "should not be shot at"); PvP warning
     if now < o.invuln_until or o.invulnerable or o.hero_effects.invulnerable(now):
         return False
-    hx, hy = o.hero_pos(now)
-    nx, ny = n.mover.pos(now)
-    if _in_peace(w, hx, hy) or _in_peace(w, nx, ny, n.bot) or relation(o, n.bot) in (1, 2):
-        return False                                     # its clan is an ally or in non-aggression
+    if OS.protected(o, now, chased=_chasing(n, o.hid, now)) or relation(o, n.bot) in (1, 2):
+        return False                                     # the pilot's DMZ (player_combat.protected); its clan is an ally or in non-aggression
     return int(o.p.d['pilot'].get('factionId') or 0) != n.bot.company or not (
         H.company(w.map_id) == n.bot.company and H.name(w.map_id).split('-')[-1] in ('1', '2'))
 
@@ -912,9 +971,13 @@ def can_attack_bot(w, n, m, now):
         return False
     if (n.bot.k.get('clan') and n.bot.k.get('clan') == m.bot.k.get('clan')) or T.clan_relation(n.bot, m.bot) in (1, 2):
         return False
-    nx, ny = n.mover.pos(now)
     mx, my = m.mover.pos(now)
-    return not (_in_peace(w, nx, ny, n.bot) or _in_peace(w, mx, my, m.bot))
+    return not (_in_peace(w, mx, my, m.bot) and not fighting(w, m, now) and not _chasing(n, m.id, now))
+
+
+def _chasing(n, target, now):
+    """The bot's attack on this target runs on since before it reached a safe zone (fire: chase, attack_until)."""
+    return n.target == target and n.__dict__.get('chase') == target and now < n.__dict__.get('attack_until', 0)
 
 
 # ------------------------------------------------------------------------------------------------------------ the alien's reply to the bot
@@ -940,10 +1003,11 @@ def notice_bot(w, m, now, hero_dist):
     return True
 
 
-def fighting(w, n):
-    """The bot is fighting: its target is a living ship on the map (an alien or a bot; world.hero_fighting for the pilot)."""
+def fighting(w, n, now=None):
+    """The bot is fighting: its target is a living ship on the map (an alien or a bot) or it fired within out_of_combat_sec (at a pilot
+    too; world.hero_fighting for the pilot)."""
     t = w.npcs.get(n.target)
-    return t is not None and t.alive
+    return (t is not None and t.alive) or (time.time() if now is None else now) < n.__dict__.get('attack_until', 0)
 
 
 def npc_to_bot(w, m, now):
@@ -983,7 +1047,7 @@ def npc_to_bot(w, m, now):
         if dist > m.keep + 60:
             a = math.atan2(my - ty, mx - tx) + m.spread
             gx, gy = tx + math.cos(a) * m.keep, ty + math.sin(a) * m.keep
-            ms = m.mover.go(gx, gy, m.speed(), now)
+            ms = m.mover.go(gx, gy, m.speed() * m.effect.speed_factor(now), now)
             w.send([('MoveCommand', dict(userId=m.id, x=int(gx), y=int(gy), timeToTarget=ms))])
     if now >= m.next_shot and dist <= w.npc_range(m) and m.d['damage'] > 0:
         m.next_shot = now + m.d.get('shot_interval_sec', WD.COMBAT['npc_attack_interval_sec'])
@@ -1188,7 +1252,7 @@ def call_defense(w, n, uid, now):
     for m in w.npcs.values():
         if m is n or m.bot is None or not m.alive or m.bot.company != n.bot.company or m.target is not None:
             continue
-        if m.bot.target is not None and m.bot.target.name in ('gate', 'mod', 'duel', 'group'):
+        if m.bot.target is not None and m.bot.target.name in ('gate', 'mod', 'duel', 'group', 'pvp_match'):
             continue
         if now - m.last_damage < COMBAT_SEC or m.bot.en_route or not can_attack_player(w, m, o, now):
             continue
@@ -1585,7 +1649,7 @@ def collect_box(w, n, now):
                 continue
         elif k.get('owner') is not None or (tip != 'BONUS_BOX' and tip not in WD.CARGO_BOXES):
             continue
-        if tip in WD.CARGO_BOXES and (not b.permission.get('cargo', True) or b.cargo_fill() >= 1):
+        if tip in WD.CARGO_BOXES and not k.get('event') and (not b.permission.get('cargo', True) or b.cargo_fill() >= 1):
             continue                                   # cargo off or full
         owner_tag = k.get('owner_tag')
         if tip in WD.CARGO_BOXES and owner_tag is not None and tuple(owner_tag) != own and WD.SET.get('cargo_ownership'):

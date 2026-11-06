@@ -55,8 +55,7 @@ MAP_W, MAP_H = CFG['map_size']
 CREDITS_ITEM, URIDIUM_ITEM = -1908845164, -707736347      # InventoryItemModule.itemId values in the recording
 # on-screen lines for the kill reward and their texts in the client (flashres: "You received %! EP." …); at most this often on screen (kill_notice)
 REWARD_LINES = ('0|LM|ST|EP|', '0|LM|ST|HON|', '0|LM|ST|CRE|', '0|LM|ST|URI|')
-REWARD_LINES_KEYS = {'EP': 'getexp', 'HON': 'gatherep', 'CRE': 'getcredits', 'URI': 'geturidium'}
-NOTICE_GAP_SEC = 0.5
+NOTICE_GAP_SEC = 1.0
 LASER_AMMO = 'ammunition_laser_lcb-10'
 DEATH = ITEMS['death_screen']
 # the client's KillScreenOptionTypeModule.OptionType enum (global-metadata.dat)
@@ -92,9 +91,13 @@ def ore_prices(honor):
     return out
 DRONE_POINTS = ITEMS['drone_points']
 INVINCIBILITY = 33                             # VisualModifierCommand.modifier (the client's VisualModifier enum)
+THREAT_RADIUS = 2000           # minimap threat indicator (0|n|w|<n>, the client caps it at 5): hostile ships within the view distance (adaptation; no rule in the client)
 # the miss given by Evasive Maneuvers (AttackMissedCommand.skillColorId -> the color of DamageReceivedEffect; game.xml hitpointColors:
 # 3 0066CC blue). Official FAQ: with the evasion skill misses are blue instead of purple
 EVADE_COLOR = 3
+HERO_MISS_COLOR = 1                            # hitpointColors 1 db63e2: the pink of the damage the hero's own ship takes (hero_miss)
+RING_SLACK = 10                                # Galaxy Gate circle: an alien this far off the ring distance steps back onto it (think)
+HIT_WINDOW = 1.0                              # frequent damage on the hero / the selected target goes as one number per this many seconds (merge_hits)
 STREAK_GAP_SEC = 10.0                           # kill streak: the most between two kills (kill_streak)
 STREAKS = [(3, 'epic_msg_killstreak_triplekill'), (6, 'epic_msg_killstreak_unstoppable'), (10, 'epic_msg_killstreak_godlike'),
            (15, 'epic_msg_killstreak_likeaboss')]
@@ -155,6 +158,12 @@ def tag_owner(n, now):
 
 
 CARGO_BOXES = ('FROM_SHIP', 'CANDY_CARGO', 'TURKEY_CARGO')     # the alien's cargo box (CANDY_CARGO: in Halloween's CandyCargo, recording; TURKEY_CARGO: at Thanksgiving)
+# collectible resources an alien drops in a box of their own, not in the cargo box (the client's box types; official recording 2026-10-27)
+# alien materials dropped as a box of their own next to the cargo (official recordings 2026-10-27/28: MUCOSUM, SCRAPIUM, AURUS_BOX x1 on
+# 5-2/5-3/4-2); BOLTRUM shares the client's box template with them (lib_collectables box_BOLTRUM), BIFENON has its own box (box_BIFENON)
+RESOURCE_BOXES = {'resource_collectable_mucosum': 'MUCOSUM', 'resource_collectable_scrapium': 'SCRAPIUM',
+                  'resource_collectable_prismatium': 'PRISMATIUM', 'resource_collectable_aurus': 'AURUS_BOX',
+                  'resource_collectable_boltrum': 'BOLTRUM', 'resource_collectable_bifenon': 'BIFENON'}
 AUTO_REFINE = (4, 5, 6)       # products of automatic refining (laboratory recipes, in this order): Prometid, Duranium, Promerium
 
 
@@ -165,6 +174,18 @@ def refine_recipes():
 
 def attack_type(v):
     return mod('AttackTypeModule', attackTypeValue=v)   # 0 rocket, 1 laser, 3 radiation (the client's AttackType enum)
+
+
+def merge_reward_lines(old, new):
+    """Reward lines (0|LM|ST|EP|gain|total|level, HON/CRE/URI|gain|total) of kills close together -> one line per kind: the gains added up,
+    the latest total and level (World.kill_notice)."""
+    rows = {}
+    for _, f in list(old) + list(new):
+        p = f['message'].split('|')
+        if p[3] in rows:
+            p[4] = str(int(rows[p[3]][4]) + int(p[4]))
+        rows[p[3]] = p
+    return [legacy('|'.join(rows[k])) for k in ('EP', 'HON', 'CRE', 'URI') if k in rows]
 
 
 from legacy_protocol import legacy, stm  # noqa: E402,F401  (old text protocol: legacy_protocol.py)
@@ -374,6 +395,8 @@ class World:
         self.notice = None         # the last kill reward lines waiting to be shown on screen (kill_notice)
         self.notice_at = 0.0       # the moment the last reward lines went to the screen
         self.notice_timer = False
+        self.hit_pend = {}         # victim -> its damage waiting for the window's single number (merge_hits)
+        self.hit_until = {}        # victim -> end of the window in which its damage is added up
         self.collect_wish = None   # (box, last moment): the box to be collected when the ship reaches it (collect)
         self.opening = None        # the loot box being opened {h, bitis} (open_booty)
         self._next_uid = OH.UID_BASE
@@ -381,6 +404,7 @@ class World:
         self.hero = Mover(k['x'], k['y'])
         self._effect_destination = None        # pending flight target while a zero-speed effect lasts
         self.target = None
+        self.last_target = None        # the target that just died: the killing hit's number still shows (hit_shown)
         self.attacking = False
         self.next_laser = 0.0
         self.ammo_ready = {}           # ammo with its own cooldown (RSB-75, RCB-140: 3 s) -> the moment it can fire again
@@ -401,6 +425,8 @@ class World:
         self.sold = False              # ore sold at the station: the refinery window closes on the first move (on_move)
         self.session_tick = None       # the session's timed systems (Assembly, Dispatch, Skylab; game.Session.tick)
         self.visible = set()           # NPCs the client knows (view distance; recording: shown at ~2,000 units)
+        self.threat_shown, self.next_threat = 0, 0.0     # the threat indicator's last value (sent only when it changes)
+        self.kill_screen_shown = False  # a death screen was shown in this session (the client has its KillScreenComponent)
         self.seen_items = set()        # boxes and ores the client knows (recording: at ~1,000 units)
         self.next_booster = 0.0        # booster durations once a second
         self.radiation_since = None    # since when it has been outside the map (radiation)
@@ -418,6 +444,11 @@ class World:
         self.combat_music = False                                     # is combat music playing (music_tick)
         self.streak = [0, 0.0, 0]                                     # kill streak: count, last kill, last announced threshold
         self.kill_hooks = []                                          # on an alien reward (w, npc, x, y) -> messages (Ö3: extra_events.py)
+        self.damage_hooks = []        # damage taken by the hero (w, dmg, killer, source_player): PvP damage shares (galactic_strife.py)
+        self.death_hooks = []         # the hero destroyed (w, killer, source_player) -> messages (galactic_strife.py)
+        self.free_repair = lambda: False     # the death screen's repairs cost nothing now (Galactic Strife's Reputation Fever)
+        self.mode_brain = None               # a mode steering drafted bots on an ordinary map (capture_beacon.py: bot_think, bot_died)
+        self.collect_hooks = []       # a box of a system's own (w, hash, box, by_pet) -> True/False if it handled it, None if not (Flux/Mire Crate)
         self.free_gate_repair = lambda: False                         # free repair at the portal (Fever: fever.py)
         self.cinema = False                                           # is the cinematic camera locked (cinematic)
         self.next_auto, self.auto_wait = 0.0, {}                       # automatic CPUs (auto_tick)
@@ -469,8 +500,6 @@ class World:
         self.ore_pack = None           # when ore counts change, the hangar inventory (shop.py)
         self.quest_event = None        # quest progress: (event, ...) -> messages (quest.py)
         self.lab_msgs = None           # upgrade state (LabUpdateItemCommand, shop.py)
-        self.lab_clock = {2: 0.0, 3: 0.0}   # unspent seconds of the engine (movement) and shield (combat) upgrades
-        self.lab_tick = time.time()
         self.quest_list = None         # quest list on approaching a quest giver (quest.py)
         self.givers = []               # quest givers (id, x, y)
         self.near_giver = None         # the nearby quest giver
@@ -524,11 +553,14 @@ class World:
             self.shared.mirror(self, msgs)     # what everyone sees (an alien's movement, hits, explosions) also goes to the other players
         self.deliver(msgs)
 
-    def deliver(self, msgs):
-        """To this world's client (through the view filters; if in a loop step, at the end of the step)."""
+    def deliver(self, msgs, hold=True):
+        """To this world's client (through the view filters; if in a loop step, at the end of the step). hold: the hero's damage waits for the
+        window's single number (merge_hits)."""
         if self.npcs:       # the movement of an NPC out of view does not go to the client (it does not know it)
             msgs = [m for m in msgs if not (m[0] == 'MoveCommand' and m[1]['userId'] in self.npcs and m[1]['userId'] not in self.visible)]
-        msgs = [m for m in msgs if self.item_filter(m)]
+        msgs = [self.hero_miss(m) for m in msgs if self.item_filter(m) and self.hit_shown(m)]
+        if hold:
+            msgs = self.merge_hits(msgs)
         if not msgs:
             return
         if any(m[0] == 'AttributeShieldUpdateCommand' for m in msgs):
@@ -543,6 +575,58 @@ class World:
             self.send_raw(msgs)
         except OSError:
             self.running = False
+
+    def hit_shown(self, m):
+        """Damage numbers and MISS appear only over the hero's own ship (and P.E.T.) and over the selected target: in the real game a hit on a
+        ship that is not selected shows no number, whoever dealt it (player report 2026-11-04: the numbers of the P.E.T. kamikaze, other
+        players' and bots' hits were shown over aliens that were not clicked)."""
+        if m[0] == 'AttackHitCommand':
+            uid = m[1].get('victimId')
+        elif m[0] == 'AttackMissedCommand':
+            uid = m[1].get('targetUserId')
+        else:
+            return True
+        return uid in (0, self.hid, self.target, self.last_target) or self.own_pet(uid)
+
+    def hero_miss(self, m):
+        """A miss on the hero's own ship is pink like the damage it takes (HERO_MISS_COLOR; player report 2026-11-04: it was red); the
+        evasion skill's blue stays."""
+        if m[0] == 'AttackMissedCommand' and m[1].get('targetUserId') == self.hid and not m[1].get('skillColorId'):
+            return (m[0], dict(m[1], skillColorId=HERO_MISS_COLOR))
+        return m
+
+    def merge_hits(self, msgs):
+        """Frequent damage on the hero's ship and on the selected target goes as one number per HIT_WINDOW, the sum of every source (fandom
+        Combo Damage; player report 2026-11-04: x4 and RSB showed as their sum in the real game, here each hit had its own number; then the
+        user asked for the same on the target): a hit after a quiet window goes at once, the ones within the window wait and go together at
+        its end with the latest HP/shield; the hit that destroys the ship goes at once with what was waiting."""
+        out = []
+        for m in msgs:
+            v = m[1].get('victimId') if m[0] == 'AttackHitCommand' else None
+            if v is None or v not in (self.hid, self.target, self.last_target):
+                out.append(m)
+                continue
+            now, f, p = time.time(), dict(m[1]), self.hit_pend.get(v)
+            if p is not None:
+                f['damage'] = p.get('damage', 0) + f.get('damage', 0)
+            if f.get('victimHitpoints', 1) <= 0 or (p is None and now >= self.hit_until.get(v, 0.0)):
+                self.hit_pend.pop(v, None)
+                if f.get('victimHitpoints', 1) <= 0 and v != self.hid:
+                    self.hit_until.pop(v, None)
+                else:
+                    self.hit_until[v] = now + HIT_WINDOW
+                out.append((m[0], f))
+                continue
+            if p is None:
+                self.later(self.hit_until[v] - now, lambda v=v: self.flush_hit(v))
+            self.hit_pend[v] = f
+        return out
+
+    def flush_hit(self, v):
+        f = self.hit_pend.pop(v, None)
+        if f is not None:
+            self.hit_until[v] = time.time() + HIT_WINDOW
+            self.deliver([('AttackHitCommand', f)], hold=False)
 
     # ------------------------------------------------------------ shared map (friend server; shared_maps.py)
     def leader(self):
@@ -854,6 +938,8 @@ class World:
         the minimap (player report 2026-10-28: the selection was being dropped when it moved away)."""
         if n.id == self.target and n.id in self.visible:
             return True
+        if getattr(self.gate, 'all_visible', False):
+            return True                     # Galaxy Gate: every alien of the map is on the minimap (player report 2026-11-04)
         if hx is None:
             hx, hy = self.hero_pos(now)
         nx, ny = n.mover.pos(now)
@@ -897,6 +983,42 @@ class World:
             maps.setdefault(self.map_id, set()).update(n.d['name'] for n in self.npcs.values()
                                                        if n.alive and n.d.get('name') and not getattr(n, 'hidden', False))
         return self.map_id, maps
+
+    def threat_count(self, now):
+        """Hostile ships near the hero: bot ships and players of another company (or a clan at war), not clan members, allies, non-aggression
+        partners, group members or hidden ships."""
+        import clan as KL
+        hx, hy = self.hero_pos(now)
+        near = lambda x, y: math.hypot(x - hx, y - hy) <= THREAT_RADIUS
+        pl = self.p.d['pilot']
+        faction, clan = int(pl.get('factionId') or 0), int(pl.get('clanId') or 0)
+
+        def hostile(company, other_clan, rel):
+            if (clan and clan == other_clan) or rel in (1, 2):
+                return False
+            return company != faction or rel == 3
+        c = 0
+        for n in list(self.npcs.values()):
+            if (n.alive and n.bot is not None and not getattr(n, 'hidden', False) and not self.is_group_member(n.bot.uid)
+                    and near(*n.mover.pos(now))):
+                o = BG.T.profile(n.bot).d['pilot']
+                c += hostile(n.bot.company, int(o.get('clanId') or 0), BG.relation(self, n.bot))
+        for o in (self.shared.members if self.shared else []):
+            if (o is not self and o.running and not o.hero_dead and not o.jumping and o.map_id == self.map_id and not o.hidden(now)
+                    and not self.is_group_member(o.hid) and near(*o.hero_pos(now))):
+                b = o.p.d['pilot']
+                c += hostile(int(b.get('factionId') or 0), int(b.get('clanId') or 0), KL.relation(self.p, o.p))
+        return min(c, 5)
+
+    def threat_tick(self, now):
+        """Once a second: the minimap's threat indicator (MapEventsAssemblyHelper.AssembleEnemyWarning; its only source)."""
+        if now < self.next_threat:
+            return
+        self.next_threat = now + 1.0
+        n = 0 if self.hero_dead else self.threat_count(now)
+        if n != self.threat_shown:
+            self.threat_shown = n
+            self.send([legacy('0|n|w|%d' % n)])
 
     def view_tick(self, now):
         """An NPC entering view is shown, one leaving is removed (ShipRemoveCommand as in the recording; if it is the target, the selection is dropped)."""
@@ -1569,6 +1691,9 @@ class World:
         is selected, P.E.T. trading; if there is an HM-7 trade drone (its icon in the shortcut bar, menu_action) drone trading; otherwise
         trading is not active."""
         pr = ore_prices(self.p.d['pilot'].get('honourPoints', 0))
+        bonus = self.p.mods().get('ore_price', 0)                     # TDM company reward: +10% ore price (team_deathmatch.py)
+        if bonus:
+            pr = {k: int(v * (1 + bonus)) for k, v in pr.items()}
         pirate = self.at_trade() and self.map_id == PIRATE_MARKET          # the pirate trader in 5-2: Palladium -> gate energy
         kind = (TRADE_PIRATE if pirate else TRADE_STATION if self.at_trade() else TRADE_PET if self.pet_trade()
                 else TRADE_DRONE if self.hm7_ready() else TRADE_INACTIVE)          # HM-7 trade drone: anywhere (same order as sell_ore)
@@ -1615,6 +1740,9 @@ class World:
             return
         with self.lock:
             price = ore_prices(self.p.d['pilot'].get('honourPoints', 0)).get(t)
+            bonus = self.p.mods().get('ore_price', 0)                 # TDM company reward (team_deathmatch.py)
+            if bonus and price is not None:
+                price = int(price * (1 + bonus))
             have = self.p.ore_count(t) if t is not None else 0
             cbs = self.cbs_trade() if self.cbs_trade and not self.at_trade() else None
             if cbs and price is not None:                                   # in its own Battle Station (Ö5)
@@ -1659,9 +1787,9 @@ class World:
         s = self.station_at(hx, hy)
         inside = bool(s)
         ready = self.in_station(now)
-        # if the player keeps fighting in the safe zone while an alien chases him, the zone does not apply to him: the "Demilitarized zone"
-        # text is not shown (player report 2026-10-28, real game)
-        void = any(n.alive and self.npc_retaliating(n, now) for n in self.npcs.values())
+        # a pilot who fights (attacks a pilot or an alien) has no protection in the safe zone: the "Demilitarized zone" text is not shown
+        # (player report 2026-10-28, real game; fandom Demilitarized zone: "Attacking other pilots or aliens breaks the protection immediately")
+        void = self.hero_fighting(now)
         if (gid == self.near_gate and peace == self.gate_peace and inside == self.station_inside and void == self.peace_void
                 and ready == getattr(self, 'equip_ready', None)):
             return
@@ -1810,13 +1938,19 @@ class World:
                 self.target = n.id
                 self.send([self.selection(n)] + ([] if n.d.get('friendly') else self.p.hint(IP.ATTACK)))
             elif self.own_pet(f.get('targetId')):           # its own P.E.T.: hittable (for Kamikaze's HP threshold; pet_laser)
+                if self.attacking and self.target != self.pet.pid:
+                    self.laser_stop()            # clicking the P.E.T. ends the attack (player report 2026-11-04: the lasers turned to the P.E.T.)
                 self.target = self.pet.pid
                 self.send([self.pet.selection_msg()])
             elif self.asset_at(f.get('targetId')):          # the client selects the entity with ShipSelectionCommand + AssetInfoCommand
+                if self.attacking and self.target != f.get('targetId'):
+                    self.laser_stop()
                 self.target = f.get('targetId')
                 self.send(self.asset_targets.asset_select(self.target))
             elif self.player(f.get('targetId')):            # other player (friend server): selected, HP watched (shared_view)
                 w = self.player(f.get('targetId'))
+                if self.attacking and self.target != w.hid:
+                    self.laser_stop()            # the laser also ends on the client (only the flag was dropped before)
                 self.target, self.attacking, self.choice = w.hid, False, self.player_selection(w)
                 self.send([self.choice])
 
@@ -1992,11 +2126,17 @@ class World:
             b = self.boxes.get(h)
             if not b or not self.own(b) or (by_pet and not self.pet_can_take(b)):
                 return False
-            foreign = b['tip'] in CARGO_BOXES and not self.own_tag(b.get('owner_tag')) and SET.get('cargo_ownership')
+            for hk in self.collect_hooks:
+                r = hk(self, h, b, by_pet)
+                if r is not None:
+                    return r
+            # an event box can share a cargo box's look (Trial of Terrors' Curcubitor drops CANDY_CARGO): its reward is rolled on opening
+            cargo_box = b['tip'] in CARGO_BOXES and not b.get('event')
+            resource_box = b['tip'] in RESOURCE_BOXES.values() and not b.get('event')
+            foreign = cargo_box and not self.own_tag(b.get('owner_tag')) and SET.get('cargo_ownership')
             boost = 1 + (self.pet.proto('box') if by_pet and self.pet else 0)
             m = self.p.mods()          # pilot skills: Tractor Beam I/II (cargo/bonus box), Luck (bonus box uridium)
             pre, plan = [], {}
-            cargo_box = b['tip'] in CARGO_BOXES
             if cargo_box:                                       # auto-refining first (if the setting is on): room is made
                 pre = self.auto_refine()
                 mult = boost * (1 + m.get('cargo_box', 0))
@@ -2021,7 +2161,7 @@ class World:
                 b['contents'] = left
             else:
                 del self.boxes[h]
-            extra = b.pop('extra', None) if cargo_box else None           # the extra resources in the box (extra_loot box) on the first take
+            extra = b.pop('extra', None) if cargo_box or resource_box else None   # the extra resources in the box (extra_loot box) on the first take
             msgs = pre + [self.beam_msg(by_pet)] + ([] if left else [('RemoveCollectableCommand', {'collected': True, 'hash': h})])
             if foreign and not b.get('stolen'):             # someone else's box: penalty once (on a partial take the box stays on the ground)
                 b['stolen'] = True
@@ -2039,17 +2179,12 @@ class World:
                 for t, c in sorted(ores.items()):
                     msgs += self.quest('loot', loot=ORE['kinds'].get(str(t), ''), amount=c, box=True)    # box: SALVAGE quest
                     RT.note(self.p, 'received_item', ORE['kinds'].get(str(t), ''), c)       # logbook
-                for loot, c in sorted((extra or {}).items()):
-                    c = int(c * boost)
-                    if loot == 'resource_pet-fuel' and self.grant:
-                        msgs += self.grant(loot, c)              # into the P.E.T.'s tank (storage fuel is never burnt)
-                    else:
-                        self.p.add_resource(loot, c)
-                        msgs.append(legacy('0|LM|ST|LOT|%s|%d' % (loot, c)))
-                    msgs += self.quest('loot', loot=loot, amount=c, box=True)
+                msgs += self.box_extra(extra, boost)
                 msgs += self.auto_refine()               # after every collection (if the setting is on)
                 if left and self.p.cargo_free() < 1:     # partial take: the rest is taken once room is made (sale/refining)
                     msgs += [legacy('0|A|STM|loadfull')] + self.p.hint(IP.FULL_CARGO)
+            elif resource_box:                       # Mucosum, Scrap, Prismatium, Aurus, Boltrum, Bifenon box (RESOURCE_BOXES)
+                msgs += self.box_extra(extra, boost)
             elif b.get('al'):                        # a box with its own collect function (Ö4: Vortex's Stellar Coin boxes)
                 msgs += b['al'](b) or []
             elif b.get('event'):                       # event box (event_maps.py): the contents are drawn when opened
@@ -2077,6 +2212,7 @@ class World:
                     self.boxes_taken += 1
                 x1 = self.x1_reward()            # at a high level in its own X-1 the bonus box also decreases (fandom 1-1, 2-1, Lowers)
                 amount = int(amount * boost * (1 + m.get('bonus_box', 0)) * (1 + (m.get('bonus_uridium', 0) if what == 'uridium' else 0))
+                             * (1 + (m.get('bonus_box_extra', 0) if what != 'energy' else 0))      # TDM company reward: not energy (wiki)
                              * ((x1 > 0) if what == 'energy' else x1))     # a single unit of energy cannot decrease in steps: only 15+ empty (HARITALAR-7)
                 amount = SET.amount({'credits': 'credits', 'uridium': 'uridium', 'energy': 'gate_energy'}.get(what, 'collecting'), amount, 'box')  # panel
                 if amount <= 0:
@@ -2113,6 +2249,19 @@ class World:
             if by_pet:
                 self.log('   P.E.T. collected a box: %s' % b['tip'])
             return True
+
+    def box_extra(self, extra, boost):
+        """The resources dropped with an alien (extra_loot box) when their box is collected -> messages."""
+        msgs = []
+        for loot, c in sorted((extra or {}).items()):
+            c = int(c * boost)
+            if loot == 'resource_pet-fuel' and self.grant:
+                msgs += self.grant(loot, c)              # into the P.E.T.'s tank (storage fuel is never burnt)
+            else:
+                self.p.add_resource(loot, c)
+                msgs.append(legacy('0|LM|ST|LOT|%s|%d' % (loot, c)))
+            msgs += self.quest('loot', loot=loot, amount=c, box=True)
+        return msgs
 
     def open_booty(self, h, b):
         """Keyed box (loot.py): without a key the box stays and the client's text; a green key can be bought automatically in the settings.
@@ -2203,23 +2352,19 @@ class World:
         return msgs
 
     def kill_notice(self, msgs):
-        """The kill reward's on-screen lines (0|LM|ST|EP/HON/CRE/URI): in the middle of the screen only the latest kill's, at most once per
-        NOTICE_ARA_SN; the lines of those in between go only to the log. The client's instant log (InstantLog, 4 lines) shows all the lines
-        arriving in the same frame: when many aliens were killed the rewards overlapped on screen (user report 2026-10-25).
-        -> messages to send right away (those outside the lines; old lines that fall to the log)."""
+        """The kill reward's lines (0|LM|ST|EP/HON/CRE/URI) wait NOTICE_GAP_SEC from the first kill; the kills in between are added up and go as
+        one report (player report 2026-11-04: in the real game two Streuners killed one after the other give "2 Uridium"). The client's
+        instant log (InstantLog, 4 lines) shows all the lines arriving in the same frame: one line per kind keeps them from overlapping
+        (user report 2026-10-25). -> messages to send right away (those outside the lines)."""
         line = lambda m: m[0] == 'LegacyModule' and m[1]['message'].startswith(REWARD_LINES)
         lines, out = [m for m in msgs if line(m)], [m for m in msgs if not line(m)]
         if not lines:
             return out
-        if self.notice:
-            out = self.log_only(self.notice) + out         # a new one came in its place: the earlier ones only in the log
-        self.notice = lines
-        now = time.time()
-        if now >= self.notice_at + NOTICE_GAP_SEC:
-            return out + self.flush_notice(now)
+        self.notice = merge_reward_lines(self.notice or [], lines)
         if not self.notice_timer:
             self.notice_timer = True
-            self.later(self.notice_at + NOTICE_GAP_SEC - now, lambda: self.send(self.flush_notice(time.time())))
+            now = time.time()
+            self.later(max(NOTICE_GAP_SEC, self.notice_at + NOTICE_GAP_SEC - now), lambda: self.send(self.flush_notice(time.time())))
         return out
 
     def flush_notice(self, now):
@@ -2228,19 +2373,6 @@ class World:
         if lines:
             self.notice_at = now
         return lines
-
-    @staticmethod
-    def log_only(lines):
-        """0|LM|ST reward lines -> the same texts written only to the log (MessageCommand displayTarget 0; the client's keys)."""
-        out = []
-        for _, f in lines:
-            p = f['message'].split('|')
-            out.append(('MessageCommand', dict(displayTarget=0, displayStyle=1, messageModule=mod('WildcardMessageModule', message=mod(
-                'MessageKeyListWildcardModule', baseKey=REWARD_LINES_KEYS[p[3]], textStyle=0,
-                baseKeyType=mod('ReplacementTypeModule', typeValue=5),
-                wildCardReplacements=[mod('MessageWildcardReplacementModule', wildcard='%!', replacement='{:,}'.format(int(p[4])),
-                                          replacementType=mod('ReplacementTypeModule', typeValue=0))])))))
-        return out
 
     def rank_msgs(self, old, new):
         """Rank changed: the client's text ("Congratulations, you've reached a new rank. This rank is:" / rank_down and the rank's name,
@@ -2342,6 +2474,10 @@ class World:
                 self.attacked(now)                       # his own hit (laser, rocket, ability, technology, cannon): he is fighting
             if engage:
                 tag_alien(n, ('h', self.hid), now)                # the first to fire tags (a miss too; the P.E.T.'s hit is also its owner's)
+                if n.bot is not None:                               # damage dealt to a bot ship by player: PvP shares (galactic_strife.py)
+                    d = n.__dict__.setdefault('pvp_damage', {})
+                    d[('p', self.hid)] = d.get(('p', self.hid), 0) + dmg
+                    self.last_pvp = time.time()                     # a PvP shot (4-X portal lock; ends Galactic Strife's protection)
                 record_damage(n, ('h', self.hid), dmg)
             if attacker and self.hidden(now):
                 engage = False                   # a cloaked player's P.E.T. (kamikaze, laser) does not lock the alien onto the player (report 2026-10-28)
@@ -2509,7 +2645,7 @@ class World:
             self.visible.discard(n.id)
             msgs.append(('ShipDestroyedCommand', dict(destroyedUserId=n.id, explosionTypeId=0)))
         if self.target == n.id:
-            self.target, self.attacking = None, False
+            self.target, self.attacking, self.last_target = None, False, n.id     # the killing hit's number still shows (hit_shown)
             msgs.append(('ShipDeselectionCommand', {}))
         if msgs and msgs[0][0] == 'ShipDestroyedCommand':
             msgs.append(('ShipRemoveCommand', {'userId': n.id}))
@@ -2663,6 +2799,11 @@ class World:
         kind = self.event.cargo_kind() or ('CANDY_CARGO' if CAL.has_type('CandyCargo') else 'FROM_SHIP')
 
         def cargo_drop():                                  # after the reward (0.3 s): the extra resources are in the box too
+            for loot, box_type in RESOURCE_BOXES.items():  # Mucosum, Scrap, Prismatium: a box of their own next to the cargo (official recording
+                if extra.get(loot):                        # 2026-10-27: AddBoxCommand MUCOSUM / SCRAPIUM; player report 2026-11-04)
+                    a = random.uniform(0, 2 * math.pi)
+                    h = self.drop_box(box_type, x + math.cos(a) * 60, y + math.sin(a) * 60, {}, COMBAT['box_life_sec'], owner)
+                    self.boxes[h]['extra'] = {loot: extra.pop(loot)}
             if cargo or extra:
                 h = self.drop_box(kind, x, y, cargo, COMBAT['box_life_sec'], owner, owner_tag)
                 if extra:
@@ -2688,16 +2829,11 @@ class World:
         self.send([m for m in msgs if m])
 
     def lab_time(self, now):
-        """The engine upgrade is spent while moving, the shield upgrade in combat, minute by minute."""
-        dt, self.lab_tick = now - self.lab_tick, now
-        if self.p.lab_bonus(2) and self.hero.t1 > now:
-            self.lab_clock[2] += dt
-        if self.p.lab_bonus(3) and now - self.last_combat < ITEMS['out_of_combat_sec']:
-            self.lab_clock[3] += dt
+        """The engine and shield upgrades are spent minute by minute in real time, offline too (player_profile.lab_due)."""
         for item in (2, 3):
-            if self.lab_clock[item] >= ITEMS['lab']['minute_sec']:
-                self.lab_clock[item] -= ITEMS['lab']['minute_sec']
-                self.lab_spend(item)
+            n = self.p.lab_due(item, now)
+            if n:
+                self.lab_spend(item, n)
 
     def quest(self, kind, **kw):
         """Quest progress (the session's quest.py) -> messages to send."""
@@ -2854,12 +2990,13 @@ class World:
 
     def laser_color(self, ammo):
         """AttackLaserRunCommand.laserColor: the client's laser type (beam, light and sound; items.json laser_colors). If all the ship's
-        laser slots are filled with the same laser, that set's color (all LF-3: x1/x2 blue, x3 green), otherwise the ammo's (x4 white …)."""
+        laser slots hold LF-3-tier or better lasers (mixed too: LF-3 + LF-4), the full-set color (x1/x2 blue, x3 green), otherwise the ammo's (x4 white …)."""
         laser_colors = ITEMS['laser_colors']
+        full = laser_colors['full_set']
         lasers = self.lasers()
         cap = self.p.ship_row().get('laser', 0)
-        if lasers and len(lasers) >= cap and len(set(lasers)) == 1 and ammo in laser_colors['full_set'].get(lasers[0], {}):
-            return laser_colors['full_set'][lasers[0]][ammo]
+        if lasers and len(lasers) >= cap and set(lasers) <= set(full['lasers']) and ammo in full['ammunition']:
+            return full['ammunition'][ammo]
         return laser_colors['ammunition'].get(ammo, 0)
 
     def skilled_laser(self):
@@ -3656,6 +3793,8 @@ class World:
         self.stop_repair()
         if dmg > 0:
             self.p.ach('damage_taken', count=dmg)       # damage taken (quest condition TAKE_DAMAGE; Galaxy Trek's Endurance quest)
+            for hk in self.damage_hooks:
+                hk(self, dmg, killer, source_player)
             if getattr(self.gate, 'key', None) == 'world_boss':
                 self.p.ach('wb_damage', count=dmg)      # World Boss achievement (takedamage)
         sh = g.get('shield', 0)
@@ -3824,6 +3963,11 @@ class World:
     def hero_death(self, msgs, killer=None, cause=None, note=None, source_player=None):
         """The player died: explosion + death screen (KillScreenPostCommand). The player respawns when they pick a repair on the screen (kill_screen_repair)."""
         self.hero_dead, self.jumping = True, False
+        for hk in self.death_hooks:
+            try:
+                msgs += hk(self, killer, source_player) or []
+            except Exception:
+                self.step_error('death hook')
         try:
             hx, hy = self.hero_pos()
             BG.witness(self, 'player_died', hx, hy, name=self.p.d['pilot'].get('userName', ''),
@@ -3864,6 +4008,13 @@ class World:
         bot_killer = killer is not None and getattr(killer, 'bot', None) is not None     # bot player (bot/ship.py)
         killer_name = source_player.p.d['pilot'].get('userName', '') if source_player else killer.d['name'] if killer else ''
         death_cause = 0 if source_player else (cause if cause is not None else DESTRUCTION_NPC if killer else DESTRUCTION_MISC)
+        # The client's KillScreenPostCommand appends its options to the list it holds; only its repair button and KillScreenUpdateCommand
+        # clear it. A ship revived without the button (Auto Mode, the panel) showed the old options too on the next death (6). Clear first,
+        # but only once a death screen was shown in this session: the client creates its KillScreenComponent from the first options, an
+        # earlier Update hits a missing component (NullReferenceException in KillScreenComponentSystem.ClearOptions, live test 2026-11-05).
+        if self.kill_screen_shown:
+            msgs.append(('KillScreenUpdateCommand', {'options': []}))
+        self.kill_screen_shown = True
         msgs.append(('KillScreenPostCommand', dict(
             killerName=killer_name, killerEpppLink='', playerShipAlias=self.p.ship_look(),
             cause=mod('DestructionTypeModule', cause=death_cause),
@@ -3908,7 +4059,7 @@ class World:
             if self.raid_gate():
                 offers[REPAIR_RAID_GATE] = 0    # Hades: free on the gate map (client: ttip_killscreen_repair_hadesgate)
             return offers                       # at a gate: free repair at the top (client: galaxygates_pvemap_leave_on_kill_p)
-        voucher = self.vouchers() > 0 or bool(self.rules.get('free_repair'))      # Cubikon Graveyard: repairs are free (npc.json)
+        voucher = self.vouchers() > 0 or bool(self.rules.get('free_repair')) or self.free_repair()      # Cubikon Graveyard: repairs are free (npc.json)
         k = SET.multiplier('repair_cost')                                   # the panel's repair price multiplier
         if self.gates:
             offers[REPAIR_GATE] = 0 if voucher or self.free_gate_repair() else int(round(DEATH['portal_uridium'] * k))
@@ -3920,18 +4071,20 @@ class World:
         the detail text and the button label are from here (the client's translation keys)."""
         u = self.p.d['pilot'].get('uridium', 0)
         out = []
-        vouchers = 0 if self.rules.get('free_repair') else self.vouchers()          # on a free map the coupon is not written or spent
+        vouchers = 0 if self.rules.get('free_repair') or self.free_repair() else self.vouchers()      # on a free map the coupon is not written or spent
         for kind, price in self.repair_offers().items():
             if kind not in REPAIR_TEXTS:          # the run's option (Ö4): the texts from it
                 desc, tooltip, btn, (akey, aparams) = self.gate.repair_texts(kind)
                 out.append(mod('KillScreenOptionModule', repairType=mod('KillScreenOptionTypeModule', repairTypeValue=kind),
                                price=mod('PriceModule', type=1, amount=price), affordableForPlayer=True, cooldownTime=0,
-                               descriptionKey=loc(desc), descriptionKeyAddon=loc(akey, **aparams), toolTipKey=loc(tooltip),
+                               descriptionKey=loc(desc[0], **desc[1]) if isinstance(desc, tuple) else loc(desc),     # (key, wildcards)
+                               descriptionKeyAddon=loc(akey, **aparams), toolTipKey=loc(tooltip),
                                buttonKey=loc(btn)))
                 continue
             desc, tooltip, btn = REPAIR_TEXTS[kind]
             count, addon = price, loc('')
-            if self.gate and kind == REPAIR_BASE:
+            gate_text = self.gate and not getattr(self.gate, 'plain_base_repair', False)     # TDM: the X-1 repair's own text
+            if gate_text and kind == REPAIR_BASE:
                 desc, price = ('desc_killscreen_free_repair_cause_galaxygate_lives' if self.gate_lives
                                else 'desc_killscreen_free_repair_cause_galaxygate'), self.gate_lives or 0
                 count = price
@@ -3967,7 +4120,7 @@ class World:
             if price:
                 self.p.gain(uridium=-price, reason='repair_ship')
                 msgs += self.money_msgs() if self.money_msgs else []
-            elif kind in (REPAIR_GATE, REPAIR_LOCATION) and self.vouchers() > 0 and not self.gate and not self.rules.get('free_repair'):
+            elif kind in (REPAIR_GATE, REPAIR_LOCATION) and self.vouchers() > 0 and not self.gate and not self.rules.get('free_repair') and not self.free_repair():
                 with self.p.lock:
                     self.p.d['gates']['voucher'] -= 1          # repair coupon used (client: repair_voucher_used)
                     self.p.dirty = True
@@ -4197,8 +4350,8 @@ class World:
                 return None
         if n.bot_target is not None and BG.npc_to_bot(self, n, now):
             return                              # answering back to a bot
-        if n.d.get('friendly'):
-            return                              # the mode manages the friendly ship (echoes.py)
+        if n.d.get('friendly') or n.d.get('managed'):
+            return                              # the mode manages the friendly ship (echoes.py) / the Spaceball (spaceball.py)
         if n.d.get('fugitive'):                    # the Plutus turret's runaway alien: moves away from the player, does not fire (forum 143902)
             n.engaged, n.next_think = False, now + 3
             tx, ty = self.alien.flee_spot(n, now)
@@ -4277,11 +4430,16 @@ class World:
             # when the player goes outside the leash it lets go of the chase (above). Before, it did not move within 450 units, and the swarm
             # that spawned at Cubikon's foot stayed on one point (user report 2026-10-24)
             spot = self.guard_spot(n, post, hx, hy, now) if post and now >= n.next_think else None
-            near = min(450, n.keep + 150) * min(1.0, SET.multiplier('npc_range'))   # shorter firing range: close in so the alien can still shoot
+            # Galaxy Gate: one distance for all (galaxy_gates.Run.ring), so around a pilot standing still they make a circle; they also
+            # step back out to it when closer
+            ring = getattr(self.gate, 'ring', None) if n.gate and not post else None
+            k_range = min(1.0, SET.multiplier('npc_range'))
+            keep = (ring or n.keep) * k_range
+            near = min(450, (ring or n.keep) + 150) * k_range   # shorter firing range: close in so the alien can still shoot
             circle = bool(post) and dist <= near
-            if (dist > near or post) and now >= n.next_think and n.speed() > 0:
-                a = math.atan2(ny - hy, nx - hx) + (random.choice((-1, 1)) * random.uniform(0.6, 1.3) if circle else n.spread)
-                keep = n.keep * min(1.0, SET.multiplier('npc_range'))
+            off = bool(ring) and abs(dist - keep) > RING_SLACK and n.mover.t1 <= now      # stopped off the ring (not still on its way)
+            if (dist > near or post or off) and now >= n.next_think and n.speed() > 0:
+                a = math.atan2(ny - hy, nx - hx) + (random.choice((-1, 1)) * random.uniform(0.6, 1.3) if circle else 0.0 if off and dist <= near else n.spread)
                 tx, ty = spot or (hx + math.cos(a) * keep, hy + math.sin(a) * keep)
                 # within the map: so an alien does not leave the map while the player is at the edge or outside the boundary (radiation)
                 tx = min(max(tx, 300), self.map_w - 300)
@@ -4417,6 +4575,7 @@ class World:
             self.check_assets(now)
             self.view_tick(now)
             self.radiation_tick(now)
+            self.threat_tick(now)
         leader = self.leader()                   # on a shared map the map's jobs are with the leader (shared_maps.py)
         self.booster_tick(now)
         if leader:

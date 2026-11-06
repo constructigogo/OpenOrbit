@@ -18,6 +18,11 @@ EVENT_WINDOWS = {'plutus': ('plutus',), 'frozen_labyrinth': ('labyrinth',), 'aga
                  'mileageMarket': ('mileage_market',), 'vipMerchantExchange': ('vip_merchant',),                            # stage 7
                  'preBlackFridaySales': ('pre_prometheus',), 'return_of_hero': ('return_of_hero',), 'returnee_login': (),
                  'apotheosis': ('kristallon_apotheosis',), 'recallBattlePass': ('return_of_hero',),                        # 1.1.115
+                 'pvp_summer': ('galactic_strife',),                     # Galactic Strife reputation (galactic_strife.py)
+                 'tdm': ('team_deathmatch',),            # Team Deathmatch status (the session's hook: only while in a match)
+                 'sectorcontrol': ('sector_control',),   # Sector Control HUD (the session's hook: only while in a match)
+                 'spaceball': ('spaceball',),            # Spaceball goals (spaceball.py)
+                 'ctb': ('capture_the_beacon',),         # Capture the Beacon scores and beacons (capture_beacon.py)
                  'battle_pass': ()}      # Objectives: while the save's pass runs (battle_pass.py; the session binds the hook), otherwise it opened empty
 # the 1.1.115 windows are not in the interface in the recording: added to the profile as a copy of the Return of Hero item (title, size from game.xml);
 # before opening a window the client looks up the menu item by name (FeatureMenuHelper.GetFeatureItemById)
@@ -32,7 +37,7 @@ CLOSED_AT_LOGIN = {'diminish_quests'}
 # a quest, the icon in the client's menu is tracked by urgent_quests.py (user 2026-10-18)
 OWN_SYNC = {'diminish_quests'}
 INDICATOR_WINDOWS = {'AgatusEventInfoCommand': 'agatus_event', 'NpcEventInfoCommand': 'npc_event'}
-# never shown in the menu: R-Zone (PvP, with bot players; its requests go unanswered). Stellar Pathfinder cannot be hidden: on login the client
+# never shown in the menu: R-Zone (hidden in every real record; refraction_zone.py answers its standby requests as the real server). Stellar Pathfinder cannot be hidden: on login the client
 # (UIMainCenterNewSystem.ShowMenuList) looks up the "hangar", "stellar_pathfinder" and "vouchers" items by name, and if an item is missing
 # the login does not complete with a KeyNotFoundException (live test stage 1); the client sets its visibility by level itself
 HIDDEN_WINDOWS = ('rzone',)
@@ -81,6 +86,9 @@ import bank as BANK
 import map_links as H
 import paths as PTH
 import save_migration as SM
+import team_deathmatch as TDM
+import spaceball as SB
+import capture_beacon as CTB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROFILE_PATH = os.path.join(HERE, 'save', 'profile.json')     # old layout; active slot: paths.profile_path()
@@ -926,7 +934,11 @@ class Profile:
                      + list((self.mode_mods() if getattr(self, 'mode_mods', None) else {}).items())      # + mod boosters (ebl.py)
                      + list((self.nova_mods() if getattr(self, 'nova_mods', None) else {}).items())    # + N.O.V.A. (nova.py)
                      + list((self.event_mods() if getattr(self, 'event_mods', None) else {}).items())    # + Fever (fever.py)
-                     + list((self.cbs_mods() if getattr(self, 'cbs_mods', None) else {}).items())):    # + CBS boosters (cbs.py)
+                     + list((self.cbs_mods() if getattr(self, 'cbs_mods', None) else {}).items())    # + CBS boosters (cbs.py)
+                     + list(TDM.company_mods(self).items())                                      # + TDM company reward (team_deathmatch.py)
+                     + list(SB.company_mods(self).items())                                       # + Spaceball day winner bonus
+                     + list(CTB.company_mods(self).items())                                      # + Capture the Beacon hour winner
+                     + list((self.pvp_mods() if getattr(self, 'pvp_mods', None) else {}).items())):     # + Sector Control underdog bonus
             out[k] = min(out.get(k, v), v) if k in ('fixed_speed', 'max_speed') else out.get(k, 0) + v
         if out.get('evasion', 0) > 0.75:                 # official forum 160373: evasion at most 75%
             out['evasion'] = 0.75
@@ -990,8 +1002,32 @@ class Profile:
             self.dirty = True
             if u[1] <= 0:
                 del self.d['upgrades'][str(item)]
+                self.d.get('lab_clock', {}).pop(str(item), None)
                 return True
             return False
+
+    def lab_due(self, item, now):
+        """The engine/shield upgrade's minutes run in real time, also while the pilot is offline (player report 2026-11-04, as in the real
+        game): the minutes passed since the clock (lab_clock, saved) -> how many to spend now. The clock starts when the ore is loaded
+        (shop.upgrade) or, for an older save, at the first look."""
+        with self.lock:
+            u = self.d.get('upgrades', {}).get(str(item))
+            clock = self.d.setdefault('lab_clock', {})
+            if not u:
+                clock.pop(str(item), None)
+                return 0
+            t = clock.get(str(item))
+            if t is None:
+                clock[str(item)] = now
+                self.dirty = True
+                return 0
+            step = lab_data()['minute_sec']
+            n = int((now - t) // step)
+            if n <= 0:
+                return 0
+            clock[str(item)] = t + n * step
+            self.dirty = True
+            return min(n, u[1])
 
     def add_drone(self, loot_id):
         """A new drone (level 1, 0 points) -> drone id."""

@@ -912,6 +912,10 @@
     1500
    ],
    [
+    "ammunition_laser_spacecup_group-a",
+    4000
+   ],
+   [
     "ammunition_laser_rsb-75",
     4000
    ],
@@ -1627,7 +1631,7 @@
    ],
    [
     "currency_experience",
-    32768000
+    327680000
    ]
   ],
   "package_event-deal-stellar2022-3": [
@@ -1673,7 +1677,7 @@
    ],
    [
     "currency_experience",
-    32768000
+    327680000
    ]
   ],
   "package_event-deal-stellar2022-4": [
@@ -1727,7 +1731,7 @@
    ],
    [
     "currency_experience",
-    32768000
+    327680000
    ]
   ],
   "package_event-deal-team-dusklight": [
@@ -3277,6 +3281,116 @@
     "resource_booty-key-blue",
     1
    ]
+  ],
+  "package_event-deal-laser-aml-triple": [
+   [
+    "equipment_weapon_laser_am-l",
+    3
+   ]
+  ],
+  "package_event-deal-voyagers-ammo": [
+   [
+    "equipment_weapon_drive_igd-p",
+    1
+   ],
+   [
+    "ammunition_spool_gsp-300",
+    1000
+   ],
+   [
+    "ammunition_spool_gsp-150",
+    10000
+   ]
+  ],
+  "package_event-deal-voyagers-artificer": [
+   [
+    "equipment_weapon_drive_igd-p",
+    1
+   ],
+   [
+    "resource_collectable_containment-node",
+    300
+   ],
+   [
+    "resource_collectable_horizon-shard",
+    5000
+   ]
+  ],
+  "package_event-deal-voyagers-resource-l": [
+   [
+    "resource_collectable_containment-node",
+    500
+   ],
+   [
+    "resource_collectable_horizon-shard",
+    5000
+   ]
+  ],
+  "package_event-deal-voyagers-resource-m": [
+   [
+    "resource_collectable_containment-node",
+    200
+   ],
+   [
+    "resource_collectable_horizon-shard",
+    2500
+   ]
+  ],
+  "package_event-deal-voyagers-resource-s": [
+   [
+    "resource_collectable_containment-node",
+    50
+   ],
+   [
+    "resource_collectable_horizon-shard",
+    500
+   ]
+  ],
+  "package_event-deal-voyagers-vip-special": [
+   [
+    "resource_voyagers-vip-badge",
+    1
+   ],
+   [
+    "equipment_extra_cpu_ags-x",
+    1
+   ],
+   [
+    "ammunition_spool_gsp-300",
+    1000
+   ]
+  ],
+  "package_event-deal-bp-halloween": [
+   [
+    "resource_battle-pass",
+    1
+   ],
+   [
+    "ammunition_laser_sbl-100",
+    3500
+   ],
+   [
+    "resource_battle-pass-key",
+    5
+   ]
+  ],
+  "package_event-deal-s-h-diminisher": [
+   [
+    "resource_collectable_energy-helios-diminisher",
+    1
+   ]
+  ],
+  "package_event-deal-s-h-spearhead-plus": [
+   [
+    "resource_collectable_energy-helios-spearhead-plus",
+    1
+   ]
+  ],
+  "package_event-deal-s-h-venom": [
+   [
+    "resource_collectable_energy-helios-venom",
+    1
+   ]
   ]
  },
  "laser_ammo": {
@@ -3505,17 +3619,43 @@
    "ammunition_laser_rcb-140": 111,
    "ammunition_laser_idb-125": 112,
    "ammunition_laser_vb-142": 113,
-   "ammunition_laser_sbl-100": 114
+   "ammunition_laser_sbl-100": 114,
+   "ammunition_laser_job-100": 9,
+   "ammunition_laser_emaa-20": 114,
+   "ammunition_laser_spacecup_group-a": 32,
+   "ammunition_laser_spacecup_group-b": 32,
+   "ammunition_laser_spacecup_group-c": 32,
+   "ammunition_laser_spacecup_group-d": 32,
+   "ammunition_laser_spacecup_group-e": 32,
+   "ammunition_laser_spacecup_group-f": 32,
+   "ammunition_laser_spacecup_group-g": 32,
+   "ammunition_laser_spacecup_group-h": 32
   },
   "full_set": {
-   "equipment_weapon_laser_lf-3": {
+   "lasers": [
+    "equipment_weapon_laser_lf-3",
+    "equipment_weapon_laser_lf-4",
+    "equipment_weapon_laser_lf-4-hp",
+    "equipment_weapon_laser_lf-4-md",
+    "equipment_weapon_laser_lf-4-pd",
+    "equipment_weapon_laser_lf-4-unstable",
+    "equipment_weapon_laser_lf-5",
+    "equipment_weapon_laser_lf-5-al",
+    "equipment_weapon_laser_lf-5-mf",
+    "equipment_weapon_laser_caucasus",
+    "equipment_weapon_laser_os-l",
+    "equipment_weapon_laser_pr-l",
+    "equipment_weapon_laser_am-l",
+    "equipment_weapon_laser_aa-1"
+   ],
+   "ammunition": {
     "ammunition_laser_lcb-10": 1,
     "ammunition_laser_mcb-25": 1,
     "ammunition_laser_mcb-50": 2
    }
   }
  },
- "_laser_colors_source": "AttackLaserRunCommand.laserColor = the \"type\" of the client's game.xml <lasers> class 0 (each has its own beam, light and sound: 0 red sound 0, 1 blue sound 9, 2 green sound 10, 3 white sound 11, 4 blue absorber sound 13, 5 \"pommes schuss\" sound 39, 8 CBO-100, 10 RB-214, 109 PIB-100, 110 A-BL, 111 RCB-140, 112 IDB-125, 113 VB-142, 114 SBL-100). Rule: wiki (darkorbit.fandom.com Battery/LF-3) and the game forum: x1-x3 red with every laser set; if all of the ship's laser slots are LF-3, x1 and x2 blue, x3 green; LF-4 and others red; x4 (UCB-100) white with every set. In the recording (LF-1 + LCB-10) laserColor 0. full_set: type by ammunition if all slots are filled with this laser.",
+ "_laser_colors_source": "AttackLaserRunCommand.laserColor = the \"type\" of the client's game.xml <lasers> class 0 (each has its own beam, light and sound: 0 red sound 0, 1 blue sound 9, 2 green sound 10, 3 white sound 11, 4 blue absorber sound 13, 5 \"pommes schuss\" sound 39, 8 CBO-100, 10 RB-214, 109 PIB-100, 110 A-BL, 111 RCB-140, 112 IDB-125, 113 VB-142, 114 SBL-100). Rule: wiki (darkorbit.fandom.com Battery/LF-3) and the game forum: x1-x3 red with every laser set; if all of the ship's laser slots are LF-3, x1 and x2 blue, x3 green; x4 (UCB-100) white with every set. In the recording (LF-1 + LCB-10) laserColor 0. full_set: type by ammunition if all slots are filled with lasers of the LF-3 tier or above (full_set.lasers, mixing allowed: e.g. LF-3 + LF-4 stays green with MCB-50; adaptation: the higher tiers keep the LF-3 effect; SL/SLL and LF-1/MP-1/LF-2 are below it).",
  "rockets": {
   "ammunition_rocket_r-310": {
    "damage": 1000,
@@ -3928,7 +4068,7 @@
    "rocket": 1,
    "cargo": 800,
    "base_speed": 340,
-   "base": "ship_d-raven"
+   "base": "ship_defcom-raven"
   },
   "ship_diminisher": {
    "hp": 356000,
@@ -4390,7 +4530,7 @@
    "rocket": 1,
    "cargo": 1000,
    "base_speed": 260,
-   "base": "ship_y-ronin"
+   "base": "ship_yamato-ronin"
   },
   "ship_g-saturn": {
    "hp": 356000,
@@ -5494,7 +5634,7 @@
   },
   "maximum": 1000000
  },
- "_lab_source": "Refine recipes are the values of the client's game.xml <ores refiner> (same as the wiki): Prometid = 20 Prometium + 10 Endurium, Duranium = 10 Endurium + 20 Terbium, Promerium = 10 Prometid + 10 Duranium + 1 Xenomit. Upgrade bonuses (LabItem: 0 laser, 1 rocket, 2 engine, 3 shield) from the wiki and the client's lab_effect_* texts. Units from the client's <refinementWindow><update><items>: laser rounds, rocket count, engine/shield minutes; 1 ore = 10 rounds/units/minutes (unit, per part; official Resources FAQ: Prometid 10 units, Duranium 10 minutes; wiki '1 ore for 10 shots'; user report 2026-10-24: 1 Seprom gave 1 shot; on 2026-10-28 engine/shield was set to 1 minute, on 2026-10-31 it was reverted to 10 minutes), at most 1,000,000 units per part (maximum; Team DarkOrbit 2019: nothing is added to a part that exceeded the cap, the leftover ore stays in cargo). Engine minutes are spent while moving, shield minutes in combat (adaptation). Upgrading with another ore erases the previous one (client: lab_alert).",
+ "_lab_source": "Refine recipes are the values of the client's game.xml <ores refiner> (same as the wiki): Prometid = 20 Prometium + 10 Endurium, Duranium = 10 Endurium + 20 Terbium, Promerium = 10 Prometid + 10 Duranium + 1 Xenomit. Upgrade bonuses (LabItem: 0 laser, 1 rocket, 2 engine, 3 shield) from the wiki and the client's lab_effect_* texts. Units from the client's <refinementWindow><update><items>: laser rounds, rocket count, engine/shield minutes; 1 ore = 10 rounds/units/minutes (unit, per part; official Resources FAQ: Prometid 10 units, Duranium 10 minutes; wiki '1 ore for 10 shots'; user report 2026-10-24: 1 Seprom gave 1 shot; on 2026-10-28 engine/shield was set to 1 minute, on 2026-10-31 it was reverted to 10 minutes), at most 1,000,000 units per part (maximum; Team DarkOrbit 2019: nothing is added to a part that exceeded the cap, the leftover ore stays in cargo). Engine and shield minutes run in real time, also while the pilot is offline (player report 2026-11-04, an experienced player). Upgrading with another ore erases the previous one (client: lab_alert).",
  "pet": {
   "loot": "pet_pet10",
   "name": "P.E.T.",
@@ -6050,7 +6190,26 @@
      12500,
      45000
     ],
-    "none": "dost gemi (klan/grup) gerekir"
+    "cooldown_sec": [
+     90,
+     75,
+     60,
+     45
+    ],
+    "range": [
+     350,
+     400,
+     450,
+     500
+    ],
+    "transfer": [
+     0.3,
+     0.4,
+     0.5,
+     0.6
+    ],
+    "threshold": 0.5,
+    "_note": "darkorbitwiki p-e-t (2026-11-05): passive; a friendly (group) ship below 50% shield in range: the P.E.T. explodes on it, shield transfer 30/40/50/60%, cooldown 90/75/60/45 s. friendly = same clan and/or group; the amount is that share of the P.E.T.'s maximum shield (fandom Sacrificial Flame trivia)"
    },
    "equipment_petgear_csr-02": {
     "type": 11,
@@ -6156,7 +6315,13 @@
    },
    "equipment_petgear_g-mm1": {
     "type": 17,
-    "none": "damages only players (bot players)"
+    "damage": 75000,
+    "pulses": 5,
+    "arm_sec": 2,
+    "duration_sec": 6,
+    "cooldown_sec": 240,
+    "range": 450,
+    "_note": "darkorbitwiki p-e-t (2026-11-05): the mine goes off 2 s after it is laid and hits all players not in the group 5 times for 75,000 within 6 s; cooldown 240 s. Range is not published: 450 (adaptation, the G-KK1 level 3 blast range)"
    }
   },
   "protocols": {
@@ -9255,6 +9420,66 @@
     "template": "resource_booty-key",
     "calendar": "rb_booty",
     "_source": "Official Turkish forum 130230/127496 (Red and Blue Pirate Boxes): keys are sold for payment during the event, in Assembly red 10 Scrap/5 Aurus/3 Schism, blue 20/10/5; chances in the blue box are twice the red's. Single-player adaptation: while the R&B event runs, uridium per key (red 2,500 U, blue 5,000 U; the recipe's ingredient ratio); the deal_booty-key-overhaul-march-red/blue items that have an icon in the client (\"Red/Blue Booty Key\"; resource_booty-key-red/blue and deal_booty-key-red/blue white icon, live 2026-10-30) use the green key's template, contents 1 key (player report 2026-10-30: it was not in the shop during the event)"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-ammo",
+    "uridium": 440000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-artificer",
+    "uridium": 3000000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-resource-l",
+    "uridium": 3000000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-resource-m",
+    "uridium": 1400000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-resource-s",
+    "uridium": 300000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-voyagers-vip-special",
+    "uridium": 170000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-laser-aml-triple",
+    "uridium": 200000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-s-h-diminisher",
+    "uridium": 50000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-s-h-spearhead-plus",
+    "uridium": 50000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
+   },
+   {
+    "lootId": "package_event-deal-s-h-venom",
+    "uridium": 50000,
+    "template": "package_event-deal-bp-halloween",
+    "_source": "official shop 2026-10-27/28 (ShopItemListCommand special, Payment); contents from the client text"
    }
   ],
   "ammunition": [
@@ -13838,5 +14063,21 @@
   "friend_credits": -1000,
   "_source": "Official Turkish forum 127379 (Pushing): killing the same player more than 5 times a day gives 15% less honor/EP each time, and once it reaches 0 the kill does not count; 127509 and 127321: killing a ship (and P.E.T.) of your own company gives no gain, a compounding negative honor (-100, -200, -400 …) and -1,000 credits",
   "_adaptation": "the base reward is not in the source: honor 100 x, EP 1,000 x the victim's rank ship points (ranks.json ship_points)"
- }
+ },
+ "_package_levels": "level of P.E.T. gears/protocols given by a package (client text: \"a level 3 G-KK1 P.E.T Gear\"); otherwise 1",
+ "package_levels": {
+  "package_event-deal-stellar2022-1": {
+   "equipment_petgear_g-kk1": 3
+  },
+  "package_event-deal-stellar2022-2": {
+   "equipment_petgear_g-kk1": 3
+  },
+  "package_event-deal-stellar2022-3": {
+   "equipment_petgear_g-kk1": 3
+  },
+  "package_event-deal-stellar2022-4": {
+   "equipment_petgear_g-kk1": 3
+  }
+ },
+ "_package_sources": "contents of the recorded-but-empty packages (Laser AML Triple, Voyagers, BP Halloween, Helios energies) from the client's items_<package>_description texts (2026-11-05)"
 }
