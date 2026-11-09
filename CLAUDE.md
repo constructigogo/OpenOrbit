@@ -150,7 +150,8 @@ The sibling project `../OrbitBot` (headless bot in C#, a separate repo) depends 
     `world.py` (it re-plans once a second while farther than `min(450, keep + 150)`, flying to `keep` from the hero turned
     by its spread, `near` and `keep` scaled by `min(1, multiplier('npc_range'))`; it fires while the hero is inside its
     range; its damage is flushed at the next whole second, a rocket's lands about 0.8 s after launch), and
-    `alien.low_health`'s flee (a low-health alien flies to the edge or corner point farthest from the hero, then parks);
+    `alien.low_health`'s flee (`flee_spot`: a low-health alien flies to the edge or corner point farthest from the hero, in a
+    galaxy gate to the one of the gate's two corners nearest the alien, then parks);
     the ammo rules: `world.menu_action` (an `ammunition_laser_*` select with `actionType` 0 only selects, `1` can start a
     quick-slot attack; it is ignored for the item already selected or a count of 0, and answered by `MenuItemStatusCommand`
     for the old and the new item), `world.ammo_out`/`other_ammo` (with `autoChangeAmmo`, on by default, the server switches
